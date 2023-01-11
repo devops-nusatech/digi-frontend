@@ -2,14 +2,13 @@ import React, {
    FC,
    memo,
    useMemo,
-   useState,
 } from 'react';
 import { useSelector } from 'react-redux';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useIntl } from 'react-intl';
 import { Market, selectCurrencies } from 'modules';
-import { Decimal, Cuk, Nav, Button, Paginations, PriceChart3 } from 'components';
+import { Decimal, Cuk, Nav, Button, PriceChart3 } from 'components';
 import { useCurrenciesFetch } from 'hooks';
 import { renderCurrencyIcon } from 'helpers';
 
@@ -274,8 +273,8 @@ export const NewTickerTable: FC<Props> = memo(({
       },
    ], []);
 
-   const [currentPage, setCurrentPage] = useState(1);
-   const lastPage = 20;
+   // const [currentPage, setCurrentPage] = useState(1);
+   // const lastPage = 20;
 
    return (
       <section className="relative lg:mb-28 lg2:mb-34">
@@ -376,12 +375,12 @@ export const NewTickerTable: FC<Props> = memo(({
                      }
                   </tbody>
                </table>
-               <Paginations
+               {/* <Paginations
                   currentPage={currentPage}
                   lastPage={lastPage}
                   maxLength={7}
                   setCurrentPage={setCurrentPage}
-               />
+               /> */}
                <Cuk columns={columns} data={combineMarkets} />
             </div>
          </div>
