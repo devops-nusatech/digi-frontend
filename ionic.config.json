@@ -1,0 +1,7 @@
+{
+  "name": "Digiassetindo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

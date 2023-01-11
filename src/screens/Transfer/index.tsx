@@ -1,0 +1,498 @@
+import React, {
+   Fragment,
+   FunctionComponent,
+   useEffect,
+   useState
+} from 'react';
+import { compose } from 'redux';
+import {
+   RouterProps,
+   withRouter
+} from 'react-router';
+import {
+   connect,
+   MapDispatchToPropsFunction,
+   MapStateToProps
+} from 'react-redux';
+import { injectIntl } from 'react-intl';
+import {
+   Combobox,
+   Transition,
+} from '@headlessui/react';
+import {
+   Button,
+   Decimal,
+   InputGroup,
+   Portal
+} from 'components';
+import {
+   alertPush,
+   currenciesFetch,
+   Currency,
+   RootState,
+   selectCurrencies,
+   selectTransferLoading,
+   selectTransferIsSuccess,
+   selectUserInfo,
+   selectWallets,
+   transferCreate,
+   User,
+   Wallet,
+   walletsFetch,
+   selectTransferIsError
+} from 'modules';
+import { IntlProps } from 'index';
+import { arrayFilter, cleanPositiveFloatInput, precisionRegExp } from 'helpers';
+import { imgAvatar } from 'assets';
+
+// const people = [
+//    { id: 1, name: 'Wade Cooper' },
+//    { id: 2, name: 'Arlene Mccoy' },
+//    { id: 3, name: 'Devon Webb' },
+//    { id: 4, name: 'Tom Cook' },
+//    { id: 5, name: 'Tanya Fox' },
+//    { id: 6, name: 'Hellen Schmidt' },
+//    { id: 7, name: 'Wade Cooper' },
+//    { id: 8, name: 'Arlene Mccoy' },
+//    { id: 3, name: 'Devon Webb' },
+//    { id: 9, name: 'Tom Cook' },
+//    { id: 10, name: 'Tanya Fox' },
+//    { id: 11, name: 'Hellen Schmidt' },
+// ]
+
+type TransferState = {
+   username_or_uid: string;
+   amount: string;
+   otp: string;
+   insufficientBalance: boolean;
+}
+
+interface ReduxProps {
+   user: User;
+   wallets: Wallet[];
+   currencies: Currency[];
+   transferLoading: boolean;
+   transferSuccess: boolean;
+   transferError: boolean;
+}
+
+interface DispatchProps {
+   transfer: typeof transferCreate;
+   fetchWallets: typeof walletsFetch;
+   fetchCurrencies: typeof currenciesFetch;
+   alertPush: typeof alertPush;
+}
+
+type OwnProps = {
+   location: {
+      state: Currency;
+   };
+}
+
+type TransferProps = ReduxProps & DispatchProps & OwnProps & RouterProps & IntlProps;
+
+export const TransferFC = ({
+   user,
+   wallets,
+   currencies,
+   transfer,
+   transferLoading,
+   transferSuccess,
+   transferError,
+   fetchWallets,
+   fetchCurrencies,
+   history: { push },
+   intl,
+   location,
+}: TransferProps) => {
+   const [state, setState] = useState<TransferState>({
+      username_or_uid: '',
+      amount: '',
+      otp: '',
+      insufficientBalance: false,
+   });
+   const { username_or_uid, amount, otp, insufficientBalance } = state;
+   const [selected, setSelected] = useState<Currency>(location.state ? location.state : currencies[0]);
+   const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+   const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+   const [query, setQuery] = useState<string>('');
+   const filteredCurrencies: Currency[] = query === '' ? currencies : currencies ? arrayFilter(currencies, query) : [];
+
+   useEffect(() => {
+      if (user.level < 2 || !user.otp) {
+         push('/wallets', { isOpenPortal: true });
+      }
+   }, []);
+
+   useEffect(() => {
+      if (!wallets.length || !currencies.length) {
+         fetchWallets();
+         fetchCurrencies();
+      }
+   }, [wallets, currencies]);
+
+   useEffect(() => {
+      if (transferSuccess) {
+         setIsOpenConfirm(false);
+         setIsOpenSuccess(true);
+      }
+   }, [transferSuccess]);
+
+   useEffect(() => {
+      if (transferError) {
+         setIsOpenConfirm(false);
+      }
+   }, [transferError]);
+
+   const translate = (id: string) => intl.formatMessage({ id });
+
+   const handleChangeReceiver = (username_or_uid: string) => setState({
+      ...state,
+      username_or_uid
+   });
+   const handleChangeAmount = (amount: string) => {
+      const convertedValue = cleanPositiveFloatInput(amount)
+      if (convertedValue.match(precisionRegExp(Number(myWallet?.fixed)))) {
+         setState({
+            ...state,
+            amount: convertedValue,
+            insufficientBalance: !convertedValue.length ? false : Number(myWallet?.balance) <= 0 ? true : false
+         })
+      };
+   }
+   const handleChangeOtp = (otp: string) => setState({
+      ...state,
+      otp: otp.replace(/\D/g, '')
+   });
+
+   const handleTranfer = () => {
+      if (selected && selected?.status === 'enabled') {
+         transfer({
+            username_or_uid,
+            currency: selected.id,
+            amount,
+            otp
+         });
+      }
+   }
+
+   const myWallet = wallets.find(wallet => wallet?.currency === selected?.id);
+
+   const isDisabled = (): boolean => {
+      return !selected || !username_or_uid || !amount || otp.length < 6 || Number(myWallet?.balance) <= 0;
+   }
+
+   const handleShowConfirm = () => setIsOpenConfirm(prev => !prev);
+   const handleShowSuccess = () => setIsOpenSuccess(prev => !prev);
+
+   return (
+      <>
+         <div>
+            <div className="py-10">
+               <div className="flex items-center w-full max-w-7xl my-0 mx-auto px-6 md:px-10 lg:px-20">
+                  <div className="mr-auto text-5xl font-dm font-bold tracking-custom leading-custom1">
+                     Transfer
+                  </div>
+               </div>
+            </div>
+            <div className="py-20 pb-34 bg-shade5 dark:bg-none dark:shadow-body dark:bg-neutral1">
+               <div className="w-full max-w-7xl my-0 mx-auto px-6 md:px-10 lg:px-20">
+                  <div className="flex -mx-5">
+                     <div className="basis-c-4/6-5 w-c-4/6-5 mx-5">
+                        <div className="bg-neutral8 dark:bg-shade1 shadow-card rounded-2xl p-10 space-y-8">
+                           <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+                              {translate('transfer.title')}
+                           </div>
+                           <InputGroup
+                              autoFocus
+                              id="uid"
+                              name="uid"
+                              label="Enter UID / Username"
+                              placeholder="ID1234567890"
+                              value={username_or_uid}
+                              onChange={handleChangeReceiver}
+                              variant="primary"
+                           // icon={
+                           //    <div className="inline-flex justify-center items-center whitespace-nowrap text-xs h-8 px-4 rounded-lg bg-primary1 hover:bg-primary1/90 text-neutral8">Check</div>
+                           // }
+                           />
+                           <div className="flex -mx-2">
+                              <div className="grow-0 shrink-0 basis-c-1/3-4 w-c-1/3-4 mx-2">
+                                 <Combobox
+                                    value={selected}
+                                    onChange={setSelected}
+                                 >
+                                    <div className="relative">
+                                       <div className="leading-none mb-2.5">
+                                          <Combobox.Label className="text-xs text-neutral5 leading-none font-bold uppercase">
+                                             Currency
+                                          </Combobox.Label>
+                                       </div>
+                                       <div className="relative">
+                                          <Combobox.Input
+                                             className={({ open }) => `${open ? 'text-primary1' : ''} px-3.5 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 bg-none bg-transparent shadow-none focus:border-primary1 transition ease-in-out duration-300 dark:border-neutral3 pr-12 h-12 w-full`}
+                                             displayValue={(currency: { name: string }) => `${currency?.name}` || '~ Select currency ~'}
+                                             onChange={e => setQuery(e.target.value)}
+                                          />
+                                          <Combobox.Button className="group absolute inset-y-0 right-0 flex items-center pr-2">
+                                             <svg className="h-5 w-5 fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral6 transition-colors duration-300">
+                                                <use xlinkHref="#icon-search" />
+                                             </svg>
+                                          </Combobox.Button>
+                                       </div>
+                                       <Transition
+                                          as={Fragment}
+                                          leave="transition ease-in duration-100"
+                                          leaveFrom="opacity-100"
+                                          leaveTo="opacity-0"
+                                          afterLeave={() => setQuery('')}
+                                       >
+                                          <Combobox.Options className="z-2 absolute mt-1 max-h-60 w-full overflow-auto rounded-xl bg-neutral8 dark:bg-neutral2 border-2 border-primary1 py-1 shadow-lg ring-1 ring-primary1 ring-opacity-5 focus:outline-none">
+                                             {filteredCurrencies.length === 0 && query !== '' ? (
+                                                <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
+                                                   Nothing found.
+                                                </div>
+                                             ) : (
+                                                filteredCurrencies.map(currency => (
+                                                   <Combobox.Option
+                                                      key={currency.id}
+                                                      className={({ active }) => `relative cursor-default select-none py-2 px-4 ${active ? 'bg-primary1 text-neutral8' : ''}`}
+                                                      value={currency}
+                                                   >
+                                                      {({ selected }) => (
+                                                         <div className="group flex items-center space-x-3">
+                                                            <div className="w-8 h-8 overflow-hidden">
+                                                               <img
+                                                                  src={currency?.icon_url}
+                                                                  className="object-cover bg-neutral8"
+                                                                  alt={currency?.name}
+                                                                  title={currency?.name}
+                                                                  style={{
+                                                                     clipPath: 'polygon(50% 0, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%)',
+                                                                  }}
+                                                               />
+                                                            </div>
+                                                            <div className={`block truncate ${selected ? 'font-medium' : 'font-normal'} group-hover:font-medium`}>
+                                                               {currency?.name} <span className={`${selected ? 'text-neutral7' : 'text-neutral4'} font-normal group-hover:text-neutral7`}>{currency?.id.toUpperCase()}</span>
+                                                            </div>
+                                                         </div>
+                                                      )}
+                                                   </Combobox.Option>
+                                                ))
+                                             )}
+                                          </Combobox.Options>
+                                       </Transition>
+                                    </div>
+                                 </Combobox>
+                              </div>
+                              <div className="grow-0 shrink-0 basis-c-4/6-4 w-c-4/6-4 mx-2">
+                                 <InputGroup
+                                    id="amount"
+                                    name="amount"
+                                    label="Enter transfer amount"
+                                    placeholder="0.12345678"
+                                    value={amount}
+                                    onChange={handleChangeAmount}
+                                    variant="primary"
+                                    withError={insufficientBalance}
+                                    info={insufficientBalance ? 'Insufficient balance' : ''}
+                                    className="!px-3.5"
+                                 // icon={
+                                 //    <div className="inline-flex justify-center items-center whitespace-nowrap text-xs h-8 px-4 rounded-lg bg-primary1 hover:bg-primary1/90 text-neutral8">Check</div>
+                                 // }
+                                 />
+                              </div>
+                           </div>
+                           <InputGroup
+                              id="otpCode"
+                              name="otpCode"
+                              label="Enter 2FA code"
+                              placeholder="123456"
+                              value={otp}
+                              onChange={handleChangeOtp}
+                              maxLength={6}
+                              variant="primary"
+                           />
+                           <div className="bg-neutral7 dark:bg-neutral2 flex flex-col rounded-2xl px-6 py-4">
+                              <div className="font-medium leading-6">
+                                 {translate('transfer.intruction.title')}
+                              </div>
+                              <ul className="list-decimal list-outside text-xs pl-3 leading-normal">
+                                 <li>{translate('transfer.intruction.list_1')}</li>
+                                 <li>{translate('transfer.intruction.list_2')}</li>
+                                 <li>{translate('transfer.intruction.list_3')}</li>
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+                     <div className="basis-c-1/3-5 w-c-1/3-5 mx-5">
+                        <div className="flex flex-col space-y-10">
+                           <div className="bg-neutral8 dark:bg-shade1 shadow-card rounded-2xl py-10 px-6">
+                              <div className="space-y-3">
+                                 <div className="text-base font-medium leading-normal">
+                                    {translate('transfer.receiver.detail')}
+                                 </div>
+                                 <div className="mx-auto w-20 h-20 overflow-hidden">
+                                    <img src={imgAvatar} className="object-cover" alt="Avatar receiver" title="Avatar receiver" />
+                                 </div>
+                                 <div className="flex items-center justify-between space-x-3">
+                                    <div>UID</div>
+                                    <div className={`text-right font-medium truncate ${username_or_uid.toUpperCase().includes('ID') ? '' : 'text-neutral4 '}`}>
+                                       {username_or_uid.toUpperCase().includes('ID') ? username_or_uid.toUpperCase() : 'ID123123123'}
+                                    </div>
+                                 </div>
+                                 <div className="flex items-center justify-between space-x-3">
+                                    <div>Username</div>
+                                    <div className={`text-right font-medium truncate ${!username_or_uid.toLowerCase().includes('ID') ? '' : 'text-neutral4 '}`}>
+                                       {!username_or_uid.toLowerCase().includes('ID') ? username_or_uid.toLowerCase() : 'digiusername'}
+                                    </div>
+                                 </div>
+                                 <div className="flex items-center justify-between space-x-3">
+                                    <div>Email</div>
+                                    <div className={`text-right font-medium truncate text-neutral4`}>
+                                       digiasset@mail.com
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="bg-neutral8 dark:bg-shade1 shadow-card rounded-2xl py-10 px-6">
+                              <div className="space-y-3 mb-8">
+                                 <div className="text-base font-medium leading-normal">
+                                    Transfer amount
+                                 </div>
+                                 <div className={`${amount ? '' : 'text-neutral5'} font-semibold text-2xl leading-custom3`}>
+                                    {Decimal.format(amount, Number(myWallet?.fixed), ',') || 0} {amount ? myWallet?.currency?.toUpperCase() : ''}
+                                 </div>
+                                 <div className="flex items-center">
+                                    <div>Available asset</div>
+                                    <div className={`text-right font-medium ml-auto ${selected ? '' : 'text-neutral4'}`}>
+                                       {Decimal.format(myWallet?.balance, Number(myWallet?.fixed), ',') || 0} {myWallet?.currency?.toUpperCase()}
+                                    </div>
+                                 </div>
+                              </div>
+                              <Button
+                                 text="Transfer"
+                                 onClick={handleShowConfirm}
+                                 disabled={isDisabled()}
+                                 withLoading={transferLoading}
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <Portal
+            show={isOpenConfirm}
+            close={handleShowConfirm}
+            title="Confirmation"
+            onClick={handleShowConfirm}
+         >
+            <div className="space-y-2">
+               <div className="text-center font-medium leading-normal">
+                  {translate('transfer')}
+               </div>
+               <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1">
+                  {Decimal.format(amount, Number(myWallet?.fixed), ',') || 0} {amount ? myWallet?.currency?.toUpperCase() : ''}
+               </div>
+            </div>
+            <div className="space-y-3">
+               <List
+                  left="To"
+                  right="digiassetadmin"
+               />
+               <List
+                  left="UID"
+                  right={username_or_uid.toUpperCase()}
+               />
+               <List
+                  left="Currencies"
+                  right={selected && selected.name}
+                  rightAlt={selected && selected.id.toUpperCase()}
+               />
+               <List
+                  left="From"
+                  right={String(user.username)}
+               />
+               <List
+                  left="Balance"
+                  right={Decimal.format(myWallet?.balance, Number(myWallet?.fixed), ',') || '0'}
+                  rightAlt={myWallet?.currency?.toUpperCase()}
+               />
+            </div>
+            <div className="bg-neutral7 dark:bg-neutral3 p-4 rounded-2xl space-y-3">
+               <div className="text-center text-base font-medium">
+                  Attention
+               </div>
+               <div className="text-xs leading-custom4">
+                  Please note to double check your receiver uid/ username before sending assets. Wrong uid/ username cause your asset to be lost.
+               </div>
+            </div>
+            <Button
+               text={translate('transfer')}
+               onClick={handleTranfer}
+               withLoading={transferLoading}
+            />
+         </Portal>
+         <Portal
+            show={isOpenSuccess}
+            close={handleShowSuccess}
+         >
+            <div className="pt-10 space-y-8">
+               <div className="space-y-4">
+                  <div className="text-center text-7xl">
+                     🎉
+                  </div>
+                  <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1">
+                     Transfer success
+                  </div>
+                  <div className="text-center">
+                     Your transfer is success, check your transaction detail at the finance history page
+                  </div>
+               </div>
+               <Button
+                  text={'History'}
+                  onClick={handleShowSuccess}
+               />
+            </div>
+         </Portal>
+      </>
+   );
+}
+
+const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
+   user: selectUserInfo(state),
+   wallets: selectWallets(state),
+   currencies: selectCurrencies(state),
+   transferLoading: selectTransferLoading(state),
+   transferSuccess: selectTransferIsSuccess(state),
+   transferError: selectTransferIsError(state),
+});
+
+const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+   transfer: payload => dispatch(transferCreate(payload)),
+   fetchWallets: () => dispatch(walletsFetch()),
+   fetchCurrencies: () => dispatch(currenciesFetch()),
+   alertPush: payload => dispatch(alertPush(payload)),
+})
+
+export const Transfer = compose(
+   injectIntl,
+   withRouter,
+   connect(mapStateToProps, mapDispatchToProps)
+)(TransferFC) as FunctionComponent;
+
+type ListProps = {
+   left: string;
+   right: string;
+   rightAlt?: string;
+}
+const List = ({ left, right, rightAlt }: ListProps) => (
+   <div className="flex items-center">
+      <div className="text-neutral4">{left}</div>
+      <div className={`text-right font-medium ml-auto`}>
+         {right} <span className="text-neutral4">{rightAlt}</span>
+      </div>
+   </div>
+);
