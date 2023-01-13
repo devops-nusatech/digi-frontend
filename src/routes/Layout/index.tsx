@@ -33,7 +33,6 @@ import {
 } from 'mobile/screens';
 import {
    configsFetch,
-   sonicFetch,
    logoutFetch,
    RootState,
    selectConfigsLoading,
@@ -141,7 +140,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
       } = this.props;
 
       this.props.fetchConfigs();
-      this.props.fetchSonic();
       if (
          !(location.pathname.includes('/magic-link')
             || location.pathname.includes('/404')
@@ -444,7 +442,6 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    fetchConfigs: () => dispatch(configsFetch()),
-   fetchSonic: () => dispatch(sonicFetch()),
    fetchCustomization: () => dispatch(customizationFetch()),
    logout: () => dispatch(logoutFetch()),
    toggleChartRebuild: () => dispatch(toggleChartRebuild()),

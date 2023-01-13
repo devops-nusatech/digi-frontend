@@ -6,7 +6,6 @@ import {
    configsFetch,
    logoutFetch,
    Market,
-   sonicFetch,
    toggleChartRebuild,
    User,
    userFetch,
@@ -37,7 +36,6 @@ export interface ReduxProps {
 
 export interface DispatchProps {
    fetchConfigs: typeof configsFetch;
-   fetchSonic: typeof sonicFetch;
    fetchCustomization: typeof customizationFetch;
    logout: typeof logoutFetch;
    rangerConnect: typeof rangerConnectFetch;

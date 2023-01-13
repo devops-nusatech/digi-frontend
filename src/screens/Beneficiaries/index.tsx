@@ -27,6 +27,8 @@ import {
    Listbox,
    Decimal,
    Label,
+   InputOtp,
+   Skeleton,
 } from 'components';
 import {
    useModal,
@@ -51,17 +53,30 @@ import {
    MemberLevels,
    RootState,
    selectBeneficiariesFetchLoading,
+   selectBeneficiariesCreateLoading,
+   selectBeneficiariesCreateSuccess,
+   selectBeneficiariesDeleteLoading,
+   selectBeneficiariesDeleteSuccess,
    selectMemberLevels,
+   selectUserInfo,
    selectWallets,
+   User,
    Wallet,
-   walletsFetch
+   walletsFetch,
+   Beneficiary,
+   selectBeneficiariesCreate,
+   selectBeneficiariesActivateLoading,
+   selectBeneficiariesActivateSuccess,
+   selectBeneficiariesResendPinLoading
 } from 'modules';
 import { DEFAULT_WALLET } from '../../constants';
 // import { validateBeneficiaryAddress } from 'helpers/validateBeneficiaryAddress';
 
 import { validate, getCurrencies } from 'multicoin-address-validator'
 
-type ModalType = 'fiat' | 'coin' | ''
+type ModalType = 'fiat' | 'coin' | '';
+
+type ConfirmType = 'confirm' | 'delete';
 
 type State = {
    currency?: string;
@@ -86,7 +101,16 @@ const people = [
 type ReduxProps = {
    wallets: Wallet[];
    beneficiariesLoading: boolean;
+   beneficiary: Beneficiary;
+   beneficiariesCreateLoading: boolean;
+   beneficiariesCreateSuccess: boolean;
+   beneficiariesDeleteLoading: boolean;
+   beneficiariesDeleteSuccess: boolean;
+   beneficiariesActivateLoading: boolean;
+   beneficiariesActivateSuccess: boolean;
+   beneficiariesResendLoading: boolean;
    memberLevels?: MemberLevels;
+   user: User;
 }
 
 type DispatchProps = {
@@ -103,7 +127,16 @@ type BeneficiariesProps = ReduxProps & DispatchProps & RouterProps & IntlProps;
 const BeneficiariesFC = ({
    wallets,
    beneficiariesLoading,
+   beneficiary,
+   beneficiariesCreateLoading,
+   beneficiariesCreateSuccess,
+   beneficiariesDeleteLoading,
+   beneficiariesDeleteSuccess,
+   beneficiariesActivateLoading,
+   beneficiariesActivateSuccess,
+   beneficiariesResendLoading,
    memberLevels,
+   user,
    fecthWallets,
    createBeneficiary,
    activateBeneficiary,
@@ -118,16 +151,18 @@ const BeneficiariesFC = ({
 
    const { isShow, toggle } = useModal();
    const [isShow2, setisShow2] = useState(false);
-   const [modalType, setModalType] = useState<ModalType>('');
+   const [modalType] = useState<ModalType>('coin');
+   const [confirmType, setConfirmType] = useState<ConfirmType>('confirm');
 
    const [coinAddressValid, setCoinAddressValid] = useState(false);
    // const [coinAddressClear, setCoinAddressClear] = useState(false);
 
+   const [asset, setAsset] = useState(filteredWalletCoin)
    const [selectedAsset, setSelectedAsset] = useState<Wallet>(defaultWallet);
    const [searchAsset, setSearchAsset] = useState('');
    const filteredWallets = searchAsset === ''
-      ? filteredWalletCoin
-      : filteredWalletCoin
+      ? asset
+      : asset
          .filter(wallet =>
             wallet.name
                .toLowerCase()
@@ -142,6 +177,8 @@ const BeneficiariesFC = ({
    const [selectedNetwork, setSelectedNetwork] = useState<{ [key: string]: any }>(selectedAsset.networks[0]);
 
    const [selected, setSelected] = useState(people[0]);
+
+   const [otpCode, setOtpCode] = useState('');
 
    const [{
       accountName,
@@ -176,10 +213,28 @@ const BeneficiariesFC = ({
    }, [wallets]);
 
    const toggle2 = () => setisShow2(!isShow2);
-   const handleShowModalCreateBeneficiary = (type: ModalType) => {
-      setModalType(type);
-      toggle2();
+
+   // const handleShowModalCreateBeneficiary = (type: ModalType) => {
+   //    setModalType(type);
+   //    toggle2();
+   // }
+
+   const handleShowModalCreateBeneficiary = () => {
+      setAsset(filteredWalletCoin);
+      setSelectedAsset(defaultWallet);
+      setSelectedNetwork(defaultWallet.networks[0]);
+      toggle();
    }
+
+   useEffect(() => {
+      setSelectedNetwork(selectedAsset.networks[0]);
+      setNewForm({
+         address: '',
+         label: '',
+         description: ''
+      });
+      console.log('selectedAsset', selectedAsset)
+   }, [selectedAsset]);
 
    const handleCopy = (url: string, type: string) => {
       copyToClipboard(url);
@@ -206,33 +261,33 @@ const BeneficiariesFC = ({
       }
    };
 
-   const renderSelectTypeBeneficiaryModal = () => (
-      <div className="pt-10 space-y-8">
-         <div className="space-y-3">
-            <div className="font-dm text-2xl leading-9 text-center tracking-custom">
-               Select asset type
-            </div>
-            <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
-               Please select the type of asset you want to add the beneficiaries to
-            </div>
-         </div>
-         <div className="flex space-x-4">
-            <Button
-               text="Coin"
-               onClick={() => {
-                  handleShowModalCreateBeneficiary('coin');
-                  setSelectedAsset(defaultWallet);
-                  setSelectedNetwork(selectedAsset.networks[0]);
-               }}
-            />
-            <Button
-               text="Fiat"
-               variant="outline"
-               onClick={() => handleShowModalCreateBeneficiary('fiat')}
-            />
-         </div>
-      </div>
-   );
+   // const renderSelectTypeBeneficiaryModal = () => (
+   //    <div className="pt-10 space-y-8">
+   //       <div className="space-y-3">
+   //          <div className="font-dm text-2xl leading-9 text-center tracking-custom">
+   //             Select asset type
+   //          </div>
+   //          <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
+   //             Please select the type of asset you want to add the beneficiaries to
+   //          </div>
+   //       </div>
+   //       <div className="flex space-x-4">
+   //          <Button
+   //             text="Coin"
+   //             onClick={() => {
+   //                handleShowModalCreateBeneficiary('coin');
+   //                setSelectedAsset(defaultWallet);
+   //                setSelectedNetwork(selectedAsset.networks[0]);
+   //             }}
+   //          />
+   //          <Button
+   //             text="Fiat"
+   //             variant="outline"
+   //             onClick={() => handleShowModalCreateBeneficiary('fiat')}
+   //          />
+   //       </div>
+   //    </div>
+   // );
 
    // const formatedWallet = wallets.length ? wallets.find(wallet => wallet.currency === selectedAsset?.currency) : DEFAULT_WALLET;
 
@@ -307,6 +362,11 @@ const BeneficiariesFC = ({
       </Combobox>
    );
 
+   const isDisabled = (): boolean => {
+      const withdrawEnabled = selectedNetwork.withdrawal_enabled;
+      return !withdrawEnabled || !Boolean(address) || !Boolean(label);
+   }
+
    const renderCreateBeneficiaryModal = () => (
       <>
          {modalType === 'coin' ? (
@@ -319,6 +379,7 @@ const BeneficiariesFC = ({
                      list={selectedNetwork}
                      lists={selectedAsset.networks}
                      onChange={setSelectedNetwork}
+                     info={!selectedNetwork.withdrawal_enabled ? 'This network disabled' : ''}
                   />
                )}
                <InputGroup
@@ -396,6 +457,8 @@ const BeneficiariesFC = ({
          </div>
          <Button
             text="Add beneficiary"
+            disabled={isDisabled()}
+            withLoading={beneficiariesCreateLoading}
             onClick={handleCreateBeneficiary}
          />
       </>
@@ -431,6 +494,30 @@ const BeneficiariesFC = ({
       createBeneficiary(modalType === 'coin' ? payloadCoin : payloadFiat);
    }
 
+   const translate = (id: string) => intl.formatMessage({ id });
+
+   const handleConfirmActivate = () => {
+      activateBeneficiary({ id: beneficiary.id, pin: otpCode });
+   };
+   const handleConfirmDelete = () => {
+      alert('kokom')
+   };
+
+   const handleConfirm = () => confirmType === 'confirm' ? handleConfirmActivate() : handleConfirmDelete();
+
+   useEffect(() => {
+      if (beneficiariesCreateSuccess) {
+         toggle();
+         toggle2();
+         setConfirmType('confirm');
+      }
+   }, [beneficiariesCreateSuccess]);
+   useEffect(() => {
+      if (beneficiariesActivateSuccess) {
+         toggle2();
+      }
+   }, [beneficiariesActivateSuccess]);
+
    return (
       <>
          <LayoutProfile
@@ -452,7 +539,8 @@ const BeneficiariesFC = ({
                         text="Create beneficiary"
                         size="normal"
                         width="noFull"
-                        onClick={toggle}
+                        disabled={memberLevels?.withdraw.minimum_level !== user.level}
+                        onClick={handleShowModalCreateBeneficiary}
                      />
                   </div>
                   <TableBeneficiary withSearch />
@@ -461,24 +549,66 @@ const BeneficiariesFC = ({
          </LayoutProfile>
 
          {/* Modal Select Type Asset */}
-         <Portal
+         {/* <Portal
             show={isShow}
             close={toggle}
          >
             {renderSelectTypeBeneficiaryModal()}
-         </Portal>
+         </Portal> */}
          {/* End Modal Select Type Asset */}
 
          {/* Modal Create Beneficiary */}
          <Portal
-            show={isShow2}
-            close={toggle2}
+            show={isShow}
+            close={toggle}
             zIndexBackdrop={1045}
             zIndexContent={1046}
             title={`${modalType === 'coin' ? 'Coin' : 'Fiat'} Beneficiary`}
-            onClick={toggle2}
+            onClick={toggle}
          >
             {renderCreateBeneficiaryModal()}
+         </Portal>
+         {/* End Modal Create Beneficiary */}
+
+         {/* Modal Confirm Beneficiary */}
+         <Portal
+            show={isShow2}
+            close={toggle2}
+            onClick={toggle2}
+         >
+            <div className="pt-10 space-y-8">
+               <div className="space-y-3">
+                  <div className="font-dm text-2xl leading-9 text-center tracking-custom">
+                     Beneficiaries Activation
+                  </div>
+                  <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
+                     Save the new address, Please enter the code that we sent to your email.
+                  </div>
+               </div>
+               <InputOtp
+                  length={6}
+                  className="flex -mx-2"
+                  isNumberInput
+                  onChangeOTP={setOtpCode}
+               />
+               <div className="space-y-3">
+                  <Button
+                     text={confirmType === 'confirm' ? translate('page.body.profile.apiKeys.modal.btn.create') : translate('page.body.profile.apiKeys.modal.btn.delete')}
+                     disabled={otpCode.length !== 6}
+                     onClick={handleConfirm}
+                     withLoading={beneficiariesActivateLoading || beneficiariesDeleteLoading}
+                  />
+                  <button
+                     className={beneficiariesResendLoading ? '' : 'text-primary1 font-medium hover:underline hover:underline-offset-4'}
+                     disabled={beneficiariesResendLoading}
+                     onClick={() => resendPinBeneficiary({ id: beneficiary.id })}
+                  >
+                     {!beneficiariesResendLoading ? 'Resend code' : (
+                        <Skeleton width={100} height={20} />
+                     )}
+                  </button>
+               </div>
+            </div>
          </Portal>
          {/* End Modal Create Beneficiary */}
       </>
@@ -488,7 +618,16 @@ const BeneficiariesFC = ({
 const mapStateToProps = (state: RootState): ReduxProps => ({
    wallets: selectWallets(state),
    beneficiariesLoading: selectBeneficiariesFetchLoading(state),
+   beneficiary: selectBeneficiariesCreate(state),
+   beneficiariesCreateLoading: selectBeneficiariesCreateLoading(state),
+   beneficiariesCreateSuccess: selectBeneficiariesCreateSuccess(state),
+   beneficiariesDeleteLoading: selectBeneficiariesDeleteLoading(state),
+   beneficiariesDeleteSuccess: selectBeneficiariesDeleteSuccess(state),
+   beneficiariesActivateLoading: selectBeneficiariesActivateLoading(state),
+   beneficiariesActivateSuccess: selectBeneficiariesActivateSuccess(state),
+   beneficiariesResendLoading: selectBeneficiariesResendPinLoading(state),
    memberLevels: selectMemberLevels(state),
+   user: selectUserInfo(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

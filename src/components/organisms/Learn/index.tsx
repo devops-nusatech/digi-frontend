@@ -102,7 +102,7 @@ const LearnMemo: FC = () => {
                            <div className="">
                               Loading
                            </div>
-                        ) : news.length ?
+                        ) : news?.length ?
                            news?.map(e => (
                               <div
                                  key={e.uuid}

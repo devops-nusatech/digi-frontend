@@ -8,7 +8,6 @@ import {
    GeetestCaptchaV4Response,
    selectMobileDeviceState
 } from 'modules';
-import { useShowGeetestCaptcha } from 'hooks';
 
 interface FormForgotPasswordProps {
    buttonLabel?: string;
@@ -57,6 +56,13 @@ export const FormForgotPassword: FC<FormForgotPasswordProps> = memo(({
       if (isLoading || !email.match(EMAIL_REGEX)) {
          return true;
       }
+      if (captchaType === 'recaptcha' && !reCaptchaSuccess) {
+         return true;
+      }
+
+      if (captchaType === 'geetest' && !geetestCaptchaSuccess) {
+         return true;
+      }
 
       return false;
    };
@@ -66,7 +72,6 @@ export const FormForgotPassword: FC<FormForgotPasswordProps> = memo(({
    useEffect(() => {
       if (captchaType !== 'none') {
          if (reCaptchaSuccess || geetestCaptchaSuccess) {
-            handleClick();
             handleRenderInputNewPass();
          }
       }
@@ -90,7 +95,7 @@ export const FormForgotPassword: FC<FormForgotPasswordProps> = memo(({
          {renderCaptcha}
          <Button
             disabled={isButtonDisabled()}
-            onClick={useShowGeetestCaptcha}
+            onClick={handleClick}
             text={isLoading ? 'Loading...' : buttonLabel ? buttonLabel : 'Send'}
             withLoading={isLoading}
          />

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Button, LayoutAuth, Nav, InputGroup } from 'components';
 import { captchaLogin } from 'api';
 import { EMAIL_REGEX, removeClass, } from 'helpers';
-import { GeetestCaptchaResponse, GeetestCaptchaV4Response, } from 'modules';
+import { GeetestCaptchaResponse, } from 'modules';
 import { selectMobileDeviceState } from 'modules/public/globalSettings';
 import { Link } from 'react-router-dom';
 
@@ -45,7 +45,7 @@ export interface SignInProps {
    renderCaptcha?: JSX.Element | null;
    reCaptchaSuccess?: boolean;
    geetestCaptchaSuccess?: boolean;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?: string | GeetestCaptchaResponse;
 }
 
 export const FormLogin: FC<SignInProps> = memo(({

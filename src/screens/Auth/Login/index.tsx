@@ -10,7 +10,6 @@ import { EMAIL_REGEX, ERROR_EMPTY_PASSWORD, ERROR_INVALID_EMAIL, PASSWORD_REGEX,
 import {
    Configs,
    GeetestCaptchaResponse,
-   GeetestCaptchaV4Response,
    resetCaptchaState,
    RootState,
    selectAlertState,
@@ -40,7 +39,7 @@ interface ReduxProps {
    require2FA?: boolean;
    requireEmailVerification?: boolean;
    configs: Configs;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?: string | GeetestCaptchaResponse;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
 }

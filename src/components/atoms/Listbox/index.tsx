@@ -11,9 +11,10 @@ interface ListboxProps<T> {
    list: T;
    lists: T[];
    onChange(e?: any): void;
+   info?: string;
 }
 
-export const Listbox = <T extends ObjectKey>({ label, objectKey, list, lists, onChange }: ListboxProps<T>) => (
+export const Listbox = <T extends ObjectKey>({ label, objectKey, list, lists, onChange, info }: ListboxProps<T>) => (
    <List
       value={list}
       onChange={onChange}
@@ -30,6 +31,11 @@ export const Listbox = <T extends ObjectKey>({ label, objectKey, list, lists, on
                   {list[objectKey]}
                </span>
             </List.Button>
+            {info && (
+               <div className={`text-primary4 text-x leading-relaxed font-medium`}>
+                  {info}
+               </div>
+            )}
          </div>
          <List.Options className={({ open }) => `absolute max-h-40 w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral1 shadow-dropdown-2 dark:shadow-dropdown-3 ${open ? 'opacity-100 visible scale-100 translate-y-0' : 'opacity-0 invisible scale-75 -translate-y-20'} transition-all duration-200`} style={{ transformOrigin: '50% 0' }}>
             {lists.map((value, index) => (

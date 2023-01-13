@@ -704,7 +704,7 @@ export const Market = () => {
                </div>
             </div>
             {
-               more < news.length && (
+               more < news?.length && (
                   <div className="mt-9 md:mt-12 text-center">
                      <Button
                         text="Load more"

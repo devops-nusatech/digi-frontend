@@ -40,7 +40,7 @@ export const TFA: FC<TFAProps> = memo(({
 }) => {
    const [forgot2fa, setforgot2fa] = useState(false);
    const handleEnterPress = useCallback(
-      (e: KeyboardEvent<HTMLInputElement>) => {
+      (e: KeyboardEvent<HTMLDivElement>) => {
          if (e.key === 'Enter') {
             e.preventDefault();
             if (!isLoading && otpCode.match(`^[0-9]{6}$`)) {

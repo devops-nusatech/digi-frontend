@@ -8,81 +8,85 @@ import { Cryptobase } from '../api';
 import * as WebSocket from 'ws';
 
 const mockConfig: Config = {
-    api: {
-        authUrl: '/api/v2/barong',
-        tradeUrl: '/api/v2/peatio',
-        applogicUrl: '/api/v2/applogic',
-        rangerUrl: '/api/v2/ranger',
-        finexUrl: '/api/v2/finex',
-        p2pUrl: '/api/v2/p2p',
-    },
-    finex: false,
-    withCredentials: false,
-    incrementalOrderBook: false,
-    isResizable: false,
-    isDraggable: false,
-    showLanding: true,
-    sentryEnabled: false,
-    captchaLogin: false,
-    usernameEnabled: false,
-    gaTrackerKey: '',
-    minutesUntilAutoLogout: '5',
-    msAlertDisplayTime: '5000',
-    sessionCheckInterval: '15000',
-    balancesFetchInterval: '5000',
-    passwordEntropyStep: '14',
-    storage: {
-        defaultStorageLimit: '50',
-        orderBookSideLimit: '25'
-    },
-    languages: ['en', 'ru'],
-    kycSteps: [
-        'email',
-        'phone',
-        'profile',
-        'document',
-        'address'
-    ]
+   api: {
+      authUrl: '/api/v2/account',
+      tradeUrl: '/api/v2/exchange',
+      applogicUrl: '/api/v2/applogic',
+      rangerUrl: '/api/v2/ranger',
+      finexUrl: '/api/v2/finex',
+      p2pUrl: '/api/v2/p2p',
+   },
+   finex: false,
+   withCredentials: false,
+   incrementalOrderBook: false,
+   isResizable: false,
+   isDraggable: false,
+   showLanding: true,
+   sentryEnabled: false,
+   captchaLogin: false,
+   usernameEnabled: false,
+   gaTrackerKey: '',
+   minutesUntilAutoLogout: '5',
+   msAlertDisplayTime: '5000',
+   msPricesUpdates: '1000',
+   sessionCheckInterval: '15000',
+   balancesFetchInterval: '3000',
+   passwordEntropyStep: '14',
+   password_min_entropy: '',
+   captcha_type: 'none',
+   storage: {
+      defaultStorageLimit: '50',
+      orderBookSideLimit: '25'
+   },
+   languages: ['en'],
+   kycSteps: [
+      'email',
+      'phone',
+      'profile',
+      'document',
+      'address'
+   ],
+   themeSwitcher: 'visible',
 };
 
 // tslint:disable no-any no-console
 export const loggerMiddleware: Middleware = (store: {}) => (next: any) => (action: Action) => {
-    console.log(`dispatching: ${JSON.stringify(action)}`);
+   console.log(`dispatching: ${JSON.stringify(action)}`);
 
-    return next(action);
+   return next(action);
 };
 
 export const setupMockStore = (appMiddleware: Middleware, log = false) => {
-    const middlewares = log ? [loggerMiddleware, appMiddleware] : [appMiddleware];
+   const middlewares = log ? [loggerMiddleware, appMiddleware] : [appMiddleware];
 
-    return configureMockStore(middlewares);
+   return configureMockStore(middlewares);
 };
 
 export const setupMockAxios = () => {
-    Cryptobase.config = mockConfig;
+   Cryptobase.config = mockConfig;
 
-    return new MockAdapter(Axios);
+   return new MockAdapter(Axios);
 };
 
 export const mockNetworkError = (mockAxios: any) => {
-    mockAxios.onAny().networkError();
+   mockAxios.onAny().networkError();
 };
 
 export const createEchoServer = (port: number, debug: boolean) => {
-    const server = new WebSocket.Server({ port: port });
-    server.on('connection', (ws, request) => {
-        if (debug) {
-            ws.addEventListener('open', () => {
-                console.log(`Ping Server: listening on port ${port}`);
-            });
-        }
-        ws.on('message', (message: string) => {
-            if (debug) {
-                console.log(`Ping Server: sending back ${message}`);
-            }
-            ws.send(message);
-        });
-    });
+   const server = new WebSocket.Server({ port: port });
+   server.on('connection', (ws, request) => {
+      if (debug) {
+         ws.addEventListener('open', () => {
+            console.log(`Ping Server: listening on port ${port}`);
+         });
+      }
+      ws.on('message', (message: string) => {
+         if (debug) {
+            console.log(`Ping Server: sending back ${message}`);
+         }
+         ws.send(message);
+      });
+   });
 
-    return server;
+   return server;
 };

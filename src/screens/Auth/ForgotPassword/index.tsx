@@ -112,7 +112,7 @@ const ForgotPasswordFC: FC<Props> = ({
       }
    };
 
-   const handleEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
+   const handleEnterPress = (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === 'Enter') {
          e.preventDefault();
          handleChangePassword();

@@ -12,7 +12,7 @@ interface LayoutAuthProps {
    subTitle?: string;
    withSubTitleOneOfBold?: string;
    withDisplayLink?: boolean;
-   onKeyPress?: (event: KeyboardEvent<HTMLInputElement>) => void;
+   onKeyPress?: (event: KeyboardEvent<HTMLDivElement>) => void;
 }
 
 export const LayoutAuth: FC<LayoutAuthProps> = ({
