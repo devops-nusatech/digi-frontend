@@ -226,6 +226,7 @@ module.exports = {
          pulse: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
          bounce: 'bounce 1s infinite',
          down: 'down ease-out 1.4s infinite',
+         right: 'right ease-out 2s infinite',
          up: 'up ease-out 1s infinite',
          loader: 'loader 1.1s infinite ease',
          'loader-white': 'loader-white 1.1s infinite ease'
@@ -718,6 +719,14 @@ module.exports = {
             },
             '100%': {
                transform: 'translateY(27px)',
+            }
+         },
+         right: {
+            '80%': {
+               transform: 'translateX(27px)',
+            },
+            '100%': {
+               transform: 'translateX(27px)',
             }
          },
          up: {

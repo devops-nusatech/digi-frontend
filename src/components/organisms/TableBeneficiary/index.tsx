@@ -121,15 +121,22 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = memo(({
 
    useEffect(() => {
       if (beneficiariesDeleteSuccess) {
-         setOpenDelete(false);
+         if (openDelete) {
+            setOpenDelete(false);
+         }
       }
       if (beneficiariesActivateSuccess) {
-         setOpenActivate(false);
+         if (openActivate) {
+            setOpenActivate(false);
+         }
+      }
+      if (pin.length === 6) {
+         handleActivate();
       }
       if (beneficiariesActivateError?.message) {
          setPin('');
       }
-   }, [beneficiariesDeleteSuccess, beneficiariesActivateSuccess, beneficiariesActivateError]);
+   }, [beneficiariesDeleteSuccess, beneficiariesActivateSuccess, beneficiariesActivateError, pin]);
 
    return (
       <>
@@ -218,7 +225,7 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = memo(({
                                  <div>{truncateMiddle(String(address), 20)}</div>
                               </td>
                               <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                                 <div className={state === 'Active' ? 'text-primary5' : 'text-primary4'}>{state}</div>
+                                 <div className={state === 'active' ? 'text-primary5 dark:text-chart1' : 'text-primary4'}>{state}</div>
                               </td>
                               <td className="rounded-r-xl p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                                  <div className="flex justify-end items-center">

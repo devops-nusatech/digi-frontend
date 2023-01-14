@@ -143,7 +143,7 @@ export const FormLogin: FC<SignInProps> = memo(({
    );
 
    const handleEnterPress = useCallback(
-      (e: KeyboardEvent<HTMLInputElement>) => {
+      (e: KeyboardEvent<HTMLDivElement>) => {
          if (e.key === 'Enter') {
             e.preventDefault();
             handleClick();

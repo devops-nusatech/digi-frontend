@@ -11,6 +11,7 @@ export interface Wallet {
    deposit_addresses?: WalletAddress[];
    virtual_account?: VirtualAccount[];
    networks: WalletBlockchain[];
+   status?: string;
 }
 
 export interface WalletBlockchain {

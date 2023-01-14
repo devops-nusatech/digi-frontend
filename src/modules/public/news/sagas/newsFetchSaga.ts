@@ -15,7 +15,7 @@ export function* rootNewsSaga() {
    yield takeLeading(NEWS_FETCH, newsFetchSaga)
 }
 
-const newsUrl = (page?: string, limit?: string) => axios.get('https://news.digiassetindo.com/ghost/api/v3/content/posts/?key=3c91665a1b107878484d3b3316')
+const newsUrl = (page?: string, limit?: string) => axios.get('https://news.digiassetindo.com/ghost/api/v3/content/posts/?key=3c91665a1b107878484d3b3316&limit=25&filter=tag%3Anews')
 
 export function* newsFetchSaga(action: NewsFetch) {
    try {

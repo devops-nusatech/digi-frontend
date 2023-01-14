@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
    Chart as ChartJS,
@@ -34,15 +34,21 @@ interface PriceChart3Props {
    className?: string;
    labels: number[];
    data: number[];
+   maintainAspectRatio?: boolean;
+   gradientOpacityTop?: number;
+   gradientOpacityBottom?: number;
 }
 
-export const PriceChart3 = ({
+export const PriceChart3: FC<PriceChart3Props> = ({
    id,
    theme,
    className,
    labels,
-   data
-}: PriceChart3Props): ReactElement => {
+   data,
+   maintainAspectRatio,
+   gradientOpacityTop,
+   gradientOpacityBottom
+}): ReactElement => {
    const chartData = (): ChartData<'line', Array<number>, number> => ({
       labels,
       datasets: [{
@@ -52,8 +58,8 @@ export const PriceChart3 = ({
          backgroundColor: (context: ScriptableContext<'line'>) => {
             const ctx = context.chart.ctx;
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, theme === 'positive' ? 'rgba(0, 192, 118, .3)' : 'rgba(255, 104, 56, .3)');
-            gradient.addColorStop(.10, theme === 'positive' ? 'rgba(0, 192, 118, .05)' : 'rgba(255, 104, 56, .05)');
+            gradient.addColorStop(0, theme === 'positive' ? `rgba(0, 192, 118, ${gradientOpacityTop})` : `rgba(255, 104, 56, ${gradientOpacityTop})`);
+            gradient.addColorStop(.10, theme === 'positive' ? `rgba(0, 192, 118, ${gradientOpacityBottom})` : `rgba(255, 104, 56, ${gradientOpacityBottom})`);
             return gradient;
          },
          borderColor: theme === 'positive' ? 'rgba(0, 192, 118, 1)' : 'rgba(255, 104, 56, 1)',
@@ -67,6 +73,7 @@ export const PriceChart3 = ({
    });
 
    const options = (): ChartOptions<'line'> => ({
+      maintainAspectRatio: maintainAspectRatio,
       plugins: {
          title: {
             display: false,
@@ -132,4 +139,9 @@ export const PriceChart3 = ({
          options={options()}
       />
    );
+};
+
+PriceChart3.defaultProps = {
+   gradientOpacityTop: .3,
+   gradientOpacityBottom: .05,
 }

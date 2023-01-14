@@ -36,6 +36,7 @@ export function* walletsSaga(action: WalletsFetch) {
             type: currency.type,
             fixed: currency.precision,
             iconUrl: currency.icon_url,
+            status: currency.status
          });
       });
       const wallets = accountsByCurrencies.filter((item) => item && item.currency);

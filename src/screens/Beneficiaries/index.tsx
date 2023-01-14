@@ -76,8 +76,6 @@ import { validate, getCurrencies } from 'multicoin-address-validator'
 
 type ModalType = 'fiat' | 'coin' | '';
 
-type ConfirmType = 'confirm' | 'delete';
-
 type State = {
    currency?: string;
    accountName: string;
@@ -147,19 +145,23 @@ const BeneficiariesFC = ({
    intl
 }: BeneficiariesProps) => {
    const filteredWalletCoin = wallets.filter(wallet => wallet.type === 'coin');
-   const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === 'matic') || filteredWalletCoin[0] || DEFAULT_WALLET;
+   const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === 'usdt') || filteredWalletCoin[0] || DEFAULT_WALLET;
 
    const { isShow, toggle } = useModal();
-   const [isShow2, setisShow2] = useState(false);
+   // const [openCreate, setOpenCreate] = useState(false);
+   // const [openActivate, setOpenActivate] = useState(false);
+   const [isShow2, setIsShow2] = useState(false);
    const [modalType] = useState<ModalType>('coin');
-   const [confirmType, setConfirmType] = useState<ConfirmType>('confirm');
 
    const [coinAddressValid, setCoinAddressValid] = useState(false);
-   // const [coinAddressClear, setCoinAddressClear] = useState(false);
 
    const [asset, setAsset] = useState(filteredWalletCoin)
    const [selectedAsset, setSelectedAsset] = useState<Wallet>(defaultWallet);
    const [searchAsset, setSearchAsset] = useState('');
+   const [selectedNetwork, setSelectedNetwork] = useState<{ [key: string]: any }>(selectedAsset.networks[0]);
+   const [selected, setSelected] = useState(people[0]);
+   const [pin, setPin] = useState('');
+
    const filteredWallets = searchAsset === ''
       ? asset
       : asset
@@ -174,11 +176,6 @@ const BeneficiariesFC = ({
                .replace(/\s+/g, '')
                .includes(searchAsset.toLowerCase().replace(/\s+/g, ''))
          );
-   const [selectedNetwork, setSelectedNetwork] = useState<{ [key: string]: any }>(selectedAsset.networks[0]);
-
-   const [selected, setSelected] = useState(people[0]);
-
-   const [otpCode, setOtpCode] = useState('');
 
    const [{
       accountName,
@@ -203,7 +200,6 @@ const BeneficiariesFC = ({
       setDocumentTitle('Beneficiaries');
       setSelectedAsset(defaultWallet);
       setSelectedNetwork(selectedAsset.networks[0]);
-      console.log('setNewForm :>> ', setNewForm);
    }, []);
 
    useEffect(() => {
@@ -212,7 +208,11 @@ const BeneficiariesFC = ({
       }
    }, [wallets]);
 
-   const toggle2 = () => setisShow2(!isShow2);
+   const toggle2 = () => setIsShow2(!isShow2);
+   // const handleShowCreate = () => setOpenCreate(true);
+   // const handleShowActivate = () => setOpenActivate(true);
+   // const handleCloseCreate = () => setOpenCreate(false);
+   // const handleCloseActivate = () => setOpenActivate(false);
 
    // const handleShowModalCreateBeneficiary = (type: ModalType) => {
    //    setModalType(type);
@@ -226,15 +226,13 @@ const BeneficiariesFC = ({
       toggle();
    }
 
-   useEffect(() => {
-      setSelectedNetwork(selectedAsset.networks[0]);
+   const resetField = () => {
       setNewForm({
          address: '',
          label: '',
          description: ''
       });
-      console.log('selectedAsset', selectedAsset)
-   }, [selectedAsset]);
+   }
 
    const handleCopy = (url: string, type: string) => {
       copyToClipboard(url);
@@ -361,12 +359,6 @@ const BeneficiariesFC = ({
          </div>
       </Combobox>
    );
-
-   const isDisabled = (): boolean => {
-      const withdrawEnabled = selectedNetwork.withdrawal_enabled;
-      return !withdrawEnabled || !Boolean(address) || !Boolean(label);
-   }
-
    const renderCreateBeneficiaryModal = () => (
       <>
          {modalType === 'coin' ? (
@@ -464,6 +456,11 @@ const BeneficiariesFC = ({
       </>
    );
 
+   const isDisabled = (): boolean => {
+      const withdrawEnabled = selectedNetwork.withdrawal_enabled;
+      return !withdrawEnabled || !Boolean(address) || !Boolean(label);
+   }
+
    const isRipple = selectedAsset.currency === 'xrp';
 
    const handleCreateBeneficiary = () => {
@@ -496,27 +493,33 @@ const BeneficiariesFC = ({
 
    const translate = (id: string) => intl.formatMessage({ id });
 
-   const handleConfirmActivate = () => {
-      activateBeneficiary({ id: beneficiary.id, pin: otpCode });
-   };
-   const handleConfirmDelete = () => {
-      alert('kokom')
-   };
-
-   const handleConfirm = () => confirmType === 'confirm' ? handleConfirmActivate() : handleConfirmDelete();
+   const handleConfirmActivate = () => activateBeneficiary({ id: beneficiary.id, pin });
 
    useEffect(() => {
       if (beneficiariesCreateSuccess) {
-         toggle();
-         toggle2();
-         setConfirmType('confirm');
+         if (isShow) {
+            toggle();
+            toggle2();
+            resetField();
+            console.log('Created Successfully');
+         }
       }
-   }, [beneficiariesCreateSuccess]);
-   useEffect(() => {
       if (beneficiariesActivateSuccess) {
-         toggle2();
+         if (isShow2) {
+            toggle2();
+            resetField();
+            setPin('');
+            console.log('Activate Successfully');
+         }
       }
-   }, [beneficiariesActivateSuccess]);
+      if (pin.length === 6) {
+         handleConfirmActivate();
+      }
+   }, [beneficiariesCreateSuccess, beneficiariesActivateSuccess, pin]);
+   useEffect(() => {
+      setSelectedNetwork(selectedAsset.networks[0]);
+      resetField();
+   }, [selectedAsset]);
 
    return (
       <>
@@ -589,13 +592,13 @@ const BeneficiariesFC = ({
                   length={6}
                   className="flex -mx-2"
                   isNumberInput
-                  onChangeOTP={setOtpCode}
+                  onChangeOTP={setPin}
                />
-               <div className="space-y-3">
+               <div className="space-y-3 text-center">
                   <Button
-                     text={confirmType === 'confirm' ? translate('page.body.profile.apiKeys.modal.btn.create') : translate('page.body.profile.apiKeys.modal.btn.delete')}
-                     disabled={otpCode.length !== 6}
-                     onClick={handleConfirm}
+                     text={translate('page.body.profile.apiKeys.modal.btn.create')}
+                     disabled={pin.length !== 6}
+                     onClick={handleConfirmActivate}
                      withLoading={beneficiariesActivateLoading || beneficiariesDeleteLoading}
                   />
                   <button

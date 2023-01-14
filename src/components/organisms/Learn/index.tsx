@@ -110,7 +110,13 @@ const LearnMemo: FC = () => {
                               >
                                  <div>
                                     <div className="group relative h-full w-full p-3 hover:p-0 rounded-xl overflow-hidden shadow hover:shadow-lg hover:-translate-y-2 hover:scale-105 cursor-pointer transition-all duration-500">
-                                       <img className="object-cover w-full h-full rounded-lg transition ease-in-out duration-700 group-hover:scale-110" src={e.feature_image} alt={e.title} title={e.title} />
+                                       <img
+                                          className="object-cover w-full h-full rounded-lg transition ease-in-out duration-700 group-hover:scale-110"
+                                          src={e.feature_image}
+                                          alt={e.title}
+                                          title={e.title}
+                                          loading="lazy"
+                                       />
                                        <div className="absolute inset-0 group-hover:bg-gradient-to-r group-hover:from-primary2 group-hover:bg-primary3 group-hover:opacity-75" />
                                        <svg className="absolute left-[45%] top-[45%] text-center h-10 w-10 opacity-0 group-hover:opacity-100 transition-all duration-[1300ms] fill-primary4 p-2 bg-neutral6 rounded-full group-hover:animate-bounce" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http:www.w3.org/2000/svg">
                                           <path fill-rule="evenodd" clip-rule="evenodd"
