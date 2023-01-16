@@ -29,13 +29,43 @@ ChartJS.register(
 type Theme = 'positive' | 'negative';
 
 interface PriceChart3Props {
+   /**
+   * Id Canvas.
+   */
    id: string;
+   /**
+   * Theme for this positive for color green negative for color orange.
+   * @default 'positive'
+   */
    theme: Theme;
+   /**
+   * Custom classname.
+   */
    className?: string;
+   /**
+  * The labels object that is passed into the Chart.js chart
+  * @see https://www.chartjs.org/docs/latest/getting-started/
+  */
    labels: number[];
+   /**
+   * The data object that is passed into the Chart.js chart
+   * @see https://www.chartjs.org/docs/latest/getting-started/
+   */
    data: number[];
+   /**
+   * Maintain the original canvas aspect ratio (width / height) when resizing.
+   * @default true
+   */
    maintainAspectRatio?: boolean;
+   /**
+   * Gradient opacity color position top.
+   * @default .3
+   */
    gradientOpacityTop?: number;
+   /**
+   * Gradient opacity color position bottom.
+   * @default .05
+   */
    gradientOpacityBottom?: number;
 }
 
@@ -48,7 +78,7 @@ export const PriceChart3: FC<PriceChart3Props> = ({
    maintainAspectRatio,
    gradientOpacityTop,
    gradientOpacityBottom
-}): ReactElement => {
+}): ReactElement<HTMLCanvasElement> => {
    const chartData = (): ChartData<'line', Array<number>, number> => ({
       labels,
       datasets: [{
@@ -71,7 +101,6 @@ export const PriceChart3: FC<PriceChart3Props> = ({
          tension: .2,
       }]
    });
-
    const options = (): ChartOptions<'line'> => ({
       maintainAspectRatio: maintainAspectRatio,
       plugins: {
@@ -96,7 +125,7 @@ export const PriceChart3: FC<PriceChart3Props> = ({
             displayColors: false,
             padding: 4,
             position: 'nearest',
-            caretSize: 10,
+            caretSize: 5,
             backgroundColor: 'rgba(255,255,255,.9)',
             bodyFont: {
                size: 12,
@@ -142,6 +171,7 @@ export const PriceChart3: FC<PriceChart3Props> = ({
 };
 
 PriceChart3.defaultProps = {
+   theme: 'positive',
    gradientOpacityTop: .3,
    gradientOpacityBottom: .05,
 }

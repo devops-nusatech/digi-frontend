@@ -5,9 +5,10 @@ interface ModalConfirmLogoutProps {
    show: boolean;
    close: () => void;
    handleLogout: () => void;
+   isLoading: boolean;
 }
 
-export const ModalConfirmLogout = ({ show, close, handleLogout }: ModalConfirmLogoutProps) => (
+export const ModalConfirmLogout = ({ show, close, handleLogout, isLoading }: ModalConfirmLogoutProps) => (
    <Portal
       title="Confirm Logout"
       show={show}
@@ -16,16 +17,10 @@ export const ModalConfirmLogout = ({ show, close, handleLogout }: ModalConfirmLo
       <div className="text-center text-base font-medium">
          Are you sure to logout ?
       </div>
-      <div className="flex space-x-4">
-         <Button
-            text="Cancel"
-            onClick={close}
-            variant="outline"
-         />
-         <Button
-            text="Ok"
-            onClick={handleLogout}
-         />
-      </div>
+      <Button
+         text="Continue"
+         onClick={handleLogout}
+         withLoading={isLoading}
+      />
    </Portal>
 )

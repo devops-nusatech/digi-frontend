@@ -750,7 +750,7 @@ const WalletDetailsFC = ({
                                     </div>
                                  </div>
                               </div>
-                              <div className="flex flex-col shrink-0 w-full md:w-65 p-6 bg-neutral8 dark:bg-shade1 rounded mt-1 md:mt-0">
+                              <div className="flex flex-col shrink-0 w-full md:w-71.25 p-6 bg-neutral8 dark:bg-shade1 rounded mt-1 md:mt-0">
                                  <div className="flex items-center space-x-3 mb-1">
                                     <div className="text-xs leading-custom4 font-semibold text-neutral4">USDT/USDC</div>
                                     <Badge
@@ -1590,7 +1590,7 @@ export const WalletDetails = compose(
 //                                     </div>
 //                                  </div>
 //                               </div>
-//                               <div className="flex flex-col shrink-0 w-full md:w-65 p-6 bg-neutral8 dark:bg-shade1 rounded mt-1 md:mt-0">
+//                               <div className="flex flex-col shrink-0 w-full md:w-71.25 p-6 bg-neutral8 dark:bg-shade1 rounded mt-1 md:mt-0">
 //                                  <div className="flex items-center space-x-3 mb-1">
 //                                     <div className="text-xs leading-custom4 font-semibold text-neutral4">USDT/USDC</div>
 //                                     <Badge

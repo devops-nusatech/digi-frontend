@@ -15,7 +15,7 @@ export const ModalWithdrawDone: FC<ModalWithdrawDoneProps> = ({ show, close }) =
       >
          <div className="mt-10 space-y-8">
             <div className="text-5xl text-center font-dm font-bold leading-custom1 tracking-custom">Yay! 🎉</div>
-            <div className="max-w-65 mx-auto text-center text-base font-medium leading-normal">
+            <div className="max-w-71.25 mx-auto text-center text-base font-medium leading-normal">
                <FormattedMessage id="page.modal.withdraw.success.message.content" />
             </div>
             <Button

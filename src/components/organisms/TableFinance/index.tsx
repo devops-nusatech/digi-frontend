@@ -54,13 +54,17 @@ const TableFinanceFC = ({
    alertPush,
    intl
 }: TableFinanceProps) => {
-   const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(0) ? 1 : 0);
+   const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(4) ? 1 : hiddenCategory?.includes(3) ? 4 : 0);
    const [q, setQ] = useState('');
    const [showExport, setShowExport] = useState(false);
 
    useEffect(() => {
-      fetchMarkets();
-      fetchWallets();
+      if (!marketsData.length) {
+         fetchMarkets();
+      }
+      if (!wallets.length) {
+         fetchWallets();
+      }
       return () => {
          resetHistory();
       }

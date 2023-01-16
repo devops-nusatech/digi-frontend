@@ -36,3 +36,5 @@ export * from './ModalRequired';
 export * from './TutorialAlt';
 export * from './TableBeneficiary';
 export * from './TableFinance';
+export * from './EstimatedValue';
+export * from './TableOrderHistory';

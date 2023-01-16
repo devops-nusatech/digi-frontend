@@ -2,6 +2,7 @@ import React, {
    useEffect,
    FunctionComponent,
    useRef,
+   memo,
 } from 'react';
 import {
    Link,
@@ -20,6 +21,7 @@ import {
    Button,
    Decimal,
    PriceChart3,
+   Skeleton,
    TableFinance,
    WalletSidebar
 } from 'components';
@@ -53,7 +55,7 @@ interface DispatchProps {
 
 type Props = ReduxProps & DispatchProps & IntlProps & RouterProps;
 
-const WalletDetailsFC = ({
+const WalletDetailsFC = memo(({
    user,
    wallets,
    currencies,
@@ -64,7 +66,7 @@ const WalletDetailsFC = ({
 }: Props) => {
    const { id = '' } = useParams<Params>();
    const sliderRef = useRef<HTMLDivElement>(null);
-   const { marketsData } = useMarket();
+   const { marketsData, handleRedirectToTrading, isLoading } = useMarket();
    const friendsMarket = marketsData.filter(market => market.quote_unit === 'usdt');
 
    useEffect(() => {
@@ -85,6 +87,7 @@ const WalletDetailsFC = ({
       networks,
       status,
    } = wallet[0];
+
 
    const handleSlideRight = () => {
       if (sliderRef.current) {
@@ -162,14 +165,39 @@ const WalletDetailsFC = ({
                            </div>
                         </div>
                         <div ref={sliderRef} className={`relative w-[668px] flex ${friendsMarket.length === 1 ? 'justify-end' : ''} gap-10 lg:gap-20 snap-x snap-mandatory overflow-x-auto pb-8 transition-transform duration-500`}>
-                           {friendsMarket.length && friendsMarket.map(market => {
+                           {isLoading ? (
+                              <>
+                                 <div className="snap-end shrink-0 first:pl-3 last:pr-3">
+                                    <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
+                                       <Skeleton
+                                          height={133.99}
+                                          width={240}
+                                          rounded="2xl"
+                                       />
+                                    </div>
+                                 </div>
+                                 <div className="snap-end shrink-0 first:pl-3 last:pr-3">
+                                    <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
+                                       <Skeleton
+                                          height={133.99}
+                                          width={240}
+                                          rounded="2xl"
+                                       />
+                                    </div>
+                                 </div>
+                              </>
+                           ) : friendsMarket.length && friendsMarket.map(market => {
                               const klinesData: number[] = market.kline;
                               let labels: number[], data: number[];
                               labels = klinesData.map(e => e[0]);
                               data = klinesData.map(e => e[2]);
                               const change = market.price_change_percent.includes('+');
                               return (
-                                 <div key={market.id} className="snap-end shrink-0 first:pl-3 last:pr-3">
+                                 <div
+                                    key={market.id}
+                                    className="snap-end shrink-0 first:pl-3 last:pr-3"
+                                    onClick={() => handleRedirectToTrading(market.id)}
+                                 >
                                     <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
                                        <div className="flex items-center gap-3">
                                           <div className="text-xs leading-custom4 text-neutral4 font-semibold uppercase">
@@ -197,7 +225,7 @@ const WalletDetailsFC = ({
                            })}
                         </div>
                      </div>
-                     {friendsMarket.length > 2 && (
+                     {(!isLoading && friendsMarket.length > 2) && (
                         <div className="absolute top-[36%] right-0">
                            <div
                               onClick={handleSlideRight}
@@ -221,7 +249,7 @@ const WalletDetailsFC = ({
          </div>
       </>
    );
-};
+});
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),

@@ -1,5 +1,4 @@
-import { arrayFilter } from 'helpers';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
    useSelector,
@@ -22,6 +21,7 @@ import {
    useMarketsFetch,
    useMarketsTickersFetch
 } from 'hooks';
+import { arrayFilter } from 'helpers';
 import { Decimal } from 'components';
 
 const defaultTicker = {
@@ -50,7 +50,7 @@ export const useMarket = () => {
    const [currentBidUnit, setCurrentBidUnit] = useState('');
    const [searchMarket, setSearchMarket] = useState('');
 
-   const handleSearchMarket = (e: any) => setSearchMarket(e.target.value);
+   const handleSearchMarket = (e: ChangeEvent<HTMLInputElement>) => setSearchMarket(e.target.value);
 
    const [favorites, setFavorites] = useLocalStorage<string[]>('favorites', []);
 

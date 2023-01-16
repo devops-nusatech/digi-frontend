@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 const classes = {
    width: {
       sm: 'md:w-64',
-      def: 'md:w-65',
+      def: 'md:w-71.25',
       md: 'md:w-82.5'
    }
 }

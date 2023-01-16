@@ -541,7 +541,7 @@ const BuyCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
          >
             <div className="mt-10 space-y-8">
                <div className="text-5xl text-center font-dm font-bold leading-custom1 tracking-custom">Yay! 🎉</div>
-               <div className="max-w-65 mx-auto text-center text-base font-medium leading-normal">
+               <div className="max-w-71.25 mx-auto text-center text-base font-medium leading-normal">
                   You successfully purchased <span className="text-primary5">0.020202 BTC</span>  from Digiasset
                </div>
                <div className="flex flex-wrap p-6 rounded-xl border border-neutral6">

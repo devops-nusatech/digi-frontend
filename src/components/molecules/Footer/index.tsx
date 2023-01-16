@@ -23,6 +23,8 @@ const noFooterRoutes = [
    '/email-verification',
    '/geetest',
    '/chart',
+   '/exchange',
+   '/orders',
 ];
 
 const withFooter = [

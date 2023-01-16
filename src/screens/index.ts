@@ -44,3 +44,5 @@ export * from './Contact';
 export * from './Beneficiaries';
 export * from './WithdrawalStep';
 export * from './WalletFinance';
+export * from './WalletOrder';
+export * from './Exchange';

@@ -68,7 +68,7 @@ const TradingFC: FC<TradingProps> = ({
                onClick={() => setTab(2)}
             />
          </div>
-         <div className="block lg:flex mt-1">
+         <div className="block lg2:flex mt-1">
             <TradingOrderList />
             <TradingCenter />
             <TradingMarketList translate={translate} />

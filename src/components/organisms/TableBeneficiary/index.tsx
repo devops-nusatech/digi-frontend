@@ -73,8 +73,13 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = memo(({
 
    const renderContentDeleted = () => (
       <div className="pt-10 space-y-8">
-         <div className="font-dm text-2xl leading-9 text-center tracking-custom">
-            Sure delete?
+         <div className="space-y-3">
+            <div className="font-dm text-2xl leading-9 text-center tracking-custom">
+               Sure delete?
+            </div>
+            <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
+               you will remove the beneficiary by name <span className="font-semibold text-primary4">{beneficiaries.find(e => e.id === id)?.name}</span>
+            </div>
          </div>
          <Button
             text="Confirm"

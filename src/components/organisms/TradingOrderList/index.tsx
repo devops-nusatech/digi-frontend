@@ -127,7 +127,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
       const bgWidthAsks = this.mapValues(calcMaxVolume(bids, asks), accumulateVolume(asks, false));
 
       return (
-         <div className="shrink-0 w-full lg:w-64 mb-0 lg2:mb-1 lg:float-none lg2:float-left hidden lg:block">
+         <div className="shrink-0 w-full lg:w-64 lg-max:!float-none lg2-max:float-left hidden lg:block lg-max:!mb-0 lg2-max:mb-1">
             <div className="rounded bg-neutral8 dark:bg-shade2">
                {/* {this.state.selectedRowKey} */}
                <div className="flex items-center px-4 pt-4 pb-3">

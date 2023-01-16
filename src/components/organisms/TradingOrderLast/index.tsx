@@ -93,7 +93,7 @@ const TradingOrderLastFunc = (props: Props) => {
       intl: { formatMessage },
       currentMarket,
       marketTickers,
-      // orderExecuteFetch,
+      orderExecuteFetch,
       alertPush,
       executeLoading,
       amountVolume,
@@ -231,7 +231,7 @@ const TradingOrderLastFunc = (props: Props) => {
       if (orderAllowed) {
          console.log('valueOrder', sendOrder);
          // alert(JSON.stringify(sendOrder));
-         // orderExecuteFetch(sendOrder);
+         orderExecuteFetch(sendOrder);
          setOrderPrice('');
          setOrderType('limit');
       }

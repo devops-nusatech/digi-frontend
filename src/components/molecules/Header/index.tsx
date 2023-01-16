@@ -24,6 +24,7 @@ import {
    selectCurrentColorTheme,
    selectCurrentLanguage,
    selectCurrentMarket,
+   selectLogoutLoading,
    selectUserFetching,
    selectUserInfo,
    selectUserLoggedIn,
@@ -60,6 +61,7 @@ const noHeaderRoutes = [
    '/email-verification',
    '/geetest',
    '/chart',
+   '/exchange',
 ];
 
 const noHeaderFull = [
@@ -73,6 +75,7 @@ const headerFull = [
    '/wallets',
    // '/wallet-details',
    '/trades',
+   '/orders',
    '/fiat-and-spot',
 ];
 
@@ -84,6 +87,7 @@ interface ReduxProps {
    lang: string;
    userLoading: boolean;
    currentMarket: Market | undefined;
+   logoutLoading: boolean;
 }
 
 interface DispatchProps {
@@ -113,6 +117,7 @@ const HeaderFC = ({
    history,
    currentMarket,
    userLoading,
+   logoutLoading,
    intl,
 }: HeaderProps) => {
    useScrollUp();
@@ -373,6 +378,7 @@ const HeaderFC = ({
             show={showModalConfirmLogout}
             close={handleSetShowModalConfirmLogout}
             handleLogout={handleLogout}
+            isLoading={logoutLoading}
          />
       </>
    )
@@ -386,6 +392,7 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    lang: selectCurrentLanguage(state),
    currentMarket: selectCurrentMarket(state),
    userLoading: selectUserFetching(state),
+   logoutLoading: selectLogoutLoading(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

@@ -10,6 +10,7 @@ import { selectMobileDeviceState } from 'modules/public/globalSettings';
 import { Link } from 'react-router-dom';
 
 import PhoneInput from 'react-phone-input-2';
+import { useShowGeetestCaptcha } from 'hooks';
 
 export interface SignInProps {
    labelSignIn?: string;
@@ -158,6 +159,8 @@ export const FormLogin: FC<SignInProps> = memo(({
       captcha_response && handleClick();
    }, [captcha_response]);
 
+
+
    return (
       <LayoutAuth
          linkTo="/register"
@@ -229,7 +232,7 @@ export const FormLogin: FC<SignInProps> = memo(({
                   {renderCaptcha}
                   <Button
                      text={isLoading ? 'Loading...' : labelSignIn ? labelSignIn : 'Login'}
-                     onClick={handleClick as any}
+                     onClick={useShowGeetestCaptcha}
                      disabled={isLoading || !email.match(EMAIL_REGEX) || !password || isButtonDisabled()}
                      withLoading={isLoading}
                   />

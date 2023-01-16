@@ -18,12 +18,10 @@ import {
 import { compose } from 'redux';
 import { injectIntl } from 'react-intl';
 import {
-   Badge,
    Button,
    Decimal,
    LayoutWallet,
    ModalRequired,
-   Skeleton,
 } from 'components';
 import {
    alertPush,
@@ -55,6 +53,8 @@ import {
    arrayFilter,
    renderCurrencyIcon
 } from 'helpers';
+import { EstimatedValue } from 'components';
+import { DEFAULT_WALLET } from '../../constants';
 
 interface State {
    activeIndex: number;
@@ -133,16 +133,12 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
 
    useDocumentTitle('Wallets');
    useEffect(() => {
-      if (!wallets.length) {
+      if (wallets.length <= 0) {
          fetchWallets();
       }
    }, [wallets]);
 
-   const translate = (id: string) => intl.formatMessage({ id });
-
-   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setQ(e.target.value);
-
-   let balances: Wallet[] = wallets || [];
+   let balances: Wallet[] = wallets || [DEFAULT_WALLET];
    if (q) {
       balances = balances.length
          ? arrayFilter(balances, q)
@@ -153,7 +149,11 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
          ? balances.filter(({ balance, locked }) => Number(balance) < 0 || Number(locked) < 0)
          : [];
    }
-   const wallet = wallets.find(pair => pair.currency === 'idr');
+   // const wallet = wallets.find(pair => pair.currency === 'idr');
+
+   const translate = (id: string) => intl.formatMessage({ id });
+
+   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setQ(e.target.value);
 
    const handleShowPortal = () => setIsOpen(prev => !prev);
 
@@ -163,7 +163,7 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
       } else if (user.level < 2 || !user.otp) {
          handleShowPortal()
       } else {
-         push('/transfer')
+         push('/wallets/transfer')
       }
    }
 
@@ -187,7 +187,7 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
                </tr>
             </thead>
             <tbody>
-               {balances.length ? (
+               {balances.length > 0 ? (
                   balances.map(({ currency, name, iconUrl, locked, balance, fixed }) => (
                      <tr
                         key={currency}
@@ -275,56 +275,7 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
                      />
                   </div>
                </div>
-               <div className="flex items-start justify-between">
-                  <div>
-                     <div className="mb-1 font-medium">Total balance</div>
-                     <div className="flex items-center space-x-2">
-                        <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
-                           {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
-                        </div>
-                        {wallet?.currency ? (
-                           <Badge text={String(wallet?.currency.toUpperCase())} />
-                        ) : (
-                           <Skeleton height={26} width={36} />
-                        )}
-                     </div>
-                     <div className="text-base text-neutral4">
-                        $17,05.99
-                     </div>
-                  </div>
-                  <div>
-                     <div className="mb-1 font-medium">Locked balance</div>
-                     <div className="flex items-center space-x-2">
-                        <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
-                           {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
-                        </div>
-                        {wallet?.currency ? (
-                           <Badge text={String(wallet?.currency.toUpperCase())} />
-                        ) : (
-                           <Skeleton height={26} width={36} />
-                        )}
-                     </div>
-                     <div className="text-base text-neutral4">
-                        $17,05.99
-                     </div>
-                  </div>
-                  <div>
-                     <div className="mb-1 font-medium">Available balance</div>
-                     <div className="flex items-center space-x-2">
-                        <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
-                           {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
-                        </div>
-                        {wallet?.currency ? (
-                           <Badge text={String(wallet?.currency.toUpperCase())} />
-                        ) : (
-                           <Skeleton height={26} width={36} />
-                        )}
-                     </div>
-                     <div className="text-base text-neutral4">
-                        $17,05.99
-                     </div>
-                  </div>
-               </div>
+               <EstimatedValue wallets={wallets} />
             </div>
             <div>
                <div className="pt-5 pb-2 px-8 text-xs text-neutral4 font-medium leading-relaxed">

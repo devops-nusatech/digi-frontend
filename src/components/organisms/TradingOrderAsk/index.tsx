@@ -122,7 +122,7 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
       const value: IOrderProps = {
          side: 'sell',
          price: typeof listenPrice === 'string' ? listenPrice.split(',').join('') : listenPrice,
-         volume: orderVolume,
+         volume: orderVolume.includes(',') ? orderVolume.split(',').join('') : orderVolume,
       }
       handleOrder(e, value);
       resetState();

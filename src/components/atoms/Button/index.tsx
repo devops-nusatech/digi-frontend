@@ -105,7 +105,7 @@ export const Button = forwardRef<Ref, ButtonProps>(({
                ${rounded ? classes.rounded[rounded] : ''}
                ${fontDM ? classes.fontDM : ''}
                ${disabled ? classes.disabled : ''}
-               ${withLoading ? '!cursor-progress' : ''}
+               ${withLoading ? `!cursor-progress ${classes.disabled}` : ''}
                ${className ? className : ''}
            `)
       }

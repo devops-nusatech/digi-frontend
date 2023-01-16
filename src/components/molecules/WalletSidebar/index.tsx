@@ -29,9 +29,9 @@ export const WalletSidebar = () => {
    const renderNameDisplayed = () => {
       switch (pathname) {
          case '/trades':
-            return 'Trade List';
+            return 'Trade History';
          case '/orders':
-            return 'Order History';
+            return 'Market Order';
          case '/wallets/finances':
             return 'Finances';
          default:
@@ -63,14 +63,14 @@ export const WalletSidebar = () => {
                      className={`lg-max:hover:bg-neutral6 dark:lg-max:hover:bg-neutral3 lg-max:hover:text-neutral2 dark:lg-max:hover:text-neutral8 ${pathname === '/trades' ? 'lg-max:bg-neutral6 lg-max:dark:bg-neutral3' : ''} flex items-center h-12 font-dm leading-custom3 font-bold transition-colors duration-300 ${pathname.includes('/trades') ? '' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'}`}
                   >
                      <div className="bg-primary3 shrink-0 w-3 h-3 mt-0 mr-4.5 mb-0 ml-6.5 rounded" />
-                     Trades List
+                     Trade History
                   </Link>
                   <Link
                      to="/orders"
                      className={`lg-max:hover:bg-neutral6 dark:lg-max:hover:bg-neutral3 lg-max:hover:text-neutral2 dark:lg-max:hover:text-neutral8 ${pathname === '/orders' ? 'lg-max:bg-neutral6 lg-max:dark:bg-neutral3' : ''} flex items-center h-12 font-dm leading-custom3 font-bold transition-colors duration-300 ${pathname.includes('/orders') ? '' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'}`}
                   >
                      <div className="bg-secondary1 shrink-0 w-3 h-3 mt-0 mr-4.5 mb-0 ml-6.5 rounded" />
-                     Order History
+                     Market Order
                   </Link>
                   <Link
                      to="/wallets/finances"

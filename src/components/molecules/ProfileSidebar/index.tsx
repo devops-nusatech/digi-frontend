@@ -43,6 +43,8 @@ export const ProfileSidebar = () => {
             return 'beneficiaries';
          case '/sessions-history':
             return 'Sessions history';
+         case '/2fa':
+            return '2FA';
          case '/change-password':
             return 'Change password';
          case '/docs':
