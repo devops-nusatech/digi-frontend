@@ -14,16 +14,7 @@ import {
    cleanPositiveFloatInput,
    precisionRegExp,
 } from 'helpers';
-
-const defaultBeneficiary: Beneficiary = {
-   id: 0,
-   currency: '',
-   name: '',
-   state: '',
-   data: {
-      address: '',
-   },
-};
+import { defaultBeneficiary } from 'screens/WalletDetails/types';
 
 interface ModalWithdrawProps {
    type: 'coin' | 'fiat'

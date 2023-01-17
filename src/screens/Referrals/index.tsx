@@ -4,10 +4,10 @@ import { InputGroup, LayoutProfile, ProfileSidebar } from 'components';
 import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
 import { copyToClipboard, localeDate, setDocumentTitle } from 'helpers';
-import { alertPush, RootState, selectUserInfo, User } from 'modules';
+import { RootState, selectUserInfo, User } from 'modules';
 import { IntlProps } from 'index';
-import { connect, MapDispatchToProps } from 'react-redux';
-
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 
 interface Me extends User {
    referral?: any;
@@ -16,14 +16,10 @@ interface ReduxProps {
    user: Me;
 }
 
-interface DispatchProps {
-   fetchSuccess: typeof alertPush;
-}
 
+type Props = ReduxProps & IntlProps;
 
-type Props = ReduxProps & DispatchProps & IntlProps;
-
-const ReferralsFC = ({ fetchSuccess, intl, user }: Props) => {
+const ReferralsFC = ({ intl, user }: Props) => {
    const { uid, referral } = user;
    useEffect(() => {
       setDocumentTitle('Referrals');
@@ -31,10 +27,10 @@ const ReferralsFC = ({ fetchSuccess, intl, user }: Props) => {
 
    const translate = (id: string) => intl.formatMessage({ id });
 
-   const renderIconCopied = (title: string) => (
+   const renderIconCopied = (title: string, value: string) => (
       <button
          className="cursor-copy group"
-         onClick={() => handleCopy(referralLink, title)}
+         onClick={() => handleCopy(value, title)}
          title="Copy referral"
       >
          <svg className="w-6 h-6 group-hover:scale-110 fill-neutral4 group-hover:fill-neutral3 dark:group-hover:fill-neutral5 transition-transform duration-200">
@@ -45,7 +41,7 @@ const ReferralsFC = ({ fetchSuccess, intl, user }: Props) => {
 
    const handleCopy = (url: string, type: string) => {
       copyToClipboard(url);
-      fetchSuccess({ message: [`${type} Copied`], type: 'success' });
+      toast.success(`${type} Copied`)
    }
 
    const referralLink = `${window.document.location.origin}/register?refid=${uid}`;
@@ -98,7 +94,7 @@ const ReferralsFC = ({ fetchSuccess, intl, user }: Props) => {
                         lableClassName="!text-neutral2"
                         className="!bg-neutral8 dark:!bg-neutral1 border-0 focus:border-2 focus:border-neutral3 truncate"
                         value={referralLink}
-                        icon={renderIconCopied('Referral link')}
+                        icon={renderIconCopied('Referral link', referralLink)}
                      />
                      <InputGroup
                         label="referral code"
@@ -107,7 +103,7 @@ const ReferralsFC = ({ fetchSuccess, intl, user }: Props) => {
                         className="!bg-neutral8 dark:!bg-neutral1 border-0 focus:border-2 focus:border-neutral3 truncate"
                         value={referralCode()}
                         readOnly
-                        icon={renderIconCopied('Referral code')}
+                        icon={renderIconCopied('Referral code', referralCode())}
                      />
                   </div>
                </div>
@@ -186,12 +182,8 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
 });
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
-   fetchSuccess: payload => dispatch(alertPush(payload)),
-});
-
 export const Referrals = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps)
+   connect(mapStateToProps, null)
 )(ReferralsFC) as FunctionComponent;

@@ -48,6 +48,7 @@ import {
    walletsFetch,
    walletsWithdrawCcyFetch,
 } from '../../modules';
+import { defaultBeneficiary } from 'screens/WalletDetails/types';
 
 
 interface ReduxProps {
@@ -73,16 +74,6 @@ interface DispatchProps {
    setMobileWalletUi: typeof setMobileWalletUi;
    currenciesFetch: typeof currenciesFetch;
 }
-
-const defaultBeneficiary: Beneficiary = {
-   id: 0,
-   currency: '',
-   name: '',
-   state: '',
-   data: {
-      address: '',
-   },
-};
 
 interface WalletsState {
    activeIndex: number;

@@ -117,7 +117,7 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                      Features
                   </div>
                   <div className="space-y-6">
-                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level === 1 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
+                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level <= 3 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
                         <div>level 1</div>
                         <div>{level >= 1 ? 'Verified' : 'Unverified'}</div>
                      </div>
@@ -139,7 +139,7 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                      </div>
                   </div>
                   <div className="space-y-6">
-                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level === 2 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
+                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level <= 3 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
                         <div>level 2</div>
                         <div>{level >= 2 ? 'Verified' : 'Unverified'}</div>
                      </div>
@@ -153,7 +153,7 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                      </div>
                   </div>
                   <div className="space-y-6">
-                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level === 3 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
+                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level <= 3 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
                         <div>level 3</div>
                         <div>{level >= 3 ? 'Verified' : 'Unverified'}</div>
                      </div>

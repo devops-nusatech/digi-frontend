@@ -29,6 +29,7 @@ import { CommonError } from '../../modules/types';
 import { BeneficiariesActivateModal } from './BeneficiariesActivateModal';
 import { BeneficiariesAddModal } from './BeneficiariesAddModal';
 import { BeneficiariesFailAddModal } from './BeneficiariesFailAddModal';
+import { defaultBeneficiary } from 'screens/WalletDetails/types';
 
 interface ReduxProps {
    beneficiaries: Beneficiary[];
@@ -63,16 +64,6 @@ interface State {
    isOpenTip: boolean;
    isOpenFailModal: boolean;
 }
-
-const defaultBeneficiary: Beneficiary = {
-   id: 0,
-   currency: '',
-   name: '',
-   state: '',
-   data: {
-      address: '',
-   },
-};
 
 type Props = ReduxProps & DispatchProps & OwnProps & IntlProps;
 
@@ -328,7 +319,7 @@ class BeneficiariesComponent extends React.Component<Props, State> {
                      {isPending ? (
                         <span className="select__right__pending">{this.translate('page.body.wallets.beneficiaries.dropdown.pending')}</span>
                      ) : null}
-                     <span className="select__right__tip" onMouseOver={this.handleToggleTip} onMouseOut={this.handleToggleTip}><TipIcon  /></span>
+                     <span className="select__right__tip" onMouseOver={this.handleToggleTip} onMouseOut={this.handleToggleTip}><TipIcon /></span>
                      <span className="select__right__select">{this.translate('page.body.wallets.beneficiaries.dropdown.select')}</span>
                      <span className="select__right__chevron"><ChevronIcon /></span>
                   </div>

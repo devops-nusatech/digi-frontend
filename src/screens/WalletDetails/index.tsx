@@ -134,7 +134,7 @@ const WalletDetailsFC = memo(({
                            text="Withdraw"
                            size="normal"
                            variant="outline"
-                           onClick={() => push('/wallets/withdraw', currencies.find(e => e.id === currency))}
+                           onClick={() => push('/wallets/withdraw', { wallet: wallet[0] })}
                            disabled={!networks.length || status !== 'enabled'}
                         />
                         <Button

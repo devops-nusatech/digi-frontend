@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Badge, Button, Export, InputGroup, Nav, Portal, TableActivity } from 'components';
+import { Badge, Button, Dialog, Export, InputGroup, Nav, Portal, TableActivity } from 'components';
 import { Currency, Market, RootState, Wallet, WalletHistoryList, alertPush, currenciesFetch, fetchHistory, marketsFetch, resetHistory, selectCurrencies, selectCurrentPage, selectFirstElemIndex, selectHistory, selectHistoryLoading, selectLastElemIndex, selectMarkets, selectNextPageExists, selectWallets, walletsFetch } from 'modules';
 import { IntlProps } from 'index';
 import { compose } from 'redux';
@@ -55,7 +55,15 @@ const TableFinanceFC = ({
    intl
 }: TableFinanceProps) => {
    const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(4) ? 1 : hiddenCategory?.includes(3) ? 4 : 0);
+   const [filter, setFilter] = useState({
+      startDate: '',
+      endDate: '',
+      currency: '',
+      state: '',
+      advanceFilter: false,
+   });
    const [q, setQ] = useState('');
+   const [showFilter, setShowFilter] = useState(false)
    const [showExport, setShowExport] = useState(false);
 
    useEffect(() => {
@@ -71,6 +79,8 @@ const TableFinanceFC = ({
    }, [activeTab]);
 
    const handleShowExport = () => setShowExport(!showExport);
+
+   const handleShowAdvanceFilter = () => setFilter({ ...filter, advanceFilter: !filter.advanceFilter });
 
    const translate = (id: string) => intl.formatMessage({ id });
 
@@ -391,6 +401,7 @@ const TableFinanceFC = ({
                   variant="outline"
                   size="normal"
                   width="noFull"
+                  onClick={() => setShowFilter(true)}
                   icRight={
                      <svg className="ml-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all">
                         <use xlinkHref="#icon-calendar"></use>
@@ -419,6 +430,60 @@ const TableFinanceFC = ({
          <div className="overflow-x-auto">
             {renderActivity()}
          </div>
+         <Dialog
+            isOpen={showFilter}
+            setIsOpen={() => {
+               setShowFilter(false)
+               setFilter({ ...filter, advanceFilter: false })
+            }}
+            title="Filter"
+         >
+            <div className="grid grid-cols-2 gap-3">
+               <InputGroup
+                  type="date"
+                  label="start date"
+               />
+               <InputGroup
+                  type="date"
+                  label="end date"
+               />
+            </div>
+            <div className="flex justify-between items-center space-x-2">
+               <div className="w-full h-0.5 bg-[#B6DFD9] rounded" />
+               <div
+                  className="flex justify-between items-center space-x-2 cursor-pointer"
+                  onClick={handleShowAdvanceFilter}
+               >
+                  <div className="text-xs font-medium whitespace-nowrap leading-5">
+                     ADVANCE FILTER
+                  </div>
+                  <svg className={`${filter.advanceFilter ? '' : 'rotate-180'} w-6 h-6 fill-neutral4 transition-all duration-300`}>
+                     <use xlinkHref="#icon-arrow-down" />
+                  </svg>
+               </div>
+            </div>
+            {filter.advanceFilter && (
+               <>
+                  <InputGroup
+                     label="asset name"
+                     placeholder="search asset"
+                  />
+                  <InputGroup
+                     label="state type"
+                     placeholder="State"
+                  />
+               </>
+            )}
+            <div className="grid grid-cols-2 gap-3">
+               <Button
+                  text="Apply"
+               />
+               <Button
+                  text="Reset"
+                  variant="outline"
+               />
+            </div>
+         </Dialog>
          <Portal
             title="Confirm download"
             show={showExport}

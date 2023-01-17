@@ -2,7 +2,7 @@ import * as React from 'react';
 import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { IntlProps } from '../../../';
-import { Decimal } from 'components';
+import { Decimal, Skeleton } from 'components';
 import {
    Market,
    PublicTrade,
@@ -166,93 +166,84 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                      <option value="50">50</option>
                   </select>
                </div>
-               {
-                  orderBookLoading ? (
-                     <div className="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
-                        <svg className="animate-spin h-10 w-10 text-primary1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                           <circle className="opacity-50" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                           <path className="opacity-100" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <h2 className="text-center text-white text-xl font-semibold mt-2">Loading...</h2>
-                        <p className="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>
-                     </div>
-                  ) : (
-                     <>
-                        <div className="flex space-x-1 py-1 px-4 text-xs font-semibold text-neutral4 leading-custom1 mb-1">
-                           <div className="">
-                              {this.renderHeaders()[0]}
-                           </div>
-                           <div className="text-right">
-                              {this.renderHeaders()[1]}
-                           </div>
-                           <div className="text-right">
-                              {this.renderHeaders()[2]}
-                           </div>
-                        </div>
-                        <div className="relative h-[53.5625rem] overflow-hidden pb-4">
-                           {
-                              (tabActive === 'all' || tabActive === 'bids') && (
-                                 <div className={`flex flex-col-reverse overflow-y-scroll ${tabActive === 'bids' ? 'h-[calc(100%-48px)]' : 'h-[calc(50%-24px)]'} space-y-1 space-y-reverse pb-1`} id="order-book">
-                                    {
-                                       asks.length > 0 && asks.map((ask, index) => {
-                                          const [price, volume] = ask;
-                                          return (
-                                             <div
-                                                key={index}
-                                                onClick={() => this.handleOnSelectAsks(String(index))}
-                                                className="relative flex py-2 px-4 items-center justify-between space-x-1 text-xs leading-custom1 !font-urw-din-500"
-                                             >
-                                                <div className="text-primary4 font-semibold w-[35%] tracking-wider cursor-pointer z-2">
-                                                   <Decimal fixed={priceFixed} thousSep="," prevValue={asks[index + 1] ? asks[index + 1][0] : 0}>{price}</Decimal>
-                                                </div>
-                                                <div className="text-right w-[35%] tracking-wider cursor-pointer z-2">
-                                                   {Decimal.format(volume, amountFixed, ',')}
-                                                </div>
-                                                <div className="text-right w-[30%] tracking-wider cursor-pointer z-2">
-                                                   {Decimal.format((Number(price) * Number(volume)), priceFixed, ',')}
-                                                </div>
-                                                <div className="absolute inset-y-0 right-0 bg-primary4 bg-opacity-20 dark:bg-opacity-30 transition ease-in-out pointer-events-none z-0" style={{ width: `${bgWidthAsks[index]}%` }} />
-                                             </div>
-                                          )
-                                       })
-                                    }
+               <div className="flex space-x-1 py-1 px-4 text-xs font-semibold text-neutral4 leading-custom1 mb-1">
+                  <div className="">
+                     {this.renderHeaders()[0]}
+                  </div>
+                  <div className="text-right">
+                     {this.renderHeaders()[1]}
+                  </div>
+                  <div className="text-right">
+                     {this.renderHeaders()[2]}
+                  </div>
+               </div>
+               <div className="relative h-[53.5625rem] overflow-hidden pb-4">
+                  {(tabActive === 'all' || tabActive === 'bids') && (
+                     <div className={`flex overflow-y-scroll ${tabActive === 'bids' ? 'h-[calc(100%-48px)]' : 'h-[calc(50%-24px)]'} ${orderBookLoading ? 'flex-col space-y-3' : 'flex-col-reverse space-y-1 space-y-reverse'} pb-1`} id="order-book">
+                        {orderBookLoading ? (
+                           <>
+                              <Skeleton height={16} className="mt-3" isWithFull />
+                              <Skeleton height={16} isWithFull />
+                              <Skeleton height={16} isWithFull />
+                           </>
+                        ) : asks.length > 0 && asks.map((ask, index) => {
+                           const [price, volume] = ask;
+                           return (
+                              <div
+                                 key={index}
+                                 onClick={() => this.handleOnSelectAsks(String(index))}
+                                 className="relative flex py-2 px-4 items-center justify-between space-x-1 text-xs leading-custom1 !font-urw-din-500"
+                              >
+                                 <div className="text-primary4 font-semibold w-[35%] tracking-wider cursor-pointer z-2">
+                                    <Decimal fixed={priceFixed} thousSep="," prevValue={asks[index + 1] ? asks[index + 1][0] : 0}>{price}</Decimal>
                                  </div>
-                              )
-                           }
-                           <div className="h-12 border-y border-neutral6 dark:border-neutral2">
-                              <div className="flex items-center justify-between space-x-2 py-3 px-4 text-base">
-                                 {this.lastPrice()}
+                                 <div className="text-right w-[35%] tracking-wider cursor-pointer z-2">
+                                    {Decimal.format(volume, amountFixed, ',')}
+                                 </div>
+                                 <div className="text-right w-[30%] tracking-wider cursor-pointer z-2">
+                                    {Decimal.format((Number(price) * Number(volume)), priceFixed, ',')}
+                                 </div>
+                                 <div className="absolute inset-y-0 right-0 bg-primary4 bg-opacity-20 dark:bg-opacity-30 transition ease-in-out pointer-events-none z-0" style={{ width: `${bgWidthAsks[index]}%` }} />
                               </div>
+                           )
+                        })}
+                     </div>
+                  )}
+                  <div className="h-12 border-y border-neutral6 dark:border-neutral2">
+                     <div className="flex items-center justify-between space-x-2 py-3 px-4 text-base">
+                        {this.lastPrice()}
+                     </div>
+                  </div>
+                  <div className={`flex flex-col overflow-y-scroll ${tabActive === 'asks' ? 'h-[calc(100%-48px)]' : 'h-[calc(50%-24px)]'} ${orderBookLoading ? 'space-y-3' : 'space-y-1'} py-1`} id="order-book">
+                     {orderBookLoading ? (
+                        <>
+                           <Skeleton height={16} className="mt-3" isWithFull />
+                           <Skeleton height={16} isWithFull />
+                           <Skeleton height={16} isWithFull />
+                        </>
+                     ) : ((tabActive === 'all' || tabActive === 'asks') && bids.length > 0) && bids.map((bid, index) => {
+                        const [price, volume] = bid;
+                        return (
+                           <div
+                              onClick={() => this.handleOnSelectBids(String(index))}
+                              key={index}
+                              className="relative flex py-2 px-4 items-center justify-between space-x-1 text-xs leading-custom1 !font-urw-din-500"
+                           >
+                              <div className="text-primary5 font-semibold w-[35%] tracking-wider cursor-pointer z-2">
+                                 <Decimal fixed={priceFixed} thousSep="," prevValue={bids[index + 1] ? bids[index + 1][0] : 0}>{price}</Decimal>
+                              </div>
+                              <div className="w-[35%] text-right tracking-wider cursor-pointer z-2">
+                                 {Decimal.format(volume, amountFixed, ',')}
+                              </div>
+                              <div className="w-[30%] text-right tracking-wider cursor-pointer z-2">
+                                 {Decimal.format((Number(price) * Number(volume)), priceFixed, ',')}
+                              </div>
+                              <div className={`absolute inset-y-0 right-0 bg-primary5 dark:bg-chart1 bg-opacity-20 dark:bg-opacity-30 transition ease-in-out pointer-events-none z-0`} style={{ width: `${bgWidthBids[index]}%` }} />
                            </div>
-                           <div className={`flex flex-col overflow-y-scroll ${tabActive === 'asks' ? 'h-[calc(100%-48px)]' : 'h-[calc(50%-24px)]'} space-y-1 py-1`} id="order-book">
-                              {
-                                 ((tabActive === 'all' || tabActive === 'asks') && bids.length > 0) && bids.map((bid, index) => {
-                                    const [price, volume] = bid;
-                                    return (
-                                       <div
-                                          onClick={() => this.handleOnSelectBids(String(index))}
-                                          key={index}
-                                          className="relative flex py-2 px-4 items-center justify-between space-x-1 text-xs leading-custom1 !font-urw-din-500"
-                                       >
-                                          <div className="text-primary5 font-semibold w-[35%] tracking-wider cursor-pointer z-2">
-                                             <Decimal fixed={priceFixed} thousSep="," prevValue={bids[index + 1] ? bids[index + 1][0] : 0}>{price}</Decimal>
-                                          </div>
-                                          <div className="w-[35%] text-right tracking-wider cursor-pointer z-2">
-                                             {Decimal.format(volume, amountFixed, ',')}
-                                          </div>
-                                          <div className="w-[30%] text-right tracking-wider cursor-pointer z-2">
-                                             {Decimal.format((Number(price) * Number(volume)), priceFixed, ',')}
-                                          </div>
-                                          <div className={`absolute inset-y-0 right-0 bg-primary5 dark:bg-chart1 bg-opacity-20 dark:bg-opacity-30 transition ease-in-out pointer-events-none z-0`} style={{ width: `${bgWidthBids[index]}%` }} />
-                                       </div>
-                                    )
-                                 })
-                              }
-                           </div>
-                        </div>
-                     </>
-                  )
-               }
+                        )
+                     })}
+                  </div>
+               </div>
             </div>
          </div>
       );
@@ -263,6 +254,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
          currentMarket,
          lastRecentTrade,
          marketTickers,
+         orderBookLoading,
       } = this.props;
 
       if (currentMarket) {
@@ -292,15 +284,23 @@ class TradingOrderListContainer extends React.Component<Props, State> {
          }
 
          return (
-            <>
-               <div className={`text-base font-semibold tracking-wider leading-normal ${entryPriceChange === 'positive' ? 'text-primary5' : 'text-primary4'}`}>
-                  {Decimal.format(lastPrice, currentMarket.price_precision, ',')}
+            orderBookLoading ? (
+               <div className="flex justify-between gap-4">
+                  <Skeleton height={20} width={50} />
+                  <Skeleton height={20} width={50} />
+                  <Skeleton height={20} width={50} />
                </div>
-               <svg className={`w-4 h-4 fill-primary1 ${entryPriceChange === 'positive' ? 'fill-primary5 rotate-0' : 'fill-primary4 rotate-180'}`}>
-                  <use xlinkHref="#icon-arrow-top"></use>
-               </svg>
-               <div className={`text-base font-medium tracking-wider leading-normal ${entryPriceChange === 'positive' ? 'text-primary5' : 'text-primary4'}`}>{Decimal.format((Number(lastTicker) - Number(openTicker)), Number(currentMarket?.price_precision), ',')}</div>
-            </>
+            ) : (
+               <>
+                  <div className={`text-base font-semibold tracking-wider leading-normal ${entryPriceChange === 'positive' ? 'text-primary5' : 'text-primary4'}`}>
+                     {Decimal.format(lastPrice, currentMarket.price_precision, ',')}
+                  </div>
+                  <svg className={`w-4 h-4 fill-primary1 ${entryPriceChange === 'positive' ? 'fill-primary5 rotate-0' : 'fill-primary4 rotate-180'}`}>
+                     <use xlinkHref="#icon-arrow-top"></use>
+                  </svg>
+                  <div className={`text-base font-medium tracking-wider leading-normal ${entryPriceChange === 'positive' ? 'text-primary5' : 'text-primary4'}`}>{Decimal.format((Number(lastTicker) - Number(openTicker)), Number(currentMarket?.price_precision), ',')}</div>
+               </>
+            )
          )
 
       } else {

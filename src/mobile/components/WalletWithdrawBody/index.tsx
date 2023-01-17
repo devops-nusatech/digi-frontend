@@ -11,16 +11,7 @@ import { Beneficiary } from '../../../modules/user/beneficiaries';
 import { selectUserInfo } from '../../../modules/user/profile';
 import { selectWithdrawSuccess, walletsWithdrawCcyFetch } from '../../../modules/user/wallets';
 import { ModalWithdrawConfirmation } from '../../components';
-
-const defaultBeneficiary: Beneficiary = {
-   id: 0,
-   currency: '',
-   name: '',
-   state: '',
-   data: {
-      address: '',
-   },
-};
+import { defaultBeneficiary } from 'screens/WalletDetails/types';
 
 const WalletWithdrawBodyComponent = props => {
    const [withdrawSubmitModal, setWithdrawSubmitModal] = React.useState(false);

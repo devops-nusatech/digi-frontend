@@ -11,8 +11,10 @@ export const defaultBeneficiary: Beneficiary = {
    currency: '',
    name: '',
    state: '',
+   blockchain_key: '',
+   blockchain_name: '',
    data: {
-       address: '',
+      address: '',
    },
 };
 

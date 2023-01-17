@@ -47,6 +47,8 @@ import {
    selectMemberLevels,
    BeneficiariesCreate,
    BeneficiaryBank,
+   selectBeneficiariesDeleteLoading,
+   selectBeneficiariesDeleteSuccess,
 } from 'modules';
 import type {
    Beneficiary,
@@ -72,6 +74,7 @@ import { IntlProps } from 'index';
 import { useForm, useModal } from 'hooks';
 import { toast } from 'react-toastify';
 import { getCurrencies, validate } from 'multicoin-address-validator';
+import { defaultBeneficiary } from 'screens/WalletDetails/types';
 
 type State = {
    accountName: string;
@@ -88,6 +91,8 @@ type ReduxProps = {
    wallets: Wallet[];
    beneficiaries: Beneficiary[];
    beneficiariesLoading: boolean;
+   beneficiariesDeleteLoading: boolean;
+   beneficiariesDeleteSuccess: boolean;
    memberLevels?: MemberLevels;
 }
 
@@ -125,6 +130,8 @@ const WithdrawalFC = memo(({
    wallets,
    beneficiaries,
    beneficiariesLoading,
+   beneficiariesDeleteLoading,
+   beneficiariesDeleteSuccess,
    memberLevels,
    location,
    fecthWallets,
@@ -136,7 +143,7 @@ const WithdrawalFC = memo(({
    deleteBeneficiary,
    resendPinBeneficiary,
    fetchSuccess,
-   history: { push },
+   history,
    intl
 }: WithdrawalProps) => {
    let userWallets = wallets.length ? wallets : [];
@@ -144,13 +151,15 @@ const WithdrawalFC = memo(({
    const { isShow, toggle } = useModal();
    const [stepActive, setStepActive] = useState(1);
    const [walletActive, setWalletActive] = useState<Wallet['currency']>('');
-   const [networkActive, setNetworkActive] = useState(0);
+   const [networkActive, setNetworkActive] = useState('');
    const [searchMarket, setSearchMarket] = useState('');
 
    const [selectedNetwork, setSelectedNetwork] = useState(userWallets[0]?.networks[0]);
    const [listNetwork, setListNetwork] = useState(userWallets[0]?.networks);
    const [coinAddressValid, setCoinAddressValid] = useState(false);
 
+   const [id, setId] = useState(0);
+   const [modalDelete, setModalDelete] = useState(false);
    const [isOpenBeneficiary, setIsOpenBeneficiary] = useState(false);
    const [showModalSuccessPurchased, setShowModalSuccessPurchased] = useState(false);
 
@@ -173,32 +182,36 @@ const WithdrawalFC = memo(({
    const mainRef = useRef<HTMLDivElement>(null);
 
    useEffect(() => {
+      setDocumentTitle(`Withdrawal ${stepActive === 1 ? '' : userWallets[0]?.name.toUpperCase()}`);
+      fetchMemberLevel();
+      if (location.state?.wallet) {
+         setStepActive(2);
+         setSelectedNetwork(location.state?.wallet.networks[0]);
+         setListNetwork(location.state?.wallet.networks);
+         setWalletActive(location.state?.wallet.currency);
+         scrollTo(mainRef.current?.offsetTop);
+      }
+   }, []);
+
+   useEffect(() => {
       if (!wallets.length) {
          fecthWallets()
       }
    }, [wallets]);
 
    useEffect(() => {
-      if (location.state?.wallet) {
-         setStepActive(2);
-         setWalletActive(location.state?.wallet && location.state?.wallet?.currency);
-         scrollTo(mainRef.current?.offsetTop);
-      }
-   }, [location.state]);
-
-   useEffect(() => {
-      setDocumentTitle(`Withdrawal ${stepActive === 1 ? '' : userWallets[0]?.name.toUpperCase()}`);
-      fetchMemberLevel();
-      if (!beneficiaries.length) {
-         if (stepActive === 2) {
-            fetchBeneficiaries();
-         }
-      }
       if (stepActive === 2) {
+         fetchBeneficiary();
          setSelectedNetwork(userWallets[0]?.networks[0]);
          setListNetwork(userWallets[0]?.networks);
       }
    }, [stepActive]);
+
+   useEffect(() => {
+      if (beneficiaries) {
+         setNetworkActive(beneficiaries[0]?.blockchain_key);
+      }
+   }, [beneficiaries]);
 
    useEffect(() => {
       if (listNetwork) {
@@ -207,6 +220,17 @@ const WithdrawalFC = memo(({
          }
       }
    }, [listNetwork]);
+
+   useEffect(() => {
+      if (beneficiariesDeleteSuccess) {
+         if (modalDelete) {
+            fetchBeneficiary();
+            setModalDelete(!modalDelete);
+         }
+      }
+   }, [beneficiariesDeleteSuccess]);
+
+   const fetchBeneficiary = () => fetchBeneficiaries({ currency_id: userWallets[0]?.currency ? userWallets[0]?.currency : location.state?.wallet.currency });
 
    const translate = (id: string) => intl.formatMessage({ id });
 
@@ -218,9 +242,20 @@ const WithdrawalFC = memo(({
       userWallets = userWallets.length ? userWallets.filter(wallet => wallet.currency === walletActive) : [];
    }
 
+   let filteredBeneficiary = beneficiaries || [defaultBeneficiary];
+
+   if (networkActive) {
+      filteredBeneficiary = filteredBeneficiary.length ? filteredBeneficiary.filter(e => e.blockchain_key === networkActive) : []
+   }
+
    const handleToStepBeneficiary = (currency: Wallet['currency']) => {
       setStepActive(2);
       setWalletActive(currency);
+      scrollTo(mainRef.current?.offsetTop);
+   }
+   const handleToStepInfo = (id: number) => {
+      setStepActive(3);
+      setId(id);
       scrollTo(mainRef.current?.offsetTop);
    }
 
@@ -247,6 +282,10 @@ const WithdrawalFC = memo(({
 
    const handleSetShowModalSuccessPurchased = () => setShowModalSuccessPurchased(!showModalSuccessPurchased);
    const handleShowBeneficiary = () => setIsOpenBeneficiary(prev => !prev);
+   const handleShowModalDelete = (id: number) => {
+      setModalDelete(!modalDelete);
+      setId(id);
+   };
 
    const renderAsset = useMemo(() => (
       <>
@@ -360,7 +399,7 @@ const WithdrawalFC = memo(({
                type="button"
                onClick={() => {
                   setStepActive(1);
-                  setNetworkActive(0);
+                  setNetworkActive('');
                   setWalletActive('');
                }}
                className="group flex items-center text-2xl font-semibold leading-custom2 tracking-custom1"
@@ -368,7 +407,7 @@ const WithdrawalFC = memo(({
                <svg className="w-3.5 h-3.5 mr-4 fill-neutral4 group-hover:-translate-x-1 transition-all duration-300">
                   <use xlinkHref="#icon-arrow-prev" />
                </svg>
-               List of beneficiaries
+               Select beneficiaries
             </button>
             <div className="flex items-center text-base font-medium">
                {userWallets[0]?.name || ''}
@@ -381,7 +420,7 @@ const WithdrawalFC = memo(({
             </div>
          </div>
          <div className="space-x-4 hidden">
-            {userWallets[0]?.networks.map((network, index) => (
+            {userWallets[0]?.networks.map(network => (
                <Button
                   key={network.blockchain_key}
                   text={network.protocol}
@@ -389,21 +428,21 @@ const WithdrawalFC = memo(({
                   width="noFull"
                   rounded="lg"
                   fontDM={false}
-                  variant={networkActive === index ? "primary" : "outline"}
-                  onClick={() => setNetworkActive(index)}
+                  variant={networkActive === network.blockchain_key ? "primary" : "outline"}
+                  onClick={() => setNetworkActive(network.blockchain_key)}
                />
             ))}
          </div>
          <div className="">
             <div className="flex space-x-4">
-               {userWallets[0]?.networks.map((network, index) => (
+               {userWallets[0]?.networks.map(network => (
                   <Nav
                      key={network.blockchain_key}
                      title={network.protocol}
-                     onClick={() => setNetworkActive(index)}
+                     onClick={() => setNetworkActive(network.blockchain_key)}
                      theme="grey"
                      className="px-5"
-                     isActive={networkActive === index ? true : false}
+                     isActive={networkActive === network.blockchain_key ? true : false}
                   />
                ))}
             </div>
@@ -463,28 +502,45 @@ const WithdrawalFC = memo(({
                            </td>
                         </tr>
                      </>
-                  ) : beneficiaries.length ? beneficiaries.map(({ id, name, data: { address }, state, currency }, index) => (
+                  ) : filteredBeneficiary.length ? filteredBeneficiary.map(({ id, name, data: { address }, state, currency }, index) => (
                      <tr
                         key={index}
                         style={{ transition: 'background .2s' }}
                         className="group"
                      >
-                        <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                        <td
+                           onClick={() => handleToStepInfo(id)}
+                           className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300"
+                        >
                            <div>{index + 1}</div>
                         </td>
-                        <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                        <td
+                           onClick={() => handleToStepInfo(id)}
+                           className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300"
+                        >
                            <div>{name}</div>
                         </td>
-                        <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                        <td
+                           onClick={() => handleToStepInfo(id)}
+                           className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300"
+                        >
                            <div>{truncateMiddle(String(address), 20)}</div>
                         </td>
-                        <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                        <td
+                           onClick={() => handleToStepInfo(id)}
+                           className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300"
+                        >
                            <div>{state}</div>
                         </td>
                         <td className="rounded-r-xl p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
-                           <svg className="w-6 h-6 fill-primary4 transition-colors duration-300">
-                              <use xlinkHref="#icon-close-circle" />
-                           </svg>
+                           <div className="flex justify-end items-center">
+                              <svg
+                                 onClick={() => handleShowModalDelete(id)}
+                                 className="w-6 h-6 fill-primary4 transition-colors duration-300 cursor-pointer"
+                              >
+                                 <use xlinkHref="#icon-close-circle" />
+                              </svg>
+                           </div>
                         </td>
                      </tr>
                   )) : (
@@ -510,7 +566,7 @@ const WithdrawalFC = memo(({
             />
          </div>
       </div >
-   ), [setStepActive, setNetworkActive, setWalletActive, userWallets, networkActive, beneficiaries, beneficiariesLoading, handleShowBeneficiary]);
+   ), [setStepActive, setNetworkActive, setWalletActive, userWallets, networkActive, filteredBeneficiary, beneficiariesLoading, handleShowBeneficiary]);
 
    const renderWithdrawInfo = useMemo(() => (
       <>
@@ -572,6 +628,7 @@ const WithdrawalFC = memo(({
                   id="withdraw-address"
                   label="Withdraw address"
                   placeholder="xxxx xxxx xxxx xxxx"
+                  value={filteredBeneficiary?.find(e => e.id === id)?.data?.address}
                   disabled
                />
                <div className="flex space-x-4 justify-between">
@@ -672,7 +729,7 @@ const WithdrawalFC = memo(({
                   variant="outline"
                   onClick={() => {
                      setStepActive(1)
-                     setNetworkActive(0);
+                     setNetworkActive('');
                      setWalletActive('');
                   }}
                />
@@ -684,7 +741,7 @@ const WithdrawalFC = memo(({
             </div>
          </div>
       </>
-   ), [userWallets, state, handleChangeAmount, handleChangeOtp]);
+   ), [userWallets, state, handleChangeAmount, handleChangeOtp, id]);
 
    const isRipple = userWallets[0]?.currency === 'xrp';
    const handleCreateBeneficiary = () => {
@@ -845,17 +902,35 @@ const WithdrawalFC = memo(({
             <div className="flex space-x-4">
                <Button
                   text="Trade"
-                  onClick={() => push(`trading/${userWallets[0]?.currency || 'btcidr'}`)}
+                  onClick={() => history.push(`trading/${userWallets[0]?.currency || 'btcidr'}`)}
                   variant="outline"
                />
                <Button
                   text="Wallets"
-                  onClick={() => push('/wallets')}
+                  onClick={() => history.push('/wallets')}
                />
             </div>
          </div>
       )
    }
+
+   const renderContentDeleted = () => (
+      <div className="pt-10 space-y-8">
+         <div className="space-y-3">
+            <div className="font-dm text-2xl leading-9 text-center tracking-custom">
+               Sure delete?
+            </div>
+            <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
+               you will remove the beneficiary by name <span className="font-semibold text-primary4">{beneficiaries.find(e => e.id === id)?.name}</span>
+            </div>
+         </div>
+         <Button
+            text="Confirm"
+            withLoading={beneficiariesDeleteLoading}
+            onClick={() => deleteBeneficiary({ id })}
+         />
+      </div>
+   );
 
    const render = () => {
       switch (stepActive) {
@@ -903,7 +978,7 @@ const WithdrawalFC = memo(({
          <ModalRequired
             show={isShow}
             close={toggle}
-            push={push}
+            push={history.push}
          />
          <Dialog
             isOpen={isOpenBeneficiary}
@@ -912,6 +987,13 @@ const WithdrawalFC = memo(({
          >
             {renderModalBeneficiary}
          </Dialog>
+
+         <Portal
+            show={modalDelete}
+            close={handleShowModalDelete}
+         >
+            {renderContentDeleted()}
+         </Portal>
 
          <Portal
             show={showModalSuccessPurchased}
@@ -928,6 +1010,8 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    wallets: selectWallets(state),
    beneficiaries: selectBeneficiaries(state),
    beneficiariesLoading: selectBeneficiariesFetchLoading(state),
+   beneficiariesDeleteLoading: selectBeneficiariesDeleteLoading(state),
+   beneficiariesDeleteSuccess: selectBeneficiariesDeleteSuccess(state),
    memberLevels: selectMemberLevels(state),
 });
 

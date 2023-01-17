@@ -9,6 +9,7 @@ import {
 import { Decimal } from '../../components/Decimal';
 import { cleanPositiveFloatInput, precisionRegExp } from '../../helpers';
 import { Beneficiary } from '../../modules';
+import { defaultBeneficiary } from 'screens/WalletDetails/types';
 
 export interface WithdrawProps {
    currency: string;
@@ -26,16 +27,6 @@ export interface WithdrawProps {
    withdrawDone: boolean;
    isMobileDevice?: boolean;
 }
-
-const defaultBeneficiary: Beneficiary = {
-   id: 0,
-   currency: '',
-   name: '',
-   state: '',
-   data: {
-      address: '',
-   },
-};
 
 interface WithdrawState {
    amount: string;
