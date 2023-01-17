@@ -30,3 +30,4 @@ export * from './useClickOutside';
 export * from './useMemberLevelFetch';
 export * from './useStep';
 export * from './useDebounce';
+export * from './useIntersection';

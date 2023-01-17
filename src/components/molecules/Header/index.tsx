@@ -339,19 +339,29 @@ const HeaderFC = ({
                            </div>
                         </div>
                      ) : (
-                        <div className="hidden md:flex items-center space-x-2">
-                           <Button
-                              text="Register"
-                              size="normal"
-                              onClick={() => push('/register')}
+                        <>
+                           <DarkModeSwitch
+                              className="h-6 w-6 transition-all duration-300"
+                              checked={!isDarkMode}
+                              onChange={() => dropDwonCryptoDarkMode(isDarkMode ? false : true)}
+                              size={24}
+                              sunColor="#fcfcfd"
+                              moonColor="#777E90"
                            />
-                           <Button
-                              text="Login"
-                              size="normal"
-                              variant="outline"
-                              onClick={() => push('/login')}
-                           />
-                        </div>
+                           <div className="hidden md:flex items-center space-x-2">
+                              <Button
+                                 text="Register"
+                                 size="normal"
+                                 onClick={() => push('/register')}
+                              />
+                              <Button
+                                 text="Login"
+                                 size="normal"
+                                 variant="outline"
+                                 onClick={() => push('/login')}
+                              />
+                           </div>
+                        </>
                      )}
                      <svg
                         className="flex md:hidden"

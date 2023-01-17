@@ -1,7 +1,7 @@
 import React, { memo, FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Tab } from '@headlessui/react';
-import { MyTab } from 'components';
+import { Button, MyTab, Image, Skeleton } from 'components';
 import {
    illusLearn11,
    illusLearn12,
@@ -14,8 +14,10 @@ import {
 } from 'assets';
 import { selectNewsLoading, selectNews } from 'modules';
 import { useNewsFetch } from 'hooks';
+import { useHistory } from 'react-router';
 
 const LearnMemo: FC = () => {
+   const { push } = useHistory();
    useNewsFetch();
    const newsLoadig = useSelector(selectNewsLoading);
    const news = useSelector(selectNews);
@@ -26,9 +28,12 @@ const LearnMemo: FC = () => {
          <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
             <div className="flex justify-between mb-10">
                <div className="whitespace-normal text-4.5xl md:text-5xl font-dm">Learn crypto</div>
-               <div className="inline-flex text-base font-dm justify-center items-center h-12 rounded-3xl py-0 px-6 whitespace-nowrap bg-none shadow-border hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:shadow-none dark:border-2 dark:border-solid dark:border-neutral4 dark:text-neutral8  transition-all duration-300 cursor-pointer">
-                  View more
-               </div>
+               <Button
+                  text="View more"
+                  onClick={() => push('learn-crypto')}
+                  variant="outline"
+                  width="noFull"
+               />
             </div>
             <MyTab titles={['All', 'Bitcoin', 'Blockchain', 'Tutorial']}>
                <>
@@ -48,13 +53,17 @@ const LearnMemo: FC = () => {
                                        Good things come in 3s. Get 3x Leveraged tokens now.
                                     </div>
                                  </div>
-                                 <div className="inline-flex text-base font-dm justify-center items-center h-12 rounded-3xl py-0 px-6 whitespace-nowrap bg-none shadow-border hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:shadow-none dark:border-2 dark:border-solid dark:border-neutral4 dark:text-neutral8  transition-all duration-300 cursor-pointer group">
-                                    <span>Learn more</span>
-                                    <svg className="fill-neutral4 group-hover:fill-neutral8" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                       <path fill-rule="evenodd" clip-rule="evenodd"
-                                          d="M6.5286 5.19526C6.26825 5.45561 6.26825 5.87772 6.5286 6.13807L8.39052 8L6.5286 9.86193C6.26825 10.1223 6.26825 10.5444 6.5286 10.8047C6.78895 11.0651 7.21106 11.0651 7.4714 10.8047L9.80474 8.4714C10.0651 8.21106 10.0651 7.78895 9.80474 7.5286L7.4714 5.19526C7.21106 4.93491 6.78895 4.93491 6.5286 5.19526Z" />
-                                    </svg>
-                                 </div>
+                                 <Button
+                                    text="Learn more"
+                                    onClick={() => push('learn-crypto')}
+                                    variant="outline"
+                                    width="noFull"
+                                    icRight={
+                                       <svg className="w-4 h-4 fill-neutral4 group-hover:fill-neutral8">
+                                          <use xlinkHref="#icon-arrow-right" />
+                                       </svg>
+                                    }
+                                 />
                               </div>
                            </div>
                            <div className="float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)]">
@@ -99,9 +108,17 @@ const LearnMemo: FC = () => {
                   <Tab.Panel className="flex flex-wrap min-h-full -mx-3">
                      {
                         newsLoadig ? (
-                           <div className="">
-                              Loading
-                           </div>
+                           <>
+                              <div className="w-full md:w-1/2 lg:w-1/3 p-3">
+                                 <Skeleton height={230} />
+                              </div>
+                              <div className="w-full md:w-1/2 lg:w-1/3 p-3">
+                                 <Skeleton height={230} />
+                              </div>
+                              <div className="w-full md:w-1/2 lg:w-1/3 p-3">
+                                 <Skeleton height={230} />
+                              </div>
+                           </>
                         ) : news?.length ?
                            news?.map(e => (
                               <div
@@ -110,12 +127,11 @@ const LearnMemo: FC = () => {
                               >
                                  <div>
                                     <div className="group relative h-full w-full p-3 hover:p-0 rounded-xl overflow-hidden shadow hover:shadow-lg hover:-translate-y-2 hover:scale-105 cursor-pointer transition-all duration-500">
-                                       <img
+                                       <Image
                                           className="object-cover w-full h-full rounded-lg transition ease-in-out duration-700 group-hover:scale-110"
                                           src={e.feature_image}
                                           alt={e.title}
                                           title={e.title}
-                                          loading="lazy"
                                        />
                                        <div className="absolute inset-0 group-hover:bg-gradient-to-r group-hover:from-primary2 group-hover:bg-primary3 group-hover:opacity-75" />
                                        <svg className="absolute left-[45%] top-[45%] text-center h-10 w-10 opacity-0 group-hover:opacity-100 transition-all duration-[1300ms] fill-primary4 p-2 bg-neutral6 rounded-full group-hover:animate-bounce" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http:www.w3.org/2000/svg">

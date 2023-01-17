@@ -98,6 +98,7 @@ export const Hero: FC = (props: any) => {
                         text="Get started now"
                         className="mb-20"
                         width="noFull"
+                        onClick={() => history.push('/markets')}
                      />
                      <a href="#learn" onClick={e => handleScroll(e, 'learn')} className="flex items-center justify-center w-8 h-8 rounded-full overflow-hidden bg-none border-2 border-solid border-neutral6 dark:border-neutral4 hover:border-neutral2 dark:hover:border-neutral6 transition-colors duration-300">
                         <div className="flex flex-col -translate-y-[27px] animate-down group">

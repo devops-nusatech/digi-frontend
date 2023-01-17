@@ -146,7 +146,7 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
    }
    if (checked) {
       balances = balances.length
-         ? balances.filter(({ balance, locked }) => Number(balance) < 0 || Number(locked) < 0)
+         ? balances.filter(({ balance, locked }) => Number(balance) > 0 || Number(locked) > 0)
          : [];
    }
    // const wallet = wallets.find(pair => pair.currency === 'idr');

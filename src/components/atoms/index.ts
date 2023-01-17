@@ -42,3 +42,4 @@ export * from './CellDetail';
 export * from './PriceChart';
 export * from './PriceChart2';
 export * from './PriceChart3';
+export * from './Image';

@@ -135,7 +135,9 @@ const TableOrder = ({
             </td>
             <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                <div className="uppercase">
-                  {marketName}
+                  {marketName.includes('/') ? (
+                     <div>{marketName.split('/').shift()} <span className="text-neutral4">/{marketName.split('/').pop()}</span></div>
+                  ) : marketName}
                </div>
             </td>
             <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">

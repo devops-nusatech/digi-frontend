@@ -25,6 +25,7 @@ const noFooterRoutes = [
    '/chart',
    '/exchange',
    '/orders',
+   '/trades'
 ];
 
 const withFooter = [

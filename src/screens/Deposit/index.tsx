@@ -32,7 +32,7 @@ import type {
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
 import { arrayFilter, copyToClipboard, renderCurrencyIcon } from 'helpers';
-import { Button, Decimal, LabelAlt, LayoutProfile, Skeleton, InputGroup, QRCode } from 'components';
+import { Button, Decimal, LayoutProfile, Skeleton, InputGroup, QRCode, Nav, Label } from 'components';
 import { DEFAULT_WALLET } from '../../constants';
 
 type ReduxProps = {
@@ -190,8 +190,8 @@ const DepositFC = memo(({
                      onChange={setSelected}
                   >
                      <div className="relative">
-                        <LabelAlt label="Select currency" />
-                        <div className="relative mt-3.5">
+                        <Label label="Select currency" />
+                        <div className="relative mt-2.5">
                            <Combobox.Input
                               className={({ open }) => `${open ? 'text-primary1' : ''} px-3.5 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 bg-none bg-transparent shadow-none focus:border-primary1 transition ease-in-out duration-300 dark:border-neutral3 pr-12 h-12 w-full`}
                               displayValue={(currency: { name: string }) => `${currency && currency.name || 'Nothing found...'}`}
@@ -257,8 +257,8 @@ const DepositFC = memo(({
                         </Transition>
                      </div>
                   </Combobox>
-                  <div className="space-y-3.5">
-                     <LabelAlt label={type === 'coin' ? 'Pick network' : 'Select bank'} />
+                  <div className="space-y-2.5">
+                     <Label label={type === 'coin' ? 'Pick network' : 'Select bank'} />
                      {(!formatedWallet || formatedWallet.name === '') ? (
                         <div className="flex space-x-4">
                            <Skeleton height={40} width={71.98} rounded="lg" />
@@ -267,8 +267,16 @@ const DepositFC = memo(({
                         </div>
                      ) : (formatedWallet.networks.length && formatedWallet.name !== '' && type === 'coin') ? (
                         <div className="flex space-x-4">
-                           {formatedWallet.networks.map((network, index) => (
-                              <Button
+                           {formatedWallet.networks.map(({ blockchain_key, protocol }, index) => (
+                              <>
+                                 <Nav
+                                    key={blockchain_key}
+                                    title={protocol}
+                                    isActive={networkActive === index}
+                                    onClick={() => setNetworkActive(index)}
+                                    theme="grey"
+                                 />
+                                 {/* <Button
                                  key={network.blockchain_key}
                                  text={network.protocol}
                                  size="normal"
@@ -277,7 +285,8 @@ const DepositFC = memo(({
                                  fontDM={false}
                                  variant={networkActive === index ? "primary" : "outline"}
                                  onClick={() => setNetworkActive(index)}
-                              />
+                              /> */}
+                              </>
                            ))}
                         </div>
                      ) : (
@@ -287,8 +296,8 @@ const DepositFC = memo(({
                         </div>
                      )}
                   </div>
-                  <div className="space-y-3.5">
-                     <LabelAlt label="Payment address" />
+                  <div className="space-y-2.5">
+                     <Label label="Payment address" />
                      {(formatedWallet?.name !== '' && formatedWallet?.type === 'coin') && (
                         depositAddress?.state === 'pending'
                            ? renderAddressSkeleton
@@ -305,17 +314,15 @@ const DepositFC = memo(({
                         Instruction of deposit
                      </div>
                      <ul className="list-decimal list-outside text-xs pl-3 leading-5">
-                        {
-                           type === 'coin' ? (
-                              <>
-                                 <li>{formatedWallet?.currency.toUpperCase()} deposit will be into the account after the {currencyActive?.min_confirmations} confirmation, and it can be allowed to withdraw after the {Number(currencyActive?.min_confirmations) + 2} confirmation.</li>
-                                 <li>Minimum deposits are {Decimal.format(currencyActive?.min_deposit_amount, Number(formatedWallet?.fixed), ',')} {formatedWallet?.currency.toUpperCase()}, and deposits will be not into the account if they are less the minimum.</li>
-                                 <li>Please note that depositing other tokens to the address below will cause your asset to be permanent lost</li>
-                              </>
-                           ) : (
-                              <li>Please note the minimum deposit is {Decimal.format(currencyActive?.min_deposit_amount, Number(formatedWallet?.fixed), ',')} {formatedWallet?.currency.toUpperCase()} and if you deposit below that amount, the deposit will not be credited to your account.</li>
-                           )
-                        }
+                        {type === 'coin' ? (
+                           <>
+                              <li>{formatedWallet?.currency.toUpperCase()} deposit will be into the account after the {currencyActive?.min_confirmations} confirmation, and it can be allowed to withdraw after the {Number(currencyActive?.min_confirmations) + 2} confirmation.</li>
+                              <li>Minimum deposits are {Decimal.format(currencyActive?.min_deposit_amount, Number(formatedWallet?.fixed), ',')} {formatedWallet?.currency.toUpperCase()}, and deposits will be not into the account if they are less the minimum.</li>
+                              <li>Please note that depositing other tokens to the address below will cause your asset to be permanent lost</li>
+                           </>
+                        ) : (
+                           <li>Please note the minimum deposit is {Decimal.format(currencyActive?.min_deposit_amount, Number(formatedWallet?.fixed), ',')} {formatedWallet?.currency.toUpperCase()} and if you deposit below that amount, the deposit will not be credited to your account.</li>
+                        )}
                      </ul>
                   </div>
                </div>
@@ -323,7 +330,7 @@ const DepositFC = memo(({
             <div className="w-1/3">
                <div className="bg-neutral8 dark:bg-shade1 shadow-card rounded-2xl py-10 px-6">
                   <div className="space-y-3">
-                     <LabelAlt label={translate('deposit.content.right.title')} />
+                     <Label label={translate('deposit.content.right.title')} />
                      <div className="mx-auto w-20 h-20 overflow-hidden pointer-events-none">
                         <img
                            className={`w-full ${renderCurrencyIcon(formatedWallet?.currency, formatedWallet?.iconUrl).includes('http') ? 'object-cover polygon bg-neutral8' : ''}`}

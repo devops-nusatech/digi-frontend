@@ -1,9 +1,22 @@
 import React, { FC, MouseEvent } from 'react'
 
 interface NavProps {
+   /**
+   * Title to display.
+   */
    title: string;
+   /**
+  * Active Nav
+  */
    isActive?: boolean;
+   /**
+   * This function to set the active state
+   */
    onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+   /**
+   * Title to display.
+   * @default 'black'
+   */
    theme?: 'black' | 'grey';
    className?: string;
 }
@@ -16,6 +29,6 @@ export const Nav: FC<NavProps> = ({ title, isActive, onClick, theme, className }
       {title}
    </button>
 
-   Nav.defaultProps = {
-      theme: 'black'
-   }
+Nav.defaultProps = {
+   theme: 'black'
+}
