@@ -4,7 +4,7 @@ import {
    TradingHeader,
    TradingOrderList,
    TradingCenter,
-   TradingTrade,
+   // TradingTrade,
    TradingMarketList,
    Nav,
 } from 'components';
@@ -73,7 +73,7 @@ const TradingFC: FC<TradingProps> = ({
             <TradingCenter />
             <TradingMarketList translate={translate} />
          </div>
-         <TradingTrade isLoggedIn={isLoggedIn} />
+         {/* <TradingTrade isLoggedIn={isLoggedIn} /> */}
       </div>
    );
 }

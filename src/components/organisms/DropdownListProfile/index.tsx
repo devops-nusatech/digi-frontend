@@ -1,15 +1,14 @@
 import React from 'react';
-import { DropdownMenu, ListDropdown, Switch } from 'components';
+import { DropdownMenu, ListDropdown } from 'components';
 
 interface DropdownListProfileProps {
    isOpen: boolean;
    isDarkMode: boolean;
-   handleSwithTheme: () => void;
    handleSetShowModalConfirmLogout: () => void;
    translate: (id: string) => string;
 }
 
-export const DropdownListProfile = ({ isOpen, isDarkMode, handleSwithTheme, handleSetShowModalConfirmLogout, translate }: DropdownListProfileProps) => {
+export const DropdownListProfile = ({ isOpen, isDarkMode, handleSetShowModalConfirmLogout, translate }: DropdownListProfileProps) => {
    return (
       <DropdownMenu isOpen={isOpen} className="py-1">
          <ListDropdown
@@ -37,15 +36,10 @@ export const DropdownListProfile = ({ isOpen, isDarkMode, handleSwithTheme, hand
             subTitle="View additional settings"
          />
          <ListDropdown
-            icon="theme-dark"
-            title="Dark mode"
-            subTitle="Switch dark/light mode"
-            children={
-               <Switch
-                  checked={isDarkMode}
-                  onClick={handleSwithTheme}
-               />
-            }
+            to="/beneficiaries"
+            icon="beneficiary"
+            title="Beneficiaries"
+            subTitle="View additional beneficiaries"
          />
          <div
             onClick={handleSetShowModalConfirmLogout}

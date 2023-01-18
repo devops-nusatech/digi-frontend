@@ -26,9 +26,11 @@ import {
    ModalRequired,
    Nav,
    Portal,
-   Skeleton
+   Skeleton,
+   Listbox,
+   InputOtp
 } from 'components';
-import { Listbox } from '@headlessui/react'
+// import { Listbox } from '@headlessui/react'
 import {
    alertPush,
    beneficiariesFetch,
@@ -49,6 +51,19 @@ import {
    BeneficiaryBank,
    selectBeneficiariesDeleteLoading,
    selectBeneficiariesDeleteSuccess,
+   selectBeneficiariesCreateLoading,
+   selectBeneficiariesCreateSuccess,
+   selectBeneficiariesActivateLoading,
+   selectBeneficiariesResendPinLoading,
+   selectBeneficiariesActivateSuccess,
+   selectBeneficiariesCreate,
+   walletsWithdrawCcyFetch,
+   WalletsWithdrawCcyFetch,
+   withdrawLimitFetch,
+   selectWithdrawLimit,
+   WithdrawLimit,
+   selectUserInfo,
+   User,
 } from 'modules';
 import type {
    Beneficiary,
@@ -87,13 +102,21 @@ type State = {
 }
 
 type ReduxProps = {
+   user: User;
    theme: string;
    wallets: Wallet[];
+   beneficiary: Beneficiary;
    beneficiaries: Beneficiary[];
    beneficiariesLoading: boolean;
+   beneficiariesCreateLoading: boolean;
+   beneficiariesCreateSuccess: boolean;
+   beneficiariesActivateLoading: boolean;
+   beneficiariesActivateSuccess: boolean;
    beneficiariesDeleteLoading: boolean;
    beneficiariesDeleteSuccess: boolean;
+   beneficiariesResendLoading: boolean;
    memberLevels?: MemberLevels;
+   withdrawLimits: WithdrawLimit[];
 }
 
 type OwnProps = {
@@ -112,7 +135,9 @@ interface DispatchProps {
    updateBeneficiary: typeof beneficiariesDataUpdate;
    activateBeneficiary: typeof beneficiariesActivate;
    deleteBeneficiary: typeof beneficiariesDelete;
-   resendPinBeneficiary: typeof beneficiariesResendPin;
+   resendBeneficiary: typeof beneficiariesResendPin;
+   withdrawCcy: typeof walletsWithdrawCcyFetch;
+   withdrawLimitFetch: typeof withdrawLimitFetch;
    fetchSuccess: typeof alertPush;
 }
 
@@ -126,13 +151,21 @@ type StateWithdraw = {
 type WithdrawalProps = ReduxProps & OwnProps & DispatchProps & RouterProps & IntlProps;
 
 const WithdrawalFC = memo(({
+   user,
    theme,
    wallets,
+   beneficiary,
    beneficiaries,
    beneficiariesLoading,
+   beneficiariesCreateLoading,
+   beneficiariesCreateSuccess,
+   beneficiariesActivateLoading,
+   beneficiariesActivateSuccess,
    beneficiariesDeleteLoading,
    beneficiariesDeleteSuccess,
+   beneficiariesResendLoading,
    memberLevels,
+   withdrawLimits,
    location,
    fecthWallets,
    fetchMemberLevel,
@@ -141,18 +174,21 @@ const WithdrawalFC = memo(({
    updateBeneficiary,
    activateBeneficiary,
    deleteBeneficiary,
-   resendPinBeneficiary,
+   resendBeneficiary,
+   withdrawCcy,
+   withdrawLimitFetch,
    fetchSuccess,
    history,
    intl
 }: WithdrawalProps) => {
-   let userWallets = wallets.length ? wallets : [];
+   let userWallets = wallets.length ? wallets.filter(wallet => wallet.networks.length) : [];
 
    const { isShow, toggle } = useModal();
    const [stepActive, setStepActive] = useState(1);
    const [walletActive, setWalletActive] = useState<Wallet['currency']>('');
    const [networkActive, setNetworkActive] = useState('');
    const [searchMarket, setSearchMarket] = useState('');
+   const [pin, setPin] = useState('');
 
    const [selectedNetwork, setSelectedNetwork] = useState(userWallets[0]?.networks[0]);
    const [listNetwork, setListNetwork] = useState(userWallets[0]?.networks);
@@ -160,10 +196,11 @@ const WithdrawalFC = memo(({
 
    const [id, setId] = useState(0);
    const [modalDelete, setModalDelete] = useState(false);
+   const [modalConfirm, setModalConfirm] = useState(false);
    const [isOpenBeneficiary, setIsOpenBeneficiary] = useState(false);
    const [showModalSuccessPurchased, setShowModalSuccessPurchased] = useState(false);
 
-   const [{ address, label, description, destinationTag }, setField] = useForm<State>({
+   const [{ address, label, description, destinationTag }, setField, setNewField] = useForm<State>({
       accountName: '',
       accountNumber: '',
       bank: '',
@@ -179,7 +216,17 @@ const WithdrawalFC = memo(({
       amountError: false,
    });
 
+   const { amount, otp } = state
+
    const mainRef = useRef<HTMLDivElement>(null);
+
+   const resetField = () => {
+      setNewField({
+         address: '',
+         label: '',
+         description: ''
+      });
+   }
 
    useEffect(() => {
       setDocumentTitle(`Withdrawal ${stepActive === 1 ? '' : userWallets[0]?.name.toUpperCase()}`);
@@ -230,9 +277,46 @@ const WithdrawalFC = memo(({
       }
    }, [beneficiariesDeleteSuccess]);
 
+   useEffect(() => {
+      if (beneficiariesCreateSuccess) {
+         if (isOpenBeneficiary) {
+            handleShowBeneficiary();
+            resetField();
+            handleShowModalConfirm();
+         }
+      }
+      if (beneficiariesActivateSuccess) {
+         if (modalConfirm) {
+            handleShowModalConfirm();
+            resetField();
+            setPin('');
+         }
+      }
+      if (pin.length === 6) {
+         handleConfirmActivate();
+      }
+
+      if (!isOpenBeneficiary) {
+         resetField();
+      }
+   }, [beneficiariesCreateSuccess, beneficiariesActivateSuccess, isOpenBeneficiary, pin]);
+
    const fetchBeneficiary = () => fetchBeneficiaries({ currency_id: userWallets[0]?.currency ? userWallets[0]?.currency : location.state?.wallet.currency });
 
+   const handleConfirmActivate = () => activateBeneficiary({ id: id ? id : beneficiary.id, pin });
+
    const translate = (id: string) => intl.formatMessage({ id });
+
+   const handleWithdraw = () => {
+      const payload: WalletsWithdrawCcyFetch['payload'] = {
+         beneficiary_id: String(beneficiaries.find(e => e.id === id)?.id),
+         amount,
+         currency: userWallets[0].currency,
+         otp
+      }
+      console.log('payload :>> ', payload);
+      // withdrawCcy(payload)
+   }
 
    if (searchMarket) {
       userWallets = userWallets.length ? arrayFilter(userWallets, searchMarket) : [];
@@ -254,23 +338,37 @@ const WithdrawalFC = memo(({
       scrollTo(mainRef.current?.offsetTop);
    }
    const handleToStepInfo = (id: number) => {
-      setStepActive(3);
+      if (beneficiaries.find(e => e.id === id && e.state === 'pending')) {
+         handleShowModalConfirm();
+      } else {
+         setStepActive(3);
+         scrollTo(mainRef.current?.offsetTop);
+         withdrawLimitFetch();
+      }
       setId(id);
-      scrollTo(mainRef.current?.offsetTop);
    }
+
+   const withdrawLimit = withdrawLimits.find(e => Number(e.kyc_level) === user.level) ? withdrawLimits.find(e => Number(e.kyc_level) === user.level) : withdrawLimits[0];
+   const network = userWallets[0]?.networks.find(e => e.blockchain_key === filteredBeneficiary?.find(e => e.id === id)?.blockchain_key);
+   const currency = userWallets[0]?.currency;
+   const withdrawFee = Decimal.format(network?.withdraw_fee, userWallets[0]?.fixed, ',');
+   const withdrawMinAmount = Decimal.format(network?.min_withdraw_amount, userWallets[0]?.fixed, ',');
+   const withdrawLimit24H = Decimal.format(withdrawLimit?.limit_24_hour, userWallets[0]?.fixed, ',');
+   const withdrawLimit1M = Decimal.format(withdrawLimit?.limit_1_month, userWallets[0]?.fixed, ',');
 
    const handleChangeAmount = (value: string) => {
       const convertedValue = cleanPositiveFloatInput(value);
       const fixed = userWallets[0]?.fixed;
+      const balance = userWallets[0]?.balance;
       if (convertedValue.match(precisionRegExp(fixed))) {
          const amount = (convertedValue !== '') ? Number(parseFloat(convertedValue).toFixed(fixed)) : '';
-         const total = amount !== '' ? (amount - 3).toFixed(fixed) : '';
+         const total = amount !== '' ? (amount - Number(withdrawFee)).toFixed(fixed) : '';
          console.log('convertedValue :>> ', convertedValue);
          console.log('balance :>> ', userWallets[0]?.balance);
          setState({
             ...state,
             amount: convertedValue,
-            amountError: String(userWallets[0]?.balance) < convertedValue ? true : false,
+            amountError: Number(balance) < Number(convertedValue) ? true : false,
             total: Number(total) > 0 ? total : (0).toFixed(fixed),
          });
       }
@@ -286,6 +384,13 @@ const WithdrawalFC = memo(({
       setModalDelete(!modalDelete);
       setId(id);
    };
+
+   const handleShowModalConfirm = () => setModalConfirm(!modalConfirm);
+
+   const isDisabled = (): boolean => {
+      const withdrawEnabled = selectedNetwork?.withdrawal_enabled;
+      return !withdrawEnabled || !Boolean(address) || !Boolean(label);
+   }
 
    const renderAsset = useMemo(() => (
       <>
@@ -465,7 +570,7 @@ const WithdrawalFC = memo(({
                      </th>
                      <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4">
                         <div className="flex items-center space-x-1 cursor-pointer">
-                           <div onClick={() => setStepActive(3)}>Address</div>
+                           <div>Address</div>
                            <IcShorting className="fill-neutral4" />
                         </div>
                      </th>
@@ -530,7 +635,7 @@ const WithdrawalFC = memo(({
                            onClick={() => handleToStepInfo(id)}
                            className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300"
                         >
-                           <div>{state}</div>
+                           <div className={state === 'active' ? 'text-primary5 dark:text-chart1' : 'text-primary4'}>{state}</div>
                         </td>
                         <td className="rounded-r-xl p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
                            <div className="flex justify-end items-center">
@@ -566,12 +671,15 @@ const WithdrawalFC = memo(({
             />
          </div>
       </div >
-   ), [setStepActive, setNetworkActive, setWalletActive, userWallets, networkActive, filteredBeneficiary, beneficiariesLoading, handleShowBeneficiary]);
+   ), [setStepActive, setNetworkActive, setWalletActive, userWallets, networkActive, filteredBeneficiary, beneficiariesLoading, handleShowBeneficiary, handleShowModalDelete, handleToStepInfo]);
 
    const renderWithdrawInfo = useMemo(() => (
       <>
          <div className="flex items-center justify-between mb-16">
-            <button onClick={() => setStepActive(2)} type="button" className="group flex items-center text-2xl font-semibold leading-custom2 tracking-custom1">
+            <button onClick={() => {
+               setStepActive(2);
+               setState({ amount: '', amountError: false, otp: '', total: '' });
+            }} type="button" className="group flex items-center text-2xl font-semibold leading-custom2 tracking-custom1">
                <svg className="w-3.5 h-3.5 mr-4 fill-neutral4 group-hover:-translate-x-1 transition-all duration-300">
                   <use xlinkHref="#icon-arrow-prev"></use>
                </svg>
@@ -627,8 +735,7 @@ const WithdrawalFC = memo(({
                <InputGroup
                   id="withdraw-address"
                   label="Withdraw address"
-                  placeholder="xxxx xxxx xxxx xxxx"
-                  value={filteredBeneficiary?.find(e => e.id === id)?.data?.address}
+                  placeholder={filteredBeneficiary?.find(e => e.id === id)?.data?.address}
                   disabled
                />
                <div className="flex space-x-4 justify-between">
@@ -654,72 +761,28 @@ const WithdrawalFC = memo(({
                   />
                </div>
             </div>
-            {/* <div className="space-y-4 py-6 px-9 rounded-2xl bg-neutral7 dark:bg-neutral2">
-               <div className="flex flex-col md:flex-row justify-between space-x-4">
-                  <div className="space-y-2">
-                     <div className="text-base">
-                        Available balance
-                     </div>
-                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1 uppercase">
-                        {Decimal.format(userWallets[0]?.balance, userWallets[0]?.fixed, ',')} {userWallets[0]?.currency}
-                     </div>
-                  </div>
-                  <div className="md:text-right space-y-2">
-                     <div className="text-base">
-                        Total withdraw
-                     </div>
-                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1 uppercase">
-                        {Decimal.format(0, userWallets[0]?.fixed, ',')} {userWallets[0]?.currency}
-                     </div>
-                  </div>
-               </div>
-               <div className="h-0.5 w-full bg-dashed-b" />
-               <div className="flex space-x-3 justify-between">
-                  <div className="space-y-1">
-                     <div className="text-neutral4">
-                        Withdraw fee
-                     </div>
-                     <div className="text-base font-medium uppercase">
-                        0,00000000 {userWallets[0]?.currency}
-                     </div>
-                  </div>
-                  <div className="space-y-1">
-                     <div className="text-neutral4">
-                        Minimum withdraw
-                     </div>
-                     <div className="text-base font-medium uppercase">
-                        0,00000000 {userWallets[0]?.currency}
-                     </div>
-                  </div>
-                  <div className="space-y-1">
-                     <div className="text-neutral4">
-                        Daily limit
-                     </div>
-                     <div className="text-base font-medium uppercase">
-                        0,00000000 {userWallets[0]?.currency}
-                     </div>
-                  </div>
-               </div>
-            </div> */}
-            {/* <div className="text-base">You are about to withdraw 0.001499 {userWallets[0]?.currency.toUpperCase()} from Digiasset</div> */}
             <div className="space-y-3">
                <div className="flex justify-between pb-3 border-b border-neutral6 text-base font-medium dark:border-neutral3">
-                  <div>Total</div>
+                  <div onClick={handleWithdraw}>Total</div>
                   <div className="uppercase">
-                     {Decimal.format(state.total, userWallets[0]?.fixed, '')} {userWallets[0]?.currency}
+                     {Decimal.format(state.total, userWallets[0]?.fixed, '')} {currency}
                   </div>
                </div>
                <CellDetail
                   title="Fee"
-                  value={`0.00050000 ${userWallets[0]?.currency}`}
+                  value={`${withdrawFee} ${currency}`}
                />
                <CellDetail
                   title="Minimum withdraw"
-                  value={`200,000 ${userWallets[0]?.currency}`}
+                  value={`${withdrawMinAmount} ${currency}`}
                />
                <CellDetail
                   title="Daily limit"
-                  value={`200,000 ${userWallets[0]?.currency}`}
+                  value={`${withdrawLimit24H} ${currency}`}
+               />
+               <CellDetail
+                  title="Monthly limit"
+                  value={`${withdrawLimit1M} ${currency}`}
                />
             </div>
             <div className="flex justify-between mt-12">
@@ -796,14 +859,24 @@ const WithdrawalFC = memo(({
       <>
          {userWallets[0]?.type === 'coin' && (
             <>
-               <Listbox
+               {userWallets[0]?.networks.filter(e => e.protocol !== '').length && (
+                  <Listbox
+                     label="Network"
+                     objectKey="protocol"
+                     list={selectedNetwork}
+                     lists={userWallets[0]?.networks}
+                     onChange={setSelectedNetwork}
+                     info={!selectedNetwork?.withdrawal_enabled ? 'This network disabled' : ''}
+                  />
+               )}
+               {/* <Listbox
                   value={selectedNetwork}
                   onChange={setSelectedNetwork}
                >
                   <div className="relative">
                      <div className="space-y-2.5">
                         <div className="text-xs text-neutral5 leading-none font-bold uppercase">
-                           Currency
+                           Network
                         </div>
                         <Listbox.Button className={({ open }) => `relative w-full h-12 pl-4 pr-12 shadow-input outline-none ${open ? 'shadow-dropdown-1' : 'dark:shadow-border-dark'} bg-neutral8 dark:bg-neutral2 rounded-xl border-none font-medium leading-12 text-left transition-shadow duration-200 before:content-[''] before:absolute before:top-1/2 before:right-2 before:h-6 before:w-6 before:-translate-y-1/2 before:rounded-full before:transition-transform before:duration-200 before:icon-arrow ${open ? 'before:rotate-180' : ''}`}>
                            <span className="block truncate font-medium">
@@ -827,7 +900,7 @@ const WithdrawalFC = memo(({
                         ))}
                      </Listbox.Options>
                   </div>
-               </Listbox>
+               </Listbox> */}
                <InputGroup
                   id="address"
                   label="Address"
@@ -878,41 +951,41 @@ const WithdrawalFC = memo(({
          <Button
             text="Create"
             onClick={handleCreateBeneficiary}
+            disabled={isDisabled()}
+            withLoading={beneficiariesCreateLoading}
          />
       </>
    ), [selectedNetwork, setSelectedNetwork, userWallets, listNetwork, address, label, description, destinationTag, setField, handleCreateBeneficiary])
 
-   const renderModalDetail = () => {
-      return (
-         <div className="mt-10 space-y-8">
-            <div className="text-5xl text-center font-dm font-bold leading-custom1 tracking-custom">Yay! 🎉</div>
-            <div className="max-w-71.25 mx-auto text-center text-base font-medium leading-normal">
-               You successfully purchased <span className="text-primary5">0.020202 BTC</span>  from Digiasset
+   const renderModalDetail = () => (
+      <div className="mt-10 space-y-8">
+         <div className="text-5xl text-center font-dm font-bold leading-custom1 tracking-custom">Yay! 🎉</div>
+         <div className="max-w-71.25 mx-auto text-center text-base font-medium leading-normal">
+            You successfully purchased <span className="text-primary5">0.020202 BTC</span>  from Digiasset
+         </div>
+         <div className="flex flex-wrap p-6 rounded-xl border border-neutral6 dark:border-neutral3">
+            <div className="mr-auto space-y-2.5">
+               <div className="text-neutral4">Status</div>
+               <div className="font-medium text-primary5">Completed</div>
             </div>
-            <div className="flex flex-wrap p-6 rounded-xl border border-neutral6">
-               <div className="mr-auto space-y-2.5">
-                  <div className="text-neutral4">Status</div>
-                  <div className="font-medium text-primary5">Completed</div>
-               </div>
-               <div className="space-y-2.5">
-                  <div className="text-neutral4">Transaction ID</div>
-                  <div className="font-medium">0msx836930...87r398</div>
-               </div>
-            </div>
-            <div className="flex space-x-4">
-               <Button
-                  text="Trade"
-                  onClick={() => history.push(`trading/${userWallets[0]?.currency || 'btcidr'}`)}
-                  variant="outline"
-               />
-               <Button
-                  text="Wallets"
-                  onClick={() => history.push('/wallets')}
-               />
+            <div className="space-y-2.5">
+               <div className="text-neutral4">Transaction ID</div>
+               <div className="font-medium">0msx836930...87r398</div>
             </div>
          </div>
-      )
-   }
+         <div className="flex space-x-4">
+            <Button
+               text="Trade"
+               onClick={() => history.push(`trading/${userWallets[0]?.currency || 'btcidr'}`)}
+               variant="outline"
+            />
+            <Button
+               text="Wallets"
+               onClick={() => history.push('/wallets')}
+            />
+         </div>
+      </div>
+   )
 
    const renderContentDeleted = () => (
       <div className="pt-10 space-y-8">
@@ -929,6 +1002,43 @@ const WithdrawalFC = memo(({
             withLoading={beneficiariesDeleteLoading}
             onClick={() => deleteBeneficiary({ id })}
          />
+      </div>
+   );
+   const handleActivate = () => activateBeneficiary({ id, pin });
+
+   const renderContentActivate = () => (
+      <div className="pt-10 space-y-8">
+         <div className="space-y-3">
+            <div className="font-dm text-2xl leading-9 text-center tracking-custom">
+               Beneficiaries Activation
+            </div>
+            <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
+               Save the new address, Please enter the code that we sent to your email.
+            </div>
+         </div>
+         <InputOtp
+            length={6}
+            className="flex -mx-2"
+            isNumberInput
+            onChangeOTP={setPin}
+         />
+         <div className="space-y-3 text-center">
+            <Button
+               text={'Confirm'}
+               disabled={pin.length !== 6}
+               onClick={handleActivate}
+               withLoading={beneficiariesActivateLoading}
+            />
+            <button
+               className={beneficiariesResendLoading ? '' : 'text-primary1 font-medium hover:underline hover:underline-offset-4'}
+               disabled={beneficiariesResendLoading}
+               onClick={() => resendBeneficiary({ id })}
+            >
+               {!beneficiariesResendLoading ? 'Resend code' : (
+                  <Skeleton width={100} height={20} />
+               )}
+            </button>
+         </div>
       </div>
    );
 
@@ -994,6 +1104,12 @@ const WithdrawalFC = memo(({
          >
             {renderContentDeleted()}
          </Portal>
+         <Portal
+            show={modalConfirm}
+            close={handleShowModalConfirm}
+         >
+            {renderContentActivate()}
+         </Portal>
 
          <Portal
             show={showModalSuccessPurchased}
@@ -1006,13 +1122,21 @@ const WithdrawalFC = memo(({
 });
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
+   user: selectUserInfo(state),
    theme: selectCurrentColorTheme(state),
    wallets: selectWallets(state),
+   beneficiary: selectBeneficiariesCreate(state),
    beneficiaries: selectBeneficiaries(state),
    beneficiariesLoading: selectBeneficiariesFetchLoading(state),
+   beneficiariesCreateLoading: selectBeneficiariesCreateLoading(state),
+   beneficiariesCreateSuccess: selectBeneficiariesCreateSuccess(state),
+   beneficiariesActivateLoading: selectBeneficiariesActivateLoading(state),
+   beneficiariesActivateSuccess: selectBeneficiariesActivateSuccess(state),
    beneficiariesDeleteLoading: selectBeneficiariesDeleteLoading(state),
    beneficiariesDeleteSuccess: selectBeneficiariesDeleteSuccess(state),
+   beneficiariesResendLoading: selectBeneficiariesResendPinLoading(state),
    memberLevels: selectMemberLevels(state),
+   withdrawLimits: selectWithdrawLimit(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
@@ -1023,7 +1147,9 @@ const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispat
    updateBeneficiary: payload => dispatch(beneficiariesDataUpdate(payload)),
    activateBeneficiary: payload => dispatch(beneficiariesActivate(payload)),
    deleteBeneficiary: id => dispatch(beneficiariesDelete(id)),
-   resendPinBeneficiary: id => dispatch(beneficiariesResendPin(id)),
+   resendBeneficiary: id => dispatch(beneficiariesResendPin(id)),
+   withdrawCcy: payload => dispatch(walletsWithdrawCcyFetch(payload)),
+   withdrawLimitFetch: () => dispatch(withdrawLimitFetch()),
    fetchSuccess: payload => dispatch(alertPush(payload)),
 });
 

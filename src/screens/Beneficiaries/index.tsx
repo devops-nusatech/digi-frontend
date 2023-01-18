@@ -162,9 +162,11 @@ const BeneficiariesFC = ({
    const [selected, setSelected] = useState(people[0]);
    const [pin, setPin] = useState('');
 
+   const assets = asset.filter(asset => asset.networks.length);
+
    const filteredWallets = searchAsset === ''
-      ? asset
-      : asset
+      ? assets
+      : assets
          .filter(wallet =>
             wallet.name
                .toLowerCase()
@@ -364,15 +366,19 @@ const BeneficiariesFC = ({
          {modalType === 'coin' ? (
             <>
                {renderSelectAsset()}
-               {selectedAsset.networks.filter(e => e.protocol !== '').length && (
+               {selectedAsset.networks.length ? selectedAsset.networks.filter(e => e.protocol !== '').length && (
                   <Listbox
                      label="Network"
                      objectKey="protocol"
                      list={selectedNetwork}
                      lists={selectedAsset.networks}
                      onChange={setSelectedNetwork}
-                     info={!selectedNetwork.withdrawal_enabled ? 'This network disabled' : ''}
+                     info={!selectedNetwork?.withdrawal_enabled || !selectedAsset.networks.length ? 'This network disabled' : ''}
                   />
+               ) : (
+                  <div className="text-primary4 text-x leading-relaxed font-medium">
+                     Network disabled
+                  </div>
                )}
                <InputGroup
                   id="address"
@@ -457,7 +463,7 @@ const BeneficiariesFC = ({
    );
 
    const isDisabled = (): boolean => {
-      const withdrawEnabled = selectedNetwork.withdrawal_enabled;
+      const withdrawEnabled = selectedNetwork?.withdrawal_enabled;
       return !withdrawEnabled || !Boolean(address) || !Boolean(label);
    }
 

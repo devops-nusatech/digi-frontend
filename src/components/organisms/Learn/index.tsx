@@ -132,6 +132,8 @@ const LearnMemo: FC = () => {
                                           src={e.feature_image}
                                           alt={e.title}
                                           title={e.title}
+                                          height={205.99}
+                                          width={333.33}
                                        />
                                        <div className="absolute inset-0 group-hover:bg-gradient-to-r group-hover:from-primary2 group-hover:bg-primary3 group-hover:opacity-75" />
                                        <svg className="absolute left-[45%] top-[45%] text-center h-10 w-10 opacity-0 group-hover:opacity-100 transition-all duration-[1300ms] fill-primary4 p-2 bg-neutral6 rounded-full group-hover:animate-bounce" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http:www.w3.org/2000/svg">

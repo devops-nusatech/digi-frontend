@@ -13,7 +13,7 @@ const classes = {
    },
    variant: {
       primary: 'bg-primary1 text-neutral8 hover:bg-primary1/90 hover:shadow-xl disabled:hover:bg-primary1',
-      green: 'bg-primary5 text-neutral8 hover:bg-my-green-h hover:shadow-xl disabled:hover:bg-primary5',
+      green: 'bg-primary5 dark:bg-chart1 text-neutral8 hover:bg-my-green-h hover:shadow-xl disabled:hover:bg-primary5',
       orange: 'bg-primary4 text-neutral8 hover:bg-my-orange-h hover:shadow-xl disabled:hover:bg-primary4',
       outline: 'bg-none shadow-border hover:text-neutral8 hover:shadow-input-dark hover:bg-neutral2 hover:-translate-y-0.5 dark:hover:bg-neutral3 dark:hover:border-none dark:shadow-border-dark disabled:translate-y-0'
    },

@@ -195,70 +195,68 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = memo(({
                      </tr>
                   </thead>
                   <tbody>
-                     {
-                        beneficiariesLoading ? (
-                           <>
-                              <tr>
-                                 <td colSpan={5} className="px-4 py-3 last:pb-0">
-                                    <Skeleton height={20} isWithFull rounded="md" />
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td colSpan={5} className="px-4 py-3 last:pb-0">
-                                    <Skeleton height={20} isWithFull rounded="md" />
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td colSpan={5} className="px-4 py-3 last:pb-0">
-                                    <Skeleton height={20} isWithFull rounded="md" />
-                                 </td>
-                              </tr>
-                           </>
-                        ) : beneficiariesList.length ? beneficiariesList.map(({ id, name, data: { address }, state, currency }, index) => (
-                           <tr
-                              key={index}
-                              style={{ transition: 'background .2s' }}
-                              className="group"
-                           >
-                              <td onClick={() => handleShowModalActivate(id, state)} className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                                 <div>{index + 1}</div>
-                              </td>
-                              <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                                 <div>{name}</div>
-                              </td>
-                              <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                                 <div>{truncateMiddle(String(address), 20)}</div>
-                              </td>
-                              <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                                 <div className={state === 'active' ? 'text-primary5 dark:text-chart1' : 'text-primary4'}>{state}</div>
-                              </td>
-                              <td className="rounded-r-xl p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                                 <div className="flex justify-end items-center">
-                                    <svg
-                                       onClick={e => {
-                                          e.stopPropagation();
-                                          handleShowModalDelete(id);
-                                       }}
-                                       className="cursor-pointer w-6 h-6 fill-primary4 transition-colors duration-300"
-                                    >
-                                       <use xlinkHref="#icon-close-circle" />
-                                    </svg>
-                                 </div>
-                              </td>
-                           </tr>
-                        )) : (
+                     {beneficiariesLoading ? (
+                        <>
                            <tr>
-                              <td colSpan={5}>
-                                 <div className="min-h-96 flex flex-col items-center justify-center space-y-3">
-                                    <IcEmty />
-                                    <div className="text-xs font-semibold text-neutral4">
-                                       <FormattedMessage id="noResultFound" />
-                                    </div>
-                                 </div>
+                              <td colSpan={5} className="px-4 py-3 last:pb-0">
+                                 <Skeleton height={20} isWithFull rounded="md" />
                               </td>
                            </tr>
-                        )
-                     }
+                           <tr>
+                              <td colSpan={5} className="px-4 py-3 last:pb-0">
+                                 <Skeleton height={20} isWithFull rounded="md" />
+                              </td>
+                           </tr>
+                           <tr>
+                              <td colSpan={5} className="px-4 py-3 last:pb-0">
+                                 <Skeleton height={20} isWithFull rounded="md" />
+                              </td>
+                           </tr>
+                        </>
+                     ) : beneficiariesList.length ? beneficiariesList.map(({ id, name, data: { address }, state, blockchain_key }, index) => (
+                        <tr
+                           key={blockchain_key}
+                           style={{ transition: 'background .2s' }}
+                           className="group"
+                        >
+                           <td onClick={() => handleShowModalActivate(id, state)} className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                              <div>{index + 1}</div>
+                           </td>
+                           <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                              <div>{name}</div>
+                           </td>
+                           <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                              <div>{truncateMiddle(String(address), 20)}</div>
+                           </td>
+                           <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                              <div className={state === 'active' ? 'text-primary5 dark:text-chart1' : 'text-primary4'}>{state}</div>
+                           </td>
+                           <td className="rounded-r-xl p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                              <div className="flex justify-end items-center">
+                                 <svg
+                                    onClick={e => {
+                                       e.stopPropagation();
+                                       handleShowModalDelete(id);
+                                    }}
+                                    className="cursor-pointer w-6 h-6 fill-primary4 transition-colors duration-300"
+                                 >
+                                    <use xlinkHref="#icon-close-circle" />
+                                 </svg>
+                              </div>
+                           </td>
+                        </tr>
+                     )) : (
+                        <tr>
+                           <td colSpan={5}>
+                              <div className="min-h-96 flex flex-col items-center justify-center space-y-3">
+                                 <IcEmty />
+                                 <div className="text-xs font-semibold text-neutral4">
+                                    <FormattedMessage id="noResultFound" />
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                     )}
 
                   </tbody>
                </table>

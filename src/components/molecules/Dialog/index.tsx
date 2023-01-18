@@ -24,7 +24,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(({
             ref={ref}
             as="div"
             onClose={setIsOpen}
-            className="relative z-10"
+            className="relative z-20"
          >
             <Transition.Child
                as={React.Fragment}
@@ -41,14 +41,14 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(({
                <div className="flex min-h-full items-center justify-center p-12 text-center">
                   <Transition.Child
                      as={React.Fragment}
-                     enter="ease-out duration-300"
-                     enterFrom="opacity-0 scale-95 translate-y-5"
+                     enter="ease-out duration-200"
+                     enterFrom="opacity-0 scale-75 translate-y-9"
                      enterTo="opacity-100 scale-100"
                      leave="ease-in duration-200"
                      leaveFrom="opacity-100 scale-100"
-                     leaveTo="opacity-0 scale-95 translate-y-5"
+                     leaveTo="opacity-0 scale-75 translate-y-9"
                   >
-                     <Modal.Panel className="w-full max-w-md space-y-8 transform overflow-hidden rounded-2xl bg-neutral8 dark:bg-neutral2 p-8 text-left align-middle shadow-xl transition-all duration-300">
+                     <Modal.Panel className="w-full sca max-w-md space-y-8 transform overflow-hidden rounded-2xl bg-neutral8 dark:bg-neutral2 p-8 text-left align-middle shadow-xl transition-all duration-300">
                         {
                            title && (
                               <Modal.Title
@@ -59,12 +59,12 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(({
                               </Modal.Title>
                            )
                         }
-                        {children}
                         <div onClick={setIsOpen} className="group absolute top-0 right-8 w-10 h-10 flex items-center justify-center rounded-full leading-none opacity-100 border border-neutral6 dark:border-neutral3 dark:hover:border-neutral8 cursor-pointer transition-all duration-300">
                            <svg className="group-hover:scale-110 w-6 h-6 fill-neutral2 dark:fill-neutral8 transition ease-in-out duration-300">
                               <use xlinkHref="#icon-close" />
                            </svg>
                         </div>
+                        {children}
                      </Modal.Panel>
                   </Transition.Child>
                </div>

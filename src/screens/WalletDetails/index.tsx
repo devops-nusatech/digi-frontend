@@ -21,7 +21,6 @@ import {
    Button,
    Decimal,
    PriceChart3,
-   Skeleton,
    TableFinance,
    WalletSidebar
 } from 'components';
@@ -66,7 +65,7 @@ const WalletDetailsFC = memo(({
 }: Props) => {
    const { id = '' } = useParams<Params>();
    const sliderRef = useRef<HTMLDivElement>(null);
-   const { marketsData, handleRedirectToTrading, isLoading } = useMarket();
+   const { marketsData, handleRedirectToTrading } = useMarket();
    const friendsMarket = marketsData.filter(market => market.quote_unit === 'usdt');
 
    useEffect(() => {
@@ -165,28 +164,7 @@ const WalletDetailsFC = memo(({
                            </div>
                         </div>
                         <div ref={sliderRef} className={`relative w-[668px] flex ${friendsMarket.length === 1 ? 'justify-end' : ''} gap-10 lg:gap-20 snap-x snap-mandatory overflow-x-auto pb-8 transition-transform duration-500`}>
-                           {isLoading ? (
-                              <>
-                                 <div className="snap-end shrink-0 first:pl-3 last:pr-3">
-                                    <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
-                                       <Skeleton
-                                          height={133.99}
-                                          width={240}
-                                          rounded="2xl"
-                                       />
-                                    </div>
-                                 </div>
-                                 <div className="snap-end shrink-0 first:pl-3 last:pr-3">
-                                    <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
-                                       <Skeleton
-                                          height={133.99}
-                                          width={240}
-                                          rounded="2xl"
-                                       />
-                                    </div>
-                                 </div>
-                              </>
-                           ) : friendsMarket.length && friendsMarket.map(market => {
+                           {friendsMarket.length && friendsMarket.map(market => {
                               const klinesData: number[] = market.kline;
                               let labels: number[], data: number[];
                               labels = klinesData.map(e => e[0]);
@@ -225,7 +203,7 @@ const WalletDetailsFC = memo(({
                            })}
                         </div>
                      </div>
-                     {(!isLoading && friendsMarket.length > 2) && (
+                     {(friendsMarket.length > 2) && (
                         <div className="absolute top-[36%] right-0">
                            <div
                               onClick={handleSlideRight}

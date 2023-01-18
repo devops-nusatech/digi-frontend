@@ -315,7 +315,7 @@ const HeaderFC = ({
                            <DarkModeSwitch
                               className="h-6 w-6 transition-all duration-300"
                               checked={!isDarkMode}
-                              onChange={() => dropDwonCryptoDarkMode(isDarkMode ? false : true)}
+                              onChange={handleSwithTheme}
                               size={24}
                               sunColor="#fcfcfd"
                               moonColor="#777E90"
@@ -332,7 +332,6 @@ const HeaderFC = ({
                               <DropdownListProfile
                                  isOpen={dropDwonProfile}
                                  isDarkMode={isDarkMode}
-                                 handleSwithTheme={handleSwithTheme}
                                  handleSetShowModalConfirmLogout={handleSetShowModalConfirmLogout}
                                  translate={translate}
                               />
@@ -343,7 +342,7 @@ const HeaderFC = ({
                            <DarkModeSwitch
                               className="h-6 w-6 transition-all duration-300"
                               checked={!isDarkMode}
-                              onChange={() => dropDwonCryptoDarkMode(isDarkMode ? false : true)}
+                              onChange={handleSwithTheme}
                               size={24}
                               sunColor="#fcfcfd"
                               moonColor="#777E90"

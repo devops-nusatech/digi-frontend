@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
    Button,
    InputOrder,
@@ -6,6 +6,7 @@ import {
    Decimal,
    InputCurrency,
    IOrderProps,
+   Dialog,
 } from 'components';
 import { IcWallet } from 'assets';
 import { OrderType } from 'modules/types';
@@ -23,13 +24,14 @@ interface TradingOrderBidProps {
    disabled?: boolean;
    orderPrice: string;
    orderType: OrderType;
-   handleOrder: (e: FormEvent<HTMLFormElement>, order: IOrderProps) => void;
+   handleOrder: (order: IOrderProps) => void;
    minAmount: number;
    minPrice: number;
    priceMarket: string;
    amountVolume: string;
    market: string;
    asks: string[][];
+   executeLoading: boolean;
 }
 
 export const TradingOrderBid: FC<TradingOrderBidProps> = ({
@@ -50,12 +52,16 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    amountVolume,
    market,
    asks,
+   executeLoading,
 }) => {
    const [listenPrice, setListenPrice] = useState<string>('');
    const [orderVolume, setOrderVolume] = useState<string>('');
    const [orderTotal, setOrderTotal] = useState<string>('');
    const [slide, setSlide] = useState<number>(0);
    const [ref, setRef] = useState<Ref>(null);
+
+   const [modalConfirmOrder, setModalConfirmOrder] = useState(false);
+   const handleOrderConfirm = () => setModalConfirmOrder(!modalConfirmOrder);
 
    useEffect(() => {
       return () => {
@@ -123,16 +129,15 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
       handleResetSlider();
    }
 
-   const onSubmit = e => {
-      e.preventDefault();
-      e.persist();
+   const onSubmit = () => {
       const value: IOrderProps = {
          side: 'buy',
          price: typeof listenPrice === 'string' ? listenPrice.split(',').join('') : listenPrice,
          volume: orderVolume,
       }
-      handleOrder(e, value);
+      handleOrder(value);
       resetState();
+      handleOrderConfirm();
    }
 
    const isDisabled = (): boolean => {
@@ -160,19 +165,20 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    console.log('total :>> ', total);
 
    return (
-      <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
-         <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
-               Buy {to}
-            </div>
-            <div className="flex items-center space-x-1">
-               <IcWallet className="w-4 h-4 fill-neutral2 dark:fill-neutral4 transition-colors duration-300" />
-               <div className="text-xs font-semibold leading-custom1">
-                  {Decimal.format(availableQuote, pricePrecision, ',')} {from}
+      <>
+         <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
+            <div className="flex items-center justify-between mb-4">
+               <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+                  Buy {to}
+               </div>
+               <div className="flex items-center space-x-1">
+                  <IcWallet className="w-4 h-4 fill-neutral2 dark:fill-neutral4 transition-colors duration-300" />
+                  <div className="text-xs font-semibold leading-custom1">
+                     {Decimal.format(availableQuote, pricePrecision, ',')} {from}
+                  </div>
                </div>
             </div>
-         </div>
-         {/* <pre>
+            {/* <pre>
             <code>
                <div className="flex flex-col space-y-3">
                   <div className="flex space-x-2">
@@ -198,59 +204,103 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
                </div>
             </code>
          </pre> */}
-         <form onSubmit={onSubmit} className="flex flex-col space-y-3">
-            <InputCurrency
-               titleLeft={translate('page.body.trade.header.newOrder.content.price')}
-               titleRight={from}
-               placeholder={orderType === 'market' ? 'Market' : ''}
-               disabled={orderType === 'market'}
-               value={orderType === 'market' ? '' : listenPrice}
-               onChange={handleChangePrice}
-               className={orderType === 'market' ? '!bg-neutral7 dark:!bg-shade1' : ''}
-            />
-            <InputOrder
-               titleLeft={translate('page.body.trade.header.newOrder.content.amount')}
-               titleRight={to}
-               value={orderVolume === '' ? '' : orderVolume}
-               onChange={handleChangeAmount}
-               className="caret-primary1"
-            />
-            <SliderPercent
-               instanceRef={instance => {
-                  if (instance && !ref) {
-                     setRef(instance);
-                  }
-               }}
-               range={{
-                  min: 0,
-                  max: 100
-               }}
-               start={0}
-               onSlide={handleChangePercentage}
-            />
-            <InputOrder
-               titleLeft={translate('page.body.trade.header.newOrder.content.total')}
-               titleRight={from}
-               value={
-                  orderType === 'market' ? totalPriceMareket()
-                     : orderTotal === 'NaN' ? 'Total is too long...' : orderTotal}
-               // value={
-               //    orderType === 'market' ? totalPriceMareket()
-               //       : (orderTotal === '' || orderTotal === '0' || orderTotal === '0.00') ? ''
-               //          : orderTotal}
-               readOnly
-            />
-            {/* {orderType === 'market' ? <span>&asymp;</span> : null}
+            <form className="flex flex-col space-y-3">
+               <InputCurrency
+                  titleLeft={translate('page.body.trade.header.newOrder.content.price')}
+                  titleRight={from}
+                  placeholder={orderType === 'market' ? 'Market' : ''}
+                  disabled={orderType === 'market'}
+                  value={orderType === 'market' ? '' : listenPrice}
+                  onChange={handleChangePrice}
+                  className={orderType === 'market' ? '!bg-neutral7 dark:!bg-shade1' : ''}
+               />
+               <InputOrder
+                  titleLeft={translate('page.body.trade.header.newOrder.content.amount')}
+                  titleRight={to}
+                  value={orderVolume === '' ? '' : orderVolume}
+                  onChange={handleChangeAmount}
+                  className="caret-primary1"
+               />
+               <SliderPercent
+                  instanceRef={instance => {
+                     if (instance && !ref) {
+                        setRef(instance);
+                     }
+                  }}
+                  range={{
+                     min: 0,
+                     max: 100
+                  }}
+                  start={0}
+                  onSlide={handleChangePercentage}
+               />
+               <InputOrder
+                  titleLeft={translate('page.body.trade.header.newOrder.content.total')}
+                  titleRight={from}
+                  value={
+                     orderType === 'market' ? totalPriceMareket()
+                        : orderTotal === 'NaN' ? 'Total is too long...' : orderTotal}
+                  // value={
+                  //    orderType === 'market' ? totalPriceMareket()
+                  //       : (orderTotal === '' || orderTotal === '0' || orderTotal === '0.00') ? ''
+                  //          : orderTotal}
+                  readOnly
+               />
+               {/* {orderType === 'market' ? <span>&asymp;</span> : null}
             {Decimal.format(Number(total), pricePrecision, ',')}
             {' - '}
             {handleSetValue(Decimal.format(safePrice(), pricePrecision, ','), '0')} */}
+               <Button
+                  text={`Buy ${to}`}
+                  disabled={isDisabled()}
+                  variant="green"
+                  onClick={handleOrderConfirm}
+               />
+            </form>
+         </div>
+         <Dialog
+            isOpen={modalConfirmOrder}
+            setIsOpen={handleOrderConfirm}
+            title="Confirm Order"
+         >
+            <div className="space-y-2">
+               <div className="text-center font-medium leading-normal">
+                  Buy
+               </div>
+               <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1 uppercase">
+                  {Decimal.format(orderType === 'market' ? totalPriceMareket().toString() : orderTotal, pricePrecision, ',') || 0} {from}
+               </div>
+            </div>
+            <div className="space-y-3">
+               <List
+                  left="Price"
+                  right={orderType === 'market' ? 'Market' : Decimal.format(listenPrice, pricePrecision, ',')}
+               />
+               <List
+                  left="Order type"
+                  right={orderType}
+               />
+            </div>
             <Button
-               type="submit"
-               text={`Buy ${to}`}
-               disabled={isDisabled()}
-               variant="green"
+               withLoading={executeLoading}
+               text="Confirm"
+               onClick={onSubmit}
             />
-         </form>
-      </div>
+         </Dialog>
+      </>
    )
 }
+
+type ListProps = {
+   left: string;
+   right: string;
+   rightAlt?: string;
+}
+const List = ({ left, right, rightAlt }: ListProps) => (
+   <div className="flex items-center">
+      <div className="text-neutral4">{left}</div>
+      <div className={`text-right font-medium ml-auto capitalize`}>
+         {right} <span className="text-neutral4">{rightAlt}</span>
+      </div>
+   </div>
+);

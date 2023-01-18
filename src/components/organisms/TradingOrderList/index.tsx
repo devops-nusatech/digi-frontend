@@ -177,7 +177,8 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                      {this.renderHeaders()[2]}
                   </div>
                </div>
-               <div className="relative h-[53.5625rem] overflow-hidden pb-4">
+               <div className="relative h-[55.5625rem] overflow-hidden pb-4">
+                  {/* <div className="relative h-[53.5625rem] overflow-hidden pb-4"> */}
                   {(tabActive === 'all' || tabActive === 'bids') && (
                      <div className={`flex overflow-y-scroll ${tabActive === 'bids' ? 'h-[calc(100%-48px)]' : 'h-[calc(50%-24px)]'} ${orderBookLoading ? 'flex-col space-y-3' : 'flex-col-reverse space-y-1 space-y-reverse'} pb-1`} id="order-book">
                         {orderBookLoading ? (

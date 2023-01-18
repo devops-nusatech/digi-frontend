@@ -4,19 +4,26 @@ import React, {
    useState
 } from 'react';
 import { useIntersection } from 'hooks';
+import { Skeleton } from 'components';
 
 type ImageProps = {
    src: string;
+   srcSet?: string;
    alt: string;
    title: string;
-   className: string;
+   className?: string;
+   height?: number;
+   width?: number;
 }
 
 export const Image = ({
    src,
+   srcSet,
    alt,
    title,
-   className
+   className,
+   height,
+   width
 }: ImageProps) => {
    const [isInView, setIsInView] = useState(false);
    const ref = useRef<HTMLDivElement>(null);
@@ -29,9 +36,12 @@ export const Image = ({
 
    return (
       <div ref={ref}>
-         {isInView && (
+         {!isInView ? (
+            <Skeleton height={height} width={width} />
+         ) : (
             <img
                src={src}
+               srcSet={srcSet}
                alt={alt}
                title={title}
                className={className}

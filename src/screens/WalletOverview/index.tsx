@@ -310,7 +310,7 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
                               className="accent-primary1 cursor-pointer" id="hide-empty-balance"
                               onChange={() => setChecked(prev => !prev)}
                            />
-                           <div className="select-none text-xs font-medium leading-custom1 text-neutral4 hover:text-neutral2 transition-colors duration-300">
+                           <div className="select-none text-xs font-medium leading-custom1 text-neutral4 hover:text-neutral2 dark:hover:text-neutral8 transition-colors duration-300">
                               Hide Empty Balance
                            </div>
                         </label>

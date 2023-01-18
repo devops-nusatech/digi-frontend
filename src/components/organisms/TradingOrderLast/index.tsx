@@ -2,7 +2,6 @@ import React, {
    useEffect,
    useState,
    FunctionComponent,
-   FormEvent,
    useLayoutEffect
 } from 'react';
 import { Link } from 'react-router-dom';
@@ -43,6 +42,8 @@ import {
    TradingOrderAsk,
    TradingOrderBid,
    TradingOrderBackToLogin,
+   Nav,
+   TradingTrade,
 } from 'components';
 import { FilterPrice } from 'filters';
 import { IntlProps } from 'index';
@@ -118,6 +119,7 @@ const TradingOrderLastFunc = (props: Props) => {
 
    const [orderPrice, setOrderPrice] = useState<string>('');
    const [orderType, setOrderType] = useState<OrderType>('limit');
+   const [currentTab, setCurrentTab] = useState(0);
 
    useEffect(() => {
       if (!wallets.length) {
@@ -158,8 +160,7 @@ const TradingOrderLastFunc = (props: Props) => {
       setCurrentPrice(0);
    }
 
-   const handleOrder = (e: FormEvent<HTMLFormElement>, order: IOrderProps) => {
-      e.preventDefault();
+   const handleOrder = (order: IOrderProps) => {
       if (!currentMarket) {
          return;
       }
@@ -314,38 +315,54 @@ const TradingOrderLastFunc = (props: Props) => {
    // }
 
    return (
-      <div className="relative mt-1 rounded p-4 bg-neutral8 dark:bg-shade2">
-         <div className="flex items-center mb-6 justify-between">
-            <div className="flex items-center space-x-4">
-               <div
-                  onClick={() => handleSetOrderType('limit')}
-                  className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 ${orderType === 'limit' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} cursor-pointer transition ease-in-out duration-300`}
-               >
-                  {translate('page.body.trade.header.newOrder.content.orderType.limit')}
-               </div>
-               <div
-                  onClick={() => handleSetOrderType('market')}
-                  className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 cursor-pointer ${orderType === 'market' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} transition ease-in-out duration-300`}
-               >
-                  {translate('page.body.trade.header.newOrder.content.orderType.market')}
-               </div>
+      <>
+         <div className="relative mt-1 rounded p-4 bg-neutral8 dark:bg-shade2">
+            <div className="flex space-x-4 justify-center">
+               <Nav
+                  title="Transaction"
+                  isActive={currentTab === 0}
+                  onClick={() => setCurrentTab(0)}
+                  theme="grey"
+               />
+               <Nav
+                  title="My orders"
+                  isActive={currentTab === 1}
+                  onClick={() => setCurrentTab(1)}
+                  theme="grey"
+               />
             </div>
-            <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">
-               <div className="">
-                  Crypto trading tutorial
+            <div className={`${currentTab === 0 ? 'h-[369.99px] opacity-100 z-10' : 'h-0 opacity-0 z-0'} transition-all duration-700`}>
+               <div className="flex items-center mb-6 justify-between">
+                  <div className="flex items-center space-x-4">
+                     <div
+                        onClick={() => handleSetOrderType('limit')}
+                        className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 ${orderType === 'limit' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} cursor-pointer transition ease-in-out duration-300`}
+                     >
+                        {translate('page.body.trade.header.newOrder.content.orderType.limit')}
+                     </div>
+                     <div
+                        onClick={() => handleSetOrderType('market')}
+                        className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 cursor-pointer ${orderType === 'market' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} transition ease-in-out duration-300`}
+                     >
+                        {translate('page.body.trade.header.newOrder.content.orderType.market')}
+                     </div>
+                  </div>
+                  <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">
+                     <div className="">
+                        Crypto trading tutorial
+                     </div>
+                     <Link to="/" className="flex items-center group">
+                        <div className="ml-2 text-neutral2 dark:text-neutral6 group-hover:text-primary1 transition-all duration-300">
+                           Learn now
+                        </div>
+                        <div className="w-5 h-5 flex items-center justify-center">
+                           <ChevronRightIcon className="w-4 h-4 stroke-neutral2 dark:stroke-neutral6 fill-neutral2 dark:fill-neutral6 group-hover:stroke-primary1 transition-all duration-300" />
+                        </div>
+                     </Link>
+                  </div>
                </div>
-               <Link to="/" className="flex items-center group">
-                  <div className="ml-2 text-neutral2 dark:text-neutral6 group-hover:text-primary1 transition-all duration-300">
-                     Learn now
-                  </div>
-                  <div className="w-5 h-5 flex items-center justify-center">
-                     <ChevronRightIcon className="w-4 h-4 stroke-neutral2 dark:stroke-neutral6 fill-neutral2 dark:fill-neutral6 group-hover:stroke-primary1 transition-all duration-300" />
-                  </div>
-               </Link>
-            </div>
-         </div>
-         <div className="flex my-0 -mx-4">
-            {/* <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
+               <div className="flex my-0 -mx-4">
+                  {/* <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
                <div className="flex items-center justify-between mb-4">
                   <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
                      Buy {to}
@@ -401,50 +418,55 @@ const TradingOrderLastFunc = (props: Props) => {
                   />
                </form>
             </div> */}
-            <TradingOrderBid
-               to={to}
-               from={from}
-               availableQuote={getAvailableValue(walletQuote)}
-               availableBase={getAvailableValue(walletBase)}
-               translate={translate}
-               pricePrecision={price_precision}
-               amountPrecision={amount_precision}
-               orderPrice={orderPrice}
-               orderType={orderType}
-               handleOrder={handleOrder}
-               disabled={executeLoading}
-               minAmount={min_amount}
-               minPrice={min_price}
-               priceMarket={lastPrice}
-               amountVolume={amountVolume}
-               market={marketId}
-               asks={asks}
-            />
-            <TradingOrderAsk
-               to={to}
-               from={from}
-               availableBase={getAvailableValue(walletBase)}
-               translate={translate}
-               pricePrecision={price_precision}
-               amountPrecision={amount_precision}
-               orderPrice={orderPrice}
-               orderType={orderType}
-               handleOrder={handleOrder}
-               disabled={executeLoading}
-               minAmount={min_amount}
-               minPrice={min_price}
-               priceMarket={lastPrice}
-               amountVolume={amountVolume}
-               market={marketId}
-               bids={bids}
-            />
-         </div>
-         {
-            !isLoggedIn && (
+                  <TradingOrderBid
+                     to={to}
+                     from={from}
+                     availableQuote={getAvailableValue(walletQuote)}
+                     availableBase={getAvailableValue(walletBase)}
+                     translate={translate}
+                     pricePrecision={price_precision}
+                     amountPrecision={amount_precision}
+                     orderPrice={orderPrice}
+                     orderType={orderType}
+                     handleOrder={handleOrder}
+                     disabled={executeLoading}
+                     minAmount={min_amount}
+                     minPrice={min_price}
+                     priceMarket={lastPrice}
+                     amountVolume={amountVolume}
+                     market={marketId}
+                     asks={asks}
+                     executeLoading={executeLoading}
+                  />
+                  <TradingOrderAsk
+                     executeLoading={executeLoading}
+                     to={to}
+                     from={from}
+                     availableBase={getAvailableValue(walletBase)}
+                     translate={translate}
+                     pricePrecision={price_precision}
+                     amountPrecision={amount_precision}
+                     orderPrice={orderPrice}
+                     orderType={orderType}
+                     handleOrder={handleOrder}
+                     disabled={executeLoading}
+                     minAmount={min_amount}
+                     minPrice={min_price}
+                     priceMarket={lastPrice}
+                     amountVolume={amountVolume}
+                     market={marketId}
+                     bids={bids}
+                  />
+               </div>
+            </div>
+            <div className={`${currentTab === 1 ? 'h-[369.99px] opacity-100 overflow-y-auto z-10' : 'h-0 opacity-0 z-0'} transition-all duration-700`}>
+               <TradingTrade isLoggedIn={isLoggedIn} />
+            </div>
+            {!isLoggedIn && (
                <TradingOrderBackToLogin />
-            )
-         }
-      </div>
+            )}
+         </div>
+      </>
    )
 };
 

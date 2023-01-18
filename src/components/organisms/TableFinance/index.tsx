@@ -438,7 +438,7 @@ const TableFinanceFC = ({
             }}
             title="Filter"
          >
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
                <InputGroup
                   type="date"
                   label="start date"
@@ -462,19 +462,17 @@ const TableFinanceFC = ({
                   </svg>
                </div>
             </div>
-            {filter.advanceFilter && (
-               <>
-                  <InputGroup
-                     label="asset name"
-                     placeholder="search asset"
-                  />
-                  <InputGroup
-                     label="state type"
-                     placeholder="State"
-                  />
-               </>
-            )}
-            <div className="grid grid-cols-2 gap-3">
+            <div className={`space-y-8 ${filter.advanceFilter ? 'h-44 opacity-100' : 'h-0 opacity-0 !mt-0'} transition-all duration-300`}>
+               <InputGroup
+                  label="asset name"
+                  placeholder="search asset"
+               />
+               <InputGroup
+                  label="state type"
+                  placeholder="State"
+               />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
                <Button
                   text="Apply"
                />
