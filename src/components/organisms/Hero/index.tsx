@@ -78,6 +78,7 @@ export const Hero: FC = (props: any) => {
                   </>
                ) : marketsData?.length ? marketsData?.slice(0, 4)?.map(market => (
                   <div
+                     key={market.id}
                      onClick={() => handleRedirectToTrading(market.id)}
                      className="col-span-4 sm:col-span-2 lg:col-span-1 px-6 py-4 md:p-8 dark:text-neutral8 rounded-2xl hover:bg-neutral8 dark:hover:bg-neutral3 hover:shadow-card cursor-pointer transition-all duration-300"
                   >

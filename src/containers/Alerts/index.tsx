@@ -37,21 +37,26 @@ class AlertComponent extends Component<Props> {
          : toast.success(msg)}`;
 
    public render() {
+      const { theme } = this.props;
       return (
          <>
-            {this.props?.alerts ? this.props?.alerts?.alerts?.map(w => w && w?.message && w?.message?.map((msg, index) => (
-               <div key={index} className="hidden" onClick={() => this.deleteAlertByIndex(index)}>
-                  {
-                     this.notify(
-                        `${this.translate(msg)} ${(w?.code && w?.code.toString(10)) === undefined ? '' : w?.code && w?.code.toString(10)}`,
-                        `${w?.type === 'error' ? 'error' : w?.type}`
-                     )
-                  }
+            {this.props.alerts.alerts.map(({ message, type, code }) => message?.length ? message?.map((msg, index) => (
+               <div
+                  key={index}
+                  className="hidden"
+                  onClick={() => this.deleteAlertByIndex(index)}
+               >
+                  {this.notify(
+                     `${this.translate(msg)} ${(code && code.toString(10)) === undefined ? '' : code && code.toString(10)}`,
+                     `${type === 'error' ? 'error' : type}`
+                  )}
                </div>
-            ))) : toast.success('ok')}
+            )) : (
+               this.notify('Server Error', 'error')
+            ))}
             <ToastContainer
                autoClose={3000}
-               theme={this.props.theme === 'dark' ? 'colored' : 'light'}
+               theme={theme === 'dark' ? 'colored' : 'light'}
             />
          </>
       );

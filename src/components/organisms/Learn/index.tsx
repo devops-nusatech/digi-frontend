@@ -3,18 +3,19 @@ import { useSelector } from 'react-redux';
 import { Tab } from '@headlessui/react';
 import { Button, MyTab, Image, Skeleton } from 'components';
 import {
-   illusLearn11,
-   illusLearn12,
-   illusLearn21,
-   illusLearn22,
-   illusLearn31,
-   illusLearn32,
-   illusLearn41,
-   illusLearn42
+   // illusLearn11,
+   // illusLearn12,
+   // illusLearn21,
+   // illusLearn22,
+   // illusLearn31,
+   // illusLearn32,
+   // illusLearn41,
+   // illusLearn42
 } from 'assets';
 import { selectNewsLoading, selectNews } from 'modules';
 import { useNewsFetch } from 'hooks';
 import { useHistory } from 'react-router';
+import { localeDate } from 'helpers';
 
 const LearnMemo: FC = () => {
    const { push } = useHistory();
@@ -37,20 +38,28 @@ const LearnMemo: FC = () => {
             </div>
             <MyTab titles={['All', 'Bitcoin', 'Blockchain', 'Tutorial']}>
                <>
-                  <Tab.Panel>
-                     <div className="mt-0 lg:-mt-8 -mx-3 lg:-mx-4.5 after:content-[''] after:table after:clear-both">
-                        <div className="">
-                           <div className="float-left block mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)] cursor-pointer">
-                              <div className="relative overflow-hidden mb-10 rounded-[20px] group">
-                                 <img className="w-full transition-transform duration-1000 group-hover:scale-125" srcSet={`${illusLearn12} 2x`} src={illusLearn11} alt="Images" />
+                  <Tab.Panel as={React.Fragment}>
+                     <div className="lg2:-mt-8 -mx-4 lg2:-mx-4.5 after:content-[''] after:table after:clear-both">
+                        <div className="lg2-max:relative lg2-max:block lg2-max:box-border lg2-max:select-none lg2-max:touch-pan-y lg2-max:pb-[72px] lg2-max:visible">
+                           <div className="lg2-max:hidden group relative float-left block mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)] cursor-pointer">
+                              <div className="relative overflow-hidden mb-10 rounded-[20px] w-[542px] h-[510px] group">
+                                 <Image
+                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-125"
+                                    src={news[0]?.feature_image}
+                                    alt={news[0]?.title}
+                                    title={news[0]?.title}
+                                    height={510}
+                                    width={542}
+                                    classNameParent="h-full w-full"
+                                 />
                               </div>
                               <div className="flex justify-between">
                                  <div className="grow">
                                     <div className="mb-4 font-dm text-[32px] leading-10 font-bold tracking-custom1 hover:text-primary1 transition-colors duration-500">
-                                       Leveraged tokens now available
+                                       {news[0]?.title}
                                     </div>
                                     <div className="text-base text-neutral4">
-                                       Good things come in 3s. Get 3x Leveraged tokens now.
+                                       {news[0]?.meta_description}
                                     </div>
                                  </div>
                                  <Button
@@ -65,18 +74,36 @@ const LearnMemo: FC = () => {
                                     }
                                  />
                               </div>
+                              <a href={`https://news.digiassetindo.com/${news[0]?.slug}`} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
                            </div>
-                           <div className="float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)]">
-                              <div className="relative overflow-hidden grow-0 shrink-0 basis-[45.65%] rounded-2xl group">
-                                 <img className="w-full transition-transform duration-1000 group-hover:scale-125" srcSet={`${illusLearn22} 2x`} src={illusLearn21} alt="Images" />
+                           {news.slice(1, 4).map(e => (
+                              <div key={e.id} className="lg2-max:hidden group relative float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)] cursor-pointer">
+                                 <div className="relative overflow-hidden grow-0 shrink-0 basis-[45.65%] rounded-2xl group">
+                                    <Image
+                                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-125"
+                                       src={e.feature_image}
+                                       alt={e.title}
+                                       title={e.title}
+                                       height={220}
+                                       width={208}
+                                       classNameParent="h-full w-full"
+                                    />
+                                 </div>
+                                 <div className="flex flex-col grow-1 pr-4 group">
+                                    <div className="mb-4 text-base font-medium group-hover:text-primary1 transition-colors duration-300">
+                                       {e.meta_title}
+                                    </div>
+                                    <div className="mb-auto text-neutral4">
+                                       {e.meta_description}
+                                    </div>
+                                    <div className="mt-6 text-neutral4">
+                                       {localeDate(e.created_at, 'shortDate')}
+                                    </div>
+                                 </div>
+                                 <a href={`https://news.digiassetindo.com/${e.slug}`} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
                               </div>
-                              <div className="flex flex-col grow-1 pr-4 group">
-                                 <div className="mb-4 text-base font-medium group-hover:text-primary1 transition-colors duration-300">Leveraged tokens now available</div>
-                                 <div className="mb-auto text-neutral4">Good things come in 3s. Get 3x Leveraged tokens now.</div>
-                                 <div className="mt-6 text-neutral4">Jun 1, 2021</div>
-                              </div>
-                           </div>
-                           <div className="float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)]">
+                           ))}
+                           {/* <div className="lg2-max:hidden float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)]">
                               <div className="relative overflow-hidden grow-0 shrink-0 basis-[45.65%] rounded-2xl">
                                  <img className="w-full transition-transform duration-1000 hover:scale-125" srcSet={`${illusLearn42} 2x`} src={illusLearn41} alt="Images" />
                                  <div className="absolute top-1/2 left-1/2 z-3 w-12 h-12 -translate-y-1/2 -translate-x-1/2 shadow-play rounded-full bg-neutral8 group">
@@ -92,7 +119,7 @@ const LearnMemo: FC = () => {
                                  <div className="mt-6 text-neutral4">Jun 1, 2021</div>
                               </div>
                            </div>
-                           <div className="float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)]">
+                           <div className="lg2-max:hidden float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)]">
                               <div className="relative overflow-hidden grow-0 shrink-0 basis-[45.65%] rounded-2xl group">
                                  <img className="w-full transition-transform duration-1000 group-hover:scale-125" srcSet={`${illusLearn32} 2x`} src={illusLearn31} alt="Images" />
                               </div>
@@ -101,6 +128,9 @@ const LearnMemo: FC = () => {
                                  <div className="mb-auto text-neutral4">Good things come in 3s. Get 3x Leveraged tokens now.</div>
                                  <div className="mt-6 text-neutral4">Jun 1, 2021</div>
                               </div>
+                           </div> */}
+                           <div className="lg2-max:relative lg2-max:overflow-visible lg2-max:block">
+                              <div className="lg2-max:relative lg2-max:top-0 lg2-max:left-0 lg2-max:block lg2-max:mx-auto lg2-max:opacity-100 lg2-max:w-[5120px] lg2-max:trans"></div>
                            </div>
                         </div>
                      </div>

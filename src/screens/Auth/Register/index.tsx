@@ -298,13 +298,10 @@ class RegisterClass extends Component<Props> {
    private translate = (key: string) => this.props.intl.formatMessage({ id: key });
 
 
-   private handleCheckboxClick = (e: any) => {
-      if (e) {
-         e.preventDefault();
-         this.setState({
-            hasConfirmed: !this.state.hasConfirmed,
-         });
-      }
+   private handleCheckboxClick = () => {
+      this.setState({
+         hasConfirmed: !this.state.hasConfirmed,
+      });
    };
 
    private handleChangeUsername = (value: string) => {

@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Checkbox, TutorialAlt } from 'components'
 
+type State = {
+   isSecurity: boolean;
+   isWallet: boolean;
+   isTrade: boolean;
+   isDeposit: boolean;
+   isTransfer: boolean;
+   isWithdraw: boolean;
+   isNews: boolean;
+}
+
 export const Notification = () => {
+   const [state, setState] = useState<State>({
+      isSecurity: true,
+      isWallet: false,
+      isTrade: false,
+      isDeposit: true,
+      isTransfer: false,
+      isWithdraw: true,
+      isNews: true,
+   });
+
    return (
       <>
          <section className="py-8 lg-max:pb-16 bg-neutral7 dark:bg-neutral1">
@@ -36,13 +56,41 @@ export const Notification = () => {
                            Filters
                         </div>
                         <div className="flex flex-col space-y-6 items-start">
-                           <Checkbox text="Security" checked={true} />
-                           <Checkbox text="Wallet" />
-                           <Checkbox text="Trade" />
-                           <Checkbox text="Deposit" checked={true} />
-                           <Checkbox text="Transfer" />
-                           <Checkbox text="Withdrawal" checked={true} />
-                           <Checkbox text="News" checked={true} />
+                           <Checkbox
+                              text="Security"
+                              checked={state.isSecurity}
+                              onChecked={() => setState({ ...state, isSecurity: !state.isSecurity })}
+                           />
+                           <Checkbox
+                              text="Wallet"
+                              checked={state.isWallet}
+                              onChecked={() => setState({ ...state, isWallet: !state.isWallet })}
+                           />
+                           <Checkbox
+                              text="Trade"
+                              checked={state.isTrade}
+                              onChecked={() => setState({ ...state, isTrade: !state.isTrade })}
+                           />
+                           <Checkbox
+                              text="Deposit"
+                              checked={state.isDeposit}
+                              onChecked={() => setState({ ...state, isDeposit: !state.isDeposit })}
+                           />
+                           <Checkbox
+                              text="Transfer"
+                              checked={state.isTransfer}
+                              onChecked={() => setState({ ...state, isTransfer: !state.isTransfer })}
+                           />
+                           <Checkbox
+                              text="Withdrawal"
+                              checked={state.isWithdraw}
+                              onChecked={() => setState({ ...state, isWithdraw: !state.isWithdraw })}
+                           />
+                           <Checkbox
+                              text="News"
+                              checked={state.isNews}
+                              onChecked={() => setState({ ...state, isNews: !state.isNews })}
+                           />
                         </div>
                         <div className="flex space-x-3 mt-6">
                            <Button

@@ -11,6 +11,7 @@ type ImageProps = {
    srcSet?: string;
    alt: string;
    title: string;
+   classNameParent?: string;
    className?: string;
    height?: number;
    width?: number;
@@ -21,6 +22,7 @@ export const Image = ({
    srcSet,
    alt,
    title,
+   classNameParent,
    className,
    height,
    width
@@ -35,7 +37,7 @@ export const Image = ({
    useIntersection(ref, callback);
 
    return (
-      <div ref={ref}>
+      <div ref={ref} className={classNameParent}>
          {!isInView ? (
             <Skeleton height={height} width={width} />
          ) : (

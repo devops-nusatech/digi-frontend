@@ -323,7 +323,6 @@ const HeaderFC = ({
                            <div
                               className="relative cursor-pointer"
                               ref={refDropDwonProfile}
-
                               onClick={handleSetDropDwonProfile}
                            >
                               <div className="w-10 h-10 rounded-full overflow-hidden select-none">

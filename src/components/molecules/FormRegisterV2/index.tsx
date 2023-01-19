@@ -4,7 +4,7 @@ import React, { FC, FormEvent, KeyboardEvent, memo, useCallback, useEffect, useM
 
 import { isUsernameEnabled } from 'api';
 import { EMAIL_REGEX, ERROR_LONG_USERNAME, ERROR_SHORT_USERNAME, PASSWORD_REGEX, USERNAME_REGEX } from 'helpers';
-import { Button, InputGroup, PasswordStrengthBar, Portal, QRCode } from 'components';
+import { Button, Checkbox, InputGroup, PasswordStrengthBar, Portal, QRCode } from 'components';
 import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from 'modules';
 
 type CaptchaType = 'recaptcha' | 'geetest' | 'none';
@@ -20,7 +20,7 @@ interface FormRegisterV2Props {
    onRegister: () => void;
    onLogin: () => void;
    validateForm: () => void;
-   clickCheckBox: (e: any) => void;
+   clickCheckBox: () => void;
 
    username: string;
    email: string;
@@ -271,28 +271,16 @@ export const FormRegisterV2: FC<FormRegisterV2Props> = memo(({
                      onFocus={handleFocusRefId}
                   />
                </div>
-               <div
-                  className="relative inline-block cursor-pointer select-none group"
-                  onClick={clickCheckBox}
+               <Checkbox
+                  checked={hasConfirmed}
+                  onChecked={clickCheckBox}
                >
-                  <input
-                     className="absolute top-0 left-0 opacity-0"
-                     type="checkbox"
-                     checked={hasConfirmed}
-                  />
-                  <span className="flex space-x-3">
-                     <span className={`relative shrink-0 w-6 h-6 rounded border-2 border-neutral6 group-hover:border-primary1 ${hasConfirmed && 'bg-primary1 border-primary1 before:opacity-100'} checkbox_icon`} />
-                     <span className="font-normal leading-[1.71429] text-neutral4 transition-all duration-200">
-                        {
-                           !termsMessage ? termsMessage : (
-                              <>
-                                 By signing up I agree that I’m 18 years of age or older, to the <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">User Agreements</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">Privacy Policy</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">Cookie Policy</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">E-Sign Consent</a>.
-                              </>
-                           )
-                        }
-                     </span>
-                  </span>
-               </div>
+                  {!termsMessage ? termsMessage : (
+                     <>
+                        By signing up I agree that I’m 18 years of age or older, to the <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">User Agreements</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">Privacy Policy</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">Cookie Policy</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">E-Sign Consent</a>.
+                     </>
+                  )}
+               </Checkbox>
                {renderCaptcha}
                <Button
                   text={`${isLoading ? 'Loading...' : 'Register'}`}

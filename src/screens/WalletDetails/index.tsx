@@ -35,7 +35,7 @@ import {
    selectUserInfo,
    walletsData,
 } from 'modules';
-import { setDocumentTitle } from 'helpers';
+import { arrayFilter, setDocumentTitle } from 'helpers';
 import { IntlProps } from 'index';
 import { Params } from './types';
 import { DEFAULT_WALLET } from '../../constants';
@@ -66,7 +66,6 @@ const WalletDetailsFC = memo(({
    const { id = '' } = useParams<Params>();
    const sliderRef = useRef<HTMLDivElement>(null);
    const { marketsData, handleRedirectToTrading } = useMarket();
-   const friendsMarket = marketsData.filter(market => market.quote_unit === 'usdt');
 
    useEffect(() => {
       setDocumentTitle(`${name} wallet details`);
@@ -87,6 +86,7 @@ const WalletDetailsFC = memo(({
       status,
    } = wallet[0];
 
+   const friendsMarket = arrayFilter(marketsData, currency);
 
    const handleSlideRight = () => {
       if (sliderRef.current) {
@@ -105,7 +105,7 @@ const WalletDetailsFC = memo(({
          <div className="block lg:flex pt-8 pb-4 px-4 lg:!p-1 bg-neutral7 dark:bg-neutral1">
             <WalletSidebar />
             <div className="grow h-auto lg:h-[calc(100vh-88px)] pl-0 lg:pl-1 overflow-auto">
-               <div className="p-8 pb-0 rounded bg-neutral8 dark:bg-shade2">
+               <div className={`p-8 ${friendsMarket.length ? 'pb-0' : ''} rounded bg-neutral8 dark:bg-shade2`}>
                   <div className="flex items-center mb-5">
                      <div className="flex items-center mr-auto">
                         <Link
@@ -163,45 +163,47 @@ const WalletDetailsFC = memo(({
                               {Decimal.format((Number(balance) * Number(5353)), 0, ',')}
                            </div>
                         </div>
-                        <div ref={sliderRef} className={`relative w-[668px] flex ${friendsMarket.length === 1 ? 'justify-end' : ''} gap-10 lg:gap-20 snap-x snap-mandatory overflow-x-auto pb-8 transition-transform duration-500`}>
-                           {friendsMarket.length && friendsMarket.map(market => {
-                              const klinesData: number[] = market.kline;
-                              let labels: number[], data: number[];
-                              labels = klinesData.map(e => e[0]);
-                              data = klinesData.map(e => e[2]);
-                              const change = market.price_change_percent.includes('+');
-                              return (
-                                 <div
-                                    key={market.id}
-                                    className="snap-end shrink-0 first:pl-3 last:pr-3"
-                                    onClick={() => handleRedirectToTrading(market.id)}
-                                 >
-                                    <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
-                                       <div className="flex items-center gap-3">
-                                          <div className="text-xs leading-custom4 text-neutral4 font-semibold uppercase">
-                                             {market.name}
+                        {friendsMarket.length > 0 && (
+                           <div ref={sliderRef} className={`relative w-[668px] flex ${friendsMarket.length === 1 ? 'justify-end' : ''} gap-10 lg:gap-20 snap-x snap-mandatory overflow-x-auto pb-8 transition-transform duration-500`}>
+                              {friendsMarket.length > 0 && friendsMarket.map(market => {
+                                 const klinesData: number[] = market.kline;
+                                 let labels: number[], data: number[];
+                                 labels = klinesData.map(e => e[0]);
+                                 data = klinesData.map(e => e[2]);
+                                 const change = market.price_change_percent.includes('+');
+                                 return (
+                                    <div
+                                       key={market.id}
+                                       className="snap-end shrink-0 first:pl-3 last:pr-3"
+                                       onClick={() => handleRedirectToTrading(market.id)}
+                                    >
+                                       <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
+                                          <div className="flex items-center gap-3">
+                                             <div className="text-xs leading-custom4 text-neutral4 font-semibold uppercase">
+                                                {market.name}
+                                             </div>
+                                             <Badge rounded="2xl" variant={change ? 'green' : 'orange'} text={market.price_change_percent} />
                                           </div>
-                                          <Badge rounded="2xl" variant={change ? 'green' : 'orange'} text={market.price_change_percent} />
-                                       </div>
-                                       <div className="text-2xl font-semibold tracking-custom1 leading-custom2 mt-1 mb-4 uppercase">
-                                          {Decimal.format(market.last.includes(',') ? market?.last?.split(',')?.join('') : market.last, market.price_precision, ',')} {market.base_unit}
-                                       </div>
-                                       <div className="w-60 h-14">
-                                          <PriceChart3
-                                             id={market.id}
-                                             theme={change ? 'positive' : 'negative'}
-                                             labels={labels}
-                                             data={data}
-                                             maintainAspectRatio={false}
-                                             gradientOpacityTop={.5}
-                                             gradientOpacityBottom={.07}
-                                          />
+                                          <div className="text-2xl font-semibold tracking-custom1 leading-custom2 mt-1 mb-4 uppercase">
+                                             {Decimal.format(market.last.includes(',') ? market?.last?.split(',')?.join('') : market.last, market.price_precision, ',')} {market.base_unit}
+                                          </div>
+                                          <div className="w-60 h-14">
+                                             <PriceChart3
+                                                id={market.id}
+                                                theme={change ? 'positive' : 'negative'}
+                                                labels={labels}
+                                                data={data}
+                                                maintainAspectRatio={false}
+                                                gradientOpacityTop={.5}
+                                                gradientOpacityBottom={.07}
+                                             />
+                                          </div>
                                        </div>
                                     </div>
-                                 </div>
-                              );
-                           })}
-                        </div>
+                                 );
+                              })}
+                           </div>
+                        )}
                      </div>
                      {(friendsMarket.length > 2) && (
                         <div className="absolute top-[36%] right-0">
