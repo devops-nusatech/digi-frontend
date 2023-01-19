@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectShouldFetchNews, newsFetch } from 'modules';
+import { selectNews, newsFetch } from 'modules';
 
 export const useNewsFetch = () => {
-   const shouldDispatch = useSelector(selectShouldFetchNews);
+   const news = useSelector(selectNews);
    const dispatch = useDispatch();
 
    useEffect(() => {
       if (navigator.onLine) {
-         if (shouldDispatch) dispatch(newsFetch());
+         if (!news.length) dispatch(newsFetch());
       }
-   }, [shouldDispatch, dispatch, navigator]);
+   }, [news, dispatch, navigator]);
 }

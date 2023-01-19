@@ -2,6 +2,7 @@ import React, {
    Fragment,
    FunctionComponent,
    useEffect,
+   useMemo,
    useState
 } from 'react';
 import { compose } from 'redux';
@@ -42,7 +43,7 @@ import {
    selectTransferIsError
 } from 'modules';
 import { IntlProps } from 'index';
-import { arrayFilter, cleanPositiveFloatInput, precisionRegExp } from 'helpers';
+import { arrayFilter, cleanPositiveFloatInput, precisionRegExp, renderCurrencyIcon } from 'helpers';
 import { imgAvatar } from 'assets';
 
 // const people = [
@@ -116,7 +117,15 @@ export const TransferFC = ({
    const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
    const [isOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
    const [query, setQuery] = useState<string>('');
-   const filteredCurrencies: Currency[] = query === '' ? currencies : currencies ? arrayFilter(currencies, query) : [];
+   const [asset, setAsset] = useState(currencies)
+   const filteredCurrencies: Currency[] = query === '' ? asset : asset ? arrayFilter(asset, query) : [];
+
+   const resendField = () => setState({
+      username_or_uid: '',
+      amount: '',
+      otp: '',
+      insufficientBalance: false,
+   })
 
    useEffect(() => {
       if (user.level < 2 || !user.otp) {
@@ -183,7 +192,33 @@ export const TransferFC = ({
    }
 
    const handleShowConfirm = () => setIsOpenConfirm(prev => !prev);
-   const handleShowSuccess = () => setIsOpenSuccess(prev => !prev);
+   const handleShowSuccess = () => {
+      isOpenSuccess && resendField();
+      setIsOpenSuccess(prev => !prev);
+   }
+
+   const renderModalDetail = useMemo(() => (
+      <div className="mt-10 space-y-8">
+         <div className="text-5xl text-center font-dm font-bold leading-custom1 tracking-custom">Yay! 🎉</div>
+         <div className="max-w-71.25 mx-auto text-center text-base font-medium leading-normal">
+            You successfully transferred <span className="text-primary5 dark:text-chart1">{Decimal.format(amount, Number(myWallet?.fixed), ',') || 0} {amount ? myWallet?.currency?.toUpperCase() : ''}</span>  to {username_or_uid.toUpperCase()}
+         </div>
+         <div className="flex flex-wrap p-6 rounded-xl border border-neutral6 dark:border-neutral3">
+            <div className="mr-auto space-y-2.5">
+               <div className="text-neutral4">Status</div>
+               <div className="font-medium text-primary5">Completed</div>
+            </div>
+            <div className="space-y-2.5">
+               <div className="text-neutral4">Transaction ID</div>
+               <div className="font-medium">0msx836930...87r398</div>
+            </div>
+         </div>
+         <Button
+            text="Wallets"
+            onClick={() => push('/wallets')}
+         />
+      </div>
+   ), [myWallet]);
 
    return (
       <>
@@ -211,7 +246,6 @@ export const TransferFC = ({
                               placeholder="ID1234567890"
                               value={username_or_uid}
                               onChange={handleChangeReceiver}
-                              variant="primary"
                            // icon={
                            //    <div className="inline-flex justify-center items-center whitespace-nowrap text-xs h-8 px-4 rounded-lg bg-primary1 hover:bg-primary1/90 text-neutral8">Check</div>
                            // }
@@ -230,11 +264,14 @@ export const TransferFC = ({
                                        </div>
                                        <div className="relative">
                                           <Combobox.Input
-                                             className={({ open }) => `${open ? 'text-primary1' : ''} px-3.5 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 bg-none bg-transparent shadow-none focus:border-primary1 transition ease-in-out duration-300 dark:border-neutral3 pr-12 h-12 w-full`}
-                                             displayValue={(currency: { name: string }) => `${currency?.name}` || '~ Select currency ~'}
+                                             className={({ open }) => `${open ? 'text-primary1' : ''} w-full px-3.5 pr-12 h-12 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 dark:border-neutral3 focus:border-neutral4 dark:focus:border-neutral4 bg-none bg-transparent transition ease-in-out duration-300`}
+                                             displayValue={(currency: { name: string }) => typeof currency?.name === 'undefined' ? '~ Select currency ~' : currency.name}
                                              onChange={e => setQuery(e.target.value)}
                                           />
-                                          <Combobox.Button className="group absolute inset-y-0 right-0 flex items-center pr-2">
+                                          <Combobox.Button
+                                             className="group absolute inset-y-0 right-0 flex items-center pr-2"
+                                             onClick={() => !asset.length && setAsset(currencies)}
+                                          >
                                              <svg className="h-5 w-5 fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral6 transition-colors duration-300">
                                                 <use xlinkHref="#icon-search" />
                                              </svg>
@@ -247,7 +284,7 @@ export const TransferFC = ({
                                           leaveTo="opacity-0"
                                           afterLeave={() => setQuery('')}
                                        >
-                                          <Combobox.Options className="z-2 absolute mt-1 max-h-60 w-full overflow-auto rounded-xl bg-neutral8 dark:bg-neutral2 border-2 border-primary1 py-1 shadow-lg ring-1 ring-primary1 ring-opacity-5 focus:outline-none">
+                                          <Combobox.Options className="absolute max-h-60 w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral1 shadow-dropdown-2 dark:shadow-dropdown-3">
                                              {filteredCurrencies.length === 0 && query !== '' ? (
                                                 <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
                                                    Nothing found.
@@ -256,14 +293,14 @@ export const TransferFC = ({
                                                 filteredCurrencies.map(currency => (
                                                    <Combobox.Option
                                                       key={currency.id}
-                                                      className={({ active }) => `relative cursor-default select-none py-2 px-4 ${active ? 'bg-primary1 text-neutral8' : ''}`}
+                                                      className={({ active }) => `relative ${active ? 'bg-neutral7 dark:bg-neutral2' : ''} px-3.5 py-2.5 leading-[1.4] font-medium transition-all duration-200`}
                                                       value={currency}
                                                    >
                                                       {({ selected }) => (
                                                          <div className="group flex items-center space-x-3">
                                                             <div className="w-8 h-8 overflow-hidden">
                                                                <img
-                                                                  src={currency?.icon_url}
+                                                                  src={renderCurrencyIcon(currency.id, currency?.icon_url)}
                                                                   className="object-cover bg-neutral8"
                                                                   alt={currency?.name}
                                                                   title={currency?.name}
@@ -272,8 +309,8 @@ export const TransferFC = ({
                                                                   }}
                                                                />
                                                             </div>
-                                                            <div className={`block truncate ${selected ? 'font-medium' : 'font-normal'} group-hover:font-medium`}>
-                                                               {currency?.name} <span className={`${selected ? 'text-neutral7' : 'text-neutral4'} font-normal group-hover:text-neutral7`}>{currency?.id.toUpperCase()}</span>
+                                                            <div className={`block truncate ${selected ? 'font-medium text-primary1' : 'font-normal'} group-hover:font-medium`}>
+                                                               {currency?.name} <span className={`text-neutral4 font-normal`}>{currency?.id.toUpperCase()}</span>
                                                             </div>
                                                          </div>
                                                       )}
@@ -293,13 +330,9 @@ export const TransferFC = ({
                                     placeholder="0.12345678"
                                     value={amount}
                                     onChange={handleChangeAmount}
-                                    variant="primary"
                                     withError={insufficientBalance}
                                     info={insufficientBalance ? 'Insufficient balance' : ''}
                                     className="!px-3.5"
-                                 // icon={
-                                 //    <div className="inline-flex justify-center items-center whitespace-nowrap text-xs h-8 px-4 rounded-lg bg-primary1 hover:bg-primary1/90 text-neutral8">Check</div>
-                                 // }
                                  />
                               </div>
                            </div>
@@ -311,7 +344,6 @@ export const TransferFC = ({
                               value={otp}
                               onChange={handleChangeOtp}
                               maxLength={6}
-                              variant="primary"
                            />
                            <div className="bg-neutral7 dark:bg-neutral2 flex flex-col rounded-2xl px-6 py-4">
                               <div className="font-medium leading-6">
@@ -439,23 +471,7 @@ export const TransferFC = ({
             show={isOpenSuccess}
             close={handleShowSuccess}
          >
-            <div className="pt-10 space-y-8">
-               <div className="space-y-4">
-                  <div className="text-center text-7xl">
-                     🎉
-                  </div>
-                  <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1">
-                     Transfer success
-                  </div>
-                  <div className="text-center">
-                     Your transfer is success, check your transaction detail at the finance history page
-                  </div>
-               </div>
-               <Button
-                  text={'History'}
-                  onClick={handleShowSuccess}
-               />
-            </div>
+            {renderModalDetail}
          </Portal>
       </>
    );

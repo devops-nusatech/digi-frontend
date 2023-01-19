@@ -11,6 +11,7 @@ import { Market, selectCurrencies } from 'modules';
 import { Decimal, Cuk, Nav, Button, PriceChart3 } from 'components';
 import { useCurrenciesFetch } from 'hooks';
 import { renderCurrencyIcon } from 'helpers';
+import { useHistory } from 'react-router';
 
 interface Props {
    currentBidUnit: string;
@@ -30,6 +31,7 @@ export const NewTickerTable: FC<Props> = memo(({
    useCurrenciesFetch();
    const currencies = useSelector(selectCurrencies);
    const { formatMessage } = useIntl();
+   const { push } = useHistory();
 
    const combainById = (a1, a2) =>
       a1.map((itm, i) => ({
@@ -283,9 +285,12 @@ export const NewTickerTable: FC<Props> = memo(({
                <div className="whitespace-normal text-4.5xl md:text-5xl font-dm font-bold">
                   Market trend
                </div>
-               <div className="inline-flex text-base font-dm justify-center items-center h-12 rounded-3xl py-0 px-6 whitespace-nowrap bg-none shadow-border hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:shadow-none dark:border-2 dark:border-solid dark:border-neutral4 dark:text-neutral8  transition-all duration-300 cursor-pointer">
-                  View more
-               </div>
+               <Button
+                  text="View more"
+                  onClick={() => push('/markets')}
+                  variant="outline"
+                  width="noFull"
+               />
             </div>
             <div className="flex space-x-6 items-start mb-[70px]">
                {currentBidUnitsList.map((item, index) => (

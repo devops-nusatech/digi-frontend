@@ -31,7 +31,7 @@ const LearnMemo: FC = () => {
                <div className="whitespace-normal text-4.5xl md:text-5xl font-dm">Learn crypto</div>
                <Button
                   text="View more"
-                  onClick={() => push('learn-crypto')}
+                  onClick={() => push('/learn-crypto')}
                   variant="outline"
                   width="noFull"
                />
@@ -103,35 +103,19 @@ const LearnMemo: FC = () => {
                                  <a href={`https://news.digiassetindo.com/${e.slug}`} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
                               </div>
                            ))}
-                           {/* <div className="lg2-max:hidden float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)]">
-                              <div className="relative overflow-hidden grow-0 shrink-0 basis-[45.65%] rounded-2xl">
-                                 <img className="w-full transition-transform duration-1000 hover:scale-125" srcSet={`${illusLearn42} 2x`} src={illusLearn41} alt="Images" />
-                                 <div className="absolute top-1/2 left-1/2 z-3 w-12 h-12 -translate-y-1/2 -translate-x-1/2 shadow-play rounded-full bg-neutral8 group">
-                                    <svg className="absolute top-1/2 left-1/2 z-3 w-3 h-3 -translate-y-1/2 -translate-x-1/2 align-middle fill-neutral4 group-hover:fill-primary1 group-hover:scale-110 transition-all duration-300" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                       <path
-                                          d="M2.46655 2.92407C2.46655 1.35705 4.18688 0.398733 5.51926 1.22354L13.7195 6.2999C14.9826 7.0818 14.9826 8.91907 13.7195 9.70096L5.51926 14.7773C4.18688 15.6021 2.46655 14.6438 2.46655 13.0768V2.92407Z" />
-                                    </svg>
-                                 </div>
-                              </div>
-                              <div className="flex flex-col grow-1 pr-4 group">
-                                 <div className="mb-4 text-base font-medium group-hover:text-primary1 transition-colors duration-300">Leveraged tokens now available</div>
-                                 <div className="mb-auto text-neutral4">Good things come in 3s. Get 3x Leveraged tokens now.</div>
-                                 <div className="mt-6 text-neutral4">Jun 1, 2021</div>
-                              </div>
+                           <button className="lg:hidden lg2-max:absolute lg2-max:bottom-0 lg2-max:left-4 lg2-max:z-2 lg2-max:h-10 lg2-max:w-10 lg2-max:rounded-full lg2-max:text-none lg2-max:hover:shadow-border lg2-max:hover:dark:shadow-border-dark lg2-max:flex lg2-max:items-center lg2-max:justify-center lg2-max:transition-all lg2-max:duration-200">
+                              <svg className="w-4 h-4 fill-neutral4 transition-all duration-200">
+                                 <use xlinkHref="#icon-arrow-prev" />
+                              </svg>
+                           </button>
+                           <div className="lg:hidden lg2-max:relative lg2-max:block lg2-max:m-0 lg2-max:p-0 lg2-max:overflow-visible lg2-max:translate-x-0">
+
                            </div>
-                           <div className="lg2-max:hidden float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)]">
-                              <div className="relative overflow-hidden grow-0 shrink-0 basis-[45.65%] rounded-2xl group">
-                                 <img className="w-full transition-transform duration-1000 group-hover:scale-125" srcSet={`${illusLearn32} 2x`} src={illusLearn31} alt="Images" />
-                              </div>
-                              <div className="flex flex-col grow-1 pr-4 group">
-                                 <div className="mb-4 text-base font-medium group-hover:text-primary1 transition-colors duration-300">Leveraged tokens now available</div>
-                                 <div className="mb-auto text-neutral4">Good things come in 3s. Get 3x Leveraged tokens now.</div>
-                                 <div className="mt-6 text-neutral4">Jun 1, 2021</div>
-                              </div>
-                           </div> */}
-                           <div className="lg2-max:relative lg2-max:overflow-visible lg2-max:block">
-                              <div className="lg2-max:relative lg2-max:top-0 lg2-max:left-0 lg2-max:block lg2-max:mx-auto lg2-max:opacity-100 lg2-max:w-[5120px] lg2-max:trans"></div>
-                           </div>
+                           <button className="lg:hidden lg2-max:absolute lg2-max:bottom-0 lg2-max:left-16 lg2-max:z-2 lg2-max:h-10 lg2-max:w-10 lg2-max:rounded-full lg2-max:text-none lg2-max:hover:shadow-border lg2-max:hover:dark:shadow-border-dark lg2-max:flex lg2-max:items-center lg2-max:justify-center lg2-max:transition-all lg2-max:duration-200">
+                              <svg className="w-4 h-4 fill-neutral4 transition-all duration-200">
+                                 <use xlinkHref="#icon-arrow-next" />
+                              </svg>
+                           </button>
                         </div>
                      </div>
                   </Tab.Panel>

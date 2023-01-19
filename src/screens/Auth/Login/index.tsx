@@ -152,7 +152,7 @@ class LoginClass extends Component<Props, LoginState> {
          isLoading,
          captcha_response,
          reCaptchaSuccess,
-         geetestCaptchaSuccess
+         geetestCaptchaSuccess,
       } = this.props;
 
       const {
@@ -308,7 +308,7 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    configs: selectConfigs(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
-   geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state)
+   geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

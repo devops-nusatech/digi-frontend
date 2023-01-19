@@ -161,6 +161,45 @@ export const useMarket = () => {
       }))
       : [];
 
+   const formatOtherMarkets = markets.length ? markets.map(market => ({
+      ...market,
+      last: Decimal.format(
+         Number((tikcers[market?.id] || defaultTicker).last),
+         market?.price_precision,
+         ','
+      ),
+      open: Decimal.format(
+         Number((tikcers[market?.id] || defaultTicker).open),
+         market?.price_precision,
+         ','
+      ),
+      price_change_percent: String(
+         (tikcers[market?.id] || defaultTicker).price_change_percent
+      ),
+      high: Decimal.format(
+         Number((tikcers[market?.id] || defaultTicker).high),
+         market?.price_precision,
+         ','
+      ),
+      low: Decimal.format(
+         Number((tikcers[market?.id] || defaultTicker).low),
+         market?.price_precision,
+         ','
+      ),
+      volume: Decimal.format(
+         Number((tikcers[market?.id] || defaultTicker).volume),
+         market?.price_precision,
+         ','
+      ),
+      change: Decimal.format(
+         Number((tikcers[market?.id] || defaultTicker).last) -
+         Number((tikcers[market?.id] || defaultTicker).open),
+         market?.price_precision,
+         ','
+      ),
+   }))
+      : [];
+
 
    const combainMarketWithIcon = (markets, currencies) =>
       markets.map((itm, i) => ({
@@ -171,6 +210,7 @@ export const useMarket = () => {
       }));
 
    const marketsData = combainMarketWithIcon(formattedMarkets, currencies);
+   const otherMarkets = combainMarketWithIcon(formatOtherMarkets, currencies);
 
    const isLoading = marketLoading || marketTickerLoading || currencyLoading;
 
@@ -179,6 +219,7 @@ export const useMarket = () => {
       setCurrentBidUnit,
       currentBidUnitsList,
       marketsData,
+      otherMarkets,
       handleRedirectToTrading,
       handleSearchMarket,
       push,

@@ -5,17 +5,20 @@ import { GeetestCaptcha } from 'containers';
 import { useSetShouldGeetestReset } from 'hooks';
 import {
    GeetestCaptchaResponse,
+   selectCaptchaDataObjectLoading,
    // GeetestCaptchaV4Response,
    selectConfigs,
    selectShouldGeetestReset,
    setGeetestCaptchaSuccess,
    setRecaptchaSuccess,
 } from 'modules';
+import { Skeleton } from 'components';
 // import { GeetestCaptchaV4 } from 'components/atoms/GeetestCaptchaV4';
 
 export const CaptchaComponent = props => {
    const dispatch = useDispatch();
    const configs = useSelector(selectConfigs);
+   const captchaLoading = useSelector(selectCaptchaDataObjectLoading)
    const shouldGeetestReset = useSelector(selectShouldGeetestReset);
 
    let reCaptchaRef;
@@ -72,7 +75,12 @@ export const CaptchaComponent = props => {
       }
    };
 
-   return renderCaptcha();
+   return (
+      <>
+         {captchaLoading && <Skeleton height={48} isWithFull />}
+         {renderCaptcha()}
+      </>
+   )
 };
 
 export const Captcha = React.memo(CaptchaComponent);

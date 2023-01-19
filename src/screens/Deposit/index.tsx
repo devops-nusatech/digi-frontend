@@ -68,11 +68,12 @@ const DepositFC = memo(({
    history: { push },
    intl
 }: DepositProps) => {
-   const defaultWallet: Wallet = wallets.find(e => e.currency === 'matic') || DEFAULT_WALLET;
+   const defaultWallet: Wallet = wallets.find(e => e.currency === 'usdt') || DEFAULT_WALLET;
 
    const [selected, setSelected] = useState<Wallet>(location.state ? location.state : defaultWallet);
    const [networkActive, setNetworkActive] = useState(0);
    const [searchCurrency, setSearchCurrency] = useState('');
+   const [assets, setAssets] = useState(wallets);
 
    useEffect(() => {
       if (user && user.level < 1 && user.state === 'pending') {
@@ -90,7 +91,7 @@ const DepositFC = memo(({
       console.log('selected :>> ', selected);
    }, [selected]);
 
-   const filteredWallets: Wallet[] = searchCurrency === '' ? wallets : wallets ? arrayFilter(wallets, searchCurrency) : [];
+   const filteredWallets: Wallet[] = searchCurrency === '' ? assets : assets ? arrayFilter(assets, searchCurrency) : [];
 
    const formatedWallet = wallets.length ? wallets.find(wallet => wallet.currency === selected?.currency) : DEFAULT_WALLET;
 
@@ -193,11 +194,14 @@ const DepositFC = memo(({
                         <Label label="Select currency" />
                         <div className="relative mt-2.5">
                            <Combobox.Input
-                              className={({ open }) => `${open ? 'text-primary1' : ''} px-3.5 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 bg-none bg-transparent shadow-none focus:border-primary1 transition ease-in-out duration-300 dark:border-neutral3 pr-12 h-12 w-full`}
+                              className={({ open }) => `${open ? 'text-primary1' : ''} w-full px-3.5 pr-12 h-12 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 dark:border-neutral3 focus:border-neutral4 dark:focus:border-neutral4 bg-none bg-transparent transition ease-in-out duration-300`}
                               displayValue={(currency: { name: string }) => `${currency && currency.name || 'Nothing found...'}`}
                               onChange={({ target: { value } }) => setSearchCurrency(value)}
                            />
-                           <Combobox.Button className="group absolute inset-y-0 right-0 flex items-center pr-2">
+                           <Combobox.Button
+                              className="group absolute inset-y-0 right-0 flex items-center pr-2"
+                              onClick={() => !assets.length && setAssets(wallets)}
+                           >
                               <svg className="h-5 w-5 fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral6 transition-colors duration-300">
                                  <use xlinkHref="#icon-search" />
                               </svg>
@@ -216,7 +220,8 @@ const DepositFC = memo(({
                               setNetworkActive(0);
                            }}
                         >
-                           <Combobox.Options className="z-2 absolute mt-1 max-h-[252px] w-full overflow-auto rounded-xl bg-neutral8 dark:bg-neutral2 border-2 border-primary1 py-1 shadow-lg ring-1 ring-primary1 ring-opacity-5 focus:outline-none">
+
+                           <Combobox.Options className="absolute max-h-[252px] w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral1 shadow-dropdown-2 dark:shadow-dropdown-3">
                               {filteredWallets.length === 0 && searchCurrency !== '' ? (
                                  <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
                                     Nothing found...
@@ -225,7 +230,7 @@ const DepositFC = memo(({
                                  filteredWallets.map(wallet => (
                                     <Combobox.Option
                                        key={wallet.currency}
-                                       className={({ active }) => `group relative cursor-pointer select-none py-2 px-4 ${active ? 'bg-primary1 text-neutral8' : ''}`}
+                                       className={({ active }) => `relative ${active ? 'bg-neutral7 dark:bg-neutral2' : ''} px-3.5 py-2.5 leading-[1.4] font-medium transition-all duration-200`}
                                        value={wallet}
                                     >
                                        {({ selected, active }) => (
@@ -239,13 +244,13 @@ const DepositFC = memo(({
                                                       title={wallet.name}
                                                    />
                                                 </div>
-                                                <div className={`block truncate ${selected || active ? 'font-medium' : 'font-normal'} group-hover:font-medium`}>
-                                                   {wallet?.name} <span className={`${selected || active ? 'text-neutral7' : 'text-neutral4'} font-normal group-hover:text-neutral7`}>
+                                                <div className={`block truncate ${selected ? 'font-medium text-primary1' : 'font-normal'} group-hover:font-medium`}>
+                                                   {wallet?.name} <span className={`text-neutral4 font-normal`}>
                                                       {wallet.currency.toUpperCase()}
                                                    </span>
                                                 </div>
                                              </div>
-                                             <div className={`${selected || active ? 'text-neutral7' : 'text-neutral4'} group-hover:text-neutral7`}>
+                                             <div className="text-neutral4 font-normal">
                                                 {Decimal.format(wallet.balance || 0, wallet.fixed, ',')} {wallet.currency.toUpperCase()}
                                              </div>
                                           </div>

@@ -47,7 +47,7 @@ export const LearnCrypto = memo(() => {
                </div>
             </div>
          </div>
-         <div className="relative py-16 md:py-28 lg2:py-34 bg-neutral7">
+         <div className="relative py-16 md:py-28 lg2:py-34 bg-neutral7 dark:bg-shade1">
             <div id="releases" className="absolute top-12 inset-x-0" />
             <div className="w-full max-w-7xl mx-auto px-8 md:px-10 lg:px-20">
                <div className="block lg:flex mb-12 lg:mb-20">
@@ -96,7 +96,7 @@ export const LearnCrypto = memo(() => {
                                  <div className="mt-4 lg:mt-6 mb-2 text-3.5xl leading-tight tracking-custom1 font-dm font-bold group-hover:text-primary1 transition-all duration-300">
                                     A Beginner's Guide to TradingView
                                  </div>
-                                 <div className="mb-5 text-base leading-normal text-neutral3">
+                                 <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
                                     Ethereum
                                  </div>
                                  <div className="mb-auto text-neutral4">
@@ -125,7 +125,7 @@ export const LearnCrypto = memo(() => {
                                  <div className="mt-4 lg:mt-6 mb-2 text-3.5xl leading-tight tracking-custom1 font-dm font-bold group-hover:text-primary1 transition-all duration-300">
                                     What Is Crypto Market Sentiment?
                                  </div>
-                                 <div className="mb-5 text-base leading-normal text-neutral3">
+                                 <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
                                     Ethereum
                                  </div>
                                  <div className="mb-auto text-neutral4">
@@ -154,7 +154,7 @@ export const LearnCrypto = memo(() => {
                                  <div className="mt-4 lg:mt-6 mb-2 text-3.5xl leading-tight tracking-custom1 font-dm font-bold group-hover:text-primary1 transition-all duration-300">
                                     What Is the Ethereum Hard Fork?
                                  </div>
-                                 <div className="mb-5 text-base leading-normal text-neutral3">
+                                 <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
                                     Ethereum
                                  </div>
                                  <div className="mb-auto text-neutral4">
