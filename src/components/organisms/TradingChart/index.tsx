@@ -4,7 +4,7 @@ import React, { FC, ReactElement, useState } from 'react';
 // import { selectCurrentMarket } from 'modules';
 import { MarketDepthsComponent, TradingChart as Chart } from 'containers';
 import { icLogoLight } from 'assets';
-import { Depth, Nav } from 'components';
+import { Nav } from 'components';
 // import { TabPanel, MyTab } from 'components';
 
 type ChartPeriode = '1M' | '5M' | '15M' | '30M';
@@ -83,12 +83,12 @@ export const TradingChart: FC = (): ReactElement => {
                   onClick={() => setCurrentTabIndex(1)}
                   theme="grey"
                />
-               <Nav
+               {/* <Nav
                   title="Highcharts"
                   isActive={currentTabIndex === 2}
                   onClick={() => setCurrentTabIndex(2)}
                   theme="grey"
-               />
+               /> */}
             </div>
          </div>
          <div className="block relative">
@@ -99,9 +99,9 @@ export const TradingChart: FC = (): ReactElement => {
                <div className={`!h-[492px] -m-px ${currentTabIndex !== 1 ? 'hidden' : ''}`}>
                   <MarketDepthsComponent />
                </div>
-               <div className={`!h-[492px] -m-px ${currentTabIndex !== 2 ? 'hidden' : ''}`}>
+               {/* <div className={`!h-[492px] -m-px ${currentTabIndex !== 2 ? 'hidden' : ''}`}>
                   <Depth />
-               </div>
+               </div> */}
             </div>
             <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
                <img className="opacity-25" src={icLogoLight} alt="Logo" />

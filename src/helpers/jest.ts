@@ -47,6 +47,7 @@ const mockConfig: Config = {
       'address'
    ],
    themeSwitcher: 'visible',
+   peatio_platform_currency: 'bnb',
 };
 
 // tslint:disable no-any no-console

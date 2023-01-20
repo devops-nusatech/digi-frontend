@@ -1,11 +1,36 @@
-import React, { FC, FormEvent, KeyboardEvent, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+   FC,
+   FormEvent,
+   KeyboardEvent,
+   memo,
+   useCallback,
+   useEffect,
+   useMemo,
+   useState
+} from 'react';
 // import { useHistory } from 'react-router-dom';
 // import { useIntl } from 'react-intl';
 
 import { isUsernameEnabled } from 'api';
-import { EMAIL_REGEX, ERROR_LONG_USERNAME, ERROR_SHORT_USERNAME, PASSWORD_REGEX, USERNAME_REGEX } from 'helpers';
-import { Button, Checkbox, InputGroup, PasswordStrengthBar, Portal, QRCode } from 'components';
-import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from 'modules';
+import {
+   EMAIL_REGEX,
+   ERROR_LONG_USERNAME,
+   ERROR_SHORT_USERNAME,
+   PASSWORD_REGEX,
+   USERNAME_REGEX
+} from 'helpers';
+import {
+   Button,
+   Checkbox,
+   InputGroup,
+   PasswordStrengthBar,
+   Portal,
+   QRCode
+} from 'components';
+import {
+   GeetestCaptchaResponse,
+   GeetestCaptchaV4Response
+} from 'modules';
 
 type CaptchaType = 'recaptcha' | 'geetest' | 'none';
 
@@ -163,16 +188,18 @@ export const FormRegisterV2: FC<FormRegisterV2Props> = memo(({
                withIconPassword
             />
             {password && (
-               <PasswordStrengthBar
-                  minPasswordEntropy={minPasswordEntropy}
-                  currentPasswordEntropy={currentPasswordEntropy}
-                  passwordExist={password !== ''}
-                  passwordErrorFirstSolved={passwordErrorFirstSolved}
-                  passwordErrorSecondSolved={passwordErrorSecondSolved}
-                  passwordErrorThirdSolved={passwordErrorThirdSolved}
-                  passwordPopUp={passwordPopUp}
-                  translate={translate}
-               />
+               <>
+                  <PasswordStrengthBar
+                     minPasswordEntropy={minPasswordEntropy}
+                     currentPasswordEntropy={currentPasswordEntropy}
+                     passwordExist={password !== ''}
+                     passwordErrorFirstSolved={passwordErrorFirstSolved}
+                     passwordErrorSecondSolved={passwordErrorSecondSolved}
+                     passwordErrorThirdSolved={passwordErrorThirdSolved}
+                     passwordPopUp={passwordPopUp}
+                     translate={translate}
+                  />
+               </>
             )}
          </div>
       )

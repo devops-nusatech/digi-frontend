@@ -46,6 +46,7 @@ export const defaultConfig: Config = {
    account_upload_size_min_range: '1',
    account_upload_size_max_range: '20',
    themeSwitcher: 'visible',
+   peatio_platform_currency: 'usdt'
 };
 
 export const Cryptobase = {
@@ -93,3 +94,4 @@ export const wizardStep = () => String(Cryptobase.config.wizard_step || '1');
 export const accountUploadSizeMinRange = Number(Cryptobase.config.account_upload_size_min_range || '1');
 export const accountUploadSizeMaxRange = Number(Cryptobase.config.account_upload_size_max_range || '20');
 export const themeSwitcher = () => Cryptobase.config.themeSwitcher;
+export const peatioPlatformCurrency = () => Cryptobase.config.peatio_platform_currency;

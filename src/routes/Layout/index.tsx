@@ -33,6 +33,7 @@ import {
 } from 'mobile/screens';
 import {
    configsFetch,
+   sonicFetch,
    logoutFetch,
    RootState,
    selectConfigsLoading,
@@ -101,6 +102,7 @@ import {
    WalletFinance,
    Exchange,
    WalletOrder,
+   RegisterKu,
 } from 'screens';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -142,6 +144,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
       } = this.props;
 
       this.props.fetchConfigs();
+      this.props.fetchSonic();
       if (
          !(location.pathname.includes('/magic-link')
             || location.pathname.includes('/404')
@@ -293,6 +296,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/signin" component={SignInScreen} />
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/login" component={Login} />
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/register" component={Register} />
+               <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/registerku" component={RegisterKu} />
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/accounts/confirmation" component={VerificationScreen} />
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/signup" component={SignUpScreen} />
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/forgot_password" component={ForgotPassword} />
@@ -445,6 +449,7 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    fetchConfigs: () => dispatch(configsFetch()),
+   fetchSonic: () => dispatch(sonicFetch()),
    fetchCustomization: () => dispatch(customizationFetch()),
    logout: () => dispatch(logoutFetch()),
    toggleChartRebuild: () => dispatch(toggleChartRebuild()),

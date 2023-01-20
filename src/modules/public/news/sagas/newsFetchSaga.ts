@@ -1,25 +1,19 @@
-import { call, put, takeLeading } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { newsData, newsError } from '../actions';
-import { NEWS_FETCH } from '../constants';
 import { NewsFetch } from '../types';
 import { sendError } from 'modules';
-// import { RequestOptions } from 'api';
-
 import axios from 'axios';
 
-// const newsOptions: RequestOptions = {
-//    apiVersion: 'news',
-// };
-
-export function* rootNewsSaga() {
-   yield takeLeading(NEWS_FETCH, newsFetchSaga)
+const fetchNews = (page?: string, limit?: string) => {
+   const apiKey = '3c91665a1b107878484d3b3316';
+   const url = `https://news.digiassetindo.com/ghost/api/v3/content/posts/?key=${apiKey}&limit=25&filter=tag%3Anews`
+   const res = axios.get(url);
+   return res;
 }
-
-const newsUrl = (page?: string, limit?: string) => axios.get('https://news.digiassetindo.com/ghost/api/v3/content/posts/?key=3c91665a1b107878484d3b3316&limit=25&filter=tag%3Anews')
 
 export function* newsFetchSaga(action: NewsFetch) {
    try {
-      const news = yield call(newsUrl);
+      const news = yield call(fetchNews);
       yield put(newsData(news.data.posts));
    } catch (error) {
       yield put(sendError({

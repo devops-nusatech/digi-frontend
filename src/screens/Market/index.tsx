@@ -6,8 +6,7 @@ import { localeDate, renderCurrencyIcon } from 'helpers';
 import { IntlProps } from 'index';
 import { compose } from 'redux';
 import { injectIntl } from 'react-intl';
-import { connect, useSelector } from 'react-redux';
-import { selectNews, selectNewsLoading } from 'modules';
+import { connect } from 'react-redux';
 
 const rows = 3;
 type Props = IntlProps;
@@ -24,10 +23,10 @@ const MarketFC = ({ intl }: Props) => {
       handleLocalStorage,
    } = useMarket();
    // const [tabMarket, setTabMarket] = useState<number>(0);
-   useNewsFetch();
-   const newsLoadig = useSelector(selectNewsLoading);
-   const newss = useSelector(selectNews);
-   const news = newss;
+   const {
+      newsLoadig,
+      news
+   } = useNewsFetch();
    const [more, setMore] = useState<number>(rows);
 
    const translate = (id: string) => intl.formatMessage({ id });
@@ -193,10 +192,10 @@ const MarketFC = ({ intl }: Props) => {
                            <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4 text-right">
                               <div>24h %</div>
                            </th>
-                           <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4 text-right">
+                           <th className="hidden px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4 text-right">
                               <div>7d %</div>
                            </th>
-                           <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4">
+                           <th className="hidden px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4">
                               <div className="flex items-center space-x-1 cursor-pointer justify-end">
                                  <div>Marketcap</div>
                                  <svg className="w-5 h-5 fill-neutral4">
@@ -221,13 +220,34 @@ const MarketFC = ({ intl }: Props) => {
                         {isLoading ? (
                            <>
                               <tr>
-                                 <td>
-                                    <div>
-                                       <Skeleton height={20} isWithFull />
-                                       <Skeleton height={20} isWithFull />
-                                       <Skeleton height={20} isWithFull />
-                                    </div>
-                                 </td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                              </tr>
+                              <tr>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                              </tr>
+                              <tr>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
+                                 <td className="p-4"><Skeleton height={20} isWithFull /></td>
                               </tr>
                            </>
                         ) : marketsData?.length ? marketsData?.map(market => {
@@ -239,7 +259,7 @@ const MarketFC = ({ intl }: Props) => {
                               <tr key={market?.id} style={{ transition: 'background .2s' }} className="group relative">
                                  <td
                                     onClick={() => handleLocalStorage(market?.id)}
-                                    className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300"
+                                    className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2"
                                  >
                                     <div className="flex space-x-2 items-center">
                                        <svg className={`w-4 h-4 ${market?.isFav ? 'fill-secondary3' : 'fill-neutral4 hover:fill-secondary3'} transition-all duration-300`}>
@@ -248,7 +268,7 @@ const MarketFC = ({ intl }: Props) => {
                                        <div>{market?.no}</div>
                                     </div>
                                  </td>
-                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                                     <div className="flex space-x-3 items-center">
                                        <div className="shrink-0 w-8">
                                           <img
@@ -263,33 +283,31 @@ const MarketFC = ({ intl }: Props) => {
                                        </div>
                                     </div>
                                  </td>
-                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
+                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right">
                                     <div>{market?.last}</div>
                                  </td>
-                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
+                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right">
                                     <div className={market?.price_change_percent?.includes('+') ? 'text-primary5 dark:text-chart1' : 'text-primary4'}>
                                        {market?.price_change_percent}
                                     </div>
                                  </td>
-                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
+                                 <td className="hidden p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right">
                                     <div className="text-primary4">-2.02%</div>
                                  </td>
-                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
+                                 <td className="hidden p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right">
                                     <div>$328,564,656,654</div>
                                  </td>
-                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
+                                 <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right">
                                     <div>{market?.volume}</div>
                                  </td>
-                                 <td className="rounded-r-xl p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
-                                    <div className="w-24 -my-[15px] ml-auto group-hover:hidden">
-                                       <div className="w-25">
-                                          <PriceChart3
-                                             id={market?.id}
-                                             theme={market?.price_change_percent.includes('+') ? 'positive' : 'negative'}
-                                             labels={labels}
-                                             data={data}
-                                          />
-                                       </div>
+                                 <td className="rounded-r-xl p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right">
+                                    <div className="w-25 -my-1.25 ml-auto group-hover:hidden">
+                                       <PriceChart3
+                                          id={market?.id}
+                                          theme={market?.price_change_percent.includes('+') ? 'positive' : 'negative'}
+                                          labels={labels}
+                                          data={data}
+                                       />
                                     </div>
                                     <div className="w-24 ml-auto hidden group-hover:block">
                                        <Button
@@ -330,10 +348,39 @@ const MarketFC = ({ intl }: Props) => {
                </div>
                <div className="block md:flex flex-wrap md:-mx-4 md:-mt-4 space-y-8 md:space-y-0">
                   {newsLoadig ? (
-                     <div className="">
-
-                     </div>
-                  ) : news.slice(0, more).map((e, i) => (
+                     <>
+                        <div className="p-4 w-full md:w-1/2 lg:w-1/3 flex flex-col items-start transition-colors duration-300">
+                           <Skeleton
+                              height={200}
+                              isWithFull
+                              rounded="2xl"
+                              className="mb-8 md:mb-12"
+                           />
+                           <Skeleton height={26} className="mb-4" width={'50%'} />
+                           <Skeleton height={30} width={'80%'} />
+                        </div>
+                        <div className="p-4 w-full md:w-1/2 lg:w-1/3 flex flex-col items-start transition-colors duration-300">
+                           <Skeleton
+                              height={200}
+                              isWithFull
+                              rounded="2xl"
+                              className="mb-8 md:mb-12"
+                           />
+                           <Skeleton height={26} className="mb-4" width={'50%'} />
+                           <Skeleton height={30} width={'80%'} />
+                        </div>
+                        <div className="p-4 w-full md:w-1/2 lg:w-1/3 flex flex-col items-start transition-colors duration-300">
+                           <Skeleton
+                              height={200}
+                              isWithFull
+                              rounded="2xl"
+                              className="mb-8 md:mb-12"
+                           />
+                           <Skeleton height={26} className="mb-4" width={'50%'} />
+                           <Skeleton height={30} width={'80%'} />
+                        </div>
+                     </>
+                  ) : news?.slice(0, more).map(e => (
                      <div key={e.uuid} className="relative group p-4 w-full md:w-1/2 lg:w-1/3 flex flex-col items-start transition-colors duration-300">
                         <div className="relative overflow-hidden w-full mb-8 md:mb-12 rounded-xl before:content-[''] before:pb-[75%] lg2:before:pb-[57%] before:block">
                            <Image
@@ -356,7 +403,7 @@ const MarketFC = ({ intl }: Props) => {
                         <Badge
                            text={e.meta_title}
                            className="mb-4 truncate max-w-full"
-                           variant={i === 1 ? 'green' : 'ungu'}
+                           variant={e.slug.split('-').length > 4 ? 'green' : e.slug.split('-').length < 8 ? 'ungu' : e.slug.split('-').length > 12 ? 'primary' : 'orange'}
                         />
                         <div className="mb-8 md:mb-12 text-2xl leading-custom2 font-semibold tracking-custom1 group-hover:text-primary1 transition-all duration-300">
                            {e.title}
@@ -370,7 +417,7 @@ const MarketFC = ({ intl }: Props) => {
                         </div>
                         <div className="mt-0 md:mt-12 bg-none rounded-md md:bg-neutral6 dark:md:bg-neutral3 h-0.5 w-full" />
                         <a
-                           href={`https://news.digiassetindo.com/${e.slug}`}
+                           href={e.url}
                            rel="noopener noreferrer"
                            className="absolute inset-0"
                            target="_blank"

@@ -4,3 +4,4 @@ export { ForgotPassword } from './ForgotPassword';
 export { ChangeForgotPassword } from './ChangeForgotPassword';
 export { EmailVerification } from './EmailVerification';
 export * from './RegisterV2';
+export * from './RegisterKu';

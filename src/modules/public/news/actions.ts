@@ -4,8 +4,9 @@ import { NewsFetch, NewsData, NewsError } from './types';
 
 export type NewsActions = NewsFetch | NewsData | NewsError;
 
-export const newsFetch = (): NewsFetch => ({
-   type: NEWS_FETCH
+export const newsFetch = (payload: NewsFetch['payload']): NewsFetch => ({
+   type: NEWS_FETCH,
+   payload
 });
 
 export const newsData = (payload: NewsData['payload']): NewsData => ({

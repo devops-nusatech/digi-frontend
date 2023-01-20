@@ -21,6 +21,7 @@ import {
    Transition,
 } from '@headlessui/react';
 import {
+   Badge,
    Button,
    Decimal,
    InputGroup,
@@ -40,7 +41,11 @@ import {
    User,
    Wallet,
    walletsFetch,
-   selectTransferIsError
+   selectTransferIsError,
+   selectDetailUserData,
+   selectDetailUserLoading,
+   detailUserCreate,
+   selectDetailUserIsError
 } from 'modules';
 import { IntlProps } from 'index';
 import { arrayFilter, cleanPositiveFloatInput, precisionRegExp, renderCurrencyIcon } from 'helpers';
@@ -70,6 +75,9 @@ type TransferState = {
 
 interface ReduxProps {
    user: User;
+   detailUserLoading: boolean;
+   detailUserData: User;
+   detailUserError: boolean;
    wallets: Wallet[];
    currencies: Currency[];
    transferLoading: boolean;
@@ -79,6 +87,7 @@ interface ReduxProps {
 
 interface DispatchProps {
    transfer: typeof transferCreate;
+   getDetailUser: typeof detailUserCreate;
    fetchWallets: typeof walletsFetch;
    fetchCurrencies: typeof currenciesFetch;
    alertPush: typeof alertPush;
@@ -97,6 +106,10 @@ export const TransferFC = ({
    wallets,
    currencies,
    transfer,
+   getDetailUser,
+   detailUserLoading,
+   detailUserData,
+   detailUserError,
    transferLoading,
    transferSuccess,
    transferError,
@@ -153,12 +166,19 @@ export const TransferFC = ({
       }
    }, [transferError]);
 
+   const handleGetDetailUser = (uid: string) => detailUserData?.uid?.toUpperCase() !== uid && getDetailUser({
+      token: 'a5144000-3271-11ed-a261-0242ac120002',
+      uid: uid
+   })
+
    const translate = (id: string) => intl.formatMessage({ id });
 
-   const handleChangeReceiver = (username_or_uid: string) => setState({
-      ...state,
-      username_or_uid
-   });
+   const handleChangeReceiver = (username_or_uid: string) => {
+      setState({
+         ...state,
+         username_or_uid
+      });
+   }
    const handleChangeAmount = (amount: string) => {
       const convertedValue = cleanPositiveFloatInput(amount)
       if (convertedValue.match(precisionRegExp(Number(myWallet?.fixed)))) {
@@ -201,7 +221,8 @@ export const TransferFC = ({
       <div className="mt-10 space-y-8">
          <div className="text-5xl text-center font-dm font-bold leading-custom1 tracking-custom">Yay! 🎉</div>
          <div className="max-w-71.25 mx-auto text-center text-base font-medium leading-normal">
-            You successfully transferred <span className="text-primary5 dark:text-chart1">{Decimal.format(amount, Number(myWallet?.fixed), ',') || 0} {amount ? myWallet?.currency?.toUpperCase() : ''}</span>  to {username_or_uid.toUpperCase()}
+            You successfully transferred <span className="text-primary5 dark:text-chart1">
+               {Decimal.format(amount, Number(myWallet?.fixed), ',') || 0} {amount ? myWallet?.currency?.toUpperCase() : ''}</span> to {detailUserData?.uid?.toUpperCase()}
          </div>
          <div className="flex flex-wrap p-6 rounded-xl border border-neutral6 dark:border-neutral3">
             <div className="mr-auto space-y-2.5">
@@ -241,14 +262,20 @@ export const TransferFC = ({
                            <InputGroup
                               autoFocus
                               id="uid"
-                              name="uid"
-                              label="Enter UID / Username"
+                              label="Enter UID"
                               placeholder="ID1234567890"
                               value={username_or_uid}
                               onChange={handleChangeReceiver}
-                           // icon={
-                           //    <div className="inline-flex justify-center items-center whitespace-nowrap text-xs h-8 px-4 rounded-lg bg-primary1 hover:bg-primary1/90 text-neutral8">Check</div>
-                           // }
+                              iconClassName={detailUserData?.uid?.toUpperCase() !== username_or_uid && username_or_uid ? '!w-16' : ''}
+                              icon={
+                                 (detailUserData?.uid?.toUpperCase() !== username_or_uid && username_or_uid) ?
+                                    <Badge
+                                       text="Cek"
+                                       rounded="3xl"
+                                       variant="outline"
+                                       onClick={() => handleGetDetailUser(username_or_uid)}
+                                    /> : <></>
+                              }
                            />
                            <div className="flex -mx-2">
                               <div className="grow-0 shrink-0 basis-c-1/3-4 w-c-1/3-4 mx-2">
@@ -364,25 +391,34 @@ export const TransferFC = ({
                                  <div className="text-base font-medium leading-normal">
                                     {translate('transfer.receiver.detail')}
                                  </div>
-                                 <div className="mx-auto w-20 h-20 overflow-hidden">
-                                    <img src={imgAvatar} className="object-cover" alt="Avatar receiver" title="Avatar receiver" />
+                                 <div className="mx-auto w-20 h-20 rounded-full overflow-hidden">
+                                    <img
+                                       src={
+                                          typeof detailUserData?.email === 'undefined'
+                                             ? imgAvatar
+                                             : `https://api.dicebear.com/5.x/fun-emoji/svg?seed=${detailUserData?.email}`
+                                       }
+                                       className="object-cover"
+                                       alt="Avatar receiver"
+                                       title="Avatar receiver"
+                                    />
                                  </div>
                                  <div className="flex items-center justify-between space-x-3">
                                     <div>UID</div>
-                                    <div className={`text-right font-medium truncate ${username_or_uid.toUpperCase().includes('ID') ? '' : 'text-neutral4 '}`}>
-                                       {username_or_uid.toUpperCase().includes('ID') ? username_or_uid.toUpperCase() : 'ID123123123'}
+                                    <div className={`text-right font-medium truncate ${detailUserData?.uid ? '' : 'text-neutral4 '}`}>
+                                       {detailUserData?.uid ? detailUserData?.uid?.toUpperCase() : 'ID123123123'}
                                     </div>
                                  </div>
                                  <div className="flex items-center justify-between space-x-3">
                                     <div>Username</div>
-                                    <div className={`text-right font-medium truncate ${!username_or_uid.toLowerCase().includes('ID') ? '' : 'text-neutral4 '}`}>
-                                       {!username_or_uid.toLowerCase().includes('ID') ? username_or_uid.toLowerCase() : 'digiusername'}
+                                    <div className={`text-right font-medium truncate ${detailUserData?.username ? '' : 'text-neutral4 '}`}>
+                                       {detailUserData?.username ? detailUserData?.username : 'digiusername'}
                                     </div>
                                  </div>
                                  <div className="flex items-center justify-between space-x-3">
                                     <div>Email</div>
                                     <div className={`text-right font-medium truncate text-neutral4`}>
-                                       digiasset@mail.com
+                                       {detailUserData?.email ? detailUserData?.email : 'digiasset@mail.com'}
                                     </div>
                                  </div>
                               </div>
@@ -432,11 +468,11 @@ export const TransferFC = ({
             <div className="space-y-3">
                <List
                   left="To"
-                  right="digiassetadmin"
+                  right={String(detailUserData?.username)}
                />
                <List
                   left="UID"
-                  right={username_or_uid.toUpperCase()}
+                  right={detailUserData?.uid?.toUpperCase()}
                />
                <List
                   left="Currencies"
@@ -479,6 +515,9 @@ export const TransferFC = ({
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    user: selectUserInfo(state),
+   detailUserLoading: selectDetailUserLoading(state),
+   detailUserData: selectDetailUserData(state),
+   detailUserError: selectDetailUserIsError(state),
    wallets: selectWallets(state),
    currencies: selectCurrencies(state),
    transferLoading: selectTransferLoading(state),
@@ -488,6 +527,7 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
    transfer: payload => dispatch(transferCreate(payload)),
+   getDetailUser: payload => dispatch(detailUserCreate(payload)),
    fetchWallets: () => dispatch(walletsFetch()),
    fetchCurrencies: () => dispatch(currenciesFetch()),
    alertPush: payload => dispatch(alertPush(payload)),

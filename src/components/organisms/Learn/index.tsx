@@ -74,7 +74,7 @@ const LearnMemo: FC = () => {
                                     }
                                  />
                               </div>
-                              <a href={`https://news.digiassetindo.com/${news[0]?.slug}`} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
+                              <a href={news[0]?.url} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
                            </div>
                            {news.slice(1, 4).map(e => (
                               <div key={e.id} className="lg2-max:hidden group relative float-right flex flex-row-reverse pl-15 mt-0 lg:mt-8 mx-3 lg:mx-4.5 w-[calc(50%-36px)] cursor-pointer">
@@ -100,7 +100,7 @@ const LearnMemo: FC = () => {
                                        {localeDate(e.created_at, 'shortDate')}
                                     </div>
                                  </div>
-                                 <a href={`https://news.digiassetindo.com/${e.slug}`} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
+                                 <a href={e.url} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
                               </div>
                            ))}
                            <button className="lg:hidden lg2-max:absolute lg2-max:bottom-0 lg2-max:left-4 lg2-max:z-2 lg2-max:h-10 lg2-max:w-10 lg2-max:rounded-full lg2-max:text-none lg2-max:hover:shadow-border lg2-max:hover:dark:shadow-border-dark lg2-max:flex lg2-max:items-center lg2-max:justify-center lg2-max:transition-all lg2-max:duration-200">
@@ -156,7 +156,7 @@ const LearnMemo: FC = () => {
                                           <path fill-rule="evenodd" clip-rule="evenodd"
                                              d="M14 12.0039C14 13.1085 13.1046 14.0039 12 14.0039C10.8954 14.0039 10 13.1085 10 12.0039C10 11.9755 10.0006 11.9473 10.0018 11.9192C10.1577 11.9741 10.3253 12.0039 10.5 12.0039C11.3284 12.0039 12 11.3323 12 10.5039C12 10.3292 11.9701 10.1616 11.9153 10.0057C11.9434 10.0045 11.9716 10.0039 12 10.0039C13.1046 10.0039 14 10.8993 14 12.0039ZM16 12.0039C16 14.213 14.2091 16.0039 12 16.0039C9.79086 16.0039 8 14.213 8 12.0039C8 9.79477 9.79086 8.00391 12 8.00391C14.2091 8.00391 16 9.79477 16 12.0039Z" />
                                        </svg>
-                                       <a href={`https://news.digiassetindo.com/${e.slug}`} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
+                                       <a href={news[0]?.url} className="absolute inset-0" target="_blank" rel="noopener noereferrer" />
                                     </div>
                                     <div className="p-2">
                                        <div className="">{e.title}</div>

@@ -389,7 +389,7 @@ const WithdrawalFC = memo(({
 
    const isDisabled = (): boolean => {
       const withdrawEnabled = selectedNetwork?.withdrawal_enabled;
-      return !withdrawEnabled || !Boolean(address) || !Boolean(label);
+      return !withdrawEnabled || !Boolean(address) || !Boolean(label) || !coinAddressValid;
    }
 
    const renderAsset = useMemo(() => (

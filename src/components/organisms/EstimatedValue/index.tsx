@@ -3,7 +3,6 @@ import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { IntlProps } from 'index';
 import { Badge, Decimal, formatWithSeparators } from 'components';
-import { VALUATION_PRIMARY_CURRENCY } from '../../../constants';
 import { estimateValue, estimateValueAvailable, estimateValueLocked } from 'helpers/estimateValue';
 import {
    currenciesFetch,
@@ -17,7 +16,9 @@ import {
    selectUserLoggedIn,
    Wallet,
    Market,
-   Ticker
+   Ticker,
+   selectSonic,
+   Sonic
 } from 'modules';
 
 interface EstimatedValueProps {
@@ -25,6 +26,7 @@ interface EstimatedValueProps {
 }
 
 interface ReduxProps {
+   sonic: Sonic;
    currencies: Currency[];
    markets: Market[];
    tickers: {
@@ -94,12 +96,13 @@ class EstimatedValueContainer extends React.Component<Props> {
          markets,
          tickers,
          wallets,
+         sonic,
       } = this.props;
-      const estimatedValue = estimateValue(VALUATION_PRIMARY_CURRENCY, currencies, wallets, markets, tickers);
-      const estimatedValueLocked = estimateValueLocked(VALUATION_PRIMARY_CURRENCY, currencies, wallets, markets, tickers);
-      const estimatedValueAvailable = estimateValueAvailable(VALUATION_PRIMARY_CURRENCY, currencies, wallets, markets, tickers);
+      const estimatedValue = estimateValue(sonic.peatio_platform_currency, currencies, wallets, markets, tickers);
+      const estimatedValueLocked = estimateValueLocked(sonic.peatio_platform_currency, currencies, wallets, markets, tickers);
+      const estimatedValueAvailable = estimateValueAvailable(sonic.peatio_platform_currency, currencies, wallets, markets, tickers);
 
-      const wallet = wallets.find(e => e.currency === VALUATION_PRIMARY_CURRENCY.toLowerCase())
+      const wallet = wallets.find(e => e.currency === sonic.peatio_platform_currency.toLowerCase())
 
       return (
          <>
@@ -110,10 +113,10 @@ class EstimatedValueContainer extends React.Component<Props> {
                      <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
                         {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
                      </div>
-                     <Badge variant="green" text={VALUATION_PRIMARY_CURRENCY.toUpperCase()} />
+                     <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
                   </div>
                   <div className="text-base text-neutral4">
-                     {formatWithSeparators(estimatedValue, ',')} {VALUATION_PRIMARY_CURRENCY.toUpperCase()}
+                     &asymp; {formatWithSeparators(estimatedValue, ',')} {sonic.peatio_platform_currency.toUpperCase()}
                   </div>
                </div>
                <div>
@@ -122,10 +125,10 @@ class EstimatedValueContainer extends React.Component<Props> {
                      <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
                         {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
                      </div>
-                     <Badge variant="green" text={VALUATION_PRIMARY_CURRENCY.toUpperCase()} />
+                     <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
                   </div>
                   <div className="text-base text-neutral4">
-                     {formatWithSeparators(estimatedValueLocked, ',')} {VALUATION_PRIMARY_CURRENCY.toUpperCase()}
+                     &asymp; {formatWithSeparators(estimatedValueLocked, ',')} {sonic.peatio_platform_currency.toUpperCase()}
                   </div>
                </div>
                <div>
@@ -134,10 +137,10 @@ class EstimatedValueContainer extends React.Component<Props> {
                      <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
                         {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
                      </div>
-                     <Badge variant="green" text={VALUATION_PRIMARY_CURRENCY.toUpperCase()} />
+                     <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
                   </div>
                   <div className="text-base text-neutral4">
-                     {formatWithSeparators(estimatedValueAvailable, ',')} {VALUATION_PRIMARY_CURRENCY.toUpperCase()}
+                     &asymp; {formatWithSeparators(estimatedValueAvailable, ',')} {sonic.peatio_platform_currency.toUpperCase()}
                   </div>
                </div>
             </div>
@@ -149,6 +152,7 @@ class EstimatedValueContainer extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
+   sonic: selectSonic(state),
    currencies: selectCurrencies(state),
    markets: selectMarkets(state),
    tickers: selectMarketTickers(state),

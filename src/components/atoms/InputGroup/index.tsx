@@ -43,6 +43,7 @@ interface InputGroupProps {
    parentClassName?: string;
    lableClassName?: string;
    className?: string;
+   iconClassName?: string;
    classNameInfo?: string;
    placeholder?: string;
    value?: string | number;
@@ -82,6 +83,7 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(({
    parentClassName,
    lableClassName,
    className,
+   iconClassName,
    classNameInfo,
    placeholder,
    value,
@@ -145,7 +147,7 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(({
       <button
          type="button"
          onClick={onClick || handleShowPassword}
-         className={`group absolute top-0 right-0 ${classes.size[String(size)]} w-12 bg-none flex items-center justify-center text-center transition-all duration-300`}
+         className={`group absolute top-0 right-0 ${classes.size[String(size)]} w-12 ${iconClassName} bg-none flex items-center justify-center text-center transition-all duration-300`}
          tabIndex={-1}
       >
          {withIconPassword ? (

@@ -23,8 +23,8 @@ const classes = () => ({
 });
 
 type SkeletonProps = {
-   width?: number;
-   height?: number;
+   width?: number | string;
+   height?: number | string;
    rounded?: Rounded;
    isWithFull?: boolean;
    isHeightFull?: boolean;

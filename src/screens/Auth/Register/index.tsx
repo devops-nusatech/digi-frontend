@@ -1,5 +1,8 @@
+import React, {
+   Component,
+   createRef
+} from 'react';
 import { History } from 'history';
-import React, { Component, createRef } from 'react';
 import { injectIntl } from 'react-intl';
 import {
    connect,

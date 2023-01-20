@@ -42,7 +42,7 @@ import {
    Button,
    Skeleton,
    DropdownListFlag,
-   DropdownListBuyCrypto,
+   // DropdownListBuyCrypto,
    ModalConfirmLogout,
    DropdownListNotification,
    DropdownListProfile
@@ -141,17 +141,17 @@ const HeaderFC = ({
    const handleSelectDropDownFlag = (value: string, type?: string) => type === 'lang' ? changeLanguage(value) : null;
    const translate = (id: string) => intl.formatMessage({ id });
 
-   const [dropDwonCrypto, setDropDwonCrypto] = useState<boolean>(false);
+   // const [dropDwonCrypto, setDropDwonCrypto] = useState<boolean>(false);
    const [dropDwonFlag, setDropDwonFlag] = useState<boolean>(false);
    const [dropDwonNotif, setDropDwonNotif] = useState<boolean>(false);
    const [dropDwonProfile, setDropDwonProfile] = useState<boolean>(false);
 
-   const refDropDwonCrypto = useRef<HTMLDivElement>(null);
+   // const refDropDwonCrypto = useRef<HTMLDivElement>(null);
    const refDropDwonFlag = useRef<HTMLDivElement>(null);
    const refDropDwonNotif = useRef<HTMLButtonElement>(null);
    const refDropDwonProfile = useRef<HTMLDivElement>(null);
 
-   const handleSetDropDwonCrypto = () => setDropDwonCrypto(!dropDwonCrypto);
+   // const handleSetDropDwonCrypto = () => setDropDwonCrypto(!dropDwonCrypto);
    const handleSetDropDwonFlag = () => setDropDwonFlag(!dropDwonFlag);
    const handleSetDropDwonNotif = () => setDropDwonNotif(!dropDwonNotif);
    const handleSetDropDwonProfile = (e) => {
@@ -159,9 +159,9 @@ const HeaderFC = ({
       setDropDwonProfile(!dropDwonProfile);
    }
 
-   const handleOutsideDropDwonCrypto = (e: any) => {
-      if (refDropDwonCrypto && !refDropDwonCrypto?.current?.contains(e.target)) setDropDwonCrypto(false);
-   }
+   // const handleOutsideDropDwonCrypto = (e: any) => {
+   //    if (refDropDwonCrypto && !refDropDwonCrypto?.current?.contains(e.target)) setDropDwonCrypto(false);
+   // }
    const handleOutsideDropDwonFlag = (e: any) => {
       if (refDropDwonFlag && !refDropDwonFlag?.current?.contains(e.target)) setDropDwonFlag(false);
    }
@@ -172,10 +172,10 @@ const HeaderFC = ({
       if (refDropDwonProfile && !refDropDwonProfile?.current?.contains(e.target)) setDropDwonProfile(false);
    }
 
-   useEffect(() => {
-      document.addEventListener('mousedown', handleOutsideDropDwonCrypto);
-      return () => document.removeEventListener('mousedown', handleOutsideDropDwonCrypto);
-   }, []);
+   // useEffect(() => {
+   //    document.addEventListener('mousedown', handleOutsideDropDwonCrypto);
+   //    return () => document.removeEventListener('mousedown', handleOutsideDropDwonCrypto);
+   // }, []);
    useEffect(() => {
       document.addEventListener('mousedown', handleOutsideDropDwonFlag);
       return () => document.removeEventListener('mousedown', handleOutsideDropDwonFlag);
@@ -214,11 +214,11 @@ const HeaderFC = ({
                         />
                      </Link>
                      <div className="1xl-max:hidden border-r border-solid h-[content] border-gray4 dark:border-neutral3" />
-                     <div className="hidden md:flex items-center space-x-0 md:space-x-2 lg:space-x-3 lg2:space-x-8 font-dm font-bold text-neutral4 whitespace-nowrap">
+                     <div className="hidden md:flex items-center space-x-0 md:space-x-2 lg:space-x-5 lg2:space-x-8 font-dm font-bold text-neutral4 whitespace-nowrap">
                         <Link to={`/trading/${currentMarket?.id}`} className={`cursor-pointer ${location.pathname.includes('/trading') ? 'text-neutral2 dark:text-neutral8' : 'hover:text-neutral2 dark:hover:text-neutral8'} transition-colors duration-300`}>
                            Exchange
                         </Link>
-                        <div
+                        {/* <div
                            ref={refDropDwonCrypto}
                            onClick={handleSetDropDwonCrypto}
                            className="relative select-none"
@@ -232,19 +232,19 @@ const HeaderFC = ({
                               </svg>
                            </div>
                            <DropdownListBuyCrypto isOpen={dropDwonCrypto} translate={translate} />
-                        </div>
+                        </div> */}
                         <Link
                            to="/markets"
                            className={`cursor-pointer ${location.pathname.includes('/markets') ? 'text-neutral2 dark:text-neutral8' : 'hover:text-neutral2 dark:hover:text-neutral8'} transition-colors duration-300`}
                         >
                            {translate('page.body.trade.header.markets')}
                         </Link>
-                        <Link
+                        {/* <Link
                            to="/learn-crypto"
                            className={`cursor-pointer ${location.pathname.includes('/learn-crypto') ? 'text-neutral2 dark:text-neutral8' : 'hover:text-neutral2 dark:hover:text-neutral8'} transition-colors duration-300`}
                         >
                            {translate('page.body.trade.header.discover')}
-                        </Link>
+                        </Link> */}
                      </div>
                   </div>
                   <div className="flex items-center space-x-0 md:space-x-4 lg:space-x-8">

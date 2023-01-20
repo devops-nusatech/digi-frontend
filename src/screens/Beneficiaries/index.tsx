@@ -464,7 +464,7 @@ const BeneficiariesFC = ({
 
    const isDisabled = (): boolean => {
       const withdrawEnabled = selectedNetwork?.withdrawal_enabled;
-      return !withdrawEnabled || !Boolean(address) || !Boolean(label);
+      return !withdrawEnabled || !Boolean(address) || !Boolean(label) || coinAddressValid;
    }
 
    const isRipple = selectedAsset.currency === 'xrp';
