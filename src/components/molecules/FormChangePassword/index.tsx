@@ -19,12 +19,10 @@ export const FormChangePassword = memo((props: any) => {
    const [passwordErrorThirdSolved, setPasswordErrorThirdSolved] = useState(false);
    const [passwordPopUp, setPasswordPopUp] = useState(false);
 
-
    //  Update
    const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
    const [showPassword, setShowPassword] = useState<boolean>(false);
    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-
 
    const intl = useIntl();
 
@@ -92,10 +90,12 @@ export const FormChangePassword = memo((props: any) => {
    };
 
    return (
-      <div className="w-84 mx-auto space-y-8" onKeyPress={handleEnterPress}>
-         <div className="text-center text-4.5xl leading-[1.2] tracking-custom1 font-dm font-bold">
-            New password
-         </div>
+      <div className="w-full sm:w-84 mx-auto space-y-8" onKeyPress={handleEnterPress}>
+         {!props.showTitle && (
+            <div className="text-center text-4.5xl leading-[1.2] tracking-custom1 font-dm font-bold">
+               New password
+            </div>
+         )}
          {!props.hideOldPassword &&
             <InputGroup
                autoFocus
@@ -129,6 +129,7 @@ export const FormChangePassword = memo((props: any) => {
                         <use xlinkHref="#icon-eye" />
                      </svg> : <IcEyeClose className="w-6 h-6 fill-neutral5 group-hover:fill-neutral4 transition-all duration-300" />
                }
+               autoFocus={props.hideOldPassword}
             />
             {newPassword ?
                <PasswordStrengthBar

@@ -23,6 +23,7 @@ export * from './Export';
 export * from './types';
 export * from './InputOtp';
 export * from './InputOtp2';
+export * from './GeetestCaptchaV3';
 export * from './GeetestCaptchaV4';
 export * from './Loader';
 export * from './DropdownMenu';

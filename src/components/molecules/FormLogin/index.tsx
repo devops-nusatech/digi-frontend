@@ -2,7 +2,7 @@ import React, { KeyboardEvent, useCallback, useEffect, useState, memo, FC } from
 // import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 // import { useHistory } from 'react-router';
-import { Button, LayoutAuth, Nav, InputGroup } from 'components';
+import { Button, LayoutAuth, InputGroup } from 'components';
 import { captchaLogin } from 'api';
 import { EMAIL_REGEX, removeClass, } from 'helpers';
 import { GeetestCaptchaResponse, } from 'modules';
@@ -82,7 +82,7 @@ export const FormLogin: FC<SignInProps> = memo(({
    renderCaptcha,
    captcha_response
 }) => {
-   const [loginBy, setLoginBy] = useState<boolean>(true);
+   // const [loginBy, setLoginBy] = useState<boolean>(true);
    const [country, setCountry] = useState<string>('id');
 
    useEffect(() => {
@@ -173,11 +173,11 @@ export const FormLogin: FC<SignInProps> = memo(({
          <div>
             <form>
                <div className="flex flex-col space-y-8" onKeyPress={handleEnterPress}>
-                  <div className="flex justify-center space-x-6">
+                  {/* <div className="flex justify-center space-x-6">
                      <Nav title="Email" isActive={loginBy} onClick={() => setLoginBy(true)} />
                      <Nav title="Mobile" isActive={!loginBy} onClick={() => setLoginBy(false)} />
-                  </div>
-                  {loginBy ? (
+                  </div> */}
+                  {true ? (
                      <InputGroup
                         id="email"
                         type="email"

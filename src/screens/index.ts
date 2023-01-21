@@ -46,3 +46,4 @@ export * from './WithdrawalStep';
 export * from './WalletFinance';
 export * from './WalletOrder';
 export * from './Exchange';
+export * from './Geetest';

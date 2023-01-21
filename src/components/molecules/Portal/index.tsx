@@ -85,21 +85,23 @@ export const Portal: FC<PortalProps> = ({
                               ${classes[String(width)]}
                            `)}
                         >
-                           {(title || info === '' || info) && (<div>
-                              {(title || info === '') && (
-                                 <div className="flex items-center space-x-4 pr-14 pb-2">
-                                    <svg
-                                       onClick={onClick}
-                                       className={`w-8 h-8 dark:fill-neutral8 ${!onClick ? '' : 'cursor-pointer hover:fill-primary1'} transition-all duration-300`}>
-                                       <use xlinkHref="#icon-arrow-left" />
-                                    </svg>
-                                    <div className="font-dm font-bold text-3.5xl !leading-tight tracking-custom1">{title}</div>
-                                 </div>
-                              )}
-                              {info && (
-                                 <div className="pl-12 text-base leading-normal text-neutral4">{info}</div>
-                              )}
-                           </div>)}
+                           {(title || info === '' || info) && (
+                              <div>
+                                 {(title || info === '') && (
+                                    <div className="flex items-center space-x-4 pr-14 pb-2">
+                                       <svg
+                                          onClick={onClick}
+                                          className={`w-8 h-8 dark:fill-neutral8 ${!onClick ? '' : 'cursor-pointer hover:fill-primary1'} transition-all duration-300`}>
+                                          <use xlinkHref="#icon-arrow-left" />
+                                       </svg>
+                                       <div className="font-dm font-bold text-3.5xl !leading-tight tracking-custom1">{title}</div>
+                                    </div>
+                                 )}
+                                 {info && (
+                                    <div className="pl-12 text-base leading-normal text-neutral4">{info}</div>
+                                 )}
+                              </div>
+                           )}
                            {children}
                            <div className="group absolute top-0 right-8 w-10 h-10 flex items-center justify-center rounded-full leading-none opacity-100 border border-neutral6 dark:border-neutral3 dark:hover:border-neutral8 cursor-pointer transition-all duration-300" onClick={close}>
                               <IcClose className="group-hover:scale-110 fill-neutral2 dark:fill-neutral8 transition ease-in-out duration-300" />

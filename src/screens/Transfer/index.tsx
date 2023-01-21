@@ -208,7 +208,7 @@ export const TransferFC = ({
    const myWallet = wallets.find(wallet => wallet?.currency === selected?.id);
 
    const isDisabled = (): boolean => {
-      return !selected || !username_or_uid || !amount || otp.length < 6 || Number(myWallet?.balance) <= 0;
+      return !selected || !username_or_uid || !amount || otp.length < 6 || Number(myWallet?.balance) <= 0 || !detailUserData?.username?.length;
    }
 
    const handleShowConfirm = () => setIsOpenConfirm(prev => !prev);
@@ -222,7 +222,7 @@ export const TransferFC = ({
          <div className="text-5xl text-center font-dm font-bold leading-custom1 tracking-custom">Yay! 🎉</div>
          <div className="max-w-71.25 mx-auto text-center text-base font-medium leading-normal">
             You successfully transferred <span className="text-primary5 dark:text-chart1">
-               {Decimal.format(amount, Number(myWallet?.fixed), ',') || 0} {amount ? myWallet?.currency?.toUpperCase() : ''}</span> to {detailUserData?.uid?.toUpperCase()}
+               {Decimal.format(amount, Number(myWallet?.fixed), ',') || 0} {amount ? myWallet?.currency?.toUpperCase() : ''}</span> to {username_or_uid}
          </div>
          <div className="flex flex-wrap p-6 rounded-xl border border-neutral6 dark:border-neutral3">
             <div className="mr-auto space-y-2.5">
@@ -394,7 +394,7 @@ export const TransferFC = ({
                                  <div className="mx-auto w-20 h-20 rounded-full overflow-hidden">
                                     <img
                                        src={
-                                          typeof detailUserData?.email === 'undefined'
+                                          typeof detailUserData?.email === 'undefined' || detailUserData?.email === ''
                                              ? imgAvatar
                                              : `https://api.dicebear.com/5.x/fun-emoji/svg?seed=${detailUserData?.email}`
                                        }

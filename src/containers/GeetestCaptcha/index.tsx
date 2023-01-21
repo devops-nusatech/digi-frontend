@@ -17,7 +17,6 @@ import { removeElement } from 'helpers';
 interface OwnProps {
    shouldCaptchaReset?: boolean;
    onSuccess?: (value?: GeetestCaptchaResponse) => void;
-   onClick?: (e?: any) => void;
 }
 
 interface ReduxProps {
@@ -69,12 +68,6 @@ class GeetestCaptchaComponent extends React.Component<Props> {
 
    public show = () => {
       return this.captcha && this.captcha.show();
-   }
-
-   public verify = () => {
-      if (this.props.onClick) {
-         this.props.onClick(this.captcha.verify())
-      }
    }
 
    public validate = () => {

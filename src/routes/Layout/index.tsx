@@ -103,6 +103,7 @@ import {
    Exchange,
    WalletOrder,
    RegisterKu,
+   Geetest,
 } from 'screens';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -311,6 +312,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <Route path="/learn-crypto" component={LearnCrypto} />
                <Route path="/deposit" component={Deposit} />
                <Route path="/exchange" component={Exchange} />
+               <Route path="/geetest" component={Geetest} />
                {showLanding() && <Route exact path="/" component={LandingScreen} />}
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/docs" component={ApiDocs} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/orders" component={WalletOrder} />

@@ -1,4 +1,10 @@
-import React, { FC, FunctionComponent, useEffect, createRef, useState, KeyboardEvent } from 'react';
+import React, {
+   FC,
+   FunctionComponent,
+   useEffect,
+   useState,
+   KeyboardEvent
+} from 'react';
 import { injectIntl } from 'react-intl';
 import {
    connect,
@@ -9,8 +15,15 @@ import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { IntlProps } from '../../..';
-import { Captcha, FormChangeNewPassword, LayoutAuth } from 'components';
-import { passwordErrorFirstSolution, passwordErrorSecondSolution, passwordErrorThirdSolution, setDocumentTitle, truncateMiddle } from 'helpers';
+import {
+   Captcha,
+   FormChangeNewPassword,
+   LayoutAuth
+} from 'components';
+import {
+   setDocumentTitle,
+   truncateMiddle
+} from 'helpers';
 import {
    changeForgotPasswordFetch,
    CommonError,
@@ -20,7 +33,10 @@ import {
    GeetestCaptchaResponse,
    GeetestCaptchaV4Response,
    resetCaptchaState,
-   RootState, selectCaptchaResponse, selectChangeForgotPasswordLoading, selectChangeForgotPasswordSuccess,
+   RootState,
+   selectCaptchaResponse,
+   selectChangeForgotPasswordLoading,
+   selectChangeForgotPasswordSuccess,
    selectConfigs,
    selectCurrentPasswordEntropy,
    selectForgotPasswordError,
@@ -34,19 +50,11 @@ import { useShowGeetestCaptcha } from 'hooks';
 type State = {
    isRendered: 0 | 1;
    otpCode: string;
-   newPassword: string;
-   confirmPassword: string;
-   newPasswordShow: boolean;
-   newPasswordFocus: boolean;
-   confirmPasswordFocus: boolean;
-   passwordErrorFirstSolved: boolean,
-   passwordErrorSecondSolved: boolean,
-   passwordErrorThirdSolved: boolean,
-   typingTimeout: number
 }
 
 interface ReduxProps {
-   changeForgotPassword?: boolean;
+   forgotPasswordRequested: boolean;
+   forgotPasswordChanged: boolean;
    isMobileDevice: boolean;
    configs: Configs;
    currentPasswordEntropy: number;
@@ -77,7 +85,8 @@ type Props = RouterProps & DispatchProps & OwnProps & ReduxProps & IntlProps;
 
 
 const ChangeForgotPasswordFC: FC<Props> = ({
-   changeForgotPassword,
+   forgotPasswordRequested,
+   forgotPasswordChanged,
    isMobileDevice,
    configs,
    currentPasswordEntropy,
@@ -98,32 +107,16 @@ const ChangeForgotPasswordFC: FC<Props> = ({
    const [state, setState] = useState<State>({
       isRendered: 0,
       otpCode: '',
-      newPassword: '',
-      confirmPassword: '',
-      newPasswordFocus: false,
-      confirmPasswordFocus: false,
-      newPasswordShow: false,
-      passwordErrorFirstSolved: false,
-      passwordErrorSecondSolved: false,
-      passwordErrorThirdSolved: false,
-      typingTimeout: 0,
    });
-   const { isRendered, otpCode, newPassword, confirmPassword, newPasswordFocus, confirmPasswordFocus, newPasswordShow, passwordErrorFirstSolved, passwordErrorSecondSolved, passwordErrorThirdSolved, typingTimeout } = state;
-
-   const newPasswordWrapper = createRef<HTMLDivElement>();
+   const { isRendered, otpCode } = state;
 
    useEffect(() => {
       setDocumentTitle('Change forgotten password');
    }, []);
 
    useEffect(() => {
-      document.addEventListener('mouseout', handleOutsideClick);
-      return () => document.removeEventListener('mouseout', handleOutsideClick);
-   }, [newPasswordWrapper]);
-
-   useEffect(() => {
-      changeForgotPassword && history.push('/login');
-   }, [changeForgotPassword]);
+      forgotPasswordChanged && history.push('/login');
+   }, [forgotPasswordChanged]);
 
    const translate = (id: string) => intl.formatMessage({ id });
 
@@ -131,64 +124,6 @@ const ChangeForgotPasswordFC: FC<Props> = ({
       setState({
          ...state,
          otpCode
-      });
-   }
-   const handleChangeNewPassword = (newPassword: string) => {
-      if (passwordErrorFirstSolution(newPassword) && !passwordErrorFirstSolved) {
-         setState({
-            ...state,
-            passwordErrorFirstSolved: true,
-         });
-      } else if (!passwordErrorFirstSolution(newPassword) && passwordErrorFirstSolved) {
-         setState({
-            ...state,
-            passwordErrorFirstSolved: false,
-         });
-      }
-
-      if (passwordErrorSecondSolution(newPassword) && !passwordErrorSecondSolved) {
-         setState({
-            ...state,
-            passwordErrorSecondSolved: true,
-         });
-      } else if (!passwordErrorSecondSolution(newPassword) && passwordErrorSecondSolved) {
-         setState({
-            ...state,
-            passwordErrorSecondSolved: false,
-         });
-      }
-
-      if (passwordErrorThirdSolution(newPassword) && !passwordErrorThirdSolved) {
-         setState({
-            ...state,
-            passwordErrorThirdSolved: true,
-         });
-      } else if (!passwordErrorThirdSolution(newPassword) && passwordErrorThirdSolved) {
-         setState({
-            ...state,
-            passwordErrorThirdSolved: false,
-         });
-      }
-
-      if (typingTimeout) {
-         clearTimeout(typingTimeout);
-      }
-
-      setState({
-         ...state,
-         newPassword,
-         newPasswordFocus: true,
-         newPasswordShow: true,
-         typingTimeout: Number(setTimeout(() => fetchCurrentPasswordEntropy({ password: newPassword }), 500)),
-      });
-   }
-   const handleChangeConfirmPassword = (confirmPassword: string) => {
-      setState({
-         ...state,
-         confirmPassword,
-         newPasswordFocus: false,
-         newPasswordShow: false,
-         confirmPasswordFocus: true,
       });
    }
 
@@ -199,24 +134,13 @@ const ChangeForgotPasswordFC: FC<Props> = ({
       });
    }
 
-   const handleSendNewPassword = () => {
+   const handleSendNewPassword = ({ password, confirm_password }: { password: string, confirm_password: string }) => {
       changeForgotPasswordFetch({
-         password: newPassword,
-         confirm_password: confirmPassword,
+         password,
+         confirm_password,
          reset_password_token: otpCode,
          email: location.state.email
       });
-   };
-
-   const handleOutsideClick = (e: any) => {
-      const wrapperElement = newPasswordWrapper.current;
-      if (wrapperElement && !wrapperElement.contains(e.target)) {
-         setState({
-            ...state,
-            newPasswordShow: false,
-            newPasswordFocus: false,
-         });
-      }
    };
 
    const handleResendGenerateCode = () => {
@@ -246,9 +170,6 @@ const ChangeForgotPasswordFC: FC<Props> = ({
 
    const renderCaptcha = () => <Captcha error={error} success={success} />;
 
-   const handleFocusNewPassword = () => setState({ ...state, newPasswordFocus: true });
-   const handleFocusConfirmPassword = () => setState({ ...state, confirmPasswordFocus: true })
-
    const handleOnKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === 'Enter') {
          switch (isRendered) {
@@ -266,7 +187,7 @@ const ChangeForgotPasswordFC: FC<Props> = ({
       if (isRendered === 0 && otpCode.length < 6) {
          return true;
       }
-      if (isRendered === 1 && (!newPassword || !confirmPassword || (newPassword !== confirmPassword))) {
+      if (isRendered === 1) {
          return true;
       }
       return false;
@@ -284,40 +205,27 @@ const ChangeForgotPasswordFC: FC<Props> = ({
       >
          <FormChangeNewPassword
             isRendered={isRendered}
-            newPassword={newPassword}
-            confirmPassword={confirmPassword}
-            newPasswordLabel={translate('page.header.signIn.resetPassword.newPassword')}
-            newPasswordFocus={newPasswordFocus}
-            confirmPasswordFocus={confirmPasswordFocus}
-            confirmPasswordLabel={translate('page.header.signUp.confirmPassword')}
-            buttonLabel={translate('page.body.kyc.next')}
-            placeholder={translate('page.header.signUp.password')}
+            otpCode={otpCode}
+            forgotPasswordRequested={forgotPasswordRequested}
             handleChangeOTP={handleChangeOTP}
-            handleChangeNewPassword={handleChangeNewPassword}
-            handleFocusNewPassword={handleFocusNewPassword}
-            handleFocusConfirmPassword={handleFocusConfirmPassword}
-            handleChangeConfirmPassword={handleChangeConfirmPassword}
             handleChangeRendered={handleChangeRendered}
             changeForgotPasswordFetch={handleSendNewPassword}
             isDisabled={isDisabled()}
             isLoading={isLoading}
             translate={translate}
-            minPasswordEntropy={configs.password_min_entropy}
             currentPasswordEntropy={currentPasswordEntropy}
-            passwordErrorFirstSolved={passwordErrorFirstSolved}
-            passwordErrorSecondSolved={passwordErrorSecondSolved}
-            passwordErrorThirdSolved={passwordErrorThirdSolved}
-            newPasswordWrapper={newPasswordWrapper}
-            newPasswordShow={newPasswordShow}
             renderCaptcha={renderCaptcha()}
             handleResendGenerateCode={configs.captcha_type !== 'none' ? useShowGeetestCaptcha : handleResendGenerateCode}
+            fetchCurrentPasswordEntropy={fetchCurrentPasswordEntropy}
+            configs={configs}
          />
       </LayoutAuth>
    )
 }
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
-   changeForgotPassword: selectChangeForgotPasswordSuccess(state),
+   forgotPasswordRequested: selectForgotPasswordSuccess(state),
+   forgotPasswordChanged: selectChangeForgotPasswordSuccess(state),
    isMobileDevice: selectMobileDeviceState(state),
    currentPasswordEntropy: selectCurrentPasswordEntropy(state),
    configs: selectConfigs(state),

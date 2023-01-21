@@ -6,7 +6,6 @@ import { useSetShouldGeetestReset } from 'hooks';
 import {
    GeetestCaptchaResponse,
    selectCaptchaDataObjectLoading,
-   // GeetestCaptchaV4Response,
    selectConfigs,
    selectShouldGeetestReset,
    setGeetestCaptchaSuccess,

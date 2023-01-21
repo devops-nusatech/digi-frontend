@@ -462,7 +462,7 @@ const TableFinanceFC = ({
                   </svg>
                </div>
             </div>
-            <div className={`space-y-8 ${filter.advanceFilter ? 'h-44 opacity-100' : 'h-0 opacity-0 !mt-0'} transition-all duration-300`}>
+            <div className={`space-y-8 ${filter.advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 !mt-0 invisible'} transition-all duration-300`}>
                <InputGroup
                   label="asset name"
                   placeholder="search asset"
