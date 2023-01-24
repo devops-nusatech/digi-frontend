@@ -51,21 +51,6 @@ import { IntlProps } from 'index';
 import { arrayFilter, cleanPositiveFloatInput, precisionRegExp, renderCurrencyIcon, truncateMiddle } from 'helpers';
 import { imgAvatar } from 'assets';
 
-// const people = [
-//    { id: 1, name: 'Wade Cooper' },
-//    { id: 2, name: 'Arlene Mccoy' },
-//    { id: 3, name: 'Devon Webb' },
-//    { id: 4, name: 'Tom Cook' },
-//    { id: 5, name: 'Tanya Fox' },
-//    { id: 6, name: 'Hellen Schmidt' },
-//    { id: 7, name: 'Wade Cooper' },
-//    { id: 8, name: 'Arlene Mccoy' },
-//    { id: 3, name: 'Devon Webb' },
-//    { id: 9, name: 'Tom Cook' },
-//    { id: 10, name: 'Tanya Fox' },
-//    { id: 11, name: 'Hellen Schmidt' },
-// ]
-
 type TransferState = {
    username_or_uid: string;
    amount: string;

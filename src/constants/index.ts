@@ -1,4 +1,4 @@
-import type { Wallet } from "modules";
+import type { Ticker, Wallet } from "modules";
 
 export const PG_TITLE_PREFIX = 'Cryptobase';
 
@@ -17,6 +17,17 @@ export const pgRoutes = (isLoggedIn: boolean, isLight?: boolean): string[][] => 
    ];
 
    return isLoggedIn ? routes : routesUnloggedIn;
+};
+
+export const DEFAULT_TICKER: Ticker = {
+   amount: '0',
+   avg_price: '0',
+   high: '0',
+   last: '0',
+   low: '0',
+   open: '0',
+   price_change_percent: '+0.00%',
+   volume: '0'
 };
 
 export const DEFAULT_WALLET: Wallet = {

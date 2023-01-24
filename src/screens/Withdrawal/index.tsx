@@ -28,7 +28,8 @@ import {
    Portal,
    Skeleton,
    Listbox,
-   InputOtp
+   InputOtp,
+   Image,
 } from 'components';
 // import { Listbox } from '@headlessui/react'
 import {
@@ -66,6 +67,7 @@ import {
    User,
    WithdrawLimits,
    selectWithdrawLimits,
+   selectWithdrawSuccess,
 } from 'modules';
 import type {
    Beneficiary,
@@ -120,6 +122,7 @@ type ReduxProps = {
    memberLevels?: MemberLevels;
    withdrawLimits: WithdrawLimits[];
    withdrawLimit: WithdrawLimit;
+   withdrawSuccess: boolean;
 }
 
 type OwnProps = {
@@ -170,6 +173,7 @@ const WithdrawalFC = memo(({
    memberLevels,
    withdrawLimits,
    withdrawLimit,
+   withdrawSuccess,
    location,
    fecthWallets,
    fetchMemberLevel,
@@ -201,6 +205,7 @@ const WithdrawalFC = memo(({
    const [id, setId] = useState(0);
    const [modalDelete, setModalDelete] = useState(false);
    const [modalConfirm, setModalConfirm] = useState(false);
+   const [modalConfirmWD, setModalConfirmWD] = useState(false);
    const [isOpenBeneficiary, setIsOpenBeneficiary] = useState(false);
    const [showModalSuccessPurchased, setShowModalSuccessPurchased] = useState(false);
 
@@ -230,6 +235,15 @@ const WithdrawalFC = memo(({
          label: '',
          description: ''
       });
+   }
+
+   const resetFieldWD = () => {
+      setState({
+         amount: '',
+         otp: '',
+         total: '',
+         amountError: false,
+      })
    }
 
    useEffect(() => {
@@ -305,6 +319,14 @@ const WithdrawalFC = memo(({
       }
    }, [beneficiariesCreateSuccess, beneficiariesActivateSuccess, isOpenBeneficiary, pin]);
 
+   useEffect(() => {
+      if (withdrawSuccess) {
+         handleShowModalConfirmWD();
+         handleSetShowModalSuccessPurchased();
+         resetFieldWD();
+      }
+   }, [withdrawSuccess]);
+
    const fetchBeneficiary = () => fetchBeneficiaries({ currency_id: userWallets[0]?.currency ? userWallets[0]?.currency : location.state?.wallet.currency });
 
    const handleConfirmActivate = () => activateBeneficiary({ id: id ? id : beneficiary.id, pin });
@@ -319,7 +341,7 @@ const WithdrawalFC = memo(({
          otp
       }
       console.log('payload :>> ', payload);
-      // withdrawCcy(payload)
+      withdrawCcy(payload)
    }
 
    if (searchMarket) {
@@ -390,10 +412,17 @@ const WithdrawalFC = memo(({
    };
 
    const handleShowModalConfirm = () => setModalConfirm(!modalConfirm);
+   const handleShowModalConfirmWD = () => setModalConfirmWD(!modalConfirmWD);
 
-   const isDisabled = (): boolean => {
+   const isDisabled = () => {
       const withdrawEnabled = selectedNetwork?.withdrawal_enabled;
-      return !withdrawEnabled || !Boolean(address) || !Boolean(label) || !coinAddressValid;
+      return !withdrawEnabled || !address || !label || coinAddressValid;
+   }
+   const isDisbaledWithdraw = () => {
+      const limit = Number(withdrawLimited?.limit_24_hour) - Number(withdrawLimit?.last_24_hours);
+      const tax = Number(network?.withdraw_fee) + Number(network?.min_withdraw_amount);
+      const balance = userWallets[0]?.balance;
+      return limit < tax || !amount || otp.length < 6 || Number(balance) < Number(amount);
    }
 
    const renderAsset = useMemo(() => (
@@ -466,11 +495,13 @@ const WithdrawalFC = memo(({
                         <td className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                            <div className="flex space-x-3 items-center">
                               <div className="shrink-0 w-8">
-                                 <img
+                                 <Image
                                     className={`w-full ${renderCurrencyIcon(userWallet.currency, userWallet.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                                     src={renderCurrencyIcon(userWallet.currency, userWallet.iconUrl)}
                                     alt={userWallet.name}
                                     title={userWallet.name}
+                                    height={40}
+                                    width={40}
                                  />
                               </div>
                               <div className="flex items-center space-x-1">
@@ -691,10 +722,13 @@ const WithdrawalFC = memo(({
             </button>
             <div className="flex items-center text-base font-medium">
                {userWallets[0]?.name || ''}
-               <img
+               <Image
                   src={renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)}
                   className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                   alt={userWallets[0]?.name}
+                  title={userWallets[0]?.name}
+                  height={40}
+                  width={40}
                />
             </div>
          </div>
@@ -803,7 +837,8 @@ const WithdrawalFC = memo(({
                <Button
                   width="noFull"
                   text="I understand, continue"
-                  onClick={handleSetShowModalSuccessPurchased}
+                  disabled={isDisbaledWithdraw()}
+                  onClick={handleShowModalConfirmWD}
                />
             </div>
          </div>
@@ -855,7 +890,7 @@ const WithdrawalFC = memo(({
    );
    const validateCoinAddressFormat = (value: string) => {
       if (getCurrencies().some(currency => currency.symbol === userWallets[0]?.currency)) {
-         const valid = validate(value, userWallets[0]?.currency, 'testnet');
+         const valid = validate(value, userWallets[0]?.currency, 'mainnet');
          setCoinAddressValid(valid ? false : true);
       }
    };
@@ -863,7 +898,7 @@ const WithdrawalFC = memo(({
       <>
          {userWallets[0]?.type === 'coin' && (
             <>
-               {userWallets[0]?.networks.filter(e => e.protocol !== '').length && (
+               {userWallets[0]?.networks.filter(e => e?.protocol !== '').length && (
                   <Listbox
                      label="Network"
                      objectKey="protocol"
@@ -1116,6 +1151,58 @@ const WithdrawalFC = memo(({
          </Portal>
 
          <Portal
+            show={modalConfirmWD}
+            close={handleShowModalConfirmWD}
+            title="Confirmation"
+         >
+            <div className="space-y-2">
+               <div className="text-center font-medium leading-normal">
+                  Receive amount
+               </div>
+               <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1">
+                  {Decimal.format(state.total, userWallets[0]?.fixed, '')} {state.total ? userWallets[0]?.currency?.toUpperCase() : ''}
+               </div>
+            </div>
+            <div className="space-y-3">
+               <CellDetail
+                  title="Balance"
+                  value={Decimal.format(userWallets[0]?.balance, userWallets[0]?.fixed, ',')}
+                  rightAlt={userWallets[0]?.currency?.toUpperCase()}
+               />
+               <CellDetail
+                  title="Withdraw"
+                  value={Decimal.format(state.amount, userWallets[0]?.fixed, '')}
+                  rightAlt={userWallets[0]?.currency?.toUpperCase()}
+               />
+               <CellDetail
+                  title="Fee"
+                  value={withdrawFee}
+                  rightAlt={userWallets[0]?.currency?.toUpperCase()}
+               />
+               <CellDetail
+                  title="Currencies"
+                  value={userWallets[0]?.name}
+               />
+               <CellDetail
+                  title="Address"
+                  value={truncateMiddle(String(filteredBeneficiary?.find(e => e.id === id)?.data?.address), 20)}
+               />
+            </div>
+            <div className="bg-neutral7 dark:bg-neutral3 p-4 rounded-2xl space-y-3">
+               <div className="text-center text-base font-medium">
+                  Attention
+               </div>
+               <div className="text-xs leading-custom4">
+                  Please note that withdrawing tokens to the wrong address will cause your asset to be permanently lost
+               </div>
+            </div>
+            <Button
+               text={translate('transfer')}
+               onClick={handleWithdraw}
+            />
+         </Portal>
+
+         <Portal
             show={showModalSuccessPurchased}
             close={handleSetShowModalSuccessPurchased}
          >
@@ -1142,6 +1229,7 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    memberLevels: selectMemberLevels(state),
    withdrawLimits: selectWithdrawLimits(state),
    withdrawLimit: selectWithdrawLimit(state),
+   withdrawSuccess: selectWithdrawSuccess(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

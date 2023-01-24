@@ -1,4 +1,7 @@
-import { useState, ChangeEvent } from 'react';
+import {
+   useState,
+   ChangeEvent
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import {
    useSelector,
@@ -6,6 +9,8 @@ import {
 } from 'react-redux';
 import {
    Market,
+   selectUserInfo,
+   selectUserLoggedIn,
    selectMarkets,
    selectMarketTickers,
    selectCurrencies,
@@ -14,6 +19,8 @@ import {
    selectCurrenciesLoading,
    setCurrentMarket,
    selectCurrentMarket,
+   changeUserDataFetch,
+   selectCurrentLanguage,
 } from 'modules';
 import {
    useCurrenciesFetch,
@@ -23,16 +30,7 @@ import {
 } from 'hooks';
 import { arrayFilter } from 'helpers';
 import { Decimal } from 'components';
-
-const defaultTicker = {
-   amount: '0.0',
-   last: '0.0',
-   high: '0.0',
-   open: '0.0',
-   low: '0.0',
-   price_change_percent: '+0.00%',
-   volume: '0.0',
-};
+import { DEFAULT_TICKER } from '../constants';
 
 export const useMarket = () => {
    useMarketsFetch();
@@ -40,6 +38,9 @@ export const useMarket = () => {
    useCurrenciesFetch();
    const { push } = useHistory();
    const dispatch = useDispatch();
+   const user = useSelector(selectUserInfo);
+   const isLogin = useSelector(selectUserLoggedIn);
+   const lang = useSelector(selectCurrentLanguage);
    const markets = useSelector(selectMarkets);
    const tikcers = useSelector(selectMarketTickers);
    const currencies = useSelector(selectCurrencies);
@@ -73,6 +74,25 @@ export const useMarket = () => {
       }
    }
 
+   const favorite: Array<string> = user.data && JSON.parse(user.data).favorites;
+   const handleSetFavorites = (id: string) => {
+      const favoriteId = favorite.find(e => e === id);
+      const index = (id: string) => id === favoriteId;
+      dispatch(changeUserDataFetch({
+         user: {
+            ...user,
+            data: JSON.stringify({
+               language: lang,
+               favorites: favoriteId ? handleRemoveKey(favorite, favorite.findIndex(index)) : [...favorite, id]
+            }),
+         }
+      }))
+   }
+
+   const handleToSetFavorites = (id: string) => {
+      isLogin ? handleSetFavorites(id) : handleLocalStorage(id);
+   }
+
    const handleRedirectToTrading = (id: string) => {
       const currentMarket: Market | undefined = markets.find(
          market => market.id === id
@@ -104,7 +124,7 @@ export const useMarket = () => {
    if (currentBidUnit) {
       if (currentBidUnit === 'star') {
          currentBidUnitMarkets = currentBidUnitMarkets.length
-            ? favorites.map(k => currentBidUnitMarkets.find(e => e.id === k))
+            ? isLogin ? favorite.map(f1 => currentBidUnitMarkets.find(e1 => e1.id === f1)) : favorites.map(f2 => currentBidUnitMarkets.find(e2 => e2.id === f2))
             : [];
       } else {
          currentBidUnitMarkets = currentBidUnitMarkets.length
@@ -125,36 +145,36 @@ export const useMarket = () => {
       ? currentBidUnitMarkets.map(market => ({
          ...market,
          last: Decimal.format(
-            Number((tikcers[market?.id] || defaultTicker).last),
+            Number((tikcers[market?.id] || DEFAULT_TICKER).last),
             market?.price_precision,
             ','
          ),
          open: Decimal.format(
-            Number((tikcers[market?.id] || defaultTicker).open),
+            Number((tikcers[market?.id] || DEFAULT_TICKER).open),
             market?.price_precision,
             ','
          ),
          price_change_percent: String(
-            (tikcers[market?.id] || defaultTicker).price_change_percent
+            (tikcers[market?.id] || DEFAULT_TICKER).price_change_percent
          ),
          high: Decimal.format(
-            Number((tikcers[market?.id] || defaultTicker).high),
+            Number((tikcers[market?.id] || DEFAULT_TICKER).high),
             market?.price_precision,
             ','
          ),
          low: Decimal.format(
-            Number((tikcers[market?.id] || defaultTicker).low),
+            Number((tikcers[market?.id] || DEFAULT_TICKER).low),
             market?.price_precision,
             ','
          ),
          volume: Decimal.format(
-            Number((tikcers[market?.id] || defaultTicker).volume),
+            Number((tikcers[market?.id] || DEFAULT_TICKER).volume),
             market?.price_precision,
             ','
          ),
          change: Decimal.format(
-            Number((tikcers[market?.id] || defaultTicker).last) -
-            Number((tikcers[market?.id] || defaultTicker).open),
+            Number((tikcers[market?.id] || DEFAULT_TICKER).last) -
+            Number((tikcers[market?.id] || DEFAULT_TICKER).open),
             market?.price_precision,
             ','
          ),
@@ -164,36 +184,36 @@ export const useMarket = () => {
    const formatOtherMarkets = markets.length ? markets.map(market => ({
       ...market,
       last: Decimal.format(
-         Number((tikcers[market?.id] || defaultTicker).last),
+         Number((tikcers[market?.id] || DEFAULT_TICKER).last),
          market?.price_precision,
          ','
       ),
       open: Decimal.format(
-         Number((tikcers[market?.id] || defaultTicker).open),
+         Number((tikcers[market?.id] || DEFAULT_TICKER).open),
          market?.price_precision,
          ','
       ),
       price_change_percent: String(
-         (tikcers[market?.id] || defaultTicker).price_change_percent
+         (tikcers[market?.id] || DEFAULT_TICKER).price_change_percent
       ),
       high: Decimal.format(
-         Number((tikcers[market?.id] || defaultTicker).high),
+         Number((tikcers[market?.id] || DEFAULT_TICKER).high),
          market?.price_precision,
          ','
       ),
       low: Decimal.format(
-         Number((tikcers[market?.id] || defaultTicker).low),
+         Number((tikcers[market?.id] || DEFAULT_TICKER).low),
          market?.price_precision,
          ','
       ),
       volume: Decimal.format(
-         Number((tikcers[market?.id] || defaultTicker).volume),
+         Number((tikcers[market?.id] || DEFAULT_TICKER).volume),
          market?.price_precision,
          ','
       ),
       change: Decimal.format(
-         Number((tikcers[market?.id] || defaultTicker).last) -
-         Number((tikcers[market?.id] || defaultTicker).open),
+         Number((tikcers[market?.id] || DEFAULT_TICKER).last) -
+         Number((tikcers[market?.id] || DEFAULT_TICKER).open),
          market?.price_precision,
          ','
       ),
@@ -206,7 +226,7 @@ export const useMarket = () => {
          no: i + 1,
          ...itm,
          curency_data: currencies.find(item => item.id === itm.base_unit) || null,
-         isFav: favorites.find(k => itm.id === k) ? true : false
+         isFav: isLogin ? (favorite.find(k => itm.id === k) ? true : false) : (favorites.find(k => itm.id === k) ? true : false)
       }));
 
    const marketsData = combainMarketWithIcon(formattedMarkets, currencies);
@@ -225,8 +245,7 @@ export const useMarket = () => {
       push,
       isLoading,
       marketLoading,
-      favorites,
-      handleLocalStorage,
       currentMarket,
+      handleToSetFavorites
    };
 };

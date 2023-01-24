@@ -16,7 +16,7 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
       handleRedirectToTrading,
       handleSearchMarket,
       isLoading,
-      handleLocalStorage,
+      handleToSetFavorites,
       currentMarket
    } = useMarket();
 
@@ -32,7 +32,7 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
       id: string
    ) => {
       e.stopPropagation();
-      handleLocalStorage(id);
+      handleToSetFavorites(id);
    };
 
    // type Data = typeof marketsData;

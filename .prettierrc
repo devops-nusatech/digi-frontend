@@ -1,21 +1,26 @@
 {
-    "jsxBracketSameLine": true,
-    "singleQuote": true,
-    "overrides": [
-        {
-            "files": ["**/*.css", "**/*.scss", "**/*.pcss", "**/*.html"],
-            "options": {
-                "singleQuote": false,
-                "tabWidth": 4
-            }
-        }
-    ],
-    "jsxSingleQuote": false,
-    "printWidth": 120,
-    "tabWidth": 3,
-    "endOfLine": "auto",
-    "semi": true,
-    "tslintIntegration": true,
-    "stylelintIntegration": true,
-    "ignorePath": ".gitignore"
+   "jsxBracketSameLine": true,
+   "singleQuote": true,
+   "overrides": [
+      {
+         "files": [
+            "**/*.css",
+            "**/*.scss",
+            "**/*.pcss",
+            "**/*.html"
+         ],
+         "options": {
+            "singleQuote": false,
+            "tabWidth": 3
+         }
+      }
+   ],
+   "jsxSingleQuote": true,
+   "printWidth": 120,
+   "tabWidth": 3,
+   "endOfLine": "auto",
+   "semi": true,
+   "tslintIntegration": true,
+   "stylelintIntegration": true,
+   "ignorePath": ".gitignore"
 }

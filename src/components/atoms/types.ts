@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 // base
 export type Width = 'full' | 'noFull';
 export type Size = 'large' | 'normal' | 'small';
-export type Variant = 'primary' | 'green' | 'orange' | 'outline' | 'ungu';
+export type Variant = 'primary' | 'green' | 'orange' | 'outline' | 'ungu' | 'yellow';
 
 // Button
 export type ButtonType = 'submit' | 'button';

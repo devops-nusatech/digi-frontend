@@ -6,6 +6,7 @@ import {
    Badge,
    Decimal,
    Pagination,
+   Image,
 } from 'components';
 import {
    arrayFilter,
@@ -13,6 +14,7 @@ import {
    localeDate,
    setTradesType,
    truncateMiddle,
+   renderCurrencyIcon,
 } from 'helpers';
 import {
    currenciesFetch,
@@ -270,8 +272,8 @@ export const TableActivity: FC<TableActivityProps> = ({
    const renderActivity = (item, index: number) => {
       switch (type) {
          case 'deposits': {
-            const { amount, confirmations, created_at, currency, txid, rid } = item;
-            const blockchainLink = getBlockchainLink(currency, txid, rid);
+            const { amount, confirmations, created_at, currency, txid, blockchain_key, tid } = item;
+            const blockchainLink = getBlockchainLink(currency, txid, blockchain_key, tid);
             const wallet = wallets.find(obj => obj.currency === currency);
             const itemCurrency = currencies && currencies.find(cur => cur.id === currency);
             const blockchainCurrency = itemCurrency?.networks.find(blockchain_cur => blockchain_cur.blockchain_key === item.blockchain_key);
@@ -281,6 +283,11 @@ export const TableActivity: FC<TableActivityProps> = ({
             ) : (
                intl(`page.body.history.deposit.content.status.${item.state}`)
             );
+
+            const formatCurrency = currencies.find(market => market.id === currency)
+            const assetName = String(formatCurrency?.name);
+            const iconUrl = String(formatCurrency?.icon_url);
+
             return (
                <tr style={{ transition: 'background .2s' }} className="group" key={txid}>
                   <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs py-5 pr-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
@@ -288,36 +295,46 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <Badge
-                        text={state}
-                        variant="green"
+                        text={state === 'Collected' ? 'succeed' : state == 'processing' ? 'process' : 'failed'}
+                        variant={state === 'Collected' ? 'green' : state === 'processing' ? 'yellow' : 'orange'}
                      />
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>
-                        {currency && currency.toUpperCase()}
+                     <div className="flex items-center space-x-3">
+                        <div className="shrink-0 w-8">
+                           <Image
+                              className={`w-full ${renderCurrencyIcon(currency, iconUrl)?.includes('http') ? 'polygon' : ''}`}
+                              src={renderCurrencyIcon(currency, iconUrl)}
+                              alt={assetName}
+                              title={assetName}
+                              height={40}
+                              width={40}
+                           />
+                        </div>
+                        <div>
+                           {assetName || currency}
+                        </div>
                      </div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{wallet && Decimal.format(amount, wallet.fixed, ',')}</div>
+                     <div>{wallet && Decimal.format(amount, wallet.fixed, ',')} {String(currency)?.toUpperCase()}</div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div className="flex items-center">
                         <a href={blockchainLink} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline">
                            {truncateMiddle(txid, 20)}
                         </a>
-                        {
-                           txid && (
-                              <div
-                                 title="Copy to clipboard"
-                                 className="cursor-copy"
-                                 onClick={() => handleCopy(txid)}
-                              >
-                                 <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 cursor-pointer transition-all duration-300">
-                                    <use xlinkHref="#icon-copy" />
-                                 </svg>
-                              </div>
-                           )
-                        }
+                        {txid && (
+                           <div
+                              title="Copy to clipboard"
+                              className="cursor-copy"
+                              onClick={() => handleCopy(txid)}
+                           >
+                              <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 cursor-pointer transition-all duration-300">
+                                 <use xlinkHref="#icon-copy" />
+                              </svg>
+                           </div>
+                        )}
                      </div>
                   </td>
                   <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
@@ -329,11 +346,15 @@ export const TableActivity: FC<TableActivityProps> = ({
             );
          }
          case 'withdraws': {
-            const { txid, created_at, currency, amount, rid, blockchain_txid } = item;
+            const { txid, created_at, currency, amount, rid, blockchain_txid, blockchain_key } = item;
             const state = intl(`page.body.history.withdraw.content.status.${item.state}`);
-            const blockchainLink = getBlockchainLink(currency, txid, rid);
-            const blockchainTXID = getBlockchainLink(currency, blockchain_txid, rid);
+            const blockchainLink = getBlockchainLink(currency, txid, blockchain_key, rid);
+            const blockchainTXID = getBlockchainLink(currency, blockchain_txid, blockchain_key, rid);
             const wallet = wallets.find(obj => obj.currency === currency);
+
+            const formatCurrency = currencies.find(market => market.id === currency)
+            const assetName = String(formatCurrency?.name);
+            const iconUrl = String(formatCurrency?.icon_url);
 
             return (
                <tr style={{ transition: 'background .2s' }} className="group" key={index}>
@@ -343,14 +364,28 @@ export const TableActivity: FC<TableActivityProps> = ({
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <Badge
                         text={state}
-                        variant={item.state === 'succeed' ? 'green' : 'orange'}
+                        variant={item.state === 'succeed' ? 'green' : state === 'confirming' ? 'yellow' : 'orange'}
                      />
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="uppercase">{currency}</div>
+                     <div className="flex items-center space-x-3">
+                        <div className="shrink-0 w-8">
+                           <Image
+                              className={`w-full ${renderCurrencyIcon(currency, iconUrl)?.includes('http') ? 'polygon' : ''}`}
+                              src={renderCurrencyIcon(currency, iconUrl)}
+                              alt={assetName}
+                              title={assetName}
+                              height={40}
+                              width={40}
+                           />
+                        </div>
+                        <div>
+                           {assetName || currency}
+                        </div>
+                     </div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{wallet && Decimal.format(amount, currency === 'idr' ? 0 : wallet.fixed, ',')}</div>
+                     <div>{wallet && Decimal.format(amount, currency === 'idr' ? 0 : wallet.fixed, ',')} {String(currency)?.toUpperCase()}</div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div>
@@ -364,15 +399,13 @@ export const TableActivity: FC<TableActivityProps> = ({
                         <a href={blockchainTXID} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline" >
                            {truncateMiddle(blockchain_txid, 20)}
                         </a>
-                        {
-                           blockchain_txid && (
-                              <div title="Copy to clipboard" onClick={() => handleCopy(blockchain_txid)}>
-                                 <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 cursor-pointer transition-all duration-300">
-                                    <use xlinkHref="#icon-copy" />
-                                 </svg>
-                              </div>
-                           )
-                        }
+                        {blockchain_txid && (
+                           <div title="Copy to clipboard" onClick={() => handleCopy(blockchain_txid)}>
+                              <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 cursor-pointer transition-all duration-300">
+                                 <use xlinkHref="#icon-copy" />
+                              </svg>
+                           </div>
+                        )}
                      </div>
                   </td>
                   <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
@@ -384,6 +417,10 @@ export const TableActivity: FC<TableActivityProps> = ({
          case 'internal_transfers': {
             const { sender_uid, receiver_uid, created_at, currency, amount, status, direction } = item;
             const wallet = wallets.find(obj => obj.currency === currency);
+
+            const formatCurrency = currencies.find(market => market.id === currency)
+            const assetName = String(formatCurrency?.name);
+            const iconUrl = String(formatCurrency?.icon_url);
 
             return (
                <tr style={{ transition: 'background .2s' }} className="group" key={index}>
@@ -397,10 +434,24 @@ export const TableActivity: FC<TableActivityProps> = ({
                      />
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="uppercase">{currency || ''}</div>
+                     <div className="flex items-center space-x-3">
+                        <div className="shrink-0 w-8">
+                           <Image
+                              className={`w-full ${renderCurrencyIcon(currency, iconUrl)?.includes('http') ? 'polygon' : ''}`}
+                              src={renderCurrencyIcon(currency, iconUrl)}
+                              alt={assetName}
+                              title={assetName}
+                              height={40}
+                              width={40}
+                           />
+                        </div>
+                        <div>
+                           {assetName || currency}
+                        </div>
+                     </div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{wallet && Decimal.format(amount, currency === 'idr' ? 0 : wallet.fixed, ',')}</div>
+                     <div>{wallet && Decimal.format(amount, currency === 'idr' ? 0 : wallet.fixed, ',')} {String(currency)?.toUpperCase()}</div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div>{sender_uid}</div>

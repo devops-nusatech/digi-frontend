@@ -128,7 +128,7 @@ const SessionsHistoryFC = ({
                </div>
                {/* <Table columns={columns} data={userActivity} /> */}
                <div className="overflow-x-auto">
-                  <table className="w-full tw-full table-autoable-auto">
+                  <table className="w-full table-auto">
                      <thead>
                         <tr className="border-b border-neutral7 dark:border-neutral2">
                            <th className="p-4 pl-0 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">

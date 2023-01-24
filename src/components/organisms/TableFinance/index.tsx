@@ -655,7 +655,7 @@ const TableFinanceFC = ({
                   </svg>
                </div>
             </div>
-            <div className={`space-y-8 ${filter.advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 !mt-0 invisible'} transition-all duration-300`}>
+            <div className={`space-y-8 ${filter.advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 -translate-y-4 !mt-0 invisible'} transition-all duration-300`}>
                {renderSelectAsset()}
                <InputGroup
                   label="state type"

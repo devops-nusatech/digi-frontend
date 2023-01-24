@@ -20,7 +20,7 @@ const MarketFC = ({ intl }: Props) => {
       currentBidUnit,
       setCurrentBidUnit,
       handleRedirectToTrading,
-      handleLocalStorage,
+      handleToSetFavorites
    } = useMarket();
    // const [tabMarket, setTabMarket] = useState<number>(0);
    const {
@@ -258,7 +258,7 @@ const MarketFC = ({ intl }: Props) => {
                            return (
                               <tr key={market?.id} style={{ transition: 'background .2s' }} className="group relative">
                                  <td
-                                    onClick={() => handleLocalStorage(market?.id)}
+                                    onClick={() => handleToSetFavorites(String(market?.id))}
                                     className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2"
                                  >
                                     <div className="flex space-x-2 items-center">

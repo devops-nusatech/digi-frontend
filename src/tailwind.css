@@ -568,7 +568,7 @@ animation: animloader106 1s linear infinite alternate;
 /* End Loader */
 
 .react-datepicker {
-   @apply bg-neutral8 dark:bg-neutral1 rounded-xl font-pop shadow-2xl shadow-neutral4;
+   @apply bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 rounded-xl font-pop shadow-2xl shadow-neutral4;
 }
 
 .react-datepicker__header  {
@@ -589,7 +589,7 @@ animation: animloader106 1s linear infinite alternate;
    @apply border-b-neutral8 dark:border-b-neutral1;
 }
 .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
-   @apply !border-b-[#aeaeae];
+   @apply border-b-neutral6 dark:border-b-neutral3;
 }
 
 .react-datepicker__header:not(.react-datepicker__header--has-time-select) {

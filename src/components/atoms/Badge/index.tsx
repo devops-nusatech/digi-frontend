@@ -9,7 +9,8 @@ const classes = {
       green: 'text-neutral8 bg-primary5 dark:bg-chart1',
       orange: 'text-neutral8 bg-primary4',
       outline: 'bg-none text-neutral2 shadow-border hover:text-neutral8 hover:shadow-input-dark hover:bg-neutral2 hover:-translate-y-0.5 dark:hover:bg-neutral3 dark:hover:border-none dark:shadow-border-dark disabled:translate-y-0',
-      ungu: 'text-neutral8 bg-primary3'
+      ungu: 'text-neutral8 bg-primary3',
+      yellow: 'text-neutral8 bg-secondary3'
    },
    rounded: {
       sm: 'rounded-sm',

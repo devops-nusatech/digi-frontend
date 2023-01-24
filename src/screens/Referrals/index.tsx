@@ -1,13 +1,32 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, {
+   FunctionComponent,
+   useEffect,
+   useState
+} from 'react';
 import { withRouter } from 'react-router-dom';
-import { InputGroup, LayoutProfile, ProfileSidebar } from 'components';
-import { injectIntl } from 'react-intl';
 import { compose } from 'redux';
-import { copyToClipboard, localeDate, setDocumentTitle } from 'helpers';
-import { RootState, selectUserInfo, User } from 'modules';
-import { IntlProps } from 'index';
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
+import { IntlProps } from 'index';
+import {
+   InputGroup,
+   LayoutProfile,
+   ProfileSidebar,
+   Skeleton
+} from 'components';
+import {
+   copyToClipboard,
+   setDocumentTitle
+} from 'helpers';
+import {
+   RootState,
+   selectUserInfo,
+   User
+} from 'modules';
 import { toast } from 'react-toastify';
+import { Referral } from './types';
+
+import axios from 'axios';
 
 interface Me extends User {
    referral?: any;
@@ -16,16 +35,21 @@ interface ReduxProps {
    user: Me;
 }
 
-
 type Props = ReduxProps & IntlProps;
 
 const ReferralsFC = ({ intl, user }: Props) => {
-   const { uid, referral } = user;
+   const { uid } = user;
+   const [referrals, setReferrals] = useState<Referral>();
+   const [isLoading, setIsLoading] = useState(false);
    useEffect(() => {
       setDocumentTitle('Referrals');
+      (async () => {
+         setIsLoading(true);
+         const res: Referral = await (await axios.get('https://api.npoint.io/ff687718826ee5ecd3d9')).data;
+         setIsLoading(false);
+         setReferrals(res);
+      })();
    }, []);
-
-   const translate = (id: string) => intl.formatMessage({ id });
 
    const renderIconCopied = (title: string, value: string) => (
       <button
@@ -65,7 +89,7 @@ const ReferralsFC = ({ intl, user }: Props) => {
                         Total rewards
                      </div>
                      <div className="font-dm text-4.5xl leading-1.2 tracking-custom1">
-                        1,056.00
+                        {referrals?.reff || '1,056.00'}
                         <span className="text-primary1"> USDT</span>
                      </div>
                   </div>
@@ -74,7 +98,7 @@ const ReferralsFC = ({ intl, user }: Props) => {
                         Your referral
                      </div>
                      <div className="font-dm text-4.5xl leading-1.2 tracking-custom1">
-                        0
+                        {referrals?.reff_active || 0}
                      </div>
                   </div>
                </div>
@@ -107,68 +131,76 @@ const ReferralsFC = ({ intl, user }: Props) => {
                      />
                   </div>
                </div>
-               {referral && (
+               {referrals?.reff_list && (
                   <div>
                      <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
                         My referrals
                      </div>
-                     <div className="relative table w-full">
-                        <div className="table-row">
-                           <div className="table-cell py-4 pr-2 border-b border-neutral7 dark:border-neutral3 text-xs text-neutral3 dark:text-neutral7 leading-custom4 font-semibold">
-                              {translate('page.body.profile.apiKeys.table.header.created')}
-                           </div>
-                           <div className="table-cell py-4 px-2 border-b border-neutral7 dark:border-neutral3 text-xs text-neutral3 dark:text-neutral7 leading-custom4 font-semibold">
-                              UID
-                           </div>
-                           <div className="table-cell py-4 px-2 border-b border-neutral7 dark:border-neutral3 text-xs text-neutral3 dark:text-neutral7 leading-custom4 font-semibold">
-                              Email
-                           </div>
-                           <div className="table-cell py-4 px-2 border-b border-neutral7 dark:border-neutral3 text-xs text-neutral3 dark:text-neutral7 leading-custom4 font-semibold">
-                              Username
-                           </div>
-                           <div className="table-cell py-4 px-2 border-b border-neutral7 dark:border-neutral3 text-xs text-neutral3 dark:text-neutral7 leading-custom4 font-semibold">
-                              Level
-                           </div>
-                           <div className="table-cell py-4 pl-2 border-b border-neutral7 dark:border-neutral3 text-xs text-neutral3 dark:text-neutral7 leading-custom4 font-semibold text-right">
-                              {translate('page.body.profile.apiKeys.table.header.state')}
-                           </div>
-                        </div>
-                        {
-                           referral?.length > 0
-                              ? referral?.map((e, i) => (
-                                 <div className="table-row" key={i}>
-                                    <div className="table-cell py-4 pr-2 border-b border-neutral6 dark:border-neutral3 align-middle">
-                                       <div className="font-medium">{localeDate(e[10], 'shortDate').split(' ').shift()}</div>
-                                    </div>
-                                    <div className="table-cell py-4 px-2 border-b border-neutral6 dark:border-neutral3 align-middle">
-                                       <div className="font-medium">{e[1]}</div>
-                                    </div>
-                                    <div className="table-cell py-4 px-2 border-b border-neutral6 dark:border-neutral3 align-middle">
-                                       <div className="font-medium">{e[2]}</div>
-                                    </div>
-                                    <div className="table-cell py-4 px-2 border-b border-neutral6 dark:border-neutral3 align-middle">
-                                       <div className="font-medium">Jhon doe</div>
-                                    </div>
-                                    <div className="table-cell py-4 px-2 border-b border-neutral6 dark:border-neutral3 align-middle">
-                                       <div className="font-medium">{e[4]}</div>
-                                    </div>
-                                    <div className="table-cell py-4 pl-2 border-b border-neutral6 dark:border-neutral3 align-middle">
-                                       <div className={`font-medium ${e[8] === 'active' ? 'text-primary5' : 'text-primary4'}`}>{e[8]}</div>
-                                    </div>
-                                 </div>
+                     <div className="overflow-x-auto">
+                        <table className="w-full table-auto">
+                           <thead className="divide-y divide-neutral7 dark:divide-neutral2">
+                              <tr>
+                                 <td className="py-4 pr-2 text-xs leading-custom4 font-semibold text-left">
+                                    No.
+                                 </td>
+                                 <td className="py-4 pr-2 text-xs leading-custom4 font-semibold text-left">
+                                    UID
+                                 </td>
+                                 <td className="py-4 px-2 text-xs leading-custom4 font-semibold text-left">
+                                    Email
+                                 </td>
+                                 <td className="py-4 px-2 text-xs leading-custom4 font-semibold text-left">
+                                    Kyc Level
+                                 </td>
+                                 <td className="py-4 pl-2 text-xs leading-custom4 font-semibold text-right">
+                                    Tier
+                                 </td>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {isLoading ? (
+                                 <>
+                                    <tr>
+                                       <td colSpan={5} className="px-4 py-3 last:pb-0">
+                                          <Skeleton height={20} isWithFull rounded="md" />
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td colSpan={5} className="px-4 py-3 last:pb-0">
+                                          <Skeleton height={20} isWithFull rounded="md" />
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td colSpan={5} className="px-4 py-3 last:pb-0">
+                                          <Skeleton height={20} isWithFull rounded="md" />
+                                       </td>
+                                    </tr>
+                                 </>
+                              ) : referrals.reff_list?.length > 0 ? referrals.reff_list.map((e, i) => (
+                                 <tr key={i}>
+                                    <td className="py-4 pr-2 font-medium">
+                                       {i + 1}.
+                                    </td>
+                                    <td className="py-4 px-2 font-medium">
+                                       {e.uid}
+                                    </td>
+                                    <td className="py-4 px-2 font-medium">
+                                       {e.email}
+                                    </td>
+                                    <td className="py-4 px-2 font-medium">
+                                       {e.kyc_level}
+                                    </td>
+                                    <td className="py-4 pl-2 font-medium text-right">
+                                       {e.tier}
+                                    </td>
+                                 </tr>
                               )) : (
-                                 <div className="table-row">
-                                    <div className="table-cell">&nbsp;</div>
-                                    <div className="table-cell">&nbsp;</div>
-                                    <div className="table-cell">&nbsp;</div>
-                                    <div className="table-cell">&nbsp;</div>
-                                    <div className="table-cell">&nbsp;</div>
-                                    <div className="table-cell absolute left-0 w-full text-xs leading-relaxed font-medium text-neutral4 text-center animate-pulse">
-                                       Referral not found...
-                                    </div>
+                                 <div className="">
+                                    Kosong
                                  </div>
-                              )
-                        }
+                              )}
+                           </tbody>
+                        </table>
                      </div>
                   </div>
                )}
