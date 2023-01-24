@@ -1,7 +1,9 @@
 import React, {
    memo,
    useCallback,
-   useMemo
+   useEffect,
+   useMemo,
+   useState
 } from 'react';
 import {
    GeetestCaptchaResponse,
@@ -11,7 +13,9 @@ import {
    Button,
    Checkbox,
    InputGroup,
-   PasswordStrengthBar
+   InputPassword,
+   Portal,
+   QRCode,
 } from 'components';
 import {
    ERROR_LONG_USERNAME,
@@ -46,10 +50,6 @@ interface FormRegisterKuProps {
    handleChangeRefId: (value: string) => void;
 
    focusUsername: boolean;
-   focusEmail: boolean;
-   focusPassword: boolean;
-   focusConfirmPassword: boolean;
-   focusRefId: boolean;
 
    handleFocusUsername: () => void;
    handleFocusEmail: () => void;
@@ -75,16 +75,7 @@ interface FormRegisterKuProps {
 
    termsMessage: string;
 
-   minPasswordEntropy: number;
-   currentPasswordEntropy: number;
-   passwordErrorFirstSolved: boolean;
-   passwordErrorSecondSolved: boolean;
-   passwordErrorThirdSolved: boolean;
-   passwordPopUp: boolean;
-
    translate: (id: string) => string;
-   ref: any;
-   passwordWrapper: any;
    isUsernameEnabled: boolean;
 }
 
@@ -114,10 +105,6 @@ export const FormRegisterKu = memo(({
    handleChangeRefId,
 
    focusUsername,
-   focusEmail,
-   focusPassword,
-   focusConfirmPassword,
-   focusRefId,
 
    handleFocusUsername,
    handleFocusEmail,
@@ -143,91 +130,30 @@ export const FormRegisterKu = memo(({
 
    termsMessage,
 
-   minPasswordEntropy,
-   currentPasswordEntropy,
-   passwordErrorFirstSolved,
-   passwordErrorSecondSolved,
-   passwordErrorThirdSolved,
-   passwordPopUp,
-
    translate,
-   ref,
-   passwordWrapper,
    isUsernameEnabled,
 }: FormRegisterKuProps) => {
+   const [showInfo, setShowInfo] = useState(false);
+   const [showFieldRefid, setShowFieldRefid] = useState(false);
+
+   useEffect(() => {
+      setTimeout(() => setShowInfo(!showInfo), 1000);
+      setShowFieldRefid(e => !!refid ? !e : e)
+   }, []);
+   useEffect(() => {
+      captcha_response && handleRegister();
+   }, [captcha_response])
 
    const renderUsernameError = (nick: string) => {
       return nick.length < 4 ? translate(ERROR_SHORT_USERNAME) : translate(ERROR_LONG_USERNAME);
    };
 
-   // const renderInputPassword = useCallback(() => {
-   //    return (
-   //       <div ref={passwordWrapper}>
-   //          <InputGroup
-   //             id="password"
-   //             type="password"
-   //             label={passwordLabel || 'password'}
-   //             placeholder={passwordLabel || 'Enter password'}
-   //             value={password}
-   //             onChange={handleChangePassword}
-   //             onFocus={handleFocusPassword}
-   //             withIconPassword
-   //          />
-   //          {password && (
-   //             <>
-   //                <PasswordStrengthBar
-   //                   minPasswordEntropy={minPasswordEntropy}
-   //                   currentPasswordEntropy={currentPasswordEntropy}
-   //                   passwordExist={password !== ''}
-   //                   passwordErrorFirstSolved={passwordErrorFirstSolved}
-   //                   passwordErrorSecondSolved={passwordErrorSecondSolved}
-   //                   passwordErrorThirdSolved={passwordErrorThirdSolved}
-   //                   passwordPopUp={passwordPopUp}
-   //                   translate={translate}
-   //                />
-   //             </>
-   //          )}
-   //       </div>
-   //    )
-   // }, [passwordLabel, password, handleChangePassword, handleFocusPassword, minPasswordEntropy, currentPasswordEntropy, passwordErrorFirstSolved, passwordErrorSecondSolved, passwordErrorThirdSolved, passwordPopUp, translate]);
-
    const renderInputPassword = useCallback(() => (
-      <div ref={passwordWrapper}>
-         <InputGroup
-            id="password"
-            type="password"
-            label={passwordLabel || 'password'}
-            placeholder={passwordLabel || 'Enter password'}
-            value={password}
-            onChange={handleChangePassword}
-            onFocus={handleFocusPassword}
-            withIconPassword
-         />
-         {password && (
-            <PasswordStrengthBar
-               minPasswordEntropy={minPasswordEntropy}
-               currentPasswordEntropy={currentPasswordEntropy}
-               passwordExist={password !== ''}
-               passwordErrorFirstSolved={passwordErrorFirstSolved}
-               passwordErrorSecondSolved={passwordErrorSecondSolved}
-               passwordErrorThirdSolved={passwordErrorThirdSolved}
-               passwordPopUp={passwordPopUp}
-               translate={translate}
-            />
-         )}
-      </div>
-   ), [
-      password,
-      handleChangePassword,
-      handleFocusPassword,
-      minPasswordEntropy,
-      currentPasswordEntropy,
-      passwordErrorFirstSolved,
-      passwordErrorSecondSolved,
-      passwordErrorThirdSolved,
-      passwordPopUp,
-      translate
-   ]);
+      <InputPassword
+         label={passwordLabel}
+         onChange={handleChangePassword}
+      />
+   ), [handleChangePassword]);
 
    const isValidForm = useCallback(() => {
       const isEmailValid = email.match(EMAIL_REGEXP);
@@ -260,7 +186,8 @@ export const FormRegisterKu = memo(({
          !email.match(EMAIL_REGEXP) ||
          !password ||
          !confirmPassword ||
-         (isUsernameEnabled && !username.match(USERNAME_REGEXP))
+         (isUsernameEnabled && !username.match(USERNAME_REGEXP)) ||
+         !navigator.onLine
       ) {
          return true;
       }
@@ -288,7 +215,7 @@ export const FormRegisterKu = memo(({
 
    return (
       <>
-         <form className="space-y-7.5">
+         <form className="space-y-8">
             {isUsernameEnabled && (
                <InputGroup
                   id="username"
@@ -299,7 +226,7 @@ export const FormRegisterKu = memo(({
                   onFocus={handleFocusUsername}
                   withError={!!(!username.match(USERNAME_REGEXP) && !focusUsername && username.length)}
                   info={(!username.match(USERNAME_REGEXP) && !focusUsername && username.length) ? renderUsernameError(username) : ''}
-                  autoFocus
+                  autoFocus={focusUsername}
                />
             )}
             <InputGroup
@@ -328,6 +255,24 @@ export const FormRegisterKu = memo(({
                info={confirmPasswordError && confirmPasswordError}
                withIconPassword
             />
+            <div
+               onClick={() => setShowFieldRefid(!showFieldRefid)}
+               className={`relative ${showFieldRefid ? 'h-[72px]' : 'h-3.5 overflow-hidden'} transition-all duration-300`}
+            >
+               <div className="absolute right-0 top-0 z-2">
+                  <svg className={`cursor-pointer w-6 h-6 fill-neutral4 transition-transform duration-500 ${showFieldRefid && 'rotate-180'}`}>
+                     <use xlinkHref="#icon-arrow-down" />
+                  </svg>
+               </div>
+               <InputGroup
+                  label={refIdLabel || 'referral code (optional)'}
+                  placeholder={refIdLabel || 'Referral code (Optional)'}
+                  value={refid}
+                  onChange={handleChangeRefId}
+                  onFocus={handleFocusRefId}
+                  className={showFieldRefid ? '' : '-translate-y-10 opacity-0'}
+               />
+            </div>
             <Checkbox
                checked={hasConfirmed}
                onChecked={clickCheckBox}
@@ -346,6 +291,67 @@ export const FormRegisterKu = memo(({
                withLoading={isLoading}
             />
          </form>
+         <Portal
+            show={showInfo}
+            close={() => {
+               setShowInfo(!showInfo);
+               isUsernameEnabled ?
+                  handleFocusUsername() : handleFocusEmail()
+            }}
+            width="2xl"
+         >
+            <div className="text-2xl max-w-sm font-bold pt-8 mx-auto text-center">
+               Create an account via the app for easier registration
+            </div>
+            <div className="text-center leading-custom2">
+               Don't have the Digiasset app yet? Scan the QR code above or download the Digiasset app via
+               <a
+                  href="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Download app"
+                  className="text-primary1"
+               >
+                  &nbsp; Google Play
+               </a>
+               &nbsp; or
+               <a
+                  href="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Download app"
+                  className="text-primary1"
+               >
+                  &nbsp; App Store
+               </a>.
+            </div>
+            <div className="flex flex-col items-center justify-center">
+               <QRCode
+                  data="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
+                  dimensions={200}
+               />
+               <div className="text-neutral4 text-xs font-medium my-2">
+                  Scan to download
+               </div>
+               <div className="text-base font-bold">iOS and Android</div>
+            </div>
+            <div className="mx-auto max-w-xs">
+               <Button
+                  onClick={() => setShowInfo(!showInfo)}
+                  text="Registration via web"
+                  width="full"
+               />
+            </div>
+            <a
+               href="#"
+               target="_blank"
+               rel="noopener noreferrer"
+               title="Lihat panduan"
+               className="flex justify-center text-xs font-medium text-primary1 hover:underline hover:underline-offset-4 transition ease-in-out duration-500"
+            >
+               See registration guide via App
+            </a>
+         </Portal>
       </>
    )
 })

@@ -38,3 +38,4 @@ export * from './TableBeneficiary';
 export * from './TableFinance';
 export * from './EstimatedValue';
 export * from './TableOrderHistory';
+export * from './TableWallets';

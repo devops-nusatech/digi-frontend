@@ -13,6 +13,7 @@ import {
    resetCaptchaState,
    RootState,
    selectAlertState,
+   selectCaptchaDataObjectLoading,
    selectCaptchaResponse,
    selectConfigs,
    selectGeetestCaptchaSuccess,
@@ -42,6 +43,7 @@ interface ReduxProps {
    captcha_response?: string | GeetestCaptchaResponse;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
+   captchaLoading: boolean;
 }
 
 interface DispatchProps {
@@ -76,6 +78,12 @@ interface OwnProps {
 type Props = ReduxProps & DispatchProps & RouterProps & OwnProps & IntlProps;
 
 class LoginClass extends Component<Props, LoginState> {
+   public constructor(props) {
+      super(props);
+      this.geetestCaptchaRef = React.createRef<HTMLButtonElement>();
+   }
+   private geetestCaptchaRef;
+
    public state = {
       email: (this.props.location.state && this.props.location.state.email) || '',
       password: (this.props.location.state && this.props.location.state.password) || '',
@@ -103,19 +111,31 @@ class LoginClass extends Component<Props, LoginState> {
 
    public componentWillReceiveProps(nextProps: Props) {
       const { email } = this.state;
-      const { isLoggedIn, resetCaptchaState, history: { push } } = this.props;
+      const {
+         isLoggedIn,
+         resetCaptchaState,
+         history: { push },
+      } = this.props;
+
       if (!isLoggedIn && nextProps.isLoggedIn) {
          resetCaptchaState();
          push('/wallets', { email });
       }
-      if (nextProps.requireEmailVerification) push('/email-verification', { email });
+
+      if (nextProps.requireEmailVerification) {
+         push('/email-verification', { email })
+      };
+
+      // if (captcha_type !== 'none' && captchaLogin() && error && !require2FA) {
+      //    resetCaptchaState();
+      // }
    }
 
    public componentWillUnmount() {
       this.props.resetCaptchaState();
    }
 
-   public renderCaptcha = () => <Captcha error={this.props.error} />;
+   public renderCaptcha = () => <Captcha geetestCaptchaRef={this.geetestCaptchaRef} />;
 
    public render() {
       const { require2FA } = this.props;
@@ -158,11 +178,12 @@ class LoginClass extends Component<Props, LoginState> {
       const {
          email, emailError, emailFocused, password, passwordError, passwordFocused
       } = this.state;
-      const { intl: { formatMessage } } = this.props;
+      const { intl: { formatMessage }, captchaLoading } = this.props;
 
       return (
          <>
             <FormLogin
+               geetestCaptchaRef={this.geetestCaptchaRef}
                title="Login to Digiasset"
                subTitle="Please ensure you are visiting the correct url."
                email={email}
@@ -179,7 +200,7 @@ class LoginClass extends Component<Props, LoginState> {
                passwordLabel={formatMessage({ id: 'page.header.signIn.password' })}
                receiveConfirmationLabel={formatMessage({ id: 'page.header.signIn.receiveConfirmation' })}
                forgotPasswordLabel={formatMessage({ id: 'page.header.signIn.forgotPassword' })}
-               isLoading={isLoading}
+               isLoading={isLoading || captchaLoading}
                onForgotPassword={this.forgotPassword}
                onSignUp={this.handleSignUp}
                onSignIn={this.handleSignIn}
@@ -309,6 +330,7 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
+   captchaLoading: selectCaptchaDataObjectLoading(state)
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

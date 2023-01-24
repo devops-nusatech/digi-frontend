@@ -64,6 +64,8 @@ import {
    WithdrawLimit,
    selectUserInfo,
    User,
+   WithdrawLimits,
+   selectWithdrawLimits,
 } from 'modules';
 import type {
    Beneficiary,
@@ -116,7 +118,8 @@ type ReduxProps = {
    beneficiariesDeleteSuccess: boolean;
    beneficiariesResendLoading: boolean;
    memberLevels?: MemberLevels;
-   withdrawLimits: WithdrawLimit[];
+   withdrawLimits: WithdrawLimits[];
+   withdrawLimit: WithdrawLimit;
 }
 
 type OwnProps = {
@@ -166,6 +169,7 @@ const WithdrawalFC = memo(({
    beneficiariesResendLoading,
    memberLevels,
    withdrawLimits,
+   withdrawLimit,
    location,
    fecthWallets,
    fetchMemberLevel,
@@ -348,13 +352,13 @@ const WithdrawalFC = memo(({
       setId(id);
    }
 
-   const withdrawLimit = withdrawLimits.find(e => Number(e.kyc_level) === user.level) ? withdrawLimits.find(e => Number(e.kyc_level) === user.level) : withdrawLimits[0];
+   const withdrawLimited = withdrawLimits.find(e => Number(e.kyc_level) === user.level) ? withdrawLimits.find(e => Number(e.kyc_level) === user.level) : withdrawLimits[0];
    const network = userWallets[0]?.networks.find(e => e.blockchain_key === filteredBeneficiary?.find(e => e.id === id)?.blockchain_key);
    const currency = userWallets[0]?.currency;
    const withdrawFee = Decimal.format(network?.withdraw_fee, userWallets[0]?.fixed, ',');
    const withdrawMinAmount = Decimal.format(network?.min_withdraw_amount, userWallets[0]?.fixed, ',');
-   const withdrawLimit24H = Decimal.format(withdrawLimit?.limit_24_hour, userWallets[0]?.fixed, ',');
-   const withdrawLimit1M = Decimal.format(withdrawLimit?.limit_1_month, userWallets[0]?.fixed, ',');
+   const withdrawLimit24H = Decimal.format(Number(withdrawLimited?.limit_24_hour) - Number(withdrawLimit?.last_24_hours), userWallets[0]?.fixed, ',');
+   const withdrawLimit1M = Decimal.format(Number(withdrawLimited?.limit_1_month) - Number(withdrawLimit?.last_1_month), userWallets[0]?.fixed, ',');
 
    const handleChangeAmount = (value: string) => {
       const convertedValue = cleanPositiveFloatInput(value);
@@ -463,7 +467,7 @@ const WithdrawalFC = memo(({
                            <div className="flex space-x-3 items-center">
                               <div className="shrink-0 w-8">
                                  <img
-                                    className={`w-full ${renderCurrencyIcon(userWallet.currency, userWallet.iconUrl).includes('http') ? 'polygon' : ''}`}
+                                    className={`w-full ${renderCurrencyIcon(userWallet.currency, userWallet.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                                     src={renderCurrencyIcon(userWallet.currency, userWallet.iconUrl)}
                                     alt={userWallet.name}
                                     title={userWallet.name}
@@ -518,7 +522,7 @@ const WithdrawalFC = memo(({
                {userWallets[0]?.name || ''}
                <img
                   src={renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)}
-                  className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl).includes('http') ? 'polygon' : ''}`}
+                  className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                   alt={userWallets[0]?.name}
                   title={userWallets[0]?.name}
                />
@@ -689,7 +693,7 @@ const WithdrawalFC = memo(({
                {userWallets[0]?.name || ''}
                <img
                   src={renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)}
-                  className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl).includes('http') ? 'polygon' : ''}`}
+                  className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                   alt={userWallets[0]?.name}
                />
             </div>
@@ -1136,7 +1140,8 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    beneficiariesDeleteSuccess: selectBeneficiariesDeleteSuccess(state),
    beneficiariesResendLoading: selectBeneficiariesResendPinLoading(state),
    memberLevels: selectMemberLevels(state),
-   withdrawLimits: selectWithdrawLimit(state),
+   withdrawLimits: selectWithdrawLimits(state),
+   withdrawLimit: selectWithdrawLimit(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

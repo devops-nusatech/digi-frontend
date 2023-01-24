@@ -182,7 +182,7 @@ export const NewTickerTable: FC<Props> = memo(({
                <div className="shrink-0 w-10">
                   <img
                      src={renderCurrencyIcon(base_unit, icon_url)}
-                     className={`w-full ${renderCurrencyIcon(base_unit, icon_url).includes('http') ? 'polygon bg-neutral8' : ''}`}
+                     className={`w-full ${renderCurrencyIcon(base_unit, icon_url)?.includes('http') ? 'polygon bg-neutral8' : ''}`}
                      alt={name?.split('/').shift()}
                      title={name?.split('/').shift()}
                   />
@@ -327,7 +327,7 @@ export const NewTickerTable: FC<Props> = memo(({
                                     <div className="shrink-0 w-10">
                                        <img
                                           src={renderCurrencyIcon(base_unit, icon_url)}
-                                          className={`w-full ${renderCurrencyIcon(base_unit, icon_url).includes('http') ? 'polygon bg-neutral8' : ''}`}
+                                          className={`w-full ${renderCurrencyIcon(base_unit, icon_url)?.includes('http') ? 'polygon bg-neutral8' : ''}`}
                                           alt={name?.split('/').shift()}
                                           title={name?.split('/').shift()}
                                        />

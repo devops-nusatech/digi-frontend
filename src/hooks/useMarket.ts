@@ -212,7 +212,7 @@ export const useMarket = () => {
    const marketsData = combainMarketWithIcon(formattedMarkets, currencies);
    const otherMarkets = combainMarketWithIcon(formatOtherMarkets, currencies);
 
-   const isLoading = marketLoading || marketTickerLoading || currencyLoading;
+   const isLoading = marketTickerLoading || currencyLoading;
 
    return {
       currentBidUnit,
@@ -224,8 +224,9 @@ export const useMarket = () => {
       handleSearchMarket,
       push,
       isLoading,
+      marketLoading,
       favorites,
       handleLocalStorage,
-      currentMarket
+      currentMarket,
    };
 };

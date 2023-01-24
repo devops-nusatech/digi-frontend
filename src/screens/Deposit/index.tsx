@@ -195,7 +195,7 @@ const DepositFC = memo(({
                         <div className="relative mt-2.5">
                            <Combobox.Input
                               className={({ open }) => `${open ? 'text-primary1' : ''} w-full px-3.5 pr-12 h-12 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 dark:border-neutral3 focus:border-neutral4 dark:focus:border-neutral4 bg-none bg-transparent transition ease-in-out duration-300`}
-                              displayValue={(currency: { name: string }) => `${currency && currency.name || 'Nothing found...'}`}
+                              displayValue={(currency: { name: string }) => typeof currency?.name === 'undefined' ? '~ Select currency ~' : currency.name}
                               onChange={({ target: { value } }) => setSearchCurrency(value)}
                            />
                            <Combobox.Button
@@ -221,7 +221,7 @@ const DepositFC = memo(({
                            }}
                         >
 
-                           <Combobox.Options className="absolute max-h-[252px] w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral1 shadow-dropdown-2 dark:shadow-dropdown-3">
+                           <Combobox.Options className="absolute max-h-[252px] w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 shadow-dropdown-2 dark:shadow-dropdown-3">
                               {filteredWallets.length === 0 && searchCurrency !== '' ? (
                                  <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
                                     Nothing found...
@@ -338,7 +338,7 @@ const DepositFC = memo(({
                      <Label label={translate('deposit.content.right.title')} />
                      <div className="mx-auto w-20 h-20 overflow-hidden pointer-events-none">
                         <img
-                           className={`w-full ${renderCurrencyIcon(formatedWallet?.currency, formatedWallet?.iconUrl).includes('http') ? 'object-cover polygon bg-neutral8' : ''}`}
+                           className={`w-full ${renderCurrencyIcon(formatedWallet?.currency, formatedWallet?.iconUrl)?.includes('http') ? 'object-cover polygon bg-neutral8' : ''}`}
                            src={renderCurrencyIcon(formatedWallet?.currency, formatedWallet?.iconUrl)}
                            alt={formatedWallet?.name || ''}
                            title={formatedWallet?.name || ''}

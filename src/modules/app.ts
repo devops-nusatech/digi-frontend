@@ -15,6 +15,8 @@ import { newsReducer } from './public/news';
 import { depthReducer, incrementDepthReducer, orderBookReducer } from './public/orderBook';
 import { rangerReducer } from './public/ranger/reducer';
 import { recentTradesReducer } from './public/recentTrades';
+import { tradingFeesReducer } from './public/tradingFees';
+import { withdrawLimitsReducer } from './public/withdrawLimits';
 import { apiKeysReducer } from './user/apiKeys';
 import { authReducer } from './user/auth';
 import { beneficiariesReducer } from './user/beneficiaries';
@@ -59,6 +61,8 @@ export const publicReducer = combineReducers({
    incrementDepth: incrementDepthReducer,
    ranger: rangerReducer,
    recentTrades: recentTradesReducer,
+   tradingFees: tradingFeesReducer,
+   withdrawLimits: withdrawLimitsReducer,
 });
 
 export const userReducer = combineReducers({

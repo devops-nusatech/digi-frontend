@@ -1,6 +1,5 @@
 import React, {
-   Component,
-   createRef
+   Component
 } from 'react';
 import { History } from 'history';
 import { injectIntl } from 'react-intl';
@@ -13,16 +12,17 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { IntlProps } from '../../../';
 import { isUsernameEnabled } from 'api';
-import { Button, Captcha, FormRegisterV2, LayoutAuth, Modal } from 'components';
+import {
+   Captcha,
+   FormRegister,
+   LayoutAuth
+} from 'components';
 import {
    EMAIL_REGEX,
    ERROR_INVALID_EMAIL,
    ERROR_INVALID_PASSWORD,
    ERROR_PASSWORD_CONFIRMATION,
    PASSWORD_REGEX,
-   passwordErrorFirstSolution,
-   passwordErrorSecondSolution,
-   passwordErrorThirdSolution,
    setDocumentTitle,
 } from 'helpers';
 import {
@@ -32,6 +32,7 @@ import {
    LanguageState,
    resetCaptchaState,
    RootState,
+   selectCaptchaDataObjectLoading,
    selectCaptchaResponse,
    selectConfigs,
    selectCurrentLanguage,
@@ -53,6 +54,7 @@ interface ReduxProps {
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
    isLoading: boolean;
+   captchaLoading: boolean;
 }
 
 interface DispatchProps {
@@ -78,8 +80,15 @@ type Props = ReduxProps & DispatchProps & RouterProps & IntlProps & OwnProps;
 export const extractRefID = (props: RouterProps) => new URLSearchParams(props.location.search).get('refid');
 
 class RegisterClass extends Component<Props> {
+   public constructor(props) {
+      super(props);
+
+      this.geetestCaptchaRef = React.createRef<HTMLButtonElement>();
+   }
+
+   private geetestCaptchaRef;
+
    public readonly state = {
-      showModal: false,
       username: '',
       email: '',
       password: '',
@@ -95,15 +104,7 @@ class RegisterClass extends Component<Props> {
       passwordFocused: false,
       confirmPasswordFocused: false,
       refIdFocused: false,
-      typingTimeout: 0,
-      passwordErrorFirstSolved: false,
-      passwordErrorSecondSolved: false,
-      passwordErrorThirdSolved: false,
-      passwordPopUp: false,
    };
-
-   private myRef = createRef<HTMLInputElement>();
-   private passwordWrapper = createRef<HTMLDivElement>();
 
    public componentDidMount() {
       setDocumentTitle('Register');
@@ -114,7 +115,6 @@ class RegisterClass extends Component<Props> {
       if (refId && refId !== localReferralCode) {
          localStorage.setItem('referralCode', referralCode);
       }
-      document.addEventListener('click', this.handleOutsideClick, false);
    }
 
    public componentDidUpdate(prev: Props) {
@@ -123,26 +123,22 @@ class RegisterClass extends Component<Props> {
          this.props.history.push('/email-verification', { email, password });
    }
 
-   public componentWillUnmount() {
-      document.removeEventListener('click', this.handleOutsideClick, false);
-   }
-
    public renderCaptcha = () => {
-      const { signUpError } = this.props;
-      const { confirmationError, emailError } = this.state;
-      const error = signUpError || confirmationError || emailError;
-      return <Captcha error={error} />;
+      // const { signUpError } = this.props;
+      // const { confirmationError, emailError } = this.state;
+      // const error = signUpError || confirmationError || emailError;
+      return <Captcha geetestCaptchaRef={this.geetestCaptchaRef} />;
    };
 
    public render() {
       const {
          configs,
          isLoading,
-         currentPasswordEntropy,
          captcha_response,
          reCaptchaSuccess,
          geetestCaptchaSuccess,
-         intl: { formatMessage }
+         intl: { formatMessage },
+         captchaLoading,
       } = this.props;
       const {
          username,
@@ -158,11 +154,7 @@ class RegisterClass extends Component<Props> {
          emailFocused,
          passwordFocused,
          confirmPasswordFocused,
-         refIdFocused,
-         passwordErrorFirstSolved,
-         passwordErrorSecondSolved,
-         passwordErrorThirdSolved,
-         passwordPopUp
+         refIdFocused
       } = this.state;
       return (
          <LayoutAuth
@@ -172,14 +164,15 @@ class RegisterClass extends Component<Props> {
             title="Register"
             subTitle="Please fill in the data below with honest and accurate information."
          >
-            <FormRegisterV2
+            <FormRegister
+               geetestCaptchaRef={this.geetestCaptchaRef}
                captchaType={configs.captcha_type}
                renderCaptcha={this.renderCaptcha()}
                captcha_response={captcha_response}
                isReCaptchaSuccess={reCaptchaSuccess}
                isGeetestCaptchaSuccess={geetestCaptchaSuccess}
                hasConfirmed={hasConfirmed}
-               isLoading={isLoading}
+               isLoading={isLoading || captchaLoading}
                onRegister={this.handleSignUp}
                onLogin={this.handleSignIn}
                validateForm={this.handleValidateForm}
@@ -223,76 +216,7 @@ class RegisterClass extends Component<Props> {
 
                termsMessage={formatMessage({ id: 'page.header.signUp.terms' })}
 
-               minPasswordEntropy={configs.password_min_entropy}
-               currentPasswordEntropy={currentPasswordEntropy}
-               passwordErrorFirstSolved={passwordErrorFirstSolved}
-               passwordErrorSecondSolved={passwordErrorSecondSolved}
-               passwordErrorThirdSolved={passwordErrorThirdSolved}
-               passwordPopUp={passwordPopUp}
-
                translate={this.translate}
-               ref={this.myRef}
-               passwordWrapper={this.passwordWrapper}
-            />
-            {/* <FormRegister
-               title="Register"
-               subTitle="Create New Digiasset Account"
-               labelSignIn={this.props.intl.formatMessage({ id: 'page.header.signIn' })}
-               labelSignUp={this.props.intl.formatMessage({ id: 'page.header.signUp' })}
-               emailLabel={this.props.intl.formatMessage({ id: 'page.header.signUp.email' })}
-               passwordLabel={this.props.intl.formatMessage({ id: 'page.header.signUp.password' })}
-               confirmPasswordLabel={this.props.intl.formatMessage({ id: 'page.header.signUp.confirmPassword' })}
-               referalCodeLabel={`${this.props.intl.formatMessage({ id: 'page.header.signUp.referalCode' })} (Optional)`}
-               termsMessage={this.props.intl.formatMessage({ id: 'page.header.signUp.terms' })}
-               refId={refId}
-               handleChangeRefId={this.handleChangeRefId}
-               isLoading={loading}
-               onSignIn={this.handleSignIn}
-               onSignUp={this.handleSignUp}
-               username={username}
-               handleChangeUsername={this.handleChangeUsername}
-               email={email}
-               handleChangeEmail={this.handleChangeEmail}
-               password={password}
-               handleChangePassword={this.handleChangePassword}
-               confirmPassword={confirmPassword}
-               handleChangeConfirmPassword={this.handleChangeConfirmPassword}
-               hasConfirmed={hasConfirmed}
-               clickCheckBox={this.handleCheckboxClick}
-               validateForm={this.handleValidateForm}
-               emailError={emailError}
-               passwordError={passwordError}
-               confirmationError={confirmationError}
-               confirmPasswordFocused={confirmPasswordFocused}
-               refIdFocused={refIdFocused}
-               usernameFocused={usernameFocused}
-               emailFocused={emailFocused}
-               passwordFocused={passwordFocused}
-               handleFocusUsername={this.handleFocusUsername}
-               handleFocusEmail={this.handleFocusEmail}
-               handleFocusPassword={this.handleFocusPassword}
-               handleFocusConfirmPassword={this.handleFocusConfirmPassword}
-               handleFocusRefId={this.handleFocusRefId}
-               captchaType={configs.captcha_type}
-               renderCaptcha={this.renderCaptcha()}
-               reCaptchaSuccess={reCaptchaSuccess}
-               geetestCaptchaSuccess={geetestCaptchaSuccess}
-               captcha_response={captcha_response}
-               currentPasswordEntropy={currentPasswordEntropy}
-               minPasswordEntropy={configs.password_min_entropy}
-               passwordErrorFirstSolved={passwordErrorFirstSolved}
-               passwordErrorSecondSolved={passwordErrorSecondSolved}
-               passwordErrorThirdSolved={passwordErrorThirdSolved}
-               passwordPopUp={passwordPopUp}
-               myRef={this.myRef}
-               passwordWrapper={this.passwordWrapper}
-               translate={this.translate}
-            /> */}
-            <Modal
-               show={this.state.showModal}
-               header={this.renderModalHeader()}
-               content={this.renderModalBody()}
-               footer={this.renderModalFooter()}
             />
          </LayoutAuth>
       )
@@ -321,50 +245,8 @@ class RegisterClass extends Component<Props> {
          emailError: !email.length ? 'Email must be filled' : (email.length && !isEmailValid) ? this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL }) : ''
       });
    };
-
-   private handleChangePassword = (value: string) => {
-      const { passwordErrorFirstSolved, passwordErrorSecondSolved, passwordErrorThirdSolved } = this.state;
-
-      if (passwordErrorFirstSolution(value) && !passwordErrorFirstSolved) {
-         this.setState({
-            passwordErrorFirstSolved: true,
-         });
-      } else if (!passwordErrorFirstSolution(value) && passwordErrorFirstSolved) {
-         this.setState({
-            passwordErrorFirstSolved: false,
-         });
-      }
-
-      if (passwordErrorSecondSolution(value) && !passwordErrorSecondSolved) {
-         this.setState({
-            passwordErrorSecondSolved: true,
-         });
-      } else if (!passwordErrorSecondSolution(value) && passwordErrorSecondSolved) {
-         this.setState({
-            passwordErrorSecondSolved: false,
-         });
-      }
-
-      if (passwordErrorThirdSolution(value) && !passwordErrorThirdSolved) {
-         this.setState({
-            passwordErrorThirdSolved: true,
-         });
-      } else if (!passwordErrorThirdSolution(value) && passwordErrorThirdSolved) {
-         this.setState({
-            passwordErrorThirdSolved: false,
-         });
-      }
-
-      if (this.state.typingTimeout) {
-         clearTimeout(this.state.typingTimeout);
-      }
-
-      this.setState({
-         password: value,
-         typingTimeout: setTimeout(() => {
-            this.props.fetchCurrentPasswordEntropy({ password: value });
-         }, 500),
-      });
+   private handleChangePassword = (password: string) => {
+      this.setState({ password });
    };
 
    private handleChangeConfirmPassword = (value: string) => {
@@ -394,7 +276,6 @@ class RegisterClass extends Component<Props> {
    private handleFocusPassword = () => {
       this.setState({
          passwordFocused: !this.state.passwordFocused,
-         passwordPopUp: !this.state.passwordPopUp,
       });
    };
 
@@ -452,35 +333,6 @@ class RegisterClass extends Component<Props> {
       this.props.resetCaptchaState();
    };
 
-   private renderModalHeader = () => (
-      <div className="pg-exchange-modal-submit-header">
-         {this.props.intl.formatMessage({ id: 'page.header.signUp.modal.header' })}
-      </div>
-   );
-
-   private renderModalBody = () => (
-      <div className="pg-exchange-modal-submit-body">
-         <h2>
-            {this.props.intl.formatMessage({ id: 'page.header.signUp.modal.body' })}
-         </h2>
-      </div>
-   );
-
-   private renderModalFooter = () => (
-      <div className="pg-exchange-modal-submit-footer">
-         <Button
-            onClick={this.closeModal}
-            type="button"
-            text={this.props.intl.formatMessage({ id: 'page.header.signUp.modal.footer' })}
-         />
-      </div>
-   );
-
-   private closeModal = () => {
-      this.setState({ showModal: false });
-      this.props.history.push('/login');
-   };
-
    private handleValidateForm = () => {
       const { email, password, confirmPassword } = this.state;
       const { intl: { formatMessage } } = this.props;
@@ -534,11 +386,6 @@ class RegisterClass extends Component<Props> {
    };
 
    private extractRefID = (url: string) => new URLSearchParams(url).get('refid');
-   private handleOutsideClick = (e: any) => {
-      const wrapperElement = this.passwordWrapper.current;
-      if (wrapperElement && !wrapperElement.contains(e.target))
-         this.setState({ passwordPopUp: false });
-   };
 }
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
@@ -551,6 +398,7 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
    isLoading: selectSignUpLoading(state),
+   captchaLoading: selectCaptchaDataObjectLoading(state)
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =

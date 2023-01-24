@@ -297,19 +297,6 @@ class Landing extends React.Component<Props> {
                            width="noFull"
                         />
                      </div>
-                     <div className="flex flex-col items-center py-12 px-8 rounded-20 bg-neutral8 dark:bg-neutral2 text-center hover:border-[0.09375rem] hover:shadow-card dark:shadow-input-dark h-auto mx-3 transition-all duration-300">
-                        <div className="flex justify-center items-center h-40 mt-0 mb-8 mx-auto">
-                           <img className="max-w-full max-h-full block pointer-events-none" srcSet={`${illusCard12} 2x`} src={illusCard11} alt="" />
-                        </div>
-                        <div className="mb-4 text-base font-medium">Buy & Sell Crypto</div>
-                        <div className="mb-4 text-neutral4">We realize ideas from simple to complex, everything becomes easy to use and reach the most potential customers.</div>
-                        <Button
-                           text="Buy crypto"
-                           variant="outline"
-                           size="normal"
-                           width="noFull"
-                        />
-                     </div>
                   </Carousel>
                </div>
                <div className="text-center mt-10 lg:mt-17">

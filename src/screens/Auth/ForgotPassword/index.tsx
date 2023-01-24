@@ -1,4 +1,4 @@
-import React, { FC, FunctionComponent, KeyboardEvent, useEffect, useState } from 'react';
+import React, { FC, FunctionComponent, KeyboardEvent, useRef, useState } from 'react';
 import { injectIntl } from 'react-intl';
 import {
    connect,
@@ -13,7 +13,6 @@ import { Captcha, FormForgotPassword, LayoutAuth } from 'components';
 import {
    EMAIL_REGEX,
    ERROR_INVALID_EMAIL,
-   setDocumentTitle,
 } from 'helpers';
 import {
    Configs,
@@ -30,6 +29,7 @@ import {
    selectRecaptchaSuccess,
 } from 'modules';
 import { CommonError } from 'modules/types';
+import { useDocumentTitle } from 'hooks';
 
 interface ReduxProps {
    success: boolean;
@@ -66,10 +66,8 @@ const ForgotPasswordFC: FC<Props> = ({
    history,
    intl
 }) => {
-   useEffect(() => {
-      setDocumentTitle('Forgot password');
-      return () => setDocumentTitle('');
-   }, []);
+   useDocumentTitle('Forgot Password');
+   const geetestCaptchaRef = useRef<HTMLButtonElement>(null);
    const [state, setState] = useState<ForgotPasswordState>({
       email: '',
       emailError: '',
@@ -121,7 +119,7 @@ const ForgotPasswordFC: FC<Props> = ({
 
    const handleRenderInputNewPass = () => history.push('/accounts/password_reset', { email });
 
-   const renderCaptcha = () => <Captcha error={error} success={success} />;
+   const renderCaptcha = () => <Captcha geetestCaptchaRef={geetestCaptchaRef} error={error} success={success} />;
 
    return (
       <LayoutAuth
@@ -133,6 +131,7 @@ const ForgotPasswordFC: FC<Props> = ({
          subTitle={translate('page.forgotPassword.subtitle')}
       >
          <FormForgotPassword
+            geetestCaptchaRef={geetestCaptchaRef}
             buttonLabel={translate('page.body.kyc.next')}
             isLoading={isLoading}
             onSubmit={handleChangePassword}

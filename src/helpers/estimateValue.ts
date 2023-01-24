@@ -134,10 +134,6 @@ export const estimateValueLocked = (targetCurrency: string, currencies: Currency
          if (formattedWalletCurrency === formattedTargetCurrency) {
             const walletTotal = (Number(wallet.locked) || 0)
             estimatedValue += walletTotal;
-         } else if (isMarketPresent(formattedTargetCurrency, formattedWalletCurrency, markets)) {
-            estimatedValue += estimateWithMarket(formattedTargetCurrency, formattedWalletCurrency, getWalletTotal(wallet), currencies, markets, marketTickers);
-         } else {
-            estimatedValue += estimateWithoutMarket(formattedTargetCurrency, wallet.currency, getWalletTotal(wallet), currencies, markets, marketTickers);
          }
       }
    }

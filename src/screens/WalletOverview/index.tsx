@@ -3,7 +3,6 @@ import React, {
    FunctionComponent,
    memo,
    useEffect,
-   FC,
    useMemo,
    ChangeEvent,
 } from 'react';
@@ -19,84 +18,35 @@ import { compose } from 'redux';
 import { injectIntl } from 'react-intl';
 import {
    Button,
-   Decimal,
    LayoutWallet,
    ModalRequired,
+   TableWallets,
 } from 'components';
 import {
-   alertPush,
-   beneficiariesFetch,
-   Beneficiary,
    RootState,
-   selectBeneficiariesActivateSuccess,
-   selectBeneficiariesCreateSuccess,
-   selectBeneficiariesDeleteSuccess,
-   selectHistory,
    selectUserInfo,
-   selectUserLoggedIn,
    selectWallets,
-   selectWalletsLoading,
-   selectWithdrawSuccess,
    User,
    Wallet,
-   WalletHistoryList,
-   walletsAddressFetch,
-   walletsData,
-   walletsFetch,
-   walletsWithdrawCcyFetch
+   walletsFetch
 } from 'modules';
 import { IntlProps } from 'index';
 import { SearchIcon } from '@heroicons/react/outline';
-import { IcEmty } from 'assets';
 import { useDocumentTitle } from 'hooks';
-import {
-   arrayFilter,
-   renderCurrencyIcon
-} from 'helpers';
+import { arrayFilter } from 'helpers';
 import { EstimatedValue } from 'components';
 import { DEFAULT_WALLET } from '../../constants';
-
-interface State {
-   activeIndex: number;
-   currentTabIndex: number;
-   otpCode: string;
-   beneficiary: Beneficiary;
-   selectWalletIndex: number;
-   withdrawSubmitModal: boolean;
-   withdrawConfirmModal: boolean;
-   bchAddress?: string;
-   filteredWallets?: Wallet[] | null;
-   tab: string;
-   withdrawDone: boolean;
-   amount: string;
-   total: string;
-}
 
 interface ReduxProps {
    user: User;
    wallets: Wallet[];
-   withdrawSuccess: boolean;
-   walletsLoading?: boolean;
-   historyList: WalletHistoryList;
-   beneficiariesActivateSuccess: boolean;
-   beneficiariesDeleteSuccess: boolean;
-   beneficiariesAddSuccess: boolean;
-   isLoggedIn: boolean;
 }
 
 interface DispatchProps {
-   fetchBeneficiaries: typeof beneficiariesFetch;
-   fetchAddress: typeof walletsAddressFetch;
    fetchWallets: typeof walletsFetch;
-   walletsWithdrawCcy: typeof walletsWithdrawCcyFetch;
-   fetchSuccess: typeof alertPush;
-   clearWallets: () => void;
 }
 
 interface OwnProps {
-   walletsError: {
-      message: string;
-   },
    location: {
       state: {
          isOpenPortal: boolean;
@@ -106,27 +56,14 @@ interface OwnProps {
 
 type WalletsProps = RouterProps & ReduxProps & DispatchProps & OwnProps & IntlProps;
 
-const WalletOverviewFC: FC<WalletsProps> = memo(({
+const WalletOverviewFC = memo(({
    user,
    wallets,
-   withdrawSuccess,
-   walletsLoading,
-   historyList,
-   beneficiariesActivateSuccess,
-   beneficiariesDeleteSuccess,
-   beneficiariesAddSuccess,
-   isLoggedIn,
-   walletsError,
-   fetchBeneficiaries,
-   fetchAddress,
    fetchWallets,
-   walletsWithdrawCcy,
-   fetchSuccess,
-   clearWallets,
    history: { push },
    location,
    intl,
-}, state: State) => {
+}: WalletsProps) => {
    const [isOpen, setIsOpen] = useState(location.state?.isOpenPortal ? location.state?.isOpenPortal : false);
    const [q, setQ] = useState<string>('');
    const [checked, setChecked] = useState<boolean>(false);
@@ -152,9 +89,7 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
    // const wallet = wallets.find(pair => pair.currency === 'idr');
 
    const translate = (id: string) => intl.formatMessage({ id });
-
    const handleChange = (e: ChangeEvent<HTMLInputElement>) => setQ(e.target.value);
-
    const handleShowPortal = () => setIsOpen(prev => !prev);
 
    const handleRedirectToTransfer = () => {
@@ -167,95 +102,13 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
       }
    }
 
-   const renderWallets = useMemo(() => (
-      <div className="overflow-x-auto">
-         <table className="w-full table-auto">
-            <thead>
-               <tr className="border-b border-neutral7 dark:border-neutral2">
-                  <th className="p-4 pt-5 first:pl-8 last:pr-8 text-xs font-semibold leading-custom4 text-left">
-                     Asset
-                  </th>
-                  <th className="p-4 pt-5 first:pl-8 last:pr-8 text-xs font-semibold leading-custom4 text-right">
-                     On orders
-                  </th>
-                  <th className="p-4 pt-5 first:pl-8 last:pr-8 text-xs font-semibold leading-custom4 text-right">
-                     Available balance
-                  </th>
-                  <th className="p-4 pt-5 first:pl-8 last:pr-8 text-xs font-semibold leading-custom4 text-right">
-                     Total balance
-                  </th>
-               </tr>
-            </thead>
-            <tbody>
-               {balances.length > 0 ? (
-                  balances.map(({ currency, name, iconUrl, locked, balance, fixed }) => (
-                     <tr
-                        key={currency}
-                        onClick={() => push(`wallets/${currency}`)}
-                        className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3 hover:bg-neutral7 dark:hover:bg-neutral2 cursor-pointer"
-                     >
-                        <td className="p-4 first:pl-8 last:pr-8">
-                           <div className="flex space-x-5">
-                              <div className="shrink-0 w-8">
-                                 <img
-                                    className={`w-full ${renderCurrencyIcon(currency, iconUrl).includes('http') ? 'polygon' : ''}`}
-                                    src={renderCurrencyIcon(currency, iconUrl)}
-                                    alt={name}
-                                    title={name}
-                                 />
-                              </div>
-                              <div>
-                                 <div className="font-medium uppercase">
-                                    {currency}
-                                 </div>
-                                 <div className="text-neutral4">
-                                    {name}
-                                 </div>
-                              </div>
-                           </div>
-                        </td>
-                        <td className="p-4 first:pl-8 last:pr-8 text-right">
-                           <div className="font-medium uppercase">
-                              {Decimal.format(locked, currency === 'idr' ? 0 : fixed, ',')} {currency}
-                           </div>
-                           <div className="text-neutral4">
-                              $0.0
-                           </div>
-                        </td>
-                        <td className="p-4 first:pl-8 last:pr-8 text-right">
-                           <div className="font-medium uppercase">
-                              {Decimal.format(balance, currency === 'idr' ? 0 : fixed, ',')} {currency}
-                           </div>
-                           <div className="text-neutral4">
-                              $0.0
-                           </div>
-                        </td>
-                        <td className="p-4 first:pl-8 last:pr-8 text-right">
-                           <div className="font-medium uppercase">
-                              {Decimal.format(Number(balance) + Number(locked), currency === 'idr' ? 0 : fixed, ',')} {currency}
-                           </div>
-                           <div className="text-neutral4">
-                              $0.0
-                           </div>
-                        </td>
-                     </tr>
-                  ))
-               ) : (
-                  <tr>
-                     <td colSpan={4}>
-                        <div className="min-h-c-screen-462 flex flex-col items-center justify-center space-y-3">
-                           <IcEmty />
-                           <div className="text-xs font-semibold text-neutral4">
-                              {translate('noResultFound')}
-                           </div>
-                        </div>
-                     </td>
-                  </tr>
-               )}
-            </tbody>
-         </table>
-      </div>
-   ), [balances])
+   const renderTableWallets = useMemo(() => (
+      <TableWallets
+         balances={balances}
+         push={push}
+         translate={translate}
+      />
+   ), [balances]);
 
    return (
       <>
@@ -315,7 +168,7 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
                            </div>
                         </label>
                      </div>
-                     {renderWallets}
+                     {renderTableWallets}
                   </div>
                </div>
             </div>
@@ -332,22 +185,10 @@ const WalletOverviewFC: FC<WalletsProps> = memo(({
 const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
    wallets: selectWallets(state),
-   withdrawSuccess: selectWithdrawSuccess(state),
-   walletsLoading: selectWalletsLoading(state),
-   historyList: selectHistory(state),
-   beneficiariesActivateSuccess: selectBeneficiariesActivateSuccess(state),
-   beneficiariesDeleteSuccess: selectBeneficiariesDeleteSuccess(state),
-   beneficiariesAddSuccess: selectBeneficiariesCreateSuccess(state),
-   isLoggedIn: selectUserLoggedIn(state),
 });
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
-   fetchBeneficiaries: params => dispatch(beneficiariesFetch(params)),
-   fetchAddress: ({ currency }) => dispatch(walletsAddressFetch({ currency })),
    fetchWallets: () => dispatch(walletsFetch()),
-   walletsWithdrawCcy: params => dispatch(walletsWithdrawCcyFetch(params)),
-   fetchSuccess: payload => dispatch(alertPush(payload)),
-   clearWallets: () => dispatch(walletsData([]))
 });
 
 export const WalletOverview = compose(

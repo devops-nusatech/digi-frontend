@@ -1,30 +1,26 @@
-import React, { KeyboardEvent, memo, useState } from 'react';
+import React, {
+   KeyboardEvent,
+   memo,
+   useState
+} from 'react';
 import { useIntl } from 'react-intl';
-import { PasswordStrengthBar, Button } from 'components';
+import {
+   Button,
+   InputGroup,
+   InputPassword,
+} from 'components';
 import {
    PASSWORD_REGEX,
-   passwordErrorFirstSolution,
-   passwordErrorSecondSolution,
-   passwordErrorThirdSolution,
 } from 'helpers';
-import { InputGroup } from 'components';
-import { IcEyeClose } from 'assets';
 
 export const FormChangePassword = memo((props: any) => {
    const [oldPassword, setOldPassword] = useState('');
    const [newPassword, setNewPassword] = useState('');
    const [confirmationPassword, setConfirmationPassword] = useState('');
-   const [passwordErrorFirstSolved, setPasswordErrorFirstSolved] = useState(false);
-   const [passwordErrorSecondSolved, setPasswordErrorSecondSolved] = useState(false);
-   const [passwordErrorThirdSolved, setPasswordErrorThirdSolved] = useState(false);
-   const [passwordPopUp, setPasswordPopUp] = useState(false);
-
-   //  Update
-   const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
-   const [showPassword, setShowPassword] = useState<boolean>(false);
-   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
    const intl = useIntl();
+
+   const translate = (id: string) => intl.formatMessage({ id });
 
    const handleChangePassword = () => {
       const payload = props.hideOldPassword
@@ -44,42 +40,15 @@ export const FormChangePassword = memo((props: any) => {
       setConfirmationPassword('');
    };
 
-   const handleEnterPress = (event: KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === 'Enter') {
-         event.preventDefault();
+   const handleEnterPress = (e: KeyboardEvent<HTMLFormElement>) => {
+      if (e.key === 'Enter') {
+         e.preventDefault();
 
          if (isValidForm()) {
             handleChangePassword();
          }
       }
    };
-
-   const handleChangeNewPassword = (value: string) => {
-      if (passwordErrorFirstSolution(value) && !passwordErrorFirstSolved) {
-         setPasswordErrorFirstSolved(true);
-      } else if (!passwordErrorFirstSolution(value) && passwordErrorFirstSolved) {
-         setPasswordErrorFirstSolved(false);
-      }
-
-      if (passwordErrorSecondSolution(value) && !passwordErrorSecondSolved) {
-         setPasswordErrorSecondSolved(true);
-      } else if (!passwordErrorSecondSolution(value) && passwordErrorSecondSolved) {
-         setPasswordErrorSecondSolved(false);
-      }
-
-      if (passwordErrorThirdSolution(value) && !passwordErrorThirdSolved) {
-         setPasswordErrorThirdSolved(true);
-      } else if (!passwordErrorThirdSolution(value) && passwordErrorThirdSolved) {
-         setPasswordErrorThirdSolved(false);
-      }
-
-      setNewPassword(value);
-      setTimeout(() => {
-         props.fetchCurrentPasswordEntropy({ password: value });
-      }, 500);
-   };
-
-   const translate = (key: string) => intl.formatMessage({ id: key });
 
    const isValidForm = () => {
       const isNewPasswordValid = newPassword.match(PASSWORD_REGEX);
@@ -90,79 +59,42 @@ export const FormChangePassword = memo((props: any) => {
    };
 
    return (
-      <div className="w-full sm:w-84 mx-auto space-y-8" onKeyPress={handleEnterPress}>
-         {!props.showTitle && (
+      <form
+         onKeyPress={handleEnterPress}
+         className="w-full sm:w-84 mx-auto space-y-8"
+      >
+         {props.title && (
             <div className="text-center text-4.5xl leading-[1.2] tracking-custom1 font-dm font-bold">
-               New password
+               {props.title}
             </div>
          )}
          {!props.hideOldPassword &&
             <InputGroup
-               autoFocus
-               type={showOldPassword ? 'text' : 'password'}
-               label={intl.formatMessage({ id: 'page.body.profile.header.account.content.password.old' })}
-               placeholder={intl.formatMessage({ id: 'page.body.profile.header.account.content.password.old' })}
+               autoFocus={!props.hideOldPassword}
+               label={translate('page.body.profile.header.account.content.password.old')}
+               placeholder={translate('page.body.profile.header.account.content.password.old')}
                onChange={setOldPassword}
                value={oldPassword}
-               onClick={() => setShowOldPassword(!showOldPassword)}
-               icon={
-                  !showOldPassword ?
-                     <svg className="w-6 h-6 fill-neutral5 group-hover:fill-neutral4 transition-all duration-300">
-                        <use xlinkHref="#icon-eye" />
-                     </svg> : <IcEyeClose className="w-6 h-6 fill-neutral5 group-hover:fill-neutral4 transition-all duration-300" />
-               }
+               withIconPassword
             />
          }
-         <div>
-            <InputGroup
-               type={showPassword ? 'text' : 'password'}
-               label={intl.formatMessage({ id: 'page.body.profile.header.account.content.password.new' })}
-               placeholder={intl.formatMessage({ id: 'page.body.profile.header.account.content.password.new' })}
-               onChange={handleChangeNewPassword}
-               value={newPassword}
-               onFocus={() => setPasswordPopUp(!passwordPopUp)}
-               onBlur={() => setPasswordPopUp(!passwordPopUp)}
-               onClick={() => setShowPassword(!showPassword)}
-               icon={
-                  !showPassword ?
-                     <svg className="w-6 h-6 fill-neutral5 group-hover:fill-neutral4 transition-all duration-300">
-                        <use xlinkHref="#icon-eye" />
-                     </svg> : <IcEyeClose className="w-6 h-6 fill-neutral5 group-hover:fill-neutral4 transition-all duration-300" />
-               }
-               autoFocus={props.hideOldPassword}
-            />
-            {newPassword ?
-               <PasswordStrengthBar
-                  minPasswordEntropy={props.configs.password_min_entropy}
-                  currentPasswordEntropy={props.currentPasswordEntropy}
-                  passwordExist={newPassword !== ''}
-                  passwordErrorFirstSolved={passwordErrorFirstSolved}
-                  passwordErrorSecondSolved={passwordErrorSecondSolved}
-                  passwordErrorThirdSolved={passwordErrorThirdSolved}
-                  passwordPopUp={passwordPopUp}
-                  translate={translate}
-               /> : null}
-         </div>
+         <InputPassword
+            autoFocus={props.hideOldPassword}
+            onChange={setNewPassword}
+         />
          <InputGroup
-            type={showConfirmPassword ? 'text' : 'password'}
-            label={intl.formatMessage({ id: 'page.body.profile.header.account.content.password.conf' })}
-            placeholder={intl.formatMessage({ id: 'page.body.profile.header.account.content.password.conf' })}
+            label={translate('page.body.profile.header.account.content.password.conf')}
+            placeholder={translate('page.body.profile.header.account.content.password.conf')}
             onChange={setConfirmationPassword}
             value={confirmationPassword}
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            icon={
-               !showConfirmPassword ?
-                  <svg className="w-6 h-6 fill-neutral5 group-hover:fill-neutral4 transition-all duration-300">
-                     <use xlinkHref="#icon-eye" />
-                  </svg> : <IcEyeClose className="w-6 h-6 fill-neutral5 group-hover:fill-neutral4 transition-all duration-300" />
-            }
+            withIconPassword
          />
          <Button
-            text={intl.formatMessage({ id: 'page.body.profile.header.account.content.password.button.change' })}
+            text={translate('page.body.profile.header.account.content.password.button.change')}
             disabled={!isValidForm()}
             onClick={handleChangePassword}
-            width="full"
+            withLoading={props.isLoading}
          />
-      </div>
+      </form>
    );
 });

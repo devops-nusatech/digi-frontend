@@ -1,18 +1,19 @@
 import { WithdrawLimit } from './../types';
 import { call, put } from 'redux-saga/effects';
-import { alertPush, sendError } from '../../../';
+import { sendError } from '../../../';
 import { API, RequestOptions } from '../../../../api';
 import { withdrawLimitData, withdrawLimitError, WithdrawLimitFetch } from '../actions';
+import { getCsrfToken } from 'helpers';
 
-const withdrawOption: RequestOptions = {
+const withdrawOption = (csrfToken?: string): RequestOptions => ({
    apiVersion: 'peatio',
-};
+   headers: { 'X-CSRF-Token': csrfToken },
+});
 
 export function* withdrawLimitSaga(action: WithdrawLimitFetch) {
    try {
-      const withdrawLimit: WithdrawLimit[] = yield call(API.get(withdrawOption), '/public/withdraw_limits');
+      const withdrawLimit: WithdrawLimit = yield call(API.get(withdrawOption(getCsrfToken())), '/account/withdraws/sums');
       yield put(withdrawLimitData(withdrawLimit));
-      yield put(alertPush({ message: ['success.withdraw.action'], type: 'success' }));
    } catch (error) {
       yield put(sendError({
          error,

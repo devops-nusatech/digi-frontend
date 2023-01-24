@@ -17,6 +17,8 @@ import { NewsState, rootNewsSaga } from './public/news';
 import { DepthIncrementState, DepthState, OrderBookState, rootOrderBookSaga } from './public/orderBook';
 import { RangerState } from './public/ranger/reducer';
 import { RecentTradesState, rootRecentTradesSaga } from './public/recentTrades';
+import { TradingFeesState } from './public/tradingFees';
+import { WithdrawLimitsState } from './public/withdrawLimits';
 import { ApiKeysState } from './user/apiKeys';
 import { rootApiKeysSaga } from './user/apiKeys/sagas';
 import { AuthState, rootAuthSaga } from './user/auth';
@@ -55,6 +57,8 @@ export * from './public/memberLevels';
 export * from './public/news';
 export * from './public/orderBook';
 export * from './public/recentTrades';
+export * from './public/tradingFees';
+export * from './public/withdrawLimits';
 export * from './user/apiKeys';
 export * from './user/auth';
 export * from './user/beneficiaries';
@@ -77,92 +81,94 @@ export * from './user/withdrawLimit';
 export * from './types';
 
 export interface RootState {
-    public: {
-        alerts: AlertState;
-        blocklistAccess: BlocklistAccessState;
-        colorTheme: ColorThemeState;
-        configs: ConfigsState;
-        currencies: CurrenciesState;
-        customization: CustomizationState;
-        rgl: GridLayoutState;
-        i18n: LanguageState;
-        kline: KlineState;
-        errorHandler: ErrorHandlerState;
-        markets: MarketsState;
-        memberLevels: MemberLevelsState;
-        news: NewsState;
-        orderBook: OrderBookState;
-        ranger: RangerState;
-        recentTrades: RecentTradesState;
-        depth: DepthState;
-        incrementDepth: DepthIncrementState;
-    };
-    user: {
-        apiKeys: ApiKeysState;
-        auth: AuthState;
-        beneficiaries: BeneficiariesState;
-        captcha: GeetestCaptchaState;
-        customizationUpdate: CustomizationUpdateState;
-        documentation: DocumentationState;
-        history: HistoryState;
-        documents: DocumentsState;
-        addresses: AddressesState;
-        identity: IdentityState;
-        label: LabelState;
-        phone: PhoneState;
-        openOrders: OpenOrdersState;
-        orders: OrdersState;
-        ordersHistory: OrdersHistoryState;
-        password: PasswordState;
-        profile: ProfileState;
-        transfer: TransferState;
-        sendEmailVerification: EmailVerificationState;
-        userActivity: UserActivityState;
-        wallets: WalletsState;
-        withdrawLimit: WithdrawLimitState;
-    };
+   public: {
+      alerts: AlertState;
+      blocklistAccess: BlocklistAccessState;
+      colorTheme: ColorThemeState;
+      configs: ConfigsState;
+      currencies: CurrenciesState;
+      customization: CustomizationState;
+      rgl: GridLayoutState;
+      i18n: LanguageState;
+      kline: KlineState;
+      errorHandler: ErrorHandlerState;
+      markets: MarketsState;
+      memberLevels: MemberLevelsState;
+      news: NewsState;
+      orderBook: OrderBookState;
+      ranger: RangerState;
+      recentTrades: RecentTradesState;
+      depth: DepthState;
+      incrementDepth: DepthIncrementState;
+      tradingFees: TradingFeesState;
+      withdrawLimits: WithdrawLimitsState;
+   };
+   user: {
+      apiKeys: ApiKeysState;
+      auth: AuthState;
+      beneficiaries: BeneficiariesState;
+      captcha: GeetestCaptchaState;
+      customizationUpdate: CustomizationUpdateState;
+      documentation: DocumentationState;
+      history: HistoryState;
+      documents: DocumentsState;
+      addresses: AddressesState;
+      identity: IdentityState;
+      label: LabelState;
+      phone: PhoneState;
+      openOrders: OpenOrdersState;
+      orders: OrdersState;
+      ordersHistory: OrdersHistoryState;
+      password: PasswordState;
+      profile: ProfileState;
+      transfer: TransferState;
+      sendEmailVerification: EmailVerificationState;
+      userActivity: UserActivityState;
+      wallets: WalletsState;
+      withdrawLimit: WithdrawLimitState;
+   };
 }
 
 export const rootReducer = combineReducers({
-    public: publicReducer,
-    user: userReducer,
+   public: publicReducer,
+   user: userReducer,
 });
 
 export function* rootSaga() {
-    yield all([
-        call(rootApiKeysSaga),
-        call(rootAuthSaga),
-        call(rootBeneficiariesSaga),
-        call(rootBlocklistAccessSaga),
-        call(rootConfigsSaga),
-        call(rootCurrenciesSaga),
-        call(rootCustomizationSaga),
-        call(rootCustomizationUpdateSaga),
-        call(rootDocumentationSaga),
-        call(rootErrorHandlerSaga),
-        call(rootEmailVerificationSaga),
-        call(rootGeetestCaptchaSaga),
-        call(rootHandleAlertSaga),
-        call(rootHistorySaga),
-        call(rootKlineFetchSaga),
-        call(rootLabelSaga),
-        call(rootMarketsSaga),
-        call(rootMemberLevelsSaga),
-        call(rootNewsSaga),
-        call(rootOpenOrdersSaga),
-        call(rootOrderBookSaga),
-        call(rootOrdersHistorySaga),
-        call(rootOrdersSaga),
-        call(rootPasswordSaga),
-        call(rootProfileSaga),
-        call(rootTransferSaga),
-        call(rootRecentTradesSaga),
-        call(rootSendCodeSaga),
-        call(rootSendAddressesSaga),
-        call(rootSendDocumentsSaga),
-        call(rootSendIdentitySaga),
-        call(rootUserActivitySaga),
-        call(rootWalletsSaga),
-        call(rootWithdrawLimitSaga),
-    ]);
+   yield all([
+      call(rootApiKeysSaga),
+      call(rootAuthSaga),
+      call(rootBeneficiariesSaga),
+      call(rootBlocklistAccessSaga),
+      call(rootConfigsSaga),
+      call(rootCurrenciesSaga),
+      call(rootCustomizationSaga),
+      call(rootCustomizationUpdateSaga),
+      call(rootDocumentationSaga),
+      call(rootErrorHandlerSaga),
+      call(rootEmailVerificationSaga),
+      call(rootGeetestCaptchaSaga),
+      call(rootHandleAlertSaga),
+      call(rootHistorySaga),
+      call(rootKlineFetchSaga),
+      call(rootLabelSaga),
+      call(rootMarketsSaga),
+      call(rootMemberLevelsSaga),
+      call(rootNewsSaga),
+      call(rootOpenOrdersSaga),
+      call(rootOrderBookSaga),
+      call(rootOrdersHistorySaga),
+      call(rootOrdersSaga),
+      call(rootPasswordSaga),
+      call(rootProfileSaga),
+      call(rootTransferSaga),
+      call(rootRecentTradesSaga),
+      call(rootSendCodeSaga),
+      call(rootSendAddressesSaga),
+      call(rootSendDocumentsSaga),
+      call(rootSendIdentitySaga),
+      call(rootUserActivitySaga),
+      call(rootWalletsSaga),
+      call(rootWithdrawLimitSaga),
+   ]);
 }

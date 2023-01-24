@@ -48,7 +48,7 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(({
                      leaveFrom="opacity-100 scale-100"
                      leaveTo="opacity-0 scale-75 translate-y-9"
                   >
-                     <Modal.Panel className="w-full sca max-w-md space-y-8 transform overflow-hidden rounded-2xl bg-neutral8 dark:bg-neutral2 p-8 text-left align-middle shadow-xl transition-all duration-300">
+                     <Modal.Panel className="w-full sca max-w-md space-y-8 transform rounded-2xl bg-neutral8 dark:bg-neutral2 p-8 text-left align-middle shadow-xl transition-all duration-300">
                         {
                            title && (
                               <Modal.Title

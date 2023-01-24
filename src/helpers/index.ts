@@ -1,3 +1,4 @@
+import GT4Init from './gt4';
 export * from './accumulateVolume';
 export * from './buildQueryString';
 export * from './calcMaxVolume';
@@ -52,3 +53,7 @@ export * from './getRefValue';
 export * from './arrayFilterKey';
 export * from './renderCurrencyIcon';
 export * from './scrollTo';
+export * from './imageIsExists';
+export * from './estimateValue';
+
+export { GT4Init };

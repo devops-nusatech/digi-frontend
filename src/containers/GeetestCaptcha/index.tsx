@@ -61,13 +61,9 @@ class GeetestCaptchaComponent extends React.Component<Props> {
          }, this.captchaComingHandler);
       }
 
-      if (next.shouldCaptchaReset && !this.props.shouldCaptchaReset) {
+      if (!this.props.shouldCaptchaReset && next.shouldCaptchaReset) {
          this.reset();
       }
-   }
-
-   public show = () => {
-      return this.captcha && this.captcha.show();
    }
 
    public validate = () => {

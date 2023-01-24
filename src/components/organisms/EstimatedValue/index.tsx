@@ -44,7 +44,7 @@ interface DispatchProps {
 type Props = DispatchProps & ReduxProps & EstimatedValueProps & IntlProps;
 
 class EstimatedValueContainer extends React.Component<Props> {
-   public componentDidMount(): void {
+   public componentDidMount() {
       const {
          currencies,
          fetchCurrencies,
@@ -105,46 +105,44 @@ class EstimatedValueContainer extends React.Component<Props> {
       const wallet = wallets.find(e => e.currency === sonic.peatio_platform_currency.toLowerCase())
 
       return (
-         <>
-            <div className="flex items-start justify-between">
-               <div>
-                  <div className="mb-1 font-medium">Total balance</div>
-                  <div className="flex items-center space-x-2">
-                     <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
-                        {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
-                     </div>
-                     <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
+         <div className="flex items-start justify-between">
+            <div>
+               <div className="mb-1 font-medium">Total balance</div>
+               <div className="flex items-center space-x-2">
+                  <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
+                     {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
                   </div>
-                  <div className="text-base text-neutral4">
-                     &asymp; {formatWithSeparators(estimatedValue, ',')} {sonic.peatio_platform_currency.toUpperCase()}
-                  </div>
+                  <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
                </div>
-               <div>
-                  <div className="mb-1 font-medium">Locked balance</div>
-                  <div className="flex items-center space-x-2">
-                     <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
-                        {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
-                     </div>
-                     <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
-                  </div>
-                  <div className="text-base text-neutral4">
-                     &asymp; {formatWithSeparators(estimatedValueLocked, ',')} {sonic.peatio_platform_currency.toUpperCase()}
-                  </div>
-               </div>
-               <div>
-                  <div className="mb-1 font-medium">Available balance</div>
-                  <div className="flex items-center space-x-2">
-                     <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
-                        {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
-                     </div>
-                     <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
-                  </div>
-                  <div className="text-base text-neutral4">
-                     &asymp; {formatWithSeparators(estimatedValueAvailable, ',')} {sonic.peatio_platform_currency.toUpperCase()}
-                  </div>
+               <div className="text-base text-neutral4">
+                  &asymp; {formatWithSeparators(estimatedValue, ',')} {sonic.peatio_platform_currency.toUpperCase()}
                </div>
             </div>
-         </>
+            <div>
+               <div className="mb-1 font-medium">Locked balance</div>
+               <div className="flex items-center space-x-2">
+                  <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
+                     {Decimal.format(wallet?.locked, Number(wallet?.fixed), ',')}
+                  </div>
+                  <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
+               </div>
+               <div className="text-base text-neutral4">
+                  &asymp; {formatWithSeparators(estimatedValueLocked, ',')} {sonic.peatio_platform_currency.toUpperCase()}
+               </div>
+            </div>
+            <div>
+               <div className="mb-1 font-medium">Available balance</div>
+               <div className="flex items-center space-x-2">
+                  <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
+                     {Decimal.format(Number(wallet?.balance) + Number(wallet?.locked), Number(wallet?.fixed), ',')}
+                  </div>
+                  <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
+               </div>
+               <div className="text-base text-neutral4">
+                  &asymp; {formatWithSeparators(estimatedValueAvailable, ',')} {sonic.peatio_platform_currency.toUpperCase()}
+               </div>
+            </div>
+         </div>
       );
    }
 
@@ -165,5 +163,4 @@ const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispat
    fetchTickers: () => dispatch(marketsTickersFetch()),
 });
 
-// tslint:disable-next-line:no-any
 export const EstimatedValue = injectIntl(connect(mapStateToProps, mapDispatchToProps)(EstimatedValueContainer)) as any;

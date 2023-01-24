@@ -299,7 +299,7 @@ const WithdrawalFC = memo(({
                            <div className="flex space-x-3 items-center">
                               <div className="shrink-0 w-8">
                                  <img
-                                    className={`w-full ${renderCurrencyIcon(userWallet.currency, userWallet.iconUrl).includes('http') ? 'polygon' : ''}`}
+                                    className={`w-full ${renderCurrencyIcon(userWallet.currency, userWallet.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                                     src={renderCurrencyIcon(userWallet.currency, userWallet.iconUrl)}
                                     alt={userWallet.name}
                                     title={userWallet.name}
@@ -403,7 +403,7 @@ const WithdrawalFC = memo(({
                            <div className="flex space-x-3 items-center">
                               <div className="shrink-0 w-8">
                                  <img
-                                    className={`w-full ${renderCurrencyIcon(userWallet.currency, userWallet.iconUrl).includes('http') ? 'polygon' : ''}`}
+                                    className={`w-full ${renderCurrencyIcon(userWallet.currency, userWallet.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                                     src={renderCurrencyIcon(userWallet.currency, userWallet.iconUrl)}
                                     alt={userWallet.name}
                                     title={userWallet.name}
@@ -458,7 +458,7 @@ const WithdrawalFC = memo(({
                {userWallets[0]?.name || ''}
                <img
                   src={renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)}
-                  className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl).includes('http') ? 'polygon' : ''}`}
+                  className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                   alt={userWallets[0]?.name}
                   title={userWallets[0]?.name}
                />
@@ -610,7 +610,7 @@ const WithdrawalFC = memo(({
                {userWallets[0]?.name || ''}
                <img
                   src={renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)}
-                  className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl).includes('http') ? 'polygon' : ''}`}
+                  className={`w-6 ml-3 ${renderCurrencyIcon(userWallets[0]?.currency, userWallets[0]?.iconUrl)?.includes('http') ? 'polygon' : ''}`}
                   alt={userWallets[0]?.name}
                />
             </div>

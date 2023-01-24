@@ -1,420 +1,342 @@
-import cr from 'classnames';
-import React, { FC, FormEvent, KeyboardEvent, memo, useCallback, useMemo, useState } from 'react';
-// import { Form } from 'react-bootstrap';
-import { useIntl } from 'react-intl';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import { Input, Button, PasswordStrengthBar } from 'components';
+import React, {
+   FormEvent,
+   KeyboardEvent,
+   RefObject,
+   memo,
+   useCallback,
+   useEffect,
+   useMemo,
+   useState
+} from 'react';
 import { isUsernameEnabled } from 'api';
 import {
    EMAIL_REGEX,
    ERROR_LONG_USERNAME,
    ERROR_SHORT_USERNAME,
    PASSWORD_REGEX,
-   USERNAME_REGEX,
+   USERNAME_REGEX
 } from 'helpers';
-import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from 'modules';
-import { selectMobileDeviceState } from 'modules/public/globalSettings';
-import { IcEye, IcEyeClose } from 'assets';
+import {
+   Button,
+   Checkbox,
+   InputGroup,
+   InputPassword,
+   Portal,
+   QRCode
+} from 'components';
+import {
+   GeetestCaptchaResponse,
+   GeetestCaptchaV4Response
+} from 'modules';
 
-export interface RegisterProps {
+type CaptchaType = 'recaptcha' | 'geetest' | 'none';
+
+interface FormRegisterProps {
+   geetestCaptchaRef: RefObject<HTMLButtonElement>;
+   captchaType: CaptchaType;
+   renderCaptcha: JSX.Element;
+   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   isReCaptchaSuccess: boolean;
+   isGeetestCaptchaSuccess: boolean;
+   hasConfirmed: boolean;
    isLoading?: boolean;
-   title?: string;
-   subTitle?: string;
-   onSignUp: () => void;
-   onSignIn?: () => void;
-   className?: string;
-   image?: string;
-   labelSignIn?: string;
-   labelSignUp?: string;
-   usernameLabel?: string;
-   emailLabel?: string;
-   passwordLabel?: string;
-   confirmPasswordLabel?: string;
-   referalCodeLabel?: string;
-   termsMessage?: string;
-   refId: string;
-   password: string;
+   onRegister: () => void;
+   onLogin: () => void;
+   validateForm: () => void;
+   clickCheckBox: () => void;
+
    username: string;
    email: string;
+   password: string;
    confirmPassword: string;
+   refid: string;
+
    handleChangeUsername: (value: string) => void;
    handleChangeEmail: (value: string) => void;
    handleChangePassword: (value: string) => void;
    handleChangeConfirmPassword: (value: string) => void;
    handleChangeRefId: (value: string) => void;
-   hasConfirmed: boolean;
-   clickCheckBox: (e: any) => void;
-   validateForm: () => void;
-   emailError: string;
-   passwordError: string;
-   confirmationError: string;
+
+   focusUsername: boolean;
+   focusEmail: boolean;
+   focusPassword: boolean;
+   focusConfirmPassword: boolean;
+   focusRefId: boolean;
+
    handleFocusUsername: () => void;
    handleFocusEmail: () => void;
    handleFocusPassword: () => void;
    handleFocusConfirmPassword: () => void;
    handleFocusRefId: () => void;
-   confirmPasswordFocused: boolean;
-   refIdFocused: boolean;
-   usernameFocused: boolean;
-   emailFocused: boolean;
-   passwordFocused: boolean;
-   captchaType: 'recaptcha' | 'geetest' | 'none';
-   renderCaptcha: JSX.Element | null;
-   reCaptchaSuccess: boolean;
-   geetestCaptchaSuccess: boolean;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
-   currentPasswordEntropy: number;
-   minPasswordEntropy: number;
-   passwordErrorFirstSolved: boolean;
-   passwordErrorSecondSolved: boolean;
-   passwordErrorThirdSolved: boolean;
-   passwordPopUp: boolean;
-   myRef: any;
-   passwordWrapper: any;
+
+   handleResetEmail: () => void;
+
+   usernameLabel?: string;
+   emailLabel?: string;
+   passwordLabel?: string;
+   confirmPasswordLabel?: string;
+   refIdLabel?: string;
+
+   emailError: string;
+   passwordError: string;
+   confirmPasswordError: string;
+
+   termsMessage: string;
+
    translate: (id: string) => string;
 }
 
-const RegisterFormMemo: FC<RegisterProps> = ({
+export const FormRegister = memo(({
+   geetestCaptchaRef,
+   captchaType,
+   renderCaptcha,
+   captcha_response,
+   isReCaptchaSuccess,
+   isGeetestCaptchaSuccess,
+   hasConfirmed,
+   isLoading,
+   onRegister,
+   onLogin,
+   validateForm,
+   clickCheckBox,
+
    username,
    email,
+   password,
    confirmPassword,
-   refId,
-   onSignIn,
-   image,
-   isLoading,
-   labelSignIn,
-   labelSignUp,
+   refid,
+
+   handleChangeUsername,
+   handleChangeEmail,
+   handleChangePassword,
+   handleChangeConfirmPassword,
+   handleChangeRefId,
+
+   focusUsername,
+   focusEmail,
+   focusPassword,
+   focusConfirmPassword,
+   focusRefId,
+
+   handleFocusUsername,
+   handleFocusEmail,
+   handleFocusPassword,
+   handleFocusConfirmPassword,
+   handleFocusRefId,
+
+   handleResetEmail,
+
    usernameLabel,
    emailLabel,
-   confirmPasswordLabel,
-   passwordFocused,
-   referalCodeLabel,
-   termsMessage,
-   captchaType,
-   geetestCaptchaSuccess,
-   hasConfirmed,
-   reCaptchaSuccess,
-   currentPasswordEntropy,
-   passwordPopUp,
-   password,
    passwordLabel,
+   confirmPasswordLabel,
+   refIdLabel,
+
    emailError,
+   passwordError,
+   confirmPasswordError,
+
+   termsMessage,
    translate,
-   confirmationError,
-   usernameFocused,
-   emailFocused,
-   passwordErrorFirstSolved,
-   passwordErrorSecondSolved,
-   confirmPasswordFocused,
-   handleChangePassword,
-   passwordErrorThirdSolved,
-   handleFocusPassword,
-   minPasswordEntropy,
-   refIdFocused,
-   validateForm,
-   onSignUp,
-   handleChangeUsername,
-   handleFocusUsername,
-   handleChangeEmail,
-   handleFocusEmail,
-   handleChangeConfirmPassword,
-   handleFocusConfirmPassword,
-   handleChangeRefId,
-   handleFocusRefId,
-   clickCheckBox,
-   renderCaptcha,
-   title,
-   subTitle,
-}) => {
-   const [viewPass, setViewPass] = useState<boolean>(true);
-   const [viewConPass, setViewConPass] = useState<boolean>(true)
-   const handleViewPass = () => setViewPass(!viewPass);
-   const handleViewConPass = () => setViewConPass(!viewConPass);
+}: FormRegisterProps) => {
+   const [showInfo, setShowInfo] = useState<boolean>(false);
+   const [showFieldRefid, setShowFieldRefid] = useState<boolean>(false);
 
-   const isMobileDevice = useSelector(selectMobileDeviceState);
-   const history = useHistory();
-   const { formatMessage } = useIntl();
-
-   const disableButton = useMemo(() => {
-      if (!hasConfirmed || isLoading || !email.match(EMAIL_REGEX) || !password || !confirmPassword ||
-         (isUsernameEnabled() && !username.match(USERNAME_REGEX))) {
-         return true;
+   useEffect(() => {
+      setTimeout(() => setShowInfo(!showInfo), 1000);
+      setShowFieldRefid(e => !!refid ? !e : e);
+   }, []);
+   useEffect(() => {
+      if (captchaType !== 'none') {
+         captcha_response && handleRegister();
       }
-      if (captchaType === 'recaptcha' && !reCaptchaSuccess) {
-         return true;
-      }
-      if (captchaType === 'geetest' && !geetestCaptchaSuccess) {
-         return true;
-      }
-
-      return false;
-   }, [
-      captchaType,
-      confirmPassword,
-      username,
-      email,
-      geetestCaptchaSuccess,
-      hasConfirmed,
-      isLoading,
-      password,
-      reCaptchaSuccess,
-      isUsernameEnabled
-   ]);
-
-   // const renderPasswordInput = useCallback(() => {
-   //    return (
-   //       <>
-   //          <Input
-   //             type={`${viewPass ? 'password' : 'text'}`}
-   //             label={passwordLabel || 'Password'}
-   //             placeholder={passwordLabel || 'Password'}
-   //             defaultLabel="Password"
-   //             handleChangeInput={handleChangePassword}
-   //             inputValue={password}
-   //             handleFocusInput={handleFocusPassword}
-   //             autoFocus={false}
-   //             isIcon
-   //             icRight={viewPass ? <IcEye className="w-6 h-6 inline-block cursor-pointer" /> : <IcEyeClose className="w-6 h-6 inline-block cursor-pointer" />}
-   //             handleViewPass={handleViewPass}
-   //          />
-   //          {password && (
-   //             <PasswordStrengthMeter
-   //                minPasswordEntropy={minPasswordEntropy}
-   //                currentPasswordEntropy={currentPasswordEntropy}
-   //                passwordExist={password !== ''}
-   //                passwordErrorFirstSolved={passwordErrorFirstSolved}
-   //                passwordErrorSecondSolved={passwordErrorSecondSolved}
-   //                passwordErrorThirdSolved={passwordErrorThirdSolved}
-   //                passwordPopUp={passwordPopUp}
-   //                translate={translate}
-   //             />
-   //          )}
-   //       </>
-   //    );
-   // }, [
-   //    currentPasswordEntropy,
-   //    password,
-   //    passwordFocused,
-   //    passwordLabel,
-   //    passwordPopUp,
-   //    handleChangePassword,
-   //    handleFocusPassword,
-   //    minPasswordEntropy,
-   //    passwordErrorFirstSolved,
-   //    passwordErrorSecondSolved,
-   //    passwordErrorThirdSolved,
-   //    translate,
-   // ]);
-
-   const handleSubmitForm = useCallback(() => {
-      onSignUp();
-   }, [onSignUp]);
+   }, [captcha_response])
 
    const isValidForm = useCallback(() => {
       const isEmailValid = email.match(EMAIL_REGEX);
       const isPasswordValid = password.match(PASSWORD_REGEX);
       const isConfirmPasswordValid = password === confirmPassword;
 
-      return email && isEmailValid && password && isPasswordValid && confirmPassword && isConfirmPasswordValid;
-   }, [confirmPassword, email, password]);
+      return email && isEmailValid && password && isPasswordValid && confirmPassword && isConfirmPasswordValid
+   }, [email, password, confirmPassword]);
 
-   const handleClick = useCallback((e?: FormEvent<HTMLInputElement>) => {
-      if (e) {
-         e.preventDefault();
-      }
-      if (!isValidForm()) {
-         validateForm();
-      } else {
-         handleSubmitForm();
-      }
-   }, [handleSubmitForm, isValidForm, validateForm]);
+   const handleSubmitForm = useCallback(() => onRegister(), [onRegister]);
 
-   const handleEnterPress = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
+   const handleRegister = useCallback((e?: FormEvent<HTMLInputElement>) => {
+      if (e) e.preventDefault();
+      !isValidForm() ? validateForm() : handleSubmitForm();
+   }, [isValidForm, validateForm, handleSubmitForm]);
+
+   const handleEnterPress = useCallback((e: KeyboardEvent<HTMLFormElement>) => {
       if (e.key === 'Enter') {
          e.preventDefault();
-         handleClick();
+         handleRegister();
       }
-   }, [handleClick]);
+   }, [handleRegister]);
+
+   const isDisabledButton = useMemo((): boolean => {
+      if (
+         (isUsernameEnabled() && !username.match(USERNAME_REGEX))
+         || !email.match(EMAIL_REGEX)
+         || !password.match(PASSWORD_REGEX)
+         || !confirmPassword.match(PASSWORD_REGEX)
+         || confirmPassword !== password
+         || !hasConfirmed
+         || isLoading
+         || !navigator.onLine
+      ) return true;
+      return false;
+   }, [isUsernameEnabled, username, email, password, confirmPassword, hasConfirmed, isLoading]);
 
    const renderUsernameError = (nick: string) => {
       return nick.length < 4 ? translate(ERROR_SHORT_USERNAME) : translate(ERROR_LONG_USERNAME);
    };
-
-   const renderLogIn = useCallback(() => {
-      return (
-         <div className="pg-sign-up-screen__login">
-            <span>
-               {formatMessage({ id: 'page.header.signUp.alreadyRegistered' })}
-               <span onClick={() => history.push('/login')} className="pg-sign-up-screen__login-button">
-                  {formatMessage({ id: 'page.mobile.header.signIn' })}
-               </span>
-            </span>
-         </div>
-      );
-   }, [history, formatMessage]);
+   const renderInputPassword = useCallback(() => (
+      <InputPassword
+         label={passwordLabel}
+         onChange={handleChangePassword}
+      />
+   ), [handleChangePassword]);
 
    return (
       <>
-         <div className="pb-4 mb-8 border-b border-solid border-[#E6E8EC]">
-            <div className="mb-8 text-center text-[40px] leading-[1.2] tracking-[-.01em] font-dm font-bold">
-               {title}
-            </div>
-            {
-               subTitle && (
-                  <div className="text-center text-xs leading-[1.66667] text-neutral4">
-                     {subTitle}
-                  </div>
-               )
-            }
-         </div>
-         <form>
-            <div onKeyPress={handleEnterPress} className="space-y-8">
-               {isUsernameEnabled() && (
-                  <div
-                     className={cr('cr-sign-up-form__group', {
-                        'cr-sign-up-form__group--focused': usernameFocused,
-                        'cr-sign-up-form__group--errored': username.length &&
-                           !usernameFocused && !username.match(USERNAME_REGEX),
-                     })}>
-                     <Input
-                        type="text"
-                        label={usernameLabel || 'Username'}
-                        placeholder={usernameLabel || 'Username'}
-                        defaultLabel="Username"
-                        handleChangeInput={handleChangeUsername}
-                        inputValue={username}
-                        handleFocusInput={handleFocusUsername}
-                        classNameLabel="cr-sign-up-form__label"
-                        classNameInput="cr-sign-up-form__input"
-                        autoFocus={!isMobileDevice}
-                     />
-                     {!username.match(USERNAME_REGEX) && !usernameFocused && username.length ? (
-                        <div className="cr-sign-up-form__error">
-                           {renderUsernameError(username)}
-                        </div>
-                     ) : null}
-                  </div>
-               )}
-               <div
-                  className={cr('cr-sign-up-form__group', {
-                     'cr-sign-up-form__group--focused': emailFocused,
-                  })}>
-                  <Input
-                     type="email"
-                     label={emailLabel || 'Email'}
-                     placeholder={emailLabel || 'Email'}
-                     defaultLabel="Email"
-                     handleChangeInput={handleChangeEmail}
-                     inputValue={email}
-                     handleFocusInput={handleFocusEmail}
-                     classNameLabel="cr-sign-up-form__label"
-                     classNameInput="cr-sign-up-form__input"
-                     autoFocus={!isUsernameEnabled() && !isMobileDevice}
-                  />
-                  {emailError && <div className="cr-sign-up-form__error">{emailError}</div>}
-               </div>
-               {/* {renderPasswordInput()} */}
-               <>
-                  <Input
-                     type={`${viewPass ? 'password' : 'text'}`}
-                     label={passwordLabel || 'Password'}
-                     placeholder={passwordLabel || 'Password'}
-                     defaultLabel="Password"
-                     handleChangeInput={handleChangePassword}
-                     inputValue={password}
-                     handleFocusInput={handleFocusPassword}
-                     autoFocus={false}
-                     isIcon
-                     icRight={viewPass ? <IcEye className="w-6 h-6 fill-neutral5 group-hover:fill-neutral3 inline-block cursor-pointer" /> : <IcEyeClose className="w-6 h-6 fill-neutral5 group-hover:fill-neutral3 inline-block cursor-pointer" />}
-                     handleViewPass={handleViewPass}
-                  >
-                     {password && (
-                        <PasswordStrengthBar
-                           minPasswordEntropy={minPasswordEntropy}
-                           currentPasswordEntropy={currentPasswordEntropy}
-                           passwordExist={password !== ''}
-                           passwordErrorFirstSolved={passwordErrorFirstSolved}
-                           passwordErrorSecondSolved={passwordErrorSecondSolved}
-                           passwordErrorThirdSolved={passwordErrorThirdSolved}
-                           passwordPopUp={passwordPopUp}
-                           translate={translate}
-                        />
-                     )}
-                  </Input>
-               </>
-               <div>
-                  <Input
-                     type={`${viewConPass ? 'password' : 'text'}`}
-                     label={confirmPasswordLabel || 'Confirm Password'}
-                     placeholder={confirmPasswordLabel || 'Confirm Password'}
-                     defaultLabel="Confirm Password"
-                     handleChangeInput={handleChangeConfirmPassword}
-                     inputValue={confirmPassword}
-                     handleFocusInput={handleFocusConfirmPassword}
-                     classNameLabel="cr-sign-up-form__label"
-                     classNameInput="cr-sign-up-form__input"
-                     autoFocus={false}
-                     isIcon
-                     icRight={viewConPass ? <IcEye className="w-6 h-6 fill-neutral5 group-hover:fill-neutral3 inline-block cursor-pointer" /> : <IcEyeClose className="w-6 h-6 fill-neutral5 group-hover:fill-neutral3 inline-block cursor-pointer" />}
-                     handleViewPass={handleViewConPass}
-                  />
-                  {
-                     confirmationError && (
-                        <div className="text-red-500">
-                           {confirmationError}
-                        </div>
-                     )
-                  }
-               </div>
-               <div
-                  className={cr('cr-sign-up-form__group', {
-                     'cr-sign-up-form__group--focused': refIdFocused,
-                  })}>
-                  <Input
-                     type="text"
-                     label={referalCodeLabel || 'Referral code'}
-                     placeholder={referalCodeLabel || 'Referral code'}
-                     defaultLabel="Referral code"
-                     handleChangeInput={handleChangeRefId}
-                     inputValue={refId}
-                     handleFocusInput={handleFocusRefId}
-                     classNameLabel="cr-sign-up-form__label"
-                     classNameInput="cr-sign-up-form__input"
-                     autoFocus={false}
-                  />
-               </div>
-               <div id="captcha-box" />
-               <div className="relative inline-block cursor-pointer select-none group" onClick={clickCheckBox}>
-                  <input
-                     className="absolute top-0 left-0 opacity-0"
-                     type="checkbox"
-                     checked={hasConfirmed}
-                  />
-                  <span className="flex space-x-3">
-                     <span className={`relative shrink-0 w-6 h-6 rounded border-2 border-neutral6 group-hover:border-primary1 ${hasConfirmed && 'bg-primary1 border-primary1 before:opacity-100'} checkbox_icon`} />
-                     <span className="font-normal leading-[1.71429] text-neutral4 transition-all duration-200">
-                        {
-                           !termsMessage ? termsMessage : (
-                              <>
-                                 By signing up I agree that I’m 18 years of age or older, to the <a className="font-medium text-neutral2 hover:text-primary1" href="#">User Agreements</a>, <a className="font-medium text-neutral2 hover:text-primary1" href="#">Privacy Policy</a>, <a className="font-medium text-neutral2 hover:text-primary1" href="#">Cookie Policy</a>, <a className="font-medium text-neutral2 hover:text-primary1" href="#">E-Sign Consent</a>.
-                              </>
-                           )
-                        }
-                     </span>
-                  </span>
-               </div>
-               {renderCaptcha}
-               <Button
-                  disabled={disableButton}
-                  onClick={e => handleClick(e as any)}
-                  text={isLoading ? 'Loading...' : labelSignUp ? labelSignUp : 'Sign up'}
+         <form
+            onKeyPress={handleEnterPress}
+            className="space-y-8"
+         >
+            {isUsernameEnabled() && (
+               <InputGroup
+                  id="username"
+                  label={usernameLabel || 'username'}
+                  placeholder={usernameLabel || 'Username'}
+                  value={username}
+                  onChange={handleChangeUsername}
+                  onFocus={handleFocusUsername}
+                  withError={!!(!username.match(USERNAME_REGEX) && !focusUsername && username.length)}
+                  info={(!username.match(USERNAME_REGEX) && !focusUsername && username.length) ? renderUsernameError(username) : ''}
+                  autoFocus
                />
-               {isMobileDevice && renderLogIn()}
+            )}
+            <InputGroup
+               id="email"
+               type="email"
+               label={emailLabel || 'email'}
+               placeholder={emailLabel || 'Email'}
+               value={email}
+               onChange={handleChangeEmail}
+               onFocus={handleFocusEmail}
+               withError={!!emailError}
+               withIconReset={!!emailError && !!email}
+               onClickResetEmail={handleResetEmail}
+               info={emailError}
+               autoFocus={!isUsernameEnabled()}
+            />
+            {renderInputPassword()}
+            <InputGroup
+               id="confirmPassword"
+               type="password"
+               label={confirmPasswordLabel || 'confirm password'}
+               placeholder={confirmPasswordLabel || 'Confirm password'}
+               value={confirmPassword}
+               onChange={handleChangeConfirmPassword}
+               onFocus={handleFocusConfirmPassword}
+               info={confirmPasswordError && confirmPasswordError}
+               withIconPassword
+            />
+            <div
+               onClick={() => setShowFieldRefid(!showFieldRefid)}
+               className={`relative ${showFieldRefid ? 'h-[72px]' : 'h-3.5 overflow-hidden'} transition-all duration-300`}
+            >
+               <div className="absolute right-0 top-0 z-2">
+                  <svg className={`cursor-pointer w-6 h-6 fill-neutral4 transition-transform duration-500 ${showFieldRefid && 'rotate-180'}`}>
+                     <use xlinkHref="#icon-arrow-down" />
+                  </svg>
+               </div>
+               <InputGroup
+                  label={refIdLabel || 'referral code (optional)'}
+                  placeholder={refIdLabel || 'Referral code (Optional)'}
+                  value={refid}
+                  onChange={handleChangeRefId}
+                  onFocus={handleFocusRefId}
+                  className={showFieldRefid ? '' : '-translate-y-10 opacity-0'}
+               />
             </div>
+            <Checkbox
+               checked={hasConfirmed}
+               onChecked={clickCheckBox}
+            >
+               {!termsMessage ? termsMessage : (
+                  <>
+                     By signing up I agree that I’m 18 years of age or older, to the <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">User Agreements</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">Privacy Policy</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">Cookie Policy</a>, <a className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8" href="#">E-Sign Consent</a>.
+                  </>
+               )}
+            </Checkbox>
+            {renderCaptcha}
+            <Button
+               ref={geetestCaptchaRef}
+               text={isLoading ? 'Loading...' : 'Register'}
+               onClick={e => captchaType === 'none' && handleRegister(e as any)}
+               disabled={isDisabledButton}
+               withLoading={isLoading}
+            />
          </form>
+         <Portal
+            show={showInfo}
+            close={() => setShowInfo(!showInfo)}
+            width="2xl"
+         >
+            <div className="text-2xl max-w-sm font-bold pt-8 mx-auto text-center">
+               Create an account via the app for easier registration
+            </div>
+            <div className="text-center leading-custom2">
+               Don't have the Digiasset app yet? Scan the QR code above or download the Digiasset app via
+               <a
+                  href="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Download app"
+                  className="text-primary1"
+               >
+                  &nbsp; Google Play
+               </a>
+               &nbsp; or
+               <a
+                  href="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Download app"
+                  className="text-primary1"
+               >
+                  &nbsp; App Store
+               </a>.
+            </div>
+            <div className="flex flex-col items-center justify-center">
+               <QRCode
+                  data="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
+                  dimensions={200}
+               />
+               <div className="text-neutral4 text-xs font-medium my-2">
+                  Scan to download
+               </div>
+               <div className="text-base font-bold">iOS and Android</div>
+            </div>
+            <div className="mx-auto max-w-xs">
+               <Button
+                  onClick={() => setShowInfo(!showInfo)}
+                  text="Registration via web"
+                  width="full"
+               />
+            </div>
+            <a
+               href="#"
+               target="_blank"
+               rel="noopener noreferrer"
+               title="Lihat panduan"
+               className="flex justify-center text-xs font-medium text-primary1 hover:underline hover:underline-offset-4 transition ease-in-out duration-500"
+            >
+               See registration guide via App
+            </a>
+         </Portal>
       </>
    );
-};
-
-export const FormRegister = memo(RegisterFormMemo);
+});

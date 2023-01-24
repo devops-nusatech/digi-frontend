@@ -52,7 +52,15 @@ interface DispatchProps {
    clearWallets: () => void;
 }
 
-type Props = ReduxProps & DispatchProps & IntlProps & RouterProps;
+type OwnProps = {
+   location: {
+      state: {
+         estimateValue: string;
+      }
+   }
+}
+
+type Props = ReduxProps & DispatchProps & IntlProps & RouterProps & OwnProps;
 
 const WalletDetailsFC = memo(({
    user,
@@ -62,6 +70,7 @@ const WalletDetailsFC = memo(({
    clearWallets,
    history: { push },
    intl,
+   location
 }: Props) => {
    const { id = '' } = useParams<Params>();
    const sliderRef = useRef<HTMLDivElement>(null);
@@ -160,7 +169,7 @@ const WalletDetailsFC = memo(({
                               />
                            </div>
                            <div className="text-base text-neutral4">
-                              {Decimal.format((Number(balance) * Number(5353)), 0, ',')}
+                              &asymp; {location.state ? location.state?.estimateValue : `${Decimal.format((Number(balance) * Number(0)), 0, ',')} USDT`}
                            </div>
                         </div>
                         {friendsMarket.length > 0 && (

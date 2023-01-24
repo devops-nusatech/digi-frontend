@@ -14,11 +14,11 @@ interface PasswordStrengthBarProps {
 }
 
 const renderPasswordStrengthMeter = (passwordStrengthMeterLength: number) => (
-   <div className="bar flex items-center h-2 py-0 px-[1px]">
+   <div className="bar flex items-center h-2 py-0 px-px">
       <div
-         className={`flex h-[5px] transition-all duration-300 ${passwordStrengthClassName(
-            passwordStrengthMeterLength
-         )}`}></div>
+         className={`flex h-1.25 transition-all duration-300
+         ${passwordStrengthClassName(passwordStrengthMeterLength)}`
+         }></div>
    </div>
 );
 

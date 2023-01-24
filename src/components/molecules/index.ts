@@ -8,8 +8,7 @@ export { MyMarketsTable } from './MyMarketsTable';
 export { MyTickerTable } from './MyTickerTable';
 
 export { FormLogin } from './FormLogin';
-export { FormRegister } from './FormRegister';
-export * from './FormRegisterV2';
+export * from './FormRegister';
 export * from './FormRegisterKu';
 export { FormForgotPassword } from './FormForgotPassword';
 export { LayoutAuth } from './LayoutAuth'

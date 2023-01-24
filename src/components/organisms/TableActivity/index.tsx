@@ -8,6 +8,7 @@ import {
    Pagination,
 } from 'components';
 import {
+   arrayFilter,
    copyToClipboard,
    localeDate,
    setTradesType,
@@ -248,12 +249,8 @@ export const TableActivity: FC<TableActivityProps> = ({
       }
    }
 
-   const retrieveData = () => [...list].filter(e => Object.keys(e)
-      ?.reduce((acc, curr) => acc || e[curr]?.toString()?.toLowerCase()
-         ?.match(search?.toLowerCase())
-         ?.includes(search?.toLowerCase()), false))
-      .map((item, index) =>
-         renderActivity(item, index));
+   const retrieveData = () => arrayFilter([...list], search).map((item, index) =>
+      renderActivity(item, index));
 
    const getBlockchainLink = (currency: string, txid: string, blockchainKey: string, rid?: string) => {
       const currencyInfo = wallets && wallets.find(wallet => wallet.currency === currency);

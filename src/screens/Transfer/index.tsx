@@ -48,7 +48,7 @@ import {
    selectDetailUserIsError
 } from 'modules';
 import { IntlProps } from 'index';
-import { arrayFilter, cleanPositiveFloatInput, precisionRegExp, renderCurrencyIcon } from 'helpers';
+import { arrayFilter, cleanPositiveFloatInput, precisionRegExp, renderCurrencyIcon, truncateMiddle } from 'helpers';
 import { imgAvatar } from 'assets';
 
 // const people = [
@@ -311,7 +311,7 @@ export const TransferFC = ({
                                           leaveTo="opacity-0"
                                           afterLeave={() => setQuery('')}
                                        >
-                                          <Combobox.Options className="absolute max-h-60 w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral1 shadow-dropdown-2 dark:shadow-dropdown-3">
+                                          <Combobox.Options className="absolute max-h-60 w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 shadow-dropdown-2 dark:shadow-dropdown-3">
                                              {filteredCurrencies.length === 0 && query !== '' ? (
                                                 <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
                                                    Nothing found.
@@ -417,8 +417,8 @@ export const TransferFC = ({
                                  </div>
                                  <div className="flex items-center justify-between space-x-3">
                                     <div>Email</div>
-                                    <div className={`text-right font-medium truncate text-neutral4`}>
-                                       {detailUserData?.email ? detailUserData?.email : 'digiasset@mail.com'}
+                                    <div className="text-right font-medium truncate text-neutral4">
+                                       {detailUserData?.email ? truncateMiddle(detailUserData?.email || '', 12, '***') : 'digiasset@mail.com'}
                                     </div>
                                  </div>
                               </div>

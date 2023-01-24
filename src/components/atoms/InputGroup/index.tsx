@@ -44,6 +44,8 @@ interface InputGroupProps {
    lableClassName?: string;
    className?: string;
    iconClassName?: string;
+   parentClassNameLabel?: string;
+   parentClassNameInfo?: string;
    classNameInfo?: string;
    placeholder?: string;
    value?: string | number;
@@ -84,6 +86,8 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(({
    lableClassName,
    className,
    iconClassName,
+   parentClassNameLabel,
+   parentClassNameInfo,
    classNameInfo,
    placeholder,
    value,
@@ -137,7 +141,7 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(({
    )
 
    const renderLabel = () => label && (
-      <div className="leading-none">
+      <div className={`leading-none ${parentClassNameLabel ? parentClassNameLabel : ''}`}>
          <label htmlFor={id} className={`text-xs text-neutral5 ${lableClassName} leading-none font-bold uppercase`}>
             {label}
          </label>
@@ -156,7 +160,7 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(({
       </button>
    )
    const renderInfo = () => (info || infoAlt) && (
-      <div className="flex justify-between">
+      <div className={`flex justify-between ${parentClassNameInfo ? parentClassNameInfo : ''}`}>
          {info && (
             <div className={`${classNameInfo ? classNameInfo : ''} ${withError && 'text-primary4'} text-x leading-relaxed font-medium`}>
                {info}

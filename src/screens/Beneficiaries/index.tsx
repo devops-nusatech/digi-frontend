@@ -321,7 +321,7 @@ const BeneficiariesFC = ({
                leaveTo="opacity-0 scale-75 -translate-y-5"
                afterLeave={() => setSearchAsset('')}
             >
-               <Combobox.Options className="absolute max-h-72 w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral1 shadow-dropdown-2 dark:shadow-dropdown-3">
+               <Combobox.Options className="absolute max-h-72 w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 shadow-dropdown-2 dark:shadow-dropdown-3">
                   {filteredWallets.length === 0 && searchAsset !== '' ? (
                      <div className="px-3.5 py-2.5 leading-[1.4] transition-all duration-200">
                         Nothing found...
@@ -339,7 +339,7 @@ const BeneficiariesFC = ({
                                     <div className="w-8 h-8 overflow-hidden pointer-events-none">
                                        <img
                                           src={renderCurrencyIcon(wallet.currency, wallet?.iconUrl)}
-                                          className={`w-full ${renderCurrencyIcon(wallet.currency, wallet?.iconUrl).includes('http') ? 'object-cover bg-neutral8 polygon' : ''}`}
+                                          className={`w-full ${renderCurrencyIcon(wallet.currency, wallet?.iconUrl)?.includes('http') ? 'object-cover bg-neutral8 polygon' : ''}`}
                                           alt={wallet.name}
                                           title={wallet.name}
                                        />

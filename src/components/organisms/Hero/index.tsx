@@ -84,7 +84,7 @@ export const Hero: FC = (props: any) => {
                   >
                      <div className="flex flex-row md:flex-col space-x-4 md:space-x-0 items-start">
                         <Image
-                           src={renderCurrencyIcon(market.base_unit)}
+                           src={String(renderCurrencyIcon(market.base_unit))}
                            alt={market.name}
                            title={market.name}
                            width={40}

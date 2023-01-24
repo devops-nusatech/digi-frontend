@@ -1,18 +1,23 @@
-import React, { KeyboardEvent, useCallback, useEffect, useState, memo, FC } from 'react';
-// import { useIntl } from 'react-intl';
+import React, {
+   KeyboardEvent,
+   useCallback, useEffect,
+   useState,
+   memo,
+   FC,
+   RefObject
+} from 'react';
 import { useSelector } from 'react-redux';
-// import { useHistory } from 'react-router';
 import { Button, LayoutAuth, InputGroup } from 'components';
-import { captchaLogin } from 'api';
-import { EMAIL_REGEX, removeClass, } from 'helpers';
+// import { captchaLogin } from 'api';
+import { EMAIL_REGEX, PASSWORD_REGEX, removeClass, } from 'helpers';
 import { GeetestCaptchaResponse, } from 'modules';
 import { selectMobileDeviceState } from 'modules/public/globalSettings';
 import { Link } from 'react-router-dom';
 
 import PhoneInput from 'react-phone-input-2';
-import { useShowGeetestCaptcha } from 'hooks';
 
 export interface SignInProps {
+   geetestCaptchaRef: RefObject<HTMLButtonElement>;
    labelSignIn?: string;
    labelSignUp?: string;
    emailLabel?: string;
@@ -50,6 +55,7 @@ export interface SignInProps {
 }
 
 export const FormLogin: FC<SignInProps> = memo(({
+   geetestCaptchaRef,
    title,
    subTitle,
    email,
@@ -116,9 +122,10 @@ export const FormLogin: FC<SignInProps> = memo(({
       [handleChangeFocusField]
    );
 
-   const isButtonDisabled = (): boolean => {
-      return ((captchaLogin() && captchaType !== 'none' && !reCaptchaSuccess && !geetestCaptchaSuccess)) ? true : false;
-   };
+   // const isButtonDisabled = useMemo(
+   //    () => (captchaLogin() && captchaType !== 'none' && !(reCaptchaSuccess || geetestCaptchaSuccess)),
+   //    [reCaptchaSuccess, geetestCaptchaSuccess]
+   // );
 
    const handleSubmitForm = useCallback(() => {
       refreshError();
@@ -153,13 +160,11 @@ export const FormLogin: FC<SignInProps> = memo(({
       [handleClick]
    );
 
-   // const onClick = () => captchaType === 'none' ? handleClick() : useShowGeetestCaptcha;
-
    useEffect(() => {
-      captcha_response && handleClick();
+      if (captchaType !== 'none') {
+         captcha_response && handleClick();
+      }
    }, [captcha_response]);
-
-
 
    return (
       <LayoutAuth
@@ -231,9 +236,10 @@ export const FormLogin: FC<SignInProps> = memo(({
                   </div>
                   {renderCaptcha}
                   <Button
+                     ref={geetestCaptchaRef}
                      text={isLoading ? 'Loading...' : labelSignIn ? labelSignIn : 'Login'}
-                     onClick={useShowGeetestCaptcha}
-                     disabled={isLoading || !email.match(EMAIL_REGEX) || !password || isButtonDisabled()}
+                     onClick={e => captchaType === 'none' && handleClick(e as any)}
+                     disabled={isLoading || !email.match(EMAIL_REGEX) || !password.match(PASSWORD_REGEX) || !navigator.onLine}
                      withLoading={isLoading}
                   />
                </div>

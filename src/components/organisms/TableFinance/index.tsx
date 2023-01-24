@@ -1,11 +1,65 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Badge, Button, Dialog, Export, InputGroup, Nav, Portal, TableActivity } from 'components';
-import { Currency, Market, RootState, Wallet, WalletHistoryList, alertPush, currenciesFetch, fetchHistory, marketsFetch, resetHistory, selectCurrencies, selectCurrentPage, selectFirstElemIndex, selectHistory, selectHistoryLoading, selectLastElemIndex, selectMarkets, selectNextPageExists, selectWallets, walletsFetch } from 'modules';
-import { IntlProps } from 'index';
+import React, {
+   Fragment,
+   useEffect,
+   useMemo,
+   useState
+} from 'react';
 import { compose } from 'redux';
+import {
+   MapDispatchToPropsFunction,
+   connect
+} from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { MapDispatchToPropsFunction, connect } from 'react-redux';
-import { IcShorting, icBitcoin, icBitcoinCash, icEthereum, icTether } from 'assets';
+import { IntlProps } from 'index';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.min.css';
+
+import {
+   Badge,
+   Button,
+   Decimal,
+   Dialog,
+   Export,
+   Image,
+   InputGroup,
+   Label,
+   Nav,
+   Portal,
+   TableActivity
+} from 'components';
+import {
+   Currency,
+   Market,
+   RootState,
+   Wallet,
+   WalletHistoryList,
+   alertPush,
+   currenciesFetch,
+   fetchHistory,
+   marketsFetch,
+   resetHistory,
+   selectCurrencies,
+   selectCurrentPage,
+   selectFirstElemIndex,
+   selectHistory,
+   selectHistoryLoading,
+   selectLastElemIndex,
+   selectMarkets,
+   selectNextPageExists,
+   selectWallets,
+   walletsFetch
+} from 'modules';
+import {
+   IcShorting,
+   icBitcoin,
+   icBitcoinCash,
+   icEthereum,
+   icTether
+} from 'assets';
+import { Combobox, Transition } from '@headlessui/react';
+import { VALUATION_PRIMARY_CURRENCY, DEFAULT_WALLET } from '../../../constants';
+import { renderCurrencyIcon } from 'helpers';
 
 interface ReduxProps {
    currencies: Currency[];
@@ -54,16 +108,23 @@ const TableFinanceFC = ({
    alertPush,
    intl
 }: TableFinanceProps) => {
+   const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === VALUATION_PRIMARY_CURRENCY?.toLowerCase()) || wallets[0] || DEFAULT_WALLET;
+
    const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(4) ? 1 : hiddenCategory?.includes(3) ? 4 : 0);
    const [filter, setFilter] = useState({
-      startDate: '',
-      endDate: '',
-      currency: '',
+      startDate: new Date((new Date).getFullYear(), (new Date).getMonth(), 1),
+      endDate: new Date(),
+      currency: defaultWallet?.currency || 'usdt',
       state: '',
       advanceFilter: false,
    });
+   const { startDate, endDate, currency } = filter;
+
    const [q, setQ] = useState('');
-   const [showFilter, setShowFilter] = useState(false)
+   const [asset, setAsset] = useState(wallets);
+   const [qAssets, setQAssets] = useState('');
+
+   const [showFilter, setShowFilter] = useState(false);
    const [showExport, setShowExport] = useState(false);
 
    useEffect(() => {
@@ -83,6 +144,104 @@ const TableFinanceFC = ({
    const handleShowAdvanceFilter = () => setFilter({ ...filter, advanceFilter: !filter.advanceFilter });
 
    const translate = (id: string) => intl.formatMessage({ id });
+
+   const handleChangeStartDate = (startDate: Date) => {
+      setFilter({ ...filter, startDate });
+   }
+   const handleChangeEndDate = (endDate: Date) => {
+      setFilter({ ...filter, endDate })
+   }
+   const handleChangeAsset = (currency: string) => {
+      setFilter({ ...filter, currency })
+   }
+
+   const assets = asset.filter(asset => asset.networks.length);
+   const filteredForDropdownAssets = qAssets === ''
+      ? assets
+      : assets
+         .filter(wallet =>
+            wallet.name
+               .toLowerCase()
+               .replace(/\s+/g, '')
+               .includes(qAssets.toLowerCase().replace(/\s+/g, ''))
+            ||
+            wallet.currency
+               .toLowerCase()
+               .replace(/\s+/g, '')
+               .includes(qAssets.toLowerCase().replace(/\s+/g, ''))
+         );
+
+   const renderSelectAsset = () => (
+      <Combobox
+         value={currency}
+         onChange={handleChangeAsset}
+      >
+         <div className="relative">
+            <Label label="Select currency" />
+            <div className="relative mt-2.5">
+               <Combobox.Input
+                  className={({ open }) => `px-3.5 rounded-xl font-medium leading-12 outline-none border-2 ${open ? 'text-primary1 border-neutral4 dark:border-neutral4' : 'border-neutral6 dark:border-neutral3'} bg-none bg-transparent shadow-none transition ease-in-out duration-300 pr-12 h-12 w-full truncate`}
+                  displayValue={(currency: string) => currency?.toUpperCase() || 'Nothing found...'}
+                  onChange={({ target: { value } }) => setQAssets(value)}
+                  onFocus={(e: { target: { select: () => void; }; }) => e.target.select()}
+               />
+               <Combobox.Button className="group absolute inset-y-0 right-0 flex items-center pr-2">
+                  <svg className="h-5 w-5 fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral6 transition-colors duration-300">
+                     <use xlinkHref="#icon-search" />
+                  </svg>
+               </Combobox.Button>
+            </div>
+            <Transition
+               as={Fragment}
+               enter="transition-all"
+               enterFrom="opacity-0 scale-75 -translate-y-5"
+               enterTo="opacity-100 scale-100 translate-y-0"
+               leave="transition-transform duration-300"
+               leaveFrom="opacity-100 scale-100 translate-y-0"
+               leaveTo="opacity-0 scale-75 -translate-y-5"
+            >
+               <Combobox.Options className="absolute max-h-72 w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 shadow-dropdown-2 dark:shadow-dropdown-3">
+                  {filteredForDropdownAssets.length === 0 && qAssets !== '' ? (
+                     <div className="px-3.5 py-2.5 leading-[1.4] transition-all duration-200">
+                        Nothing found...
+                     </div>
+                  ) : (
+                     filteredForDropdownAssets.map(wallet => (
+                        <Combobox.Option
+                           key={wallet.currency}
+                           className={({ active }) => `relative ${active ? 'bg-neutral7 dark:bg-neutral2' : ''} px-3.5 py-2.5 leading-[1.4] font-medium transition-all duration-200`}
+                           value={wallet.currency}
+                        >
+                           {({ selected }) => (
+                              <div className="flex items-center justify-between">
+                                 <div className="flex items-center space-x-3">
+                                    <div className="w-8 h-8 overflow-hidden pointer-events-none">
+                                       <Image
+                                          src={renderCurrencyIcon(wallet.currency, wallet?.iconUrl)}
+                                          className={`w-full ${renderCurrencyIcon(wallet?.currency, wallet?.iconUrl)?.includes('http') ? 'object-cover bg-neutral8 polygon' : ''}`}
+                                          alt={wallet.name}
+                                          title={wallet.name}
+                                          height={40}
+                                          width={40}
+                                       />
+                                    </div>
+                                    <div className={`block truncate ${selected ? 'text-primary1 font-medium' : ''}`}>
+                                       {wallet?.name} <span className="text-neutral4">{wallet.currency.toUpperCase()}</span>
+                                    </div>
+                                 </div>
+                                 <div className="text-neutral4">
+                                    {Decimal.format(wallet.balance || 0, wallet.fixed, ',')} {wallet.currency.toUpperCase()}
+                                 </div>
+                              </div>
+                           )}
+                        </Combobox.Option>
+                     ))
+                  )}
+               </Combobox.Options>
+            </Transition>
+         </div>
+      </Combobox>
+   );
 
    const renderAllTypes = useMemo(() => {
       return (
@@ -401,7 +560,11 @@ const TableFinanceFC = ({
                   variant="outline"
                   size="normal"
                   width="noFull"
-                  onClick={() => setShowFilter(true)}
+                  onClick={() => {
+                     setQ('');
+                     setAsset(wallets);
+                     setShowFilter(true);
+                  }}
                   icRight={
                      <svg className="ml-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all">
                         <use xlinkHref="#icon-calendar"></use>
@@ -434,22 +597,52 @@ const TableFinanceFC = ({
             isOpen={showFilter}
             setIsOpen={() => {
                setShowFilter(false)
-               setFilter({ ...filter, advanceFilter: false })
+               setFilter({ ...filter, advanceFilter: false });
             }}
             title="Filter"
          >
             <div className="grid grid-cols-2 gap-4">
-               <InputGroup
-                  type="date"
-                  label="start date"
-               />
-               <InputGroup
-                  type="date"
-                  label="end date"
-               />
+               <div className="space-y-2.5">
+                  <Label label="start date" />
+                  <div className="relative">
+                     <DatePicker
+                        selected={startDate}
+                        onChange={handleChangeStartDate}
+                        dateFormat="MMM dd, yyyy"
+                        showMonthDropdown
+                        showYearDropdown
+                        scrollableYearDropdown
+                        scrollableMonthYearDropdown
+                     />
+                     <button className="absolute top-3 right-3.5 -z-2">
+                        <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
+                           <use xlinkHref="#icon-calendar" />
+                        </svg>
+                     </button>
+                  </div>
+               </div>
+               <div className="space-y-2.5">
+                  <Label label="start date" />
+                  <div className="relative">
+                     <DatePicker
+                        selected={endDate}
+                        onChange={handleChangeEndDate}
+                        dateFormat="MMM dd, yyyy"
+                        showMonthDropdown
+                        showYearDropdown
+                        scrollableYearDropdown
+                        scrollableMonthYearDropdown
+                     />
+                     <button className="absolute top-3 right-3.5 -z-2">
+                        <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
+                           <use xlinkHref="#icon-calendar" />
+                        </svg>
+                     </button>
+                  </div>
+               </div>
             </div>
             <div className="flex justify-between items-center space-x-2">
-               <div className="w-full h-0.5 bg-[#B6DFD9] rounded" />
+               <div className="w-full h-px bg-neutral6 dark:bg-neutral3 rounded" />
                <div
                   className="flex justify-between items-center space-x-2 cursor-pointer"
                   onClick={handleShowAdvanceFilter}
@@ -463,10 +656,7 @@ const TableFinanceFC = ({
                </div>
             </div>
             <div className={`space-y-8 ${filter.advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 !mt-0 invisible'} transition-all duration-300`}>
-               <InputGroup
-                  label="asset name"
-                  placeholder="search asset"
-               />
+               {renderSelectAsset()}
                <InputGroup
                   label="state type"
                   placeholder="State"
