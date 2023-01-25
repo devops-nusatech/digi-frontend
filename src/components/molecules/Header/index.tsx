@@ -276,10 +276,9 @@ const HeaderFC = ({
                         </div>
                      ) : isLogined ? (
                         <div className="flex items-center space-x-3 lg:space-x-4 lg2:space-x-6">
-                           <Link to="/activity" className="flex justify-center items-center shrink-0 w-6 h-6">
-                              <svg className={`h-6 w-6 ${location.pathname.includes('/activity') ? 'fill-neutral2' : 'fill-neutral4 hover:fill-neutral2'} transition-all duration-300`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="512" height="512">
-                                 <path
-                                    d="M11.24,24a2.262,2.262,0,0,1-.948-.212,2.18,2.18,0,0,1-1.2-2.622L10.653,16H6.975A3,3,0,0,1,4.1,12.131l3.024-10A2.983,2.983,0,0,1,10,0h3.693a2.6,2.6,0,0,1,2.433,3.511L14.443,8H17a3,3,0,0,1,2.483,4.684l-6.4,10.3A2.2,2.2,0,0,1,11.24,24ZM10,2a1,1,0,0,0-.958.71l-3.024,10A1,1,0,0,0,6.975,14H12a1,1,0,0,1,.957,1.29L11.01,21.732a.183.183,0,0,0,.121.241A.188.188,0,0,0,11.4,21.9l6.4-10.3a1,1,0,0,0,.078-1.063A.979.979,0,0,0,17,10H13a1,1,0,0,1-.937-1.351l2.19-5.84A.6.6,0,0,0,13.693,2Z" />
+                           <Link to="/wallets/finances" className="flex justify-center items-center shrink-0 w-6 h-6">
+                              <svg className="w-6 h-6 fill-neutral4 hover:fill-neutral2 transition-all duration-300">
+                                 <use xlinkHref="#icon-history" />
                               </svg>
                            </Link>
                            <button

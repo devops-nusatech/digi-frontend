@@ -34,3 +34,4 @@ export * from './useIntersection';
 export * from './useBeneficiaries';
 export * from './useWithdrawLimitFetch';
 export * from './useCountdown';
+export * from './useMarketTrades';

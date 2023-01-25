@@ -1,4 +1,4 @@
-import React, { useEffect, FunctionComponent, useCallback, useMemo } from 'react';
+import React, { useEffect, FunctionComponent, useCallback } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { IntlProps } from '../../../';
@@ -17,7 +17,6 @@ import {
    userOpenOrdersFetch,
 } from 'modules';
 import { OrderCommon } from 'modules/types';
-import { IcShorting } from 'assets';
 import { XIcon } from '@heroicons/react/outline';
 
 interface ReduxProps {
@@ -48,19 +47,19 @@ const TradingTradeOpenOrderContainer = (props: Props) => {
       intl
    } = props;
 
-   useMemo(() => {
-      const { userLoggedIn: prevUserLoggedIn, currentMarket: prevCurrentMarket } = props;
-      if (!prevUserLoggedIn && userLoggedIn && currentMarket) {
-         userOpenOrdersFetch({ market: currentMarket });
-      } else if (userLoggedIn && currentMarket && prevCurrentMarket !== currentMarket) {
-         userOpenOrdersFetch({ market: currentMarket });
-      }
-   }, []);
+   // useMemo(() => {
+   //    const { userLoggedIn: prevUserLoggedIn, currentMarket: prevCurrentMarket } = props;
+   //    if (!prevUserLoggedIn && userLoggedIn && currentMarket) {
+   //       userOpenOrdersFetch({ market: currentMarket });
+   //    } else if (userLoggedIn && currentMarket && prevCurrentMarket !== currentMarket) {
+   //       userOpenOrdersFetch({ market: currentMarket });
+   //    }
+   // }, []);
 
    useEffect(() => {
       if (userLoggedIn && currentMarket)
          userOpenOrdersFetch({ market: currentMarket });
-   }, []);
+   }, [currentMarket]);
 
    const translate = (id: string) => intl.formatMessage({ id });
 
@@ -146,9 +145,9 @@ const TradingTradeOpenOrderContainer = (props: Props) => {
                      {
                         translate('page.body.trade.header.openOrders.content.date')
                      }
-                     <div className="absolute top-0 -right-2">
+                     {/* <div className="absolute top-0 -right-2">
                         <IcShorting />
-                     </div>
+                     </div> */}
                   </div>
                </div>
                <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed whitespace-nowrap pb-[10px] p-1.5">
@@ -156,9 +155,9 @@ const TradingTradeOpenOrderContainer = (props: Props) => {
                      {
                         translate('page.body.trade.header.openOrders.content.price').concat(currentBidUnit)
                      }
-                     <div className="absolute top-0 -right-2">
+                     {/* <div className="absolute top-0 -right-2">
                         <IcShorting />
-                     </div>
+                     </div> */}
                   </div>
                </div>
                <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed whitespace-nowrap pb-[10px] p-1.5">
@@ -166,9 +165,9 @@ const TradingTradeOpenOrderContainer = (props: Props) => {
                      {
                         translate('page.body.trade.header.openOrders.content.amount').concat(currentAskUnit)
                      }
-                     <div className="absolute top-0 -right-2">
+                     {/* <div className="absolute top-0 -right-2">
                         <IcShorting />
-                     </div>
+                     </div> */}
                   </div>
                </div>
                <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed whitespace-nowrap pb-[10px] p-1.5">
@@ -176,9 +175,9 @@ const TradingTradeOpenOrderContainer = (props: Props) => {
                      {
                         translate('page.body.trade.header.openOrders.content.total').concat(currentBidUnit)
                      }
-                     <div className="absolute top-0 -right-2">
+                     {/* <div className="absolute top-0 -right-2">
                         <IcShorting />
-                     </div>
+                     </div> */}
                   </div>
                </div>
                <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed whitespace-nowrap pb-[10px] p-1.5">
@@ -186,9 +185,9 @@ const TradingTradeOpenOrderContainer = (props: Props) => {
                      {
                         translate('page.body.trade.header.openOrders.content.filled')
                      }
-                     <div className="absolute top-0 -right-2">
+                     {/* <div className="absolute top-0 -right-2">
                         <IcShorting />
-                     </div>
+                     </div> */}
                   </div>
                </div>
                <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed whitespace-nowrap pb-[10px] p-1.5 pr-0 text-right">

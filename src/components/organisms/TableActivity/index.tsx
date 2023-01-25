@@ -25,6 +25,7 @@ import {
    WalletHistoryList,
 } from 'modules';
 import { IcEmty, IcShorting } from 'assets';
+import { toast } from 'react-toastify';
 
 interface TableActivityProps {
    type: string;
@@ -39,7 +40,6 @@ interface TableActivityProps {
    firstElemIndex: number;
    lastElemIndex: number;
    nextPageExists: boolean;
-   alertPush?: any;
    fetchCurrencies: typeof currenciesFetch;
    fetchHistory: typeof fetchHistory;
 }
@@ -59,7 +59,7 @@ export const TableActivity: FC<TableActivityProps> = ({
    nextPageExists,
    fetchCurrencies,
    fetchHistory,
-   alertPush,
+
 }) => {
    useEffect(() => {
       fetchHistory({ page: 0, type, limit: 10 });
@@ -523,10 +523,7 @@ export const TableActivity: FC<TableActivityProps> = ({
 
    function handleCopy(id: string) {
       copyToClipboard(id);
-      alertPush({
-         message: ['Transaction id Copied'],
-         type: 'success',
-      });
+      toast.success('Transaction id Copied');
    }
 
    return (

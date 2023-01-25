@@ -15,9 +15,10 @@ interface DropdownMenuProps {
    isOpen: boolean;
    width?: Width;
    className?: string;
+   translateX?: string;
 }
 
-export const DropdownMenu: FC<DropdownMenuProps> = ({ isOpen, width, className, children }) => (
+export const DropdownMenu: FC<DropdownMenuProps> = ({ isOpen, width, className, children, translateX }) => (
    <div className={`
       absolute
       bg-neutral8
@@ -33,7 +34,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({ isOpen, width, className, 
       shadow-dropdown
       rounded-xl
       translate-x-0
-      md:-translate-x-1/2
+      ${translateX ? translateX : 'md:-translate-x-1/2'}
       ${isOpen
          ? 'visible opacity-100 translate-y-0 scale-100'
          : 'invisible opacity-0 -translate-y-10 scale-75 shadow-primary1/75 dark:shadow-neutral8/60'

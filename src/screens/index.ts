@@ -39,7 +39,7 @@ export * from './Trading';
 export * from './TradingChart';
 export * from './Transfer';
 export * from './Deposit';
-export * from './Notification';
+export * from './Notifications';
 export * from './Contact';
 export * from './Beneficiaries';
 export * from './WithdrawalStep';

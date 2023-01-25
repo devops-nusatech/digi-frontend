@@ -34,7 +34,6 @@ import {
    RootState,
    Wallet,
    WalletHistoryList,
-   alertPush,
    currenciesFetch,
    fetchHistory,
    marketsFetch,
@@ -78,7 +77,6 @@ interface DispatchProps {
    fetchWallets: typeof walletsFetch;
    fetchHistory: typeof fetchHistory;
    fetchCurrencies: typeof currenciesFetch;
-   alertPush: typeof alertPush;
 }
 
 type OwnProps = {
@@ -105,7 +103,6 @@ const TableFinanceFC = ({
    fetchWallets,
    fetchHistory,
    fetchCurrencies,
-   alertPush,
    intl
 }: TableFinanceProps) => {
    const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === VALUATION_PRIMARY_CURRENCY?.toLowerCase()) || wallets[0] || DEFAULT_WALLET;
@@ -435,7 +432,6 @@ const TableFinanceFC = ({
                nextPageExists={nextPageExists}
                fetchCurrencies={fetchCurrencies}
                fetchHistory={fetchHistory}
-               alertPush={alertPush}
             />
          case 2:
             return <TableActivity
@@ -453,7 +449,6 @@ const TableFinanceFC = ({
                nextPageExists={nextPageExists}
                fetchCurrencies={fetchCurrencies}
                fetchHistory={fetchHistory}
-               alertPush={alertPush}
             />
          case 3:
             return <TableActivity
@@ -718,7 +713,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispat
    fetchHistory: payload => dispatch(fetchHistory(payload)),
    resetHistory: () => dispatch(resetHistory()),
    fetchCurrencies: () => dispatch(currenciesFetch()),
-   alertPush: message => dispatch(alertPush(message)),
 });
 
 export const TableFinance = compose(

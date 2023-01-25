@@ -4,7 +4,6 @@ import React, {
    FunctionComponent,
    useLayoutEffect
 } from 'react';
-import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import {
    connect,
@@ -317,7 +316,7 @@ const TradingOrderLastFunc = (props: Props) => {
    return (
       <>
          <div className="relative mt-1 rounded p-4 bg-neutral8 dark:bg-shade2">
-            <div className="flex space-x-4 justify-center">
+            <div className={`flex space-x-4 justify-center ${!isLoggedIn ? 'opacity-0' : 'opacity-100'}`}>
                <Nav
                   title="Transaction"
                   isActive={currentTab === 0}
@@ -331,7 +330,7 @@ const TradingOrderLastFunc = (props: Props) => {
                   theme="grey"
                />
             </div>
-            <div className={`${currentTab === 0 ? 'h-[369.99px] opacity-100 z-10' : 'h-0 opacity-0 z-0'} transition-all duration-700`}>
+            <div className={`${currentTab === 0 ? 'h-[369.99px] opacity-100 z-10 visible' : 'h-0 opacity-0 z-0 invisible'} transition-all duration-700`}>
                <div className="flex items-center mb-6 justify-between">
                   <div className="flex items-center space-x-4">
                      <div
@@ -348,17 +347,15 @@ const TradingOrderLastFunc = (props: Props) => {
                      </div>
                   </div>
                   <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">
-                     <div className="">
-                        Crypto trading tutorial
-                     </div>
-                     <Link to="/" className="flex items-center group">
+                     <div>Crypto trading tutorial</div>
+                     <a href="https://www.digiassetindo.com/blog/tag/edukasi" target="_blank" rel="noopener noreferrer" className="flex items-center group">
                         <div className="ml-2 text-neutral2 dark:text-neutral6 group-hover:text-primary1 transition-all duration-300">
                            Learn now
                         </div>
                         <div className="w-5 h-5 flex items-center justify-center">
                            <ChevronRightIcon className="w-4 h-4 stroke-neutral2 dark:stroke-neutral6 fill-neutral2 dark:fill-neutral6 group-hover:stroke-primary1 transition-all duration-300" />
                         </div>
-                     </Link>
+                     </a>
                   </div>
                </div>
                <div className="flex my-0 -mx-4">
@@ -459,8 +456,8 @@ const TradingOrderLastFunc = (props: Props) => {
                   />
                </div>
             </div>
-            <div className={`${currentTab === 1 ? 'h-[369.99px] opacity-100 overflow-y-auto z-10' : 'h-0 opacity-0 z-0'} transition-all duration-700`}>
-               <TradingTrade isLoggedIn={isLoggedIn} />
+            <div className={`${currentTab === 1 ? 'h-[369.99px] opacity-100 overflow-y-auto z-10 visible' : 'h-0 opacity-0 z-0 invisible'} transition-all duration-700`}>
+               <TradingTrade />
             </div>
             {!isLoggedIn && (
                <TradingOrderBackToLogin />

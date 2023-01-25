@@ -22,7 +22,8 @@ import {
 } from 'modules';
 import { localeDate } from 'helpers';
 import { Decimal } from 'components/Decimal';
-import { IcShorting } from 'assets';
+import { IcEmty } from 'assets';
+// import { IcShorting } from 'assets';
 // import { handleHighlightValue } from '../../../containers/RecentTrades/Market';
 
 interface ReduxProps {
@@ -68,38 +69,38 @@ class TradingTradeMyRecentContainer extends React.Component<Props> {
                   <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed pb-[10px] p-1.5 pl-0">
                      <div className="relative inline-block pr-4 cursor-pointer">
                         Time
-                        <div className="absolute top-0 -right-2">
+                        {/* <div className="absolute top-0 -right-2">
                            <IcShorting />
-                        </div>
+                        </div> */}
                      </div>
                   </div>
                   <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed pb-[10px] p-1.5">
                      <div className="relative inline-block pr-4 cursor-pointer">
                         Price (USDT)
-                        <div className="absolute top-0 -right-2">
+                        {/* <div className="absolute top-0 -right-2">
                            <IcShorting />
-                        </div>
+                        </div> */}
                      </div>
                   </div>
                   <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed pb-[10px] p-1.5">
                      <div className="relative inline-block pr-4 cursor-pointer">
                         Amount (BTC)
-                        <div className="absolute top-0 -right-2">
+                        {/* <div className="absolute top-0 -right-2">
                            <IcShorting />
-                        </div>
+                        </div> */}
                      </div>
                   </div>
                   <div className="table-cell text-xs text-neutral4 font-semibold leading-relaxed pb-[10px] p-1.5 pr-0 text-right">
                      <div className="relative inline-block pr-4 cursor-pointer">
                         Total (USDT)
-                        <div className="absolute top-0 -right-2">
+                        {/* <div className="absolute top-0 -right-2">
                            <IcShorting />
-                        </div>
+                        </div> */}
                      </div>
                   </div>
                </div>
             </div>
-            <div className="h-[305px] overflow-y-scroll">
+            <div className="h-[305px] overflow-y-scroll hide-scroll">
                <div className="table w-full">
                   {
                      fetching ? (
@@ -163,12 +164,15 @@ class TradingTradeMyRecentContainer extends React.Component<Props> {
                            </div>
                         </div>
                      )) : (
-                        <div className="table-row">
+                        <div className="table-row hide-scroll">
                            <div className="table-cell">&nbsp;</div>
                            <div className="table-cell">&nbsp;</div>
                            <div className="table-cell">&nbsp;</div>
-                           <div className="table-cell absolute left-0 w-full text-xs leading-relaxed font-medium p-1.5 pl-0 text-neutral4 text-center animate-bounce">
-                              My recend trade not found...
+                           <div className="min-h-56 flex flex-col items-center justify-center space-y-3">
+                              <IcEmty />
+                              <div className="text-xs font-semibold text-neutral4">
+                                 Today not found
+                              </div>
                            </div>
                         </div>
                      )

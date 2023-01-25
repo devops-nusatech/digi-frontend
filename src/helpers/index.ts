@@ -55,5 +55,6 @@ export * from './renderCurrencyIcon';
 export * from './scrollTo';
 export * from './imageIsExists';
 export * from './estimateValue';
+export * from './truncateEnd';
 
 export { GT4Init };

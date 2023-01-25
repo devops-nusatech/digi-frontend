@@ -95,7 +95,6 @@ import {
    WalletTrade,
    Withdrawal,
    Deposit,
-   Notification,
    Contact,
    Beneficiaries,
    WithdrawalStep,
@@ -104,6 +103,7 @@ import {
    WalletOrder,
    RegisterKu,
    Geetest,
+   Notifications,
 } from 'screens';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -338,7 +338,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                      <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/wallets/:id" component={WalletDetails} />
                   </Switch>
                </PrivateRoute>
-               <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/notifications" component={Notification} />
+               <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/notifications" component={Notifications} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/withdraw" component={Withdrawal} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/wallet-margin" component={WalletMargin} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/fiat-and-spot" component={WalletFIatAndSpot} />

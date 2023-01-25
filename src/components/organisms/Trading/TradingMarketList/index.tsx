@@ -1,6 +1,6 @@
 import React, { FC, memo, useRef } from 'react';
 import { useMarket } from 'hooks';
-import { Nav } from 'components';
+import { Nav, TableMarketTrades } from 'components';
 import { IcShorting } from 'assets';
 
 interface TradingMarketListProps {
@@ -113,8 +113,203 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
 
 
    return (
-      <div className='bg-neutral8 dark:bg-shade2 lg:block float-none lg2:float-left shrink-0 w-full lg:w-64 p-4 rounded'>
-         {/* <div className="overflow-x-auto block max-h-830 overflow-y-auto hide-scroll">
+      <div className='bg-neutral7 lg:block float-none lg2:float-left shrink-0 w-full lg:w-64'>
+         <div className="h-full space-y-1">
+            <div className="h-1/2 relative bg-neutral8 dark:bg-shade2 p-4 rounded">
+               <div
+                  className="absolute top-[1px] right-1.5"
+                  onClick={handleNextBid}
+               >
+                  <svg className="w-6 h-6 fill-neutral4 transition-all duration-300 cursor-pointer">
+                     <use xlinkHref="#icon-arrow-right" />
+                  </svg>
+               </div>
+               <div
+                  ref={Ref}
+                  className='flex items-center space-x-2 !-pb-4 overflow-x-auto scroll-smooth'
+                  id='list-pair-market'
+               >
+                  {currentBidUnitsList.length > 2 ? (
+                     currentBidUnitsList.map((bid, index) => (
+                        <Nav
+                           key={index}
+                           title={
+                              bid
+                                 ? bid.toUpperCase()
+                                 : translate('page.body.marketsTable.filter.all')
+                           }
+                           isActive={bid === currentBidUnit}
+                           onClick={() => setCurrentBidUnit(bid)}
+                           theme='grey'
+                        />
+                     ))) : (
+                     <Nav
+                        title="Reload Page"
+                        isActive
+                        onClick={() => window.location.reload()}
+                        theme='grey'
+                     />
+                  )}
+               </div>
+               <form className='relative my-3'>
+                  <input
+                     type="search"
+                     onChange={handleSearchMarket}
+                     placeholder="Search"
+                     className='w-full h-10 py-0 pl-3.5 pr-10 rounded-lg bg-none border-2 border-neutral6 dark:border-neutral3 bg-transparent text-xs appearance-none shadow-none outline-none transition-colors duration-200 dark:text-neutral8'
+                  />
+                  <button
+                     type="button"
+                     className='absolute inset-y-0 right-0 w-10 flex justify-center items-center'
+                  >
+                     <svg className='w-5 h-5 fill-neutral4 transition-all duration-200'>
+                        <use xlinkHref='#icon-search' />
+                     </svg>
+                  </button>
+               </form>
+               <div className='overflow-x-auto block max-h-97 overflow-y-auto hide-scroll'>
+                  <table className='w-full table-auto'>
+                     <thead className='sticky top-0 bg-neutral8 dark:bg-shade2'>
+                        <tr>
+                           <th className='p-1 pb-3 pl-0 text-xs leading-custom4 font-semibold text-neutral4'>
+                              <div className='flex space-x-1 items-center'>
+                                 <div className='cursor-pointer'>
+                                    {translate('page.body.trade.header.markets.content.pair')}
+                                 </div>
+                                 <IcShorting className='fill-neutral4 cursor-pointer' />
+                              </div>
+                           </th>
+                           <th className='p-1 pb-3 text-xs leading-custom4 font-semibold text-neutral4'>
+                              <div className='flex space-x-1 items-center justify-end'>
+                                 <div className='cursor-pointer'>
+                                    {translate('page.body.trade.header.markets.content.price')}
+                                 </div>
+                                 <IcShorting className='fill-neutral4 cursor-pointer' />
+                              </div>
+                           </th>
+                           <th className='p-1 pb-3 pr-0 text-xs leading-custom4 font-semibold text-neutral4'>
+                              <div className='flex space-x-1 items-center justify-end'>
+                                 <div className='cursor-pointer'>
+                                    {translate('page.body.trade.header.markets.content.change')}
+                                 </div>
+                                 <IcShorting className='fill-neutral4 cursor-pointer' />
+                              </div>
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {isLoading ? (
+                           <>
+                              <tr>
+                                 <td
+                                    colSpan={3}
+                                    className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
+                                 >
+                                    <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td
+                                    colSpan={3}
+                                    className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
+                                 >
+                                    <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td
+                                    colSpan={3}
+                                    className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
+                                 >
+                                    <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
+                                 </td>
+                              </tr>
+                           </>
+                        ) : marketsData && marketsData.length ? (
+                           marketsData.map(
+                              ({ id, name, last, price_change_percent, isFav }) => (
+                                 <tr
+                                    key={id}
+                                    onClick={() => handleRedirectToTrading(id)}
+                                    style={{ transition: 'background .2s' }}
+                                    className='group'
+                                 >
+                                    <td className={`cursor-pointer rounded-l-sm align-middle font-medium text-xs p-1 pl-0 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
+                                       <div className='flex space-x-1 items-center'>
+                                          <svg
+                                             className={`w-4 h-4 ${isFav
+                                                ? 'fill-secondary3'
+                                                : 'fill-neutral4 hover:fill-secondary3'
+                                                } transition-all duration-300`}
+                                             onClick={e => handleLocalStorageChange(e, id)}
+                                          >
+                                             <use xlinkHref={`${isFav ? '#icon-star' : '#icon-star-outline'}`} />
+                                          </svg>
+                                          <div className="whitespace-nowrap">
+                                             {name?.split('/').shift()}
+                                             <span className='text-neutral4'>
+                                                {' '}
+                                                /{name?.split('/').pop()}
+                                             </span>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td className={`cursor-pointer align-middle font-medium text-xs p-1 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
+                                       <div
+                                          className={`
+                                          text-right
+                                          ${price_change_percent.includes('+')
+                                                ? 'text-primary5'
+                                                : 'text-primary4'
+                                             }`}
+                                       >
+                                          {last}
+                                       </div>
+                                    </td>
+                                    <td className={`cursor-pointer rounded-r-sm align-middle font-medium text-xs p-1 pr-0 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
+                                       <div
+                                          className={`
+                                          text-right
+                                          ${price_change_percent.includes('+')
+                                                ? 'text-primary5'
+                                                : 'text-primary4'
+                                             }`}
+                                       >
+                                          {price_change_percent}
+                                       </div>
+                                    </td>
+                                 </tr>
+                              )
+                           )
+                        ) : (
+                           <tr>
+                              <td
+                                 colSpan={3}
+                                 className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
+                              >
+                                 <div className='text-center'>Market can't be found..</div>
+                              </td>
+                           </tr>
+                        )}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <div className="h-1/2 bg-neutral8 dark:bg-shade2 p-4 rounded">
+               <Nav
+                  title="Market trades"
+                  theme="grey"
+                  isActive
+               />
+               <div className="overflow-auto h-97 hide-scroll mt-3">
+                  <TableMarketTrades />
+               </div>
+            </div>
+         </div>
+      </div>
+   );
+});
+{/* <div className="overflow-x-auto block max-h-830 overflow-y-auto hide-scroll">
             <table className="w-full table-auto">
                <thead className="sticky top-0 bg-neutral8 dark:bg-shade2">
                   <tr>
@@ -198,186 +393,226 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
                </tbody>
             </table>
          </div> */}
-         <div className='relative'>
-            <div
-               className='absolute top-[1px] right-1.5'
-               onClick={handleNextBid}
-            >
-               <svg className='w-6 h-6 fill-neutral4 transition-all duration-300 cursor-pointer'>
-                  <use xlinkHref='#icon-arrow-right' />
-               </svg>
-            </div>
-            <div
-               ref={Ref}
-               className='flex items-center space-x-2 !-pb-4 overflow-x-auto scroll-smooth'
-               id='list-pair-market'
-            >
-               {currentBidUnitsList.length > 2 ? (
-                  currentBidUnitsList.map((bid, index) => (
-                     <Nav
-                        key={index}
-                        title={
-                           bid
-                              ? bid.toUpperCase()
-                              : translate('page.body.marketsTable.filter.all')
-                        }
-                        isActive={bid === currentBidUnit}
-                        onClick={() => setCurrentBidUnit(bid)}
-                        theme='grey'
-                     />
-                  ))) : (
-                  <Nav
-                     title="Reload Page"
-                     isActive
-                     onClick={() => window.location.reload()}
-                     theme='grey'
-                  />
-               )}
-            </div>
-            <form className='relative my-3'>
-               <input
-                  type="search"
-                  onChange={handleSearchMarket}
-                  placeholder="Search"
-                  className='w-full h-10 py-0 pl-3.5 pr-10 rounded-lg bg-none border-2 border-neutral6 dark:border-neutral3 bg-transparent text-xs appearance-none shadow-none outline-none transition-colors duration-200 dark:text-neutral8'
-               />
-               <button
-                  type="button"
-                  className='absolute inset-y-0 right-0 w-10 flex justify-center items-center'
-               >
-                  <svg className='w-5 h-5 fill-neutral4 transition-all duration-200'>
-                     <use xlinkHref='#icon-search' />
-                  </svg>
-               </button>
-            </form>
-            <div className='overflow-x-auto block max-h-830 overflow-y-auto hide-scroll'>
-               <table className='w-full table-auto'>
-                  <thead className='sticky top-0 bg-neutral8 dark:bg-shade2'>
-                     <tr>
-                        <th className='p-1 pb-3 pl-0 text-xs leading-custom4 font-semibold text-neutral4'>
-                           <div className='flex space-x-1 items-center'>
-                              <div className='cursor-pointer'>
-                                 {translate('page.body.trade.header.markets.content.pair')}
-                              </div>
-                              <IcShorting className='fill-neutral4 cursor-pointer' />
-                           </div>
-                        </th>
-                        <th className='p-1 pb-3 text-xs leading-custom4 font-semibold text-neutral4'>
-                           <div className='flex space-x-1 items-center justify-end'>
-                              <div className='cursor-pointer'>
-                                 {translate('page.body.trade.header.markets.content.price')}
-                              </div>
-                              <IcShorting className='fill-neutral4 cursor-pointer' />
-                           </div>
-                        </th>
-                        <th className='p-1 pb-3 pr-0 text-xs leading-custom4 font-semibold text-neutral4'>
-                           <div className='flex space-x-1 items-center justify-end'>
-                              <div className='cursor-pointer'>
-                                 {translate('page.body.trade.header.markets.content.change')}
-                              </div>
-                              <IcShorting className='fill-neutral4 cursor-pointer' />
-                           </div>
-                        </th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {isLoading ? (
-                        <>
-                           <tr>
-                              <td
-                                 colSpan={3}
-                                 className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
-                              >
-                                 <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
-                              </td>
-                           </tr>
-                           <tr>
-                              <td
-                                 colSpan={3}
-                                 className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
-                              >
-                                 <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
-                              </td>
-                           </tr>
-                           <tr>
-                              <td
-                                 colSpan={3}
-                                 className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
-                              >
-                                 <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
-                              </td>
-                           </tr>
-                        </>
-                     ) : marketsData && marketsData.length ? (
-                        marketsData.map(
-                           ({ id, name, last, price_change_percent, isFav }) => (
-                              <tr
-                                 key={id}
-                                 onClick={() => handleRedirectToTrading(id)}
-                                 style={{ transition: 'background .2s' }}
-                                 className='group'
-                              >
-                                 <td className={`cursor-pointer rounded-l-sm align-middle font-medium text-xs p-1 pl-0 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
-                                    <div className='flex space-x-1 items-center'>
-                                       <svg
-                                          className={`w-4 h-4 ${isFav
-                                             ? 'fill-secondary3'
-                                             : 'fill-neutral4 hover:fill-secondary3'
-                                             } transition-all duration-300`}
-                                          onClick={e => handleLocalStorageChange(e, id)}
-                                       >
-                                          <use xlinkHref={`${isFav ? '#icon-star' : '#icon-star-outline'}`} />
-                                       </svg>
-                                       <div className="whitespace-nowrap">
-                                          {name?.split('/').shift()}
-                                          <span className='text-neutral4'>
-                                             {' '}
-                                             /{name?.split('/').pop()}
-                                          </span>
-                                       </div>
-                                    </div>
-                                 </td>
-                                 <td className={`cursor-pointer align-middle font-medium text-xs p-1 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
-                                    <div
-                                       className={`
-                                          text-right
-                                          ${price_change_percent.includes('+')
-                                             ? 'text-primary5'
-                                             : 'text-primary4'
-                                          }`}
-                                    >
-                                       {last}
-                                    </div>
-                                 </td>
-                                 <td className={`cursor-pointer rounded-r-sm align-middle font-medium text-xs p-1 pr-0 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
-                                    <div
-                                       className={`
-                                          text-right
-                                          ${price_change_percent.includes('+')
-                                             ? 'text-primary5'
-                                             : 'text-primary4'
-                                          }`}
-                                    >
-                                       {price_change_percent}
-                                    </div>
-                                 </td>
-                              </tr>
-                           )
-                        )
-                     ) : (
-                        <tr>
-                           <td
-                              colSpan={3}
-                              className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
-                           >
-                              <div className='text-center'>Market can't be found..</div>
-                           </td>
-                        </tr>
-                     )}
-                  </tbody>
-               </table>
-            </div>
-         </div>
-      </div>
-   );
-});
+
+
+// export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }) => {
+//    const {
+//       currentBidUnit,
+//       setCurrentBidUnit,
+//       currentBidUnitsList,
+//       marketsData,
+//       handleRedirectToTrading,
+//       handleSearchMarket,
+//       isLoading,
+//       handleToSetFavorites,
+//       currentMarket
+//    } = useMarket();
+
+//    const Ref = useRef<HTMLDivElement>(null);
+//    const handleNextBid = () => {
+//       if (Ref.current) {
+//          Ref.current.scrollLeft += 80;
+//       }
+//    };
+
+//    const handleLocalStorageChange = (
+//       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
+//       id: string
+//    ) => {
+//       e.stopPropagation();
+//       handleToSetFavorites(id);
+//    };
+
+//    return (
+//       <div className='float-none lg2:float-left shrink-0 w-full lg:w-64'>
+//          <div className="h-1/2 bg-neutral8 dark:bg-shade2 p-4 rounded relative">
+//             <div
+//                className="absolute top-[1px] right-1.5"
+//                onClick={handleNextBid}
+//             >
+//                <svg className="w-6 h-6 fill-neutral4 transition-all duration-300 cursor-pointer">
+//                   <use xlinkHref="#icon-arrow-right" />
+//                </svg>
+//             </div>
+//             <div
+//                ref={Ref}
+//                className='flex items-center space-x-2 !-pb-4 overflow-x-auto scroll-smooth'
+//                id='list-pair-market'
+//             >
+//                {currentBidUnitsList.length > 2 ? (
+//                   currentBidUnitsList.map((bid, index) => (
+//                      <Nav
+//                         key={index}
+//                         title={
+//                            bid
+//                               ? bid.toUpperCase()
+//                               : translate('page.body.marketsTable.filter.all')
+//                         }
+//                         isActive={bid === currentBidUnit}
+//                         onClick={() => setCurrentBidUnit(bid)}
+//                         theme='grey'
+//                      />
+//                   ))) : (
+//                   <Nav
+//                      title="Reload Page"
+//                      isActive
+//                      onClick={() => window.location.reload()}
+//                      theme='grey'
+//                   />
+//                )}
+//             </div>
+//             <form className='relative my-3'>
+//                <input
+//                   type="search"
+//                   onChange={handleSearchMarket}
+//                   placeholder="Search"
+//                   className='w-full h-10 py-0 pl-3.5 pr-10 rounded-lg bg-none border-2 border-neutral6 dark:border-neutral3 bg-transparent text-xs appearance-none shadow-none outline-none transition-colors duration-200 dark:text-neutral8'
+//                />
+//                <button
+//                   type="button"
+//                   className='absolute inset-y-0 right-0 w-10 flex justify-center items-center'
+//                >
+//                   <svg className='w-5 h-5 fill-neutral4 transition-all duration-200'>
+//                      <use xlinkHref='#icon-search' />
+//                   </svg>
+//                </button>
+//             </form>
+//             <div className='overflow-x-auto block max-h-830 overflow-y-auto hide-scroll'>
+//                <table className='w-full table-auto'>
+//                   <thead className='sticky top-0 bg-neutral8 dark:bg-shade2'>
+//                      <tr>
+//                         <th className='p-1 pb-3 pl-0 text-xs leading-custom4 font-semibold text-neutral4'>
+//                            <div className='flex space-x-1 items-center'>
+//                               <div className='cursor-pointer'>
+//                                  {translate('page.body.trade.header.markets.content.pair')}
+//                               </div>
+//                               <IcShorting className='fill-neutral4 cursor-pointer' />
+//                            </div>
+//                         </th>
+//                         <th className='p-1 pb-3 text-xs leading-custom4 font-semibold text-neutral4'>
+//                            <div className='flex space-x-1 items-center justify-end'>
+//                               <div className='cursor-pointer'>
+//                                  {translate('page.body.trade.header.markets.content.price')}
+//                               </div>
+//                               <IcShorting className='fill-neutral4 cursor-pointer' />
+//                            </div>
+//                         </th>
+//                         <th className='p-1 pb-3 pr-0 text-xs leading-custom4 font-semibold text-neutral4'>
+//                            <div className='flex space-x-1 items-center justify-end'>
+//                               <div className='cursor-pointer'>
+//                                  {translate('page.body.trade.header.markets.content.change')}
+//                               </div>
+//                               <IcShorting className='fill-neutral4 cursor-pointer' />
+//                            </div>
+//                         </th>
+//                      </tr>
+//                   </thead>
+//                   <tbody>
+//                      {isLoading ? (
+//                         <>
+//                            <tr>
+//                               <td
+//                                  colSpan={3}
+//                                  className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
+//                               >
+//                                  <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
+//                               </td>
+//                            </tr>
+//                            <tr>
+//                               <td
+//                                  colSpan={3}
+//                                  className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
+//                               >
+//                                  <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
+//                               </td>
+//                            </tr>
+//                            <tr>
+//                               <td
+//                                  colSpan={3}
+//                                  className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
+//                               >
+//                                  <div className='h-6 rounded-xl bg-neutral6 dark:bg-neutral3 animate-pulse w-full' />
+//                               </td>
+//                            </tr>
+//                         </>
+//                      ) : marketsData && marketsData.length ? (
+//                         marketsData.map(
+//                            ({ id, name, last, price_change_percent, isFav }) => (
+//                               <tr
+//                                  key={id}
+//                                  onClick={() => handleRedirectToTrading(id)}
+//                                  style={{ transition: 'background .2s' }}
+//                                  className='group'
+//                               >
+//                                  <td className={`cursor-pointer rounded-l-sm align-middle font-medium text-xs p-1 pl-0 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
+//                                     <div className='flex space-x-1 items-center'>
+//                                        <svg
+//                                           className={`w-4 h-4 ${isFav
+//                                              ? 'fill-secondary3'
+//                                              : 'fill-neutral4 hover:fill-secondary3'
+//                                              } transition-all duration-300`}
+//                                           onClick={e => handleLocalStorageChange(e, id)}
+//                                        >
+//                                           <use xlinkHref={`${isFav ? '#icon-star' : '#icon-star-outline'}`} />
+//                                        </svg>
+//                                        <div className="whitespace-nowrap">
+//                                           {name?.split('/').shift()}
+//                                           <span className='text-neutral4'>
+//                                              {' '}
+//                                              /{name?.split('/').pop()}
+//                                           </span>
+//                                        </div>
+//                                     </div>
+//                                  </td>
+//                                  <td className={`cursor-pointer align-middle font-medium text-xs p-1 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
+//                                     <div
+//                                        className={`
+//                                           text-right
+//                                           ${price_change_percent.includes('+')
+//                                              ? 'text-primary5'
+//                                              : 'text-primary4'
+//                                           }`}
+//                                     >
+//                                        {last}
+//                                     </div>
+//                                  </td>
+//                                  <td className={`cursor-pointer rounded-r-sm align-middle font-medium text-xs p-1 pr-0 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
+//                                     <div
+//                                        className={`
+//                                           text-right
+//                                           ${price_change_percent.includes('+')
+//                                              ? 'text-primary5'
+//                                              : 'text-primary4'
+//                                           }`}
+//                                     >
+//                                        {price_change_percent}
+//                                     </div>
+//                                  </td>
+//                               </tr>
+//                            )
+//                         )
+//                      ) : (
+//                         <tr>
+//                            <td
+//                               colSpan={3}
+//                               className='align-middle font-medium text-xs p-1 pl-0 leading-custom4 transition-all duration-300'
+//                            >
+//                               <div className='text-center'>Market can't be found..</div>
+//                            </td>
+//                         </tr>
+//                      )}
+//                   </tbody>
+//                </table>
+//             </div>
+//          </div>
+//          <div className="h-1/2 bg-neutral8 dark:bg-shade2 p-4 rounded mt-1 space-y-3">
+//             <Nav
+//                title="Market trades"
+//                theme="grey"
+//                isActive
+//             />
+//             <TableMarketTrades />
+//          </div>
+//       </div>
+//    );
+// });
