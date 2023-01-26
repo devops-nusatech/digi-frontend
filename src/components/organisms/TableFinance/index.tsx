@@ -1,7 +1,6 @@
 import React, {
    Fragment,
    useEffect,
-   useMemo,
    useState
 } from 'react';
 import { compose } from 'redux';
@@ -16,7 +15,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.min.css';
 
 import {
-   Badge,
    Button,
    Decimal,
    Dialog,
@@ -49,13 +47,6 @@ import {
    selectWallets,
    walletsFetch
 } from 'modules';
-import {
-   IcShorting,
-   icBitcoin,
-   icBitcoinCash,
-   icEthereum,
-   icTether
-} from 'assets';
 import { Combobox, Transition } from '@headlessui/react';
 import { VALUATION_PRIMARY_CURRENCY, DEFAULT_WALLET } from '../../../constants';
 import { renderCurrencyIcon } from 'helpers';
@@ -240,180 +231,6 @@ const TableFinanceFC = ({
       </Combobox>
    );
 
-   const renderAllTypes = useMemo(() => {
-      return (
-         <table className="w-full table-auto">
-            <thead>
-               <tr>
-                  <th className="pr-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
-                     <div className="flex items-center space-x-1 cursor-pointer">
-                        <div>#</div>
-                        <IcShorting className="fill-neutral4" />
-                     </div>
-                  </th>
-                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
-                     <div className="flex items-center space-x-1 cursor-pointer">
-                        <div>Type</div>
-                        <IcShorting className="fill-neutral4" />
-                     </div>
-                  </th>
-                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
-                     <div className="flex items-center space-x-1 cursor-pointer">
-                        <div>Coin</div>
-                        <IcShorting className="fill-neutral4" />
-                     </div>
-                  </th>
-                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
-                     <div className="flex items-center space-x-1 cursor-pointer">
-                        <div>Amount</div>
-                        <IcShorting className="fill-neutral4" />
-                     </div>
-                  </th>
-                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
-                     <div className="flex items-center space-x-1 cursor-pointer">
-                        <div>Address</div>
-                        <IcShorting className="fill-neutral4" />
-                     </div>
-                  </th>
-                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
-                     <div className="flex items-center space-x-1 cursor-pointer">
-                        <div>Transaction ID</div>
-                        <IcShorting className="fill-neutral4" />
-                     </div>
-                  </th>
-                  <th className="pl-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4 text-right">
-                     <div>Date</div>
-                  </th>
-               </tr>
-            </thead>
-            <tbody>
-               <tr style={{ transition: 'background .2s' }} className="group">
-                  <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs py-5 pr-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>1.</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <Badge
-                        text="withdraw"
-                     />
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="flex space-x-3 items-center">
-                        <div className="shrink-0 w-8">
-                           <img className="max-w-full" src={icBitcoin} alt="" />
-                        </div>
-                        <div>Bitcoin</div>
-                     </div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>0.000434344 BTC</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>3DkQyAdif6kQLPMBu</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="text-neutral4">3DkQyAdif6kQLPMBu</div>
-                  </td>
-                  <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
-                     <div className="text-neutral4">17-05-2021 04:12:30</div>
-                  </td>
-               </tr>
-               <tr style={{ transition: 'background .2s' }} className="group">
-                  <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs py-5 pr-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>2.</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <Badge
-                        text="Deposited"
-                        variant="green"
-                     />
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="flex space-x-3 items-center">
-                        <div className="shrink-0 w-8">
-                           <img className="max-w-full" src={icBitcoinCash} alt="" />
-                        </div>
-                        <div>Bitcoin Cash</div>
-                     </div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>0.000434344 BTC</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>3DkQyAdif6kQLPMBu</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="text-neutral4">3DkQyAdif6kQLPMBu</div>
-                  </td>
-                  <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
-                     <div className="text-neutral4">17-05-2021 04:12:30</div>
-                  </td>
-               </tr>
-               <tr style={{ transition: 'background .2s' }} className="group">
-                  <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs py-5 pr-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>3.</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <Badge
-                        text="withdraw"
-                     />
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="flex space-x-3 items-center">
-                        <div className="shrink-0 w-8">
-                           <img className="max-w-full" src={icEthereum} alt="" />
-                        </div>
-                        <div>Etherium</div>
-                     </div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>0.00051799 ETH</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>3DkQyAdif6kQLPMBu</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="text-neutral4">3DkQyAdif6kQLPMBu</div>
-                  </td>
-                  <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
-                     <div className="text-neutral4">17-05-2021 04:12:30</div>
-                  </td>
-               </tr>
-               <tr style={{ transition: 'background .2s' }} className="group">
-                  <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs py-5 pr-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>4.</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <Badge
-                        text="Deposited"
-                        variant="green"
-                     />
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="flex space-x-3 items-center">
-                        <div className="shrink-0 w-8">
-                           <img className="max-w-full" src={icTether} alt="" />
-                        </div>
-                        <div>Tether</div>
-                     </div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>13,000 USDT</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>3DkQyAdif6kQLPMBu</div>
-                  </td>
-                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="text-neutral4">3DkQyAdif6kQLPMBu</div>
-                  </td>
-                  <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
-                     <div className="text-neutral4">17-05-2021 04:12:30</div>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-      )
-   }, []);
-
    const renderActivity = () => {
       switch (activeTab) {
          case 1:
@@ -485,12 +302,27 @@ const TableFinanceFC = ({
                fetchHistory={fetchHistory}
             />
          default:
-            return renderAllTypes
+            return <TableActivity
+               type="transactions"
+               search={q}
+               intl={translate}
+               currencies={currencies}
+               marketsData={marketsData}
+               wallets={wallets}
+               list={list}
+               fetching={fetching}
+               page={page}
+               firstElemIndex={firstElemIndex}
+               lastElemIndex={lastElemIndex}
+               nextPageExists={nextPageExists}
+               fetchCurrencies={fetchCurrencies}
+               fetchHistory={fetchHistory}
+            />
       }
    };
 
    const type = activeTab === 0
-      ? 'all type' : activeTab === 1
+      ? 'transactions' : activeTab === 1
          ? 'deposit' : activeTab === 2
             ? 'withdrawls' : activeTab === 3
                ? 'internal transfer' : 'my trades';

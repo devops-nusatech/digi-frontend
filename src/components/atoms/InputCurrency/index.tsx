@@ -35,7 +35,7 @@ export const InputCurrency: FC<InputOrder> = ({
    ...rest
 }): JSX.Element => {
    return (
-      <div className={`flex items-center px-4 py-0.5 rounded-xl shadow-input dark:shadow-input-dark cursor-pointer ${disabled && 'bg-neutral7 pointer-events-none select-none'}`}>
+      <div className={`flex items-center px-4 py-0.5 rounded-xl shadow-input dark:shadow-input-dark cursor-pointer ${disabled && 'bg-neutral7 dark:bg-shade1 pointer-events-none select-none'}`}>
          <div className="font-medium text-neutral4 pointer-events-none">
             {titleLeft}
          </div>

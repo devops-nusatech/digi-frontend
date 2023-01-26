@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
@@ -13,9 +13,10 @@ import {
    // icRipple
 } from 'assets';
 // import ReactPaginate from 'react-paginate';
-// import DataTable from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import { useHistory } from 'react-router';
+import { removeClass } from 'helpers';
 // import styled from 'styled-components'
 
 
@@ -310,6 +311,21 @@ export const MyTickerTable: FC<Props> = ({
    currentBidUnitsList,
    redirectToTrading,
 }) => {
+   useEffect(() => {
+      removeClass('sc-dmRaPn');
+      removeClass('gelpCx');
+      removeClass('sc-fLlhyt');
+      removeClass('ifOHjV');
+      removeClass('sc-bczRLJ');
+      removeClass('eSTlnH');
+      removeClass('rdt_Table');
+      removeClass('sc-gsnTZi');
+      removeClass('idPHNo');
+      removeClass('rdt_TableHead');
+      removeClass('sc-dkzDqf');
+      removeClass('gZWIKX');
+      removeClass('rdt_TableHeadRow');
+   });
    const { formatMessage } = useIntl();
    const { push } = useHistory();
    const myColumns = useMemo(
@@ -384,68 +400,68 @@ export const MyTickerTable: FC<Props> = ({
       ],
       []
    );
-   // let no = 1;
-   // const columns = [
-   //    {
-   //       name: '#',
-   //       selector: row => no++,
-   //       sortable: true,
-   //    },
-   //    {
-   //       name: formatMessage({ id: 'page.body.marketsTable.header.pair' }),
-   //       selector: row => row.name,
-   //       sortable: true,
-   //    },
-   //    {
-   //       name: formatMessage({ id: 'page.body.marketsTable.header.lastPrice' }),
-   //       selector: row => Decimal.format(row.last, row.price_precision, ','),
-   //       sortable: true,
-   //    },
-   //    {
-   //       name: formatMessage({ id: 'page.body.marketsTable.header.change' }),
-   //       selector: row => row.price_change_percent,
-   //       sortable: true,
-   //    },
-   //    {
-   //       name: formatMessage({ id: 'page.body.marketsTable.header.high' }),
-   //       selector: row => Decimal.format(row.high, row.price_precision, ','),
-   //       sortable: true,
-   //    },
-   //    {
-   //       name: formatMessage({ id: 'page.body.marketsTable.header.low' }),
-   //       selector: row => Decimal.format(row.low, row.price_precision, ','),
-   //       sortable: true,
-   //    },
-   //    {
-   //       name: formatMessage({ id: 'page.body.marketsTable.header.volume' }),
-   //       selector: row => Decimal.format(row.volume, row.price_precision, ','),
-   //       sortable: true,
-   //    },
-   //    {
-   //       name: 'Chart',
-   //       selector: row => (
-   //          <HighchartsReact
-   //             highcharts={Highcharts}
-   //             options={+(row.change || 0) < 0 ? optionsNegative : optionsPositive}
-   //          />
-   //       ),
-   //       sortable: false,
-   //    },
-   //    {
-   //       name: 'Trade',
-   //       selector: row => (
-   //          <td className="px-2 align-middle text-base font-medium">
-   //             <div
-   //                onClick={() => redirectToTrading(row.id)}
-   //                className="inline-flex font-dm justify-center items-center h-10 rounded-20 py-0 px-4 whitespace-nowrap bg-none shadow-border dark:shadow-none dark:border-2 dark:border-solid dark:border-neutral4 hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:text-neutral8 transition-all duration-300 cursor-pointer"
-   //             >
-   //                Trade
-   //             </div>
-   //          </td>
-   //       ),
-   //       sortable: false,
-   //    },
-   // ];
+   let no = 1;
+   const columns = [
+      {
+         name: '#',
+         selector: row => no++,
+         sortable: true,
+      },
+      {
+         name: formatMessage({ id: 'page.body.marketsTable.header.pair' }),
+         selector: row => row.name,
+         sortable: true,
+      },
+      {
+         name: formatMessage({ id: 'page.body.marketsTable.header.lastPrice' }),
+         selector: row => Decimal.format(row.last, row.price_precision, ','),
+         sortable: true,
+      },
+      {
+         name: formatMessage({ id: 'page.body.marketsTable.header.change' }),
+         selector: row => row.price_change_percent,
+         sortable: true,
+      },
+      {
+         name: formatMessage({ id: 'page.body.marketsTable.header.high' }),
+         selector: row => Decimal.format(row.high, row.price_precision, ','),
+         sortable: true,
+      },
+      {
+         name: formatMessage({ id: 'page.body.marketsTable.header.low' }),
+         selector: row => Decimal.format(row.low, row.price_precision, ','),
+         sortable: true,
+      },
+      {
+         name: formatMessage({ id: 'page.body.marketsTable.header.volume' }),
+         selector: row => Decimal.format(row.volume, row.price_precision, ','),
+         sortable: true,
+      },
+      {
+         name: 'Chart',
+         selector: row => (
+            <HighchartsReact
+               highcharts={Highcharts}
+               options={+(row.change || 0) < 0 ? optionsNegative : optionsPositive}
+            />
+         ),
+         sortable: false,
+      },
+      {
+         name: 'Trade',
+         selector: row => (
+            <td className="px-2 align-middle text-base font-medium">
+               <div
+                  onClick={() => redirectToTrading(row.id)}
+                  className="inline-flex font-dm justify-center items-center h-10 rounded-20 py-0 px-4 whitespace-nowrap bg-none shadow-border dark:shadow-none dark:border-2 dark:border-solid dark:border-neutral4 hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:text-neutral8 transition-all duration-300 cursor-pointer"
+               >
+                  Trade
+               </div>
+            </td>
+         ),
+         sortable: false,
+      },
+   ];
    const renderBody = useCallback(
       (market, index: number) => {
          const marketChangeColor = +(market.change || 0) < 0 ? 'text-primary4' : 'text-chart1';
@@ -603,7 +619,13 @@ export const MyTickerTable: FC<Props> = ({
                      disabledLinkClassName="p-disabled"
                   /> */}
             </div>
-            {/* <DataTable noDataComponent={true} className="block whitespace-nowrap" columns={columns} data={markets} pagination /> */}
+            <DataTable
+               noDataComponent={true}
+               className="block whitespace-nowrap"
+               columns={columns}
+               data={markets}
+               pagination
+            />
          </div>
       </section>
    );

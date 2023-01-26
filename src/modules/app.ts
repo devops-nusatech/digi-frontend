@@ -37,6 +37,7 @@ import { ordersReducer } from './user/orders';
 import { ordersHistoryReducer } from './user/ordersHistory';
 import { passwordReducer } from './user/password';
 import { profileReducer } from './user/profile';
+import { transactionsReducer } from './user/transactions';
 import { transferReducer } from './user/transfers';
 import { userActivityReducer } from './user/userActivity';
 import { walletsReducer } from './user/wallets';
@@ -83,6 +84,7 @@ export const userReducer = combineReducers({
    ordersHistory: ordersHistoryReducer,
    password: passwordReducer,
    profile: profileReducer,
+   transactions: transactionsReducer,
    transfer: transferReducer,
    sendEmailVerification: sendEmailVerificationReducer,
    userActivity: userActivityReducer,

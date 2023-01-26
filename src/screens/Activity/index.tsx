@@ -3,6 +3,7 @@ import {
    TableFinance,
    TutorialAlt
 } from 'components';
+
 export const Activity = () => {
    return (
       <div className="py-8 bg-neutral7 dark:bg-neutral1">

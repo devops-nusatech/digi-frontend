@@ -113,7 +113,7 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
 
 
    return (
-      <div className='bg-neutral7 lg:block float-none lg2:float-left shrink-0 w-full lg:w-64'>
+      <div className='bg-neutral7 dark:bg-neutral1 lg:block float-none lg2:float-left shrink-0 w-full lg:w-64'>
          <div className="h-full space-y-1">
             <div className="h-1/2 relative bg-neutral8 dark:bg-shade2 p-4 rounded">
                <div

@@ -174,7 +174,7 @@ const TradingOrderLastFunc = (props: Props) => {
          volume
       };
 
-      const sendOrder = orderType === 'limit' ? { ...valueOrder, price: price.toString() } : valueOrder;
+      const sendOrder = orderType === 'limit' ? { ...valueOrder, price: price.includes(',') ? price.split(',').join('').toString() : price.toString() } : valueOrder;
 
       let orderAllowed = true;
 

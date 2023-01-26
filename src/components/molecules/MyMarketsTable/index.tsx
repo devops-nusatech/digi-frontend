@@ -102,13 +102,22 @@ const MyMarketsTableMemo = memo((props: any, { kline, klineUpdatePeriod }: Props
    // console.log('setCurrentBidUnit', setCurrentBidUnit)
 
    return (
-      <NewTickerTable
-         currentBidUnit={currentBidUnit}
-         currentBidUnitsList={currentBidUnitsList}
-         markets={formattedMarkets}
-         setCurrentBidUnit={setCurrentBidUnit}
-         redirectToTrading={handleRedirectToTrading}
-      />
+      <>
+         <NewTickerTable
+            currentBidUnit={currentBidUnit}
+            currentBidUnitsList={currentBidUnitsList}
+            markets={formattedMarkets}
+            setCurrentBidUnit={setCurrentBidUnit}
+            redirectToTrading={handleRedirectToTrading}
+         />
+         {/* <MyTickerTable
+            currentBidUnit={currentBidUnit}
+            currentBidUnitsList={currentBidUnitsList}
+            markets={formattedMarkets}
+            setCurrentBidUnit={setCurrentBidUnit}
+            redirectToTrading={handleRedirectToTrading}
+         /> */}
+      </>
    );
 });
 

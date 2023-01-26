@@ -154,8 +154,8 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
 
    const convertPrice = (): number => Number(typeof listenPrice === 'string' ? listenPrice.split(',').join('') : listenPrice);
 
-   const totalPriceMareket = () => orderType === 'market' && Decimal.format(totalPrice(), pricePrecision, ',')
-   // const totalPriceMareket = () => orderType === 'market' && Decimal.format(Number(priceMarket) * Number(orderVolume), pricePrecision, ',')
+   const totalPriceMarket = () => orderType === 'market' && Decimal.format(totalPrice(), pricePrecision, ',')
+   // const totalPriceMarket = () => orderType === 'market' && Decimal.format(Number(priceMarket) * Number(orderVolume), pricePrecision, ',')
 
    const safeAmount = Number(orderVolume) || 0;
    const total = orderType === 'market'
@@ -212,7 +212,7 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
                   titleLeft={translate('page.body.trade.header.newOrder.content.total')}
                   titleRight={from}
                   value={
-                     orderType === 'market' ? totalPriceMareket()
+                     orderType === 'market' ? totalPriceMarket()
                         : orderTotal === 'NaN' ? 'Total is too long...' : orderTotal}
                   readOnly
                />
@@ -238,13 +238,13 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
                   Sell
                </div>
                <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1 uppercase">
-                  {Decimal.format(orderType === 'market' ? totalPriceMareket().toString() : orderTotal, pricePrecision, ',') || 0} {from}
+                  {Decimal.format(orderType === 'market' ? String(totalPriceMarket())?.includes(',') ? String(totalPriceMarket())?.split(',')?.join('') : String(totalPriceMarket()) : orderTotal?.includes(',') ? orderTotal?.split(',')?.join('') : orderTotal, pricePrecision, ',') || 0} {from}
                </div>
             </div>
             <div className="space-y-3">
                <List
                   left="Price"
-                  right={orderType === 'market' ? 'Market' : Decimal.format(listenPrice, pricePrecision, ',')}
+                  right={orderType === 'market' ? 'Market' : Decimal.format(typeof listenPrice === 'string' && listenPrice?.includes(',') ? listenPrice?.split(',')?.join('') : listenPrice, pricePrecision, ',')}
                />
                <List
                   left="Order type"

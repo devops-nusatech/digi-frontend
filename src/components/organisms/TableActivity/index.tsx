@@ -70,6 +70,50 @@ export const TableActivity: FC<TableActivityProps> = ({
 
    const renderHead = () => {
       switch (type) {
+         case 'transactions':
+            return (
+               <tr>
+                  <th className="pr-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
+                     <div className="flex items-center space-x-1 cursor-pointer">
+                        <div>#</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
+                     <div className="flex items-center space-x-1 cursor-pointer">
+                        <div>Type</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
+                     <div className="flex items-center space-x-1 cursor-pointer">
+                        <div>Coin</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
+                     <div className="flex items-center space-x-1 cursor-pointer">
+                        <div>Amount</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
+                     <div className="flex items-center space-x-1 cursor-pointer">
+                        <div>Address</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
+                     <div className="flex items-center space-x-1 cursor-pointer">
+                        <div>Transaction ID</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="pl-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4 text-right">
+                     <div>Date</div>
+                  </th>
+               </tr>
+            )
          case 'deposits':
             return (
                <tr>
@@ -271,6 +315,78 @@ export const TableActivity: FC<TableActivityProps> = ({
 
    const renderActivity = (item, index: number) => {
       switch (type) {
+         case 'transactions': {
+            const {
+               address,
+               currency,
+               amount,
+               txid,
+               created_at,
+               type,
+            } = item;
+            // const state = intl(`page.body.history.withdraw.content.status.${item.state}`);
+            const wallet = wallets.find(obj => obj.currency === currency);
+
+            const formatCurrency = currencies.find(market => market.id === currency)
+            const assetName = String(formatCurrency?.name);
+            const iconUrl = String(formatCurrency?.icon_url);
+
+            return (
+               <tr key={txid} style={{ transition: 'background .2s' }} className="group">
+                  <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs py-5 pr-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                     <div>{index + 1}.</div>
+                  </td>
+                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                     <Badge
+                        text={type}
+                        variant={type === 'Withdraw' ? 'green' : 'Deposit' ? 'orange' : 'yellow'}
+                     />
+                  </td>
+                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                     <div className="flex space-x-3 items-center">
+                        <div className="shrink-0 w-8">
+                           <Image
+                              className={`w-full ${renderCurrencyIcon(currency, iconUrl)?.includes('http') ? 'polygon' : ''}`}
+                              src={renderCurrencyIcon(currency, iconUrl)}
+                              alt={assetName}
+                              title={assetName}
+                              height={40}
+                              width={40}
+                           />
+                        </div>
+                        <div>
+                           {assetName || currency}
+                        </div>
+                     </div>
+                  </td>
+                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                     <div>
+                        <div>{wallet && Decimal.format(amount, currency === 'idr' ? 0 : wallet.fixed, ',')} {String(currency)?.toUpperCase()}</div>
+                     </div>
+                  </td>
+                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                     <div>{truncateMiddle(address, 20)}</div>
+                  </td>
+                  <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
+                     <div className="flex items-center">
+                        <div className="text-neutral4">
+                           {truncateMiddle(txid, 20)}
+                        </div>
+                        <div title="Copy to clipboard" onClick={() => handleCopy(txid)}>
+                           <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 cursor-pointer transition-all duration-300">
+                              <use xlinkHref="#icon-copy" />
+                           </svg>
+                        </div>
+                     </div>
+                  </td>
+                  <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
+                     <div className="text-neutral4 whitespace-nowrap">
+                        {localeDate(created_at, 'fullDate')}
+                     </div>
+                  </td>
+               </tr>
+            )
+         }
          case 'deposits': {
             const { amount, confirmations, created_at, currency, txid, blockchain_key, tid } = item;
             const blockchainLink = getBlockchainLink(currency, txid, blockchain_key, tid);

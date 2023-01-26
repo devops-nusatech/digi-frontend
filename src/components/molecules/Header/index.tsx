@@ -276,9 +276,9 @@ const HeaderFC = ({
                         </div>
                      ) : isLogined ? (
                         <div className="flex items-center space-x-3 lg:space-x-4 lg2:space-x-6">
-                           <Link to="/wallets/finances" className="flex justify-center items-center shrink-0 w-6 h-6">
-                              <svg className="w-6 h-6 fill-neutral4 hover:fill-neutral2 transition-all duration-300">
-                                 <use xlinkHref="#icon-history" />
+                           <Link to="/activity" className="flex justify-center items-center shrink-0 w-6 h-6">
+                              <svg className="w-6 h-6 fill-neutral4 hover:fill-neutral2 dark:hover:fill-neutral8 transition-all duration-300">
+                                 <use xlinkHref="#icon-lightning" />
                               </svg>
                            </Link>
                            <button
@@ -287,7 +287,7 @@ const HeaderFC = ({
                               onClick={handleSetDropDwonNotif}
                            >
                               <svg
-                                 className="h-6 w-6 fill-neutral4 hover:fill-neutral2 transition-all duration-300"
+                                 className="h-6 w-6 fill-neutral4 hover:fill-neutral2 dark:hover:fill-neutral8 transition-all duration-300"
                                  style={{ width: '20px' }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="512" height="512"
                               >
                                  <g id="_01_align_center" data-name="01 align center">

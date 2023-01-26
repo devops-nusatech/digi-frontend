@@ -1,6 +1,7 @@
 import React, {
    Fragment,
    FunctionComponent,
+   useCallback,
    useEffect,
    useState
 } from 'react';
@@ -234,6 +235,7 @@ const BeneficiariesFC = ({
          label: '',
          description: ''
       });
+      setCoinAddressValid(false);
    }
 
    const handleCopy = (url: string, type: string) => {
@@ -254,9 +256,9 @@ const BeneficiariesFC = ({
    );
 
    const validateCoinAddressFormat = (value: string) => {
-      // const networkType = selectedNetwork.blockchain_key ? selectedNetwork.blockchain_key.split('-').pop() : '';
+      const networkType = selectedNetwork.blockchain_key ? selectedNetwork.blockchain_key.split('-').pop() : '';
       if (getCurrencies().some(currency => currency.symbol === selectedAsset.currency)) {
-         const valid = validate(value, selectedAsset.currency, 'testnet');
+         const valid = validate(value, selectedAsset.currency, networkType);
          setCoinAddressValid(valid ? false : true);
       }
    };
@@ -464,7 +466,7 @@ const BeneficiariesFC = ({
 
    const isDisabled = (): boolean => {
       const withdrawEnabled = selectedNetwork?.withdrawal_enabled;
-      return !withdrawEnabled || !Boolean(address) || !Boolean(label) || coinAddressValid;
+      return !withdrawEnabled || !address || !label || coinAddressValid;
    }
 
    const isRipple = selectedAsset.currency === 'xrp';
@@ -527,6 +529,10 @@ const BeneficiariesFC = ({
       resetField();
    }, [selectedAsset]);
 
+   const renderTableBeneficiaries = useCallback(() => (
+      <TableBeneficiary withSearch />
+   ), [])
+
    return (
       <>
          <LayoutProfile
@@ -552,7 +558,7 @@ const BeneficiariesFC = ({
                         onClick={handleShowModalCreateBeneficiary}
                      />
                   </div>
-                  <TableBeneficiary withSearch />
+                  {renderTableBeneficiaries()}
                </div>
             </div>
          </LayoutProfile>

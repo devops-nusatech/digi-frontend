@@ -35,3 +35,4 @@ export * from './useBeneficiaries';
 export * from './useWithdrawLimitFetch';
 export * from './useCountdown';
 export * from './useMarketTrades';
+export * from './useTransactionsFetch';

@@ -38,6 +38,7 @@ import { OrdersState, rootOrdersSaga } from './user/orders';
 import { OrdersHistoryState, rootOrdersHistorySaga } from './user/ordersHistory';
 import { PasswordState, rootPasswordSaga } from './user/password';
 import { ProfileState, rootProfileSaga } from './user/profile';
+import { TransactionsState, rootTransactionsSaga } from './user/transactions';
 import { TransferState, rootTransferSaga } from './user/transfers';
 import { rootUserActivitySaga, UserActivityState } from './user/userActivity';
 import { rootWalletsSaga, WalletsState } from './user/wallets';
@@ -73,6 +74,7 @@ export * from './user/orders';
 export * from './user/ordersHistory';
 export * from './user/password';
 export * from './user/profile';
+export * from './user/transactions';
 export * from './user/transfers';
 export * from './user/userActivity';
 export * from './user/wallets';
@@ -121,6 +123,7 @@ export interface RootState {
       ordersHistory: OrdersHistoryState;
       password: PasswordState;
       profile: ProfileState;
+      transactions: TransactionsState;
       transfer: TransferState;
       sendEmailVerification: EmailVerificationState;
       userActivity: UserActivityState;
@@ -161,6 +164,7 @@ export function* rootSaga() {
       call(rootOrdersSaga),
       call(rootPasswordSaga),
       call(rootProfileSaga),
+      call(rootTransactionsSaga),
       call(rootTransferSaga),
       call(rootRecentTradesSaga),
       call(rootSendCodeSaga),

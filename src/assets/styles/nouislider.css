@@ -8,20 +8,26 @@
    background: #e6e8ec;
    box-shadow: none;
 }
-body.dark .noUi-target {
+[data-mode="dark"] .noUi-target {
    background: #353945;
 }
 
 .noUi-connect {
-   background: #3772ff;
+   background: #58BD7D;
+}
+[data-mode="dark"] .noUi-connect {
+   background: #00C076;
 }
 
 .noUi-handle {
    border: none;
    box-shadow: none;
-   background: #3772ff;
+   background: #58BD7D;
    border-radius: 50%;
    cursor: pointer;
+}
+[data-mode="dark"] .noUi-handle {
+   background: #00C076;
 }
 .noUi-handle:before,
 .noUi-handle:after {
@@ -66,10 +72,10 @@ body.dark .noUi-target {
    border-width: 4px 4px 0 4px;
    border-color: #141416 transparent transparent transparent;
 }
-body.dark .noUi-tooltip {
+[data-mode="dark"] .noUi-tooltip {
    background: #353945;
 }
-body.dark .noUi-tooltip:before {
+[data-mode="dark"] .noUi-tooltip:before {
    width: 0px;
    height: 0px;
    border-style: solid;
@@ -96,8 +102,10 @@ body.dark .noUi-tooltip:before {
 
 html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
    right: -12px;
+   outline: none;
 }
 
 .noUi-touch-area {
-   @apply !outline-none;
+   outline: 2px solid transparent !important;
+   outline-offset: 2px !important;
 }
