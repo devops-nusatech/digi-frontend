@@ -8,7 +8,7 @@ import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useIntl } from 'react-intl';
 import { Market, selectCurrencies } from 'modules';
-import { Decimal, Cuk, Nav, Button, PriceChart3 } from 'components';
+import { Decimal, Cuk, Nav, Button, PriceChart3, Image } from 'components';
 import { useCurrenciesFetch } from 'hooks';
 import { renderCurrencyIcon } from 'helpers';
 import { useHistory } from 'react-router';
@@ -180,11 +180,13 @@ export const NewTickerTable: FC<Props> = memo(({
          accessor: ({ base_unit, name, icon_url }) => (
             <div className="flex space-x-4 md:space-x-5 items-center">
                <div className="shrink-0 w-10">
-                  <img
+                  <Image
                      src={renderCurrencyIcon(base_unit, icon_url)}
                      className={`w-full ${renderCurrencyIcon(base_unit, icon_url)?.includes('http') ? 'polygon bg-neutral8' : ''}`}
                      alt={name?.split('/').shift()}
                      title={name?.split('/').shift()}
+                     width={40}
+                     height={40}
                   />
                </div>
                {/* <ImagePaletteProvider defaults image={icon_url ? icon_url : icRipple}>

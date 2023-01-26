@@ -325,7 +325,7 @@ export const MyTickerTable: FC<Props> = ({
       removeClass('sc-dkzDqf');
       removeClass('gZWIKX');
       removeClass('rdt_TableHeadRow');
-   });
+   }, []);
    const { formatMessage } = useIntl();
    const { push } = useHistory();
    const myColumns = useMemo(
