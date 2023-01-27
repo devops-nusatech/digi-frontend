@@ -99,21 +99,25 @@ const TableFinanceFC = ({
    const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === VALUATION_PRIMARY_CURRENCY?.toLowerCase()) || wallets[0] || DEFAULT_WALLET;
 
    const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(4) ? 1 : hiddenCategory?.includes(3) ? 4 : 0);
-   const [filter, setFilter] = useState({
-      startDate: new Date((new Date).getFullYear(), (new Date).getMonth(), 1),
-      endDate: new Date(),
-      currency: defaultWallet?.currency || 'usdt',
-      state: '',
-      advanceFilter: false,
-   });
-   const { startDate, endDate, currency } = filter;
-
    const [q, setQ] = useState('');
    const [asset, setAsset] = useState(wallets);
    const [qAssets, setQAssets] = useState('');
 
    const [showFilter, setShowFilter] = useState(false);
    const [showExport, setShowExport] = useState(false);
+
+   const [filter, setFilter] = useState({
+      startDate: new Date((new Date).getFullYear(), (new Date).getMonth(), 1),
+      endDate: new Date(),
+      currency: defaultWallet?.currency || 'usdt',
+      state: '',
+      advanceFilter: false,
+      isApply: false,
+   });
+   const { startDate, endDate, currency, isApply, advanceFilter } = filter;
+
+   const time_from = Math.floor(new Date(startDate).getTime() / 1000).toString()
+   const time_to = Math.floor(new Date(endDate).getTime() / 1000).toString()
 
    useEffect(() => {
       if (!marketsData.length) {
@@ -141,6 +145,10 @@ const TableFinanceFC = ({
    }
    const handleChangeAsset = (currency: string) => {
       setFilter({ ...filter, currency })
+   }
+   const handleApply = () => {
+      setFilter({ ...filter, isApply: !isApply });
+      setShowFilter(false);
    }
 
    const assets = asset.filter(asset => asset.networks.length);
@@ -249,6 +257,12 @@ const TableFinanceFC = ({
                nextPageExists={nextPageExists}
                fetchCurrencies={fetchCurrencies}
                fetchHistory={fetchHistory}
+               advanceFilter={advanceFilter}
+               time_from={time_from}
+               time_to={time_to}
+               isApply={isApply}
+               handleApply={handleApply}
+               market={currency}
             />
          case 2:
             return <TableActivity
@@ -266,6 +280,12 @@ const TableFinanceFC = ({
                nextPageExists={nextPageExists}
                fetchCurrencies={fetchCurrencies}
                fetchHistory={fetchHistory}
+               advanceFilter={advanceFilter}
+               time_from={time_from}
+               time_to={time_to}
+               isApply={isApply}
+               handleApply={handleApply}
+               market={currency}
             />
          case 3:
             return <TableActivity
@@ -283,6 +303,12 @@ const TableFinanceFC = ({
                nextPageExists={nextPageExists}
                fetchCurrencies={fetchCurrencies}
                fetchHistory={fetchHistory}
+               advanceFilter={advanceFilter}
+               time_from={time_from}
+               time_to={time_to}
+               isApply={isApply}
+               handleApply={handleApply}
+               market={currency}
             />
          case 4:
             return <TableActivity
@@ -300,6 +326,12 @@ const TableFinanceFC = ({
                nextPageExists={nextPageExists}
                fetchCurrencies={fetchCurrencies}
                fetchHistory={fetchHistory}
+               advanceFilter={advanceFilter}
+               time_from={time_from}
+               time_to={time_to}
+               isApply={isApply}
+               handleApply={handleApply}
+               market={currency}
             />
          default:
             return <TableActivity
@@ -317,6 +349,12 @@ const TableFinanceFC = ({
                nextPageExists={nextPageExists}
                fetchCurrencies={fetchCurrencies}
                fetchHistory={fetchHistory}
+               advanceFilter={advanceFilter}
+               time_from={time_from}
+               time_to={time_to}
+               isApply={isApply}
+               handleApply={handleApply}
+               market={currency}
             />
       }
    };
@@ -428,8 +466,6 @@ const TableFinanceFC = ({
             }}
             title="Filter"
          >
-            {Math.floor(new Date(startDate).getTime() / 1000)}
-            {Math.floor(new Date(endDate).getTime() / 1000)}
             <div className="grid grid-cols-2 gap-4">
                <div className="space-y-2.5">
                   <Label label="start date" />
@@ -494,6 +530,7 @@ const TableFinanceFC = ({
             <div className="grid grid-cols-2 gap-4">
                <Button
                   text="Apply"
+                  onClick={handleApply}
                />
                <Button
                   text="Reset"

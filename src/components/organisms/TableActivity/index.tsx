@@ -35,6 +35,9 @@ import { toast } from 'react-toastify';
 interface TableActivityProps {
    type: string;
    search: string;
+   market?: string;
+   time_from?: string;
+   time_to?: string;
    intl: any;
    currencies: Currency[];
    marketsData: Market[];
@@ -47,11 +50,17 @@ interface TableActivityProps {
    nextPageExists: boolean;
    fetchCurrencies: typeof currenciesFetch;
    fetchHistory: typeof fetchHistory;
+   isApply: boolean;
+   advanceFilter: boolean;
+   handleApply: () => void;
 }
 
 export const TableActivity: FC<TableActivityProps> = ({
    type,
    search,
+   market,
+   time_from,
+   time_to,
    intl,
    currencies,
    marketsData,
@@ -64,10 +73,16 @@ export const TableActivity: FC<TableActivityProps> = ({
    nextPageExists,
    fetchCurrencies,
    fetchHistory,
-
+   isApply,
+   advanceFilter,
+   handleApply
 }) => {
    useEffect(() => {
-      fetchHistory({ page: 0, type, limit: 10 });
+      fetchHistory({
+         page: 0,
+         type,
+         limit: 10,
+      });
    }, [type]);
    useEffect(() => {
       fetchCurrencies();
@@ -647,6 +662,22 @@ export const TableActivity: FC<TableActivityProps> = ({
    const onClickPrevPage = () => fetchHistory({ page: Number(page) - 1, type, limit: 10 });
 
    const onClickNextPage = () => fetchHistory({ page: Number(page) + 1, type, limit: 10 });
+
+   const handleFilter = () => fetchHistory({
+      page: 0,
+      type,
+      limit: 10,
+      time_from,
+      time_to,
+      ...(advanceFilter && { market })
+   });
+
+   useEffect(() => {
+      if (isApply) {
+         handleFilter();
+         handleApply();
+      }
+   }, [isApply]);
 
    function handleCopy(id: string) {
       copyToClipboard(id);
