@@ -4,6 +4,7 @@ import { RouterProps } from 'react-router';
 import { IntlProps } from '../';
 import {
    configsFetch,
+   groupFetch,
    logoutFetch,
    Market,
    sonicFetch,
@@ -42,6 +43,7 @@ export interface DispatchProps {
    logout: typeof logoutFetch;
    rangerConnect: typeof rangerConnectFetch;
    userFetch: typeof userFetch;
+   groupFetch: typeof groupFetch;
    walletsReset: typeof walletsReset;
 }
 

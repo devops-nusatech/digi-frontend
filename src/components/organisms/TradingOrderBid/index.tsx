@@ -32,6 +32,8 @@ interface TradingOrderBidProps {
    market: string;
    asks: string[][];
    executeLoading: boolean;
+   taker?: number;
+   maker?: number;
 }
 
 export const TradingOrderBid: FC<TradingOrderBidProps> = ({
@@ -53,6 +55,8 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    market,
    asks,
    executeLoading,
+   maker,
+   taker
 }) => {
    const [listenPrice, setListenPrice] = useState<string>('');
    const [orderVolume, setOrderVolume] = useState<string>('');
@@ -265,20 +269,31 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
          >
             <div className="space-y-2">
                <div className="text-center font-medium leading-normal">
-                  Buy
+                  You get
                </div>
                <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1 uppercase">
-                  {Decimal.format(orderType === 'market' ? String(totalPriceMarket())?.includes(',') ? String(totalPriceMarket())?.split(',')?.join('') : String(totalPriceMarket()) : orderTotal?.includes(',') ? orderTotal?.split(',')?.join('') : orderTotal, pricePrecision, ',') || 0} {from}
+                  &asymp; {Decimal.format(orderType === 'market' ? String(totalPriceMarket())?.includes(',') ? String(totalPriceMarket())?.split(',')?.join('') : String(totalPriceMarket()) : orderTotal?.includes(',') ? orderTotal?.split(',')?.join('') : orderTotal, pricePrecision, ',') || 0} {from}
                </div>
             </div>
             <div className="space-y-3">
                <List
                   left="Price"
                   right={orderType === 'market' ? 'Market' : Decimal.format(typeof listenPrice === 'string' && listenPrice?.includes(',') ? listenPrice?.split(',')?.join('') : listenPrice, pricePrecision, ',')}
+                  rightAlt={from}
                />
                <List
                   left="Order type"
                   right={orderType}
+               />
+               <List
+                  left="Fee processsing"
+                  right={`${taker}% - ${maker}%`}
+                  classNameRight="text-primary4"
+               />
+               <List
+                  left="Side"
+                  right="Buy"
+                  classNameRight="text-primary5 dark:text-chart1"
                />
             </div>
             <Button
@@ -295,11 +310,17 @@ type ListProps = {
    left: string;
    right: string;
    rightAlt?: string;
+   classNameRight?: string;
 }
-const List = ({ left, right, rightAlt }: ListProps) => (
+const List = ({
+   left,
+   right,
+   rightAlt,
+   classNameRight
+}: ListProps) => (
    <div className="flex items-center">
       <div className="text-neutral4">{left}</div>
-      <div className={`text-right font-medium ml-auto capitalize`}>
+      <div className={`text-right font-medium ml-auto capitalize ${classNameRight}`}>
          {right} <span className="text-neutral4">{rightAlt}</span>
       </div>
    </div>

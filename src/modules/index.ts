@@ -27,6 +27,7 @@ import { GeetestCaptchaState, rootGeetestCaptchaSaga } from './user/captcha';
 import { CustomizationUpdateState, rootCustomizationUpdateSaga } from './user/customization';
 import { DocumentationState, rootDocumentationSaga } from './user/documentation';
 import { EmailVerificationState, rootEmailVerificationSaga } from './user/emailVerification';
+import { GroupMemberState, rootMemberGroupSaga } from './user/groupMember';
 import { HistoryState, rootHistorySaga } from './user/history';
 import { AddressesState, rootSendAddressesSaga } from './user/kyc/addresses';
 import { DocumentsState, rootSendDocumentsSaga } from './user/kyc/documents';
@@ -67,6 +68,7 @@ export * from './user/captcha';
 export * from './user/customization';
 export * from './user/documentation';
 export * from './user/emailVerification';
+export * from './user/groupMember';
 export * from './user/history';
 export * from './user/kyc';
 export * from './user/openOrders';
@@ -123,6 +125,7 @@ export interface RootState {
       ordersHistory: OrdersHistoryState;
       password: PasswordState;
       profile: ProfileState;
+      groupMember: GroupMemberState;
       transactions: TransactionsState;
       transfer: TransferState;
       sendEmailVerification: EmailVerificationState;
@@ -164,6 +167,7 @@ export function* rootSaga() {
       call(rootOrdersSaga),
       call(rootPasswordSaga),
       call(rootProfileSaga),
+      call(rootMemberGroupSaga),
       call(rootTransactionsSaga),
       call(rootTransferSaga),
       call(rootRecentTradesSaga),

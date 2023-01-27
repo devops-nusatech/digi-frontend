@@ -8,15 +8,23 @@ const config: RequestOptions = {
    apiVersion: 'peatio',
 };
 
+type CoreEndpoint = {
+   transactions: string;
+   deposits: string;
+   withdraws: string;
+   trades: string;
+   transfers: string;
+}
+
 export function* historySaga(action: HistoryFetch) {
    try {
       const { type, limit, page } = action.payload;
-      const coreEndpoint = {
+      const coreEndpoint: CoreEndpoint = {
          transactions: '/account/transactions',
          deposits: '/account/deposits',
          withdraws: '/account/withdraws',
          trades: '/market/trades',
-         internal_transfers: '/account/internal_transfers',
+         transfers: '/account/internal_transfers',
       };
       const params = getHistorySagaParam(action.payload);
       const data = yield call(API.get(config), `${coreEndpoint[type]}?${params}`);

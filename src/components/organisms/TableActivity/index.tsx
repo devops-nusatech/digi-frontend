@@ -19,10 +19,15 @@ import {
 import {
    currenciesFetch,
    Currency,
+   Deposit,
    fetchHistory,
+   InternalTransfer,
    Market,
+   PrivateTradeEvent,
+   Transaction,
    Wallet,
    WalletHistoryList,
+   Withdraw,
 } from 'modules';
 import { IcEmty, IcShorting } from 'assets';
 import { toast } from 'react-toastify';
@@ -196,7 +201,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </th>
                </tr>
             )
-         case 'internal_transfers':
+         case 'transfers':
             return (
                <tr>
                   <th className="pr-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4">
@@ -298,7 +303,7 @@ export const TableActivity: FC<TableActivityProps> = ({
    const retrieveData = () => arrayFilter([...list], search).map((item, index) =>
       renderActivity(item, index));
 
-   const getBlockchainLink = (currency: string, txid: string, blockchainKey: string, rid?: string) => {
+   const getBlockchainLink = (currency: string, blockchainKey: string, { txid, rid }: { txid?: string, rid?: string }) => {
       const currencyInfo = wallets && wallets.find(wallet => wallet.currency === currency);
       const blockchainCurrency = currencyInfo?.networks?.find(blockchain_cur => blockchain_cur.blockchain_key === blockchainKey);
       if (currencyInfo) {
@@ -316,6 +321,7 @@ export const TableActivity: FC<TableActivityProps> = ({
    const renderActivity = (item, index: number) => {
       switch (type) {
          case 'transactions': {
+            const transactions: Transaction = item;
             const {
                address,
                currency,
@@ -323,7 +329,8 @@ export const TableActivity: FC<TableActivityProps> = ({
                txid,
                created_at,
                type,
-            } = item;
+            } = transactions;
+
             // const state = intl(`page.body.history.withdraw.content.status.${item.state}`);
             const wallet = wallets.find(obj => obj.currency === currency);
 
@@ -388,8 +395,9 @@ export const TableActivity: FC<TableActivityProps> = ({
             )
          }
          case 'deposits': {
-            const { amount, confirmations, created_at, currency, txid, blockchain_key, tid } = item;
-            const blockchainLink = getBlockchainLink(currency, txid, blockchain_key, tid);
+            const deposits: Deposit = item;
+            const { amount, confirmations, created_at, currency, txid, blockchain_key } = deposits;
+            const blockchainLink = getBlockchainLink(currency, blockchain_key, { txid: txid });
             const wallet = wallets.find(obj => obj.currency === currency);
             const itemCurrency = currencies && currencies.find(cur => cur.id === currency);
             const blockchainCurrency = itemCurrency?.networks.find(blockchain_cur => blockchain_cur.blockchain_key === item.blockchain_key);
@@ -462,10 +470,11 @@ export const TableActivity: FC<TableActivityProps> = ({
             );
          }
          case 'withdraws': {
-            const { txid, created_at, currency, amount, rid, blockchain_txid, blockchain_key } = item;
+            const withdraws: Withdraw = item
+            const { created_at, currency, amount, rid, blockchain_txid, blockchain_key } = withdraws;
             const state = intl(`page.body.history.withdraw.content.status.${item.state}`);
-            const blockchainLink = getBlockchainLink(currency, txid, blockchain_key, rid);
-            const blockchainTXID = getBlockchainLink(currency, blockchain_txid, blockchain_key, rid);
+            const blockchainLink = getBlockchainLink(currency, blockchain_key, { rid });
+            const blockchainTXID = getBlockchainLink(currency, blockchain_key, { txid: blockchain_txid });
             const wallet = wallets.find(obj => obj.currency === currency);
 
             const formatCurrency = currencies.find(market => market.id === currency)
@@ -506,7 +515,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div>
                         <a href={blockchainLink} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline">
-                           {truncateMiddle(txid || rid, 20)}
+                           {truncateMiddle(rid, 20)}
                         </a>
                      </div>
                   </td>
@@ -530,8 +539,9 @@ export const TableActivity: FC<TableActivityProps> = ({
                </tr>
             )
          }
-         case 'internal_transfers': {
-            const { sender_uid, receiver_uid, created_at, currency, amount, status, direction } = item;
+         case 'transfers': {
+            const transfers: InternalTransfer = item
+            const { sender_uid, receiver_uid, created_at, currency, amount, status, direction } = transfers;
             const wallet = wallets.find(obj => obj.currency === currency);
 
             const formatCurrency = currencies.find(market => market.id === currency)
@@ -585,7 +595,8 @@ export const TableActivity: FC<TableActivityProps> = ({
             )
          }
          case 'trades': {
-            const { id, created_at, side, market, price, amount, total } = item;
+            const trades: PrivateTradeEvent = item;
+            const { id, created_at, side, market, price, amount, total } = trades;
             const marketToDisplay = marketsData.find(m => m.id === market) ||
                { name: '', price_precision: 0, amount_precision: 0 };
             const marketName = marketToDisplay ? marketToDisplay.name : market;

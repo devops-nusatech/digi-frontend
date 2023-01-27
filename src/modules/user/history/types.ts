@@ -1,5 +1,5 @@
 import { CommonState } from '../../types';
-
+import { Transaction } from '../transactions';
 export interface PublicTrade {
    id: number;
    price: string;
@@ -19,13 +19,17 @@ export interface PrivateTrade extends PublicTrade {
 export interface PrivateTradeEvent {
    id: number;
    price: string;
-   total: string;
    amount: string;
+   total: string;
+   fee_currency: string;
+   fee: string;
+   fee_amount: string;
    market: string;
-   created_at: string;
+   market_type: string;
+   created_at: Date;
    taker_type: string;
-   side?: string;
-   order_id?: number;
+   side: string;
+   order_id: number;
 }
 
 export interface PrivateTradesState extends CommonState {
@@ -35,33 +39,55 @@ export interface PrivateTradesState extends CommonState {
 export type MakerType = 'buy' | 'sell';
 
 export interface Withdraw {
-   currency: string;
    id: number;
+   currency: string;
    type: string;
+   blockchain_key: string;
    amount: string;
    fee: string;
    blockchain_txid: string;
    rid: string;
+   protocol: string;
    state: string;
-   created_at: string;
-   updated_at: string;
-   completed_at: string;
-   done_at: string;
-   price?: number;
+   confirmations: number;
+   note: null;
+   transfer_type: string;
+   created_at: Date;
+   updated_at: Date;
+   done_at: Date;
 }
 
 export interface Deposit {
-   currency: string;
    id: number;
+   currency: string;
+   blockchain_key: string;
+   protocol: string;
+   warning: null;
    amount: string;
    fee: string;
    txid: string;
-   created_at: string;
    confirmations: number;
-   completed_at: string;
    state: string;
-   price?: number;
+   transfer_type: string;
+   created_at: Date;
+   completed_at: Date;
+   tid: string;
 }
 
-export type WalletHistoryElement = Withdraw | Deposit | PrivateTrade;
+
+export interface InternalTransfer {
+   currency: string;
+   id: number;
+   sender_username: string;
+   receiver_username: string;
+   sender_uid: string;
+   receiver_uid: string;
+   direction: string;
+   amount: string;
+   status: string;
+   created_at: Date;
+   updated_at: Date;
+}
+
+export type WalletHistoryElement = Withdraw | Deposit | PrivateTrade | InternalTransfer | Transaction;
 export type WalletHistoryList = WalletHistoryElement[];

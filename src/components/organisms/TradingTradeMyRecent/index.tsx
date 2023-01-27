@@ -12,6 +12,7 @@ import { IntlProps } from '../../../';
 import {
    fetchHistory,
    Market,
+   PrivateTrade,
    RootState,
    selectCurrentMarket,
    selectCurrentPrice,
@@ -62,6 +63,9 @@ class TradingTradeMyRecentContainer extends React.Component<Props> {
 
    public render() {
       const { list, setCurrentPrice, currentMarket, fetching } = this.props;
+      let lists;
+      lists = list;
+      const data: PrivateTrade[] = lists;
       return (
          <>
             <div className="table w-full">
@@ -148,19 +152,19 @@ class TradingTradeMyRecentContainer extends React.Component<Props> {
                               </div>
                            </div>
                         </>
-                     ) : (list && list?.length > 0) ? list?.map(({ id, amount, price, created_at }) => (
-                        <div className="table-row font-urw-din-500" key={id}>
+                     ) : (data && data?.length > 0) ? data?.map(e => (
+                        <div className="table-row font-urw-din-500" key={e.id}>
                            <div className="text-xs leading-relaxed font-medium table-cell p-1.5 pl-0 text-neutral4">
-                              {localeDate(created_at, 'fullDate')}
+                              {localeDate(e.created_at, 'fullDate')}
                            </div>
-                           <div className="text-xs leading-relaxed font-medium table-cell p-1.5" onClick={() => setCurrentPrice(Number(price))}>
-                              {Decimal.format(price, Number(currentMarket?.price_precision), ',')}
+                           <div className="text-xs leading-relaxed font-medium table-cell p-1.5" onClick={() => setCurrentPrice(Number(e.price))}>
+                              {Decimal.format(e.price, Number(currentMarket?.price_precision), ',')}
                            </div>
                            <div className="text-xs leading-relaxed font-medium table-cell p-1.5">
-                              {Decimal.format(amount, Number(currentMarket?.amount_precision), ',')}
+                              {Decimal.format(e.amount, Number(currentMarket?.amount_precision), ',')}
                            </div>
                            <div className="text-xs leading-relaxed font-medium table-cell p-1.5 pr-0 text-right">
-                              {Decimal.format(Number(amount) * Number(price), Number(currentMarket?.price_precision), ',')}
+                              {Decimal.format(Number(e.amount) * Number(e.price), Number(currentMarket?.price_precision), ',')}
                            </div>
                         </div>
                      )) : (

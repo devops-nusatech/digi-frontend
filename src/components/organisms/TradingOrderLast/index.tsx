@@ -9,10 +9,11 @@ import {
    connect,
    MapDispatchToPropsFunction
 } from 'react-redux';
-import { ChevronRightIcon } from '@heroicons/react/solid';
+// import { ChevronRightIcon } from '@heroicons/react/solid';
 
 import {
    alertPush,
+   GroupMember,
    Market,
    orderExecuteFetch,
    RootState,
@@ -24,10 +25,12 @@ import {
    selectDepthBids,
    selectMarketTickers,
    selectOrderExecuteLoading,
+   selectTradingFees,
    selectUserLoggedIn,
    selectWallets,
    setAmount,
    setCurrentPrice,
+   TradingFee,
    Wallet,
    walletsFetch,
 } from 'modules';
@@ -46,6 +49,7 @@ import {
 } from 'components';
 import { FilterPrice } from 'filters';
 import { IntlProps } from 'index';
+import { selectGroupMember } from 'modules/user/groupMember/selectors';
 
 export interface IOrderProps {
    price: string;
@@ -67,6 +71,8 @@ interface ReduxProps {
    wallets: Wallet[];
    currentPrice: string;
    amountVolume: string;
+   groupMember: GroupMember;
+   tradingFees: TradingFee[];
 }
 
 interface DispatchProps {
@@ -101,6 +107,8 @@ const TradingOrderLastFunc = (props: Props) => {
       setCurrentAmount,
       bids,
       asks,
+      tradingFees,
+      groupMember
    } = props;
 
    const name: string = String(currentMarket?.name);
@@ -115,6 +123,8 @@ const TradingOrderLastFunc = (props: Props) => {
    const from: string = String(name.toUpperCase().split('/').pop());
    const to: string = base_unit.toUpperCase();
    const marketId: string = String(currentMarket?.id);
+   const taker = tradingFees.find(e => e.group === groupMember.group)?.taker;
+   const maker = tradingFees.find(e => e.group === groupMember.group)?.maker
 
    const [orderPrice, setOrderPrice] = useState<string>('');
    const [orderType, setOrderType] = useState<OrderType>('limit');
@@ -313,6 +323,7 @@ const TradingOrderLastFunc = (props: Props) => {
    //    }
    // }
 
+
    return (
       <>
          <div className="relative mt-1 rounded p-4 bg-neutral8 dark:bg-shade2">
@@ -346,7 +357,15 @@ const TradingOrderLastFunc = (props: Props) => {
                         {translate('page.body.trade.header.newOrder.content.orderType.market')}
                      </div>
                   </div>
-                  <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">
+                  <div className="flex items-center gap-4  text-xs text-neutral4 font-medium leading-custom1">
+                     <div className="">
+                        Maker: <span className="text-primary4 font-bold">{maker}%</span>
+                     </div>
+                     <div className="">
+                        Taker: <span className="text-primary4 font-bold">{taker}%</span>
+                     </div>
+                  </div>
+                  {/* <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">
                      <div>Crypto trading tutorial</div>
                      <a href="https://www.digiassetindo.com/blog/tag/edukasi" target="_blank" rel="noopener noreferrer" className="flex items-center group">
                         <div className="ml-2 text-neutral2 dark:text-neutral6 group-hover:text-primary1 transition-all duration-300">
@@ -356,7 +375,7 @@ const TradingOrderLastFunc = (props: Props) => {
                            <ChevronRightIcon className="w-4 h-4 stroke-neutral2 dark:stroke-neutral6 fill-neutral2 dark:fill-neutral6 group-hover:stroke-primary1 transition-all duration-300" />
                         </div>
                      </a>
-                  </div>
+                  </div> */}
                </div>
                <div className="flex my-0 -mx-4">
                   {/* <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
@@ -434,6 +453,8 @@ const TradingOrderLastFunc = (props: Props) => {
                      market={marketId}
                      asks={asks}
                      executeLoading={executeLoading}
+                     taker={taker}
+                     maker={maker}
                   />
                   <TradingOrderAsk
                      executeLoading={executeLoading}
@@ -453,6 +474,8 @@ const TradingOrderLastFunc = (props: Props) => {
                      amountVolume={amountVolume}
                      market={marketId}
                      bids={bids}
+                     taker={taker}
+                     maker={maker}
                   />
                </div>
             </div>
@@ -477,7 +500,9 @@ const mapStateToProps = (state: RootState) => ({
    marketTickers: selectMarketTickers(state),
    wallets: selectWallets(state),
    currentPrice: selectCurrentPrice(state),
-   amountVolume: selectAmount(state)
+   amountVolume: selectAmount(state),
+   tradingFees: selectTradingFees(state),
+   groupMember: selectGroupMember(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

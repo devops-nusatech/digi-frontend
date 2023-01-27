@@ -24,6 +24,7 @@ import { getGeetestCaptchaReducer } from './user/captcha';
 import { customizationUpdateReducer } from './user/customization';
 import { documentationReducer } from './user/documentation';
 import { sendEmailVerificationReducer } from './user/emailVerification';
+import { groupMemberReducer } from './user/groupMember';
 import { historyReducer } from './user/history';
 import {
    addressesReducer,
@@ -84,6 +85,7 @@ export const userReducer = combineReducers({
    ordersHistory: ordersHistoryReducer,
    password: passwordReducer,
    profile: profileReducer,
+   groupMember: groupMemberReducer,
    transactions: transactionsReducer,
    transfer: transferReducer,
    sendEmailVerification: sendEmailVerificationReducer,

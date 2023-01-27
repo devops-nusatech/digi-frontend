@@ -65,7 +65,7 @@ export const GeetestCaptchaV3 = ({
       });
 
       c.onError(e => {
-         console.log('err', e.msg)
+         console.log('err', e)
          c.reset();
       });
 

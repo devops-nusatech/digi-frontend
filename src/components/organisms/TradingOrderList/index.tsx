@@ -193,15 +193,15 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                               <div
                                  key={index}
                                  onClick={() => this.handleOnSelectAsks(String(index))}
-                                 className="relative flex py-2 px-4 items-center justify-between space-x-1 text-xs leading-custom1 !font-urw-din-500"
+                                 className="relative cursor-alias flex py-2 px-4 items-center justify-between space-x-1 text-xs leading-custom1 !font-urw-din-500"
                               >
-                                 <div className="text-primary4 font-semibold w-[35%] tracking-wider cursor-pointer z-2">
+                                 <div className="text-primary4 font-semibold w-[35%] tracking-wider z-2">
                                     <Decimal fixed={priceFixed} thousSep="," prevValue={asks[index + 1] ? asks[index + 1][0] : 0}>{price}</Decimal>
                                  </div>
-                                 <div className="text-right w-[35%] tracking-wider cursor-pointer z-2">
+                                 <div className="text-right w-[35%] tracking-wider z-2">
                                     {Decimal.format(volume, amountFixed, ',')}
                                  </div>
-                                 <div className="text-right w-[30%] tracking-wider cursor-pointer z-2">
+                                 <div className="text-right w-[30%] tracking-wider z-2">
                                     {Decimal.format((Number(price) * Number(volume)), priceFixed, ',')}
                                  </div>
                                  <div className="absolute inset-y-0 right-0 bg-primary4 bg-opacity-20 dark:bg-opacity-30 transition ease-in-out pointer-events-none z-0" style={{ width: `${bgWidthAsks[index]}%` }} />
@@ -228,15 +228,15 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                            <div
                               onClick={() => this.handleOnSelectBids(String(index))}
                               key={index}
-                              className="relative flex py-2 px-4 items-center justify-between space-x-1 text-xs leading-custom1 !font-urw-din-500"
+                              className="relative cursor-alias flex py-2 px-4 items-center justify-between space-x-1 text-xs leading-custom1 !font-urw-din-500"
                            >
-                              <div className="text-primary5 font-semibold w-[35%] tracking-wider cursor-pointer z-2">
+                              <div className="text-primary5 font-semibold w-[35%] tracking-wider z-2">
                                  <Decimal fixed={priceFixed} thousSep="," prevValue={bids[index + 1] ? bids[index + 1][0] : 0}>{price}</Decimal>
                               </div>
-                              <div className="w-[35%] text-right tracking-wider cursor-pointer z-2">
+                              <div className="w-[35%] text-right tracking-wider z-2">
                                  {Decimal.format(volume, amountFixed, ',')}
                               </div>
-                              <div className="w-[30%] text-right tracking-wider cursor-pointer z-2">
+                              <div className="w-[30%] text-right tracking-wider z-2">
                                  {Decimal.format((Number(price) * Number(volume)), priceFixed, ',')}
                               </div>
                               <div className={`absolute inset-y-0 right-0 bg-primary5 dark:bg-chart1 bg-opacity-20 dark:bg-opacity-30 transition ease-in-out pointer-events-none z-0`} style={{ width: `${bgWidthBids[index]}%` }} />

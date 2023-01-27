@@ -269,7 +269,7 @@ const TableFinanceFC = ({
             />
          case 3:
             return <TableActivity
-               type="internal_transfers"
+               type="transfers"
                search={q}
                intl={translate}
                currencies={currencies}
@@ -428,6 +428,8 @@ const TableFinanceFC = ({
             }}
             title="Filter"
          >
+            {Math.floor(new Date(startDate).getTime() / 1000)}
+            {Math.floor(new Date(endDate).getTime() / 1000)}
             <div className="grid grid-cols-2 gap-4">
                <div className="space-y-2.5">
                   <Label label="start date" />

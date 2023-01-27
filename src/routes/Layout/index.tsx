@@ -48,6 +48,7 @@ import {
    toggleChartRebuild,
    userFetch,
    walletsReset,
+   groupFetch,
 } from 'modules';
 import { CustomizationDataInterface, customizationFetch, selectCustomizationData } from 'modules/public/customization';
 import { rangerConnectFetch, selectRanger } from 'modules/public/ranger';
@@ -163,6 +164,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 
                if (token) {
                   this.props.userFetch();
+                  this.props.groupFetch();
                   this.initInterval();
                   this.checkSession();
                }
@@ -193,7 +195,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
          }
       }
 
-      if (!this.props.user.email && nextProps.user.email) {
+      if (!this.props.user?.email && nextProps.user?.email) {
          this.props.userFetch();
       }
    }
@@ -457,6 +459,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    toggleChartRebuild: () => dispatch(toggleChartRebuild()),
    rangerConnect: payload => dispatch(rangerConnectFetch(payload)),
    userFetch: () => dispatch(userFetch()),
+   groupFetch: () => dispatch(groupFetch()),
    walletsReset: () => dispatch(walletsReset()),
 });
 

@@ -15,9 +15,9 @@ export interface Profile {
 }
 
 export interface Phone {
-    country: string;
-    number: string;
-    validated_at: string | null;
+   country: string;
+   number: string;
+   validated_at: string | null;
 }
 
 export type User = {
@@ -34,10 +34,10 @@ export type User = {
    referal_uid: string | null;
    labels: Label[];
    phone: Phone[];
+   group?: string;
    created_at: string;
    updated_at: string;
 }
-
 
 // export interface User {
 //     uid: string;

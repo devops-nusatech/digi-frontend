@@ -17,6 +17,10 @@ export interface HistoryFetchPayload {
    market?: string;
    time_from?: string;
    time_to?: string;
+   blockchain_key?: string;
+   txid?: string;
+   state?: string;
+   order_by?: 'desc' | 'asc';
 }
 
 interface HistorySuccessPayload {
