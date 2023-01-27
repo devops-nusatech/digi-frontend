@@ -74,17 +74,19 @@ const Orders = ({
                         }
                      />
                   </div>
-                  <Button
-                     text='All time'
-                     variant="outline"
-                     size="normal"
-                     width="noFull"
-                     icRight={
-                        <svg className="ml-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all">
-                           <use xlinkHref="#icon-calendar"></use>
-                        </svg>
-                     }
-                  />
+                  {currentTab === 'open' && (
+                     <Button
+                        text='All time'
+                        variant="outline"
+                        size="normal"
+                        width="noFull"
+                        icRight={
+                           <svg className="ml-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all">
+                              <use xlinkHref="#icon-calendar"></use>
+                           </svg>
+                        }
+                     />
+                  )}
                </div>
             </div>
             <div className="flex items-center justify-between mb-10.5">

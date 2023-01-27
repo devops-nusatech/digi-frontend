@@ -272,7 +272,15 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
                   You get
                </div>
                <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1 uppercase">
-                  &asymp; {Decimal.format(orderType === 'market' ? String(totalPriceMarket())?.includes(',') ? String(totalPriceMarket())?.split(',')?.join('') : String(totalPriceMarket()) : orderTotal?.includes(',') ? orderTotal?.split(',')?.join('') : orderTotal, pricePrecision, ',') || 0} {from}
+                  &asymp; {Decimal.format(
+                     orderType === 'market'
+                        ? String(totalPriceMarket())?.includes(',')
+                           ? String(totalPriceMarket())?.split(',')?.join('')
+                           : String(totalPriceMarket())
+                        : orderTotal?.includes(',')
+                           ? (Number(orderTotal?.split(',')?.join('')) - ((Number(taker) * 10) * Number(orderTotal?.split(',')?.join(''))))
+                           : Number(orderTotal) - ((Number(taker) / 10) * Number(orderTotal)),
+                     pricePrecision, ',') || 0} {from}
                </div>
             </div>
             <div className="space-y-3">

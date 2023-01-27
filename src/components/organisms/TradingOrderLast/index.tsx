@@ -357,12 +357,12 @@ const TradingOrderLastFunc = (props: Props) => {
                         {translate('page.body.trade.header.newOrder.content.orderType.market')}
                      </div>
                   </div>
-                  <div className="flex items-center gap-4  text-xs text-neutral4 font-medium leading-custom1">
+                  <div className="flex items-center gap-3 text-xs text-neutral4 font-medium leading-custom1">
                      <div className="">
-                        Maker: <span className="text-primary4 font-bold">{maker}%</span>
+                        Maker: <span className="text-primary4 font-bold">{Number(maker) * 10}%</span>
                      </div>
                      <div className="">
-                        Taker: <span className="text-primary4 font-bold">{taker}%</span>
+                        Taker: <span className="text-primary4 font-bold">{Number(taker) * 10}%</span>
                      </div>
                   </div>
                   {/* <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">

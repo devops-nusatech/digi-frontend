@@ -117,7 +117,7 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
          <div className="h-full space-y-1">
             <div className="h-1/2 relative bg-neutral8 dark:bg-shade2 p-4 rounded">
                <div
-                  className="absolute top-[1px] right-1.5"
+                  className="absolute top-4.5 right-1.5"
                   onClick={handleNextBid}
                >
                   <svg className="w-6 h-6 fill-neutral4 transition-all duration-300 cursor-pointer">

@@ -65,7 +65,7 @@ const TableMarketTradesFC = ({
             >
                <tr
                   key={e.id}
-                  className="group cursor-copy"
+                  className="group cursor-pointer"
                   onClick={() => setCurrentPrice(Number(e.price))}
                >
                   <td className={`group-hover:bg-neutral7 dark:group-hover:bg-neutral2 z-0 py-0.5 pr-1 text-xs font-medium leading-custom4 tracking-wider ${e.taker_type === 'sell' ? 'text-primary4' : 'text-primary5 dark:text-chart1'}`}>
