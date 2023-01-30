@@ -39,4 +39,5 @@ export * from './Depth';
 export * from './ScreenMobile';
 export * from './LayoutWallet';
 export * from './LayoutProfile';
+export * from './ComboboxCurrency';
 export { Tables };

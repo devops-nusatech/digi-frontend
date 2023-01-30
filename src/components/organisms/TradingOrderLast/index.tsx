@@ -15,6 +15,7 @@ import {
    alertPush,
    GroupMember,
    Market,
+   MemberLevels,
    orderExecuteFetch,
    RootState,
    selectAmount,
@@ -24,13 +25,16 @@ import {
    selectDepthAsks,
    selectDepthBids,
    selectMarketTickers,
+   selectMemberLevels,
    selectOrderExecuteLoading,
    selectTradingFees,
+   selectUserInfo,
    selectUserLoggedIn,
    selectWallets,
    setAmount,
    setCurrentPrice,
    TradingFee,
+   User,
    Wallet,
    walletsFetch,
 } from 'modules';
@@ -58,6 +62,7 @@ export interface IOrderProps {
 }
 
 interface ReduxProps {
+   user: User;
    currentMarket: Market | undefined;
    currentMarketFilters: FilterPrice;
    executeLoading: boolean;
@@ -73,6 +78,7 @@ interface ReduxProps {
    amountVolume: string;
    groupMember: GroupMember;
    tradingFees: TradingFee[];
+   memberLevel: MemberLevels
 }
 
 interface DispatchProps {
@@ -92,6 +98,7 @@ type Props = ReduxProps & DispatchProps & OwnProps & IntlProps;
 
 const TradingOrderLastFunc = (props: Props) => {
    const {
+      user,
       wallets,
       walletsFetch,
       isLoggedIn,
@@ -108,7 +115,8 @@ const TradingOrderLastFunc = (props: Props) => {
       bids,
       asks,
       tradingFees,
-      groupMember
+      groupMember,
+      memberLevel
    } = props;
 
    const name: string = String(currentMarket?.name);
@@ -445,7 +453,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      orderPrice={orderPrice}
                      orderType={orderType}
                      handleOrder={handleOrder}
-                     disabled={executeLoading}
+                     disabled={executeLoading || user?.level < memberLevel?.trading?.minimum_level}
                      minAmount={min_amount}
                      minPrice={min_price}
                      priceMarket={lastPrice}
@@ -467,7 +475,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      orderPrice={orderPrice}
                      orderType={orderType}
                      handleOrder={handleOrder}
-                     disabled={executeLoading}
+                     disabled={executeLoading || user?.level < memberLevel?.trading?.minimum_level}
                      minAmount={min_amount}
                      minPrice={min_price}
                      priceMarket={lastPrice}
@@ -491,6 +499,7 @@ const TradingOrderLastFunc = (props: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
+   user: selectUserInfo(state),
    isLoggedIn: selectUserLoggedIn(state),
    bids: selectDepthBids(state),
    asks: selectDepthAsks(state),
@@ -503,6 +512,7 @@ const mapStateToProps = (state: RootState) => ({
    amountVolume: selectAmount(state),
    tradingFees: selectTradingFees(state),
    groupMember: selectGroupMember(state),
+   memberLevel: selectMemberLevels(state)
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

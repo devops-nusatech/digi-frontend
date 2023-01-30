@@ -36,3 +36,4 @@ export * from './useWithdrawLimitFetch';
 export * from './useCountdown';
 export * from './useMarketTrades';
 export * from './useTransactionsFetch';
+export * from './useDebounced';

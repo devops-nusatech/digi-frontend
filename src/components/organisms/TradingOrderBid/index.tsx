@@ -295,7 +295,7 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
                />
                <List
                   left="Fee processsing"
-                  right={`${taker}% - ${maker}%`}
+                  right={`${(Number(taker) * 10)}% - ${(Number(maker) * 10)}%`}
                   classNameRight="text-primary4"
                />
                <List

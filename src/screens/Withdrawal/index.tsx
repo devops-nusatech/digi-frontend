@@ -256,6 +256,9 @@ const WithdrawalFC = memo(({
          setWalletActive(location.state?.wallet.currency);
          scrollTo(mainRef.current?.offsetTop);
       }
+      if (user.level < Number(memberLevels && memberLevels?.withdraw && memberLevels?.withdraw?.minimum_level) || !user.otp) {
+         history.push('/wallets', { isOpenPortal: true });
+      }
    }, []);
 
    useEffect(() => {

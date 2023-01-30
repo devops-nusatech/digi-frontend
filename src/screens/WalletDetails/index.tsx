@@ -33,7 +33,6 @@ import {
    selectWallets,
    User,
    selectUserInfo,
-   walletsData,
 } from 'modules';
 import { arrayFilter, setDocumentTitle } from 'helpers';
 import { IntlProps } from 'index';
@@ -49,7 +48,6 @@ interface ReduxProps {
 
 interface DispatchProps {
    fetchWallets: typeof walletsFetch;
-   clearWallets: () => void;
 }
 
 type OwnProps = {
@@ -67,7 +65,6 @@ const WalletDetailsFC = memo(({
    wallets,
    currencies,
    fetchWallets,
-   clearWallets,
    history: { push },
    intl,
    location
@@ -81,7 +78,6 @@ const WalletDetailsFC = memo(({
       if (!wallets.length) {
          fetchWallets();
       }
-      return () => clearWallets();
    }, []);
 
    const translate = (id: string) => intl.formatMessage({ id });
@@ -122,7 +118,7 @@ const WalletDetailsFC = memo(({
                            to="/wallets"
                            title="Back to Wallets"
                         >
-                           <svg className="w-8 h-8 fill-neutral4 group-hover:fill-neutral1 group-hover:-translate-x-3 group-hover:scale-105 transition-transform duration-300">
+                           <svg className="w-8 h-8 fill-neutral4 group-hover:fill-neutral1 dark:group-hover:fill-neutral8 group-hover:-translate-x-3 group-hover:scale-105 transition-transform duration-300">
                               <use xlinkHref="#icon-arrow-left" />
                            </svg>
                         </Link>
@@ -135,15 +131,15 @@ const WalletDetailsFC = memo(({
                         <Button
                            text="Deposit"
                            size="normal"
-                           onClick={() => push('/wallets/deposit', currencies.find(e => e.id === currency))}
-                           disabled={!networks.length || status !== 'enabled'}
+                           onClick={() => push('/wallets/deposit', { currency })}
+                           disabled={!networks.length || status !== 'enabled' || currency === 'idr'}
                         />
                         <Button
                            text="Withdraw"
                            size="normal"
                            variant="outline"
                            onClick={() => push('/wallets/withdraw', { wallet: wallet[0] })}
-                           disabled={!networks.length || status !== 'enabled'}
+                           disabled={!networks.length || status !== 'enabled' || currency === 'idr'}
                         />
                         <Button
                            text="Transfer"
@@ -232,6 +228,8 @@ const WalletDetailsFC = memo(({
                   <TableFinance
                      title="Finances"
                      hiddenCategory={[0, 4]}
+                     currencyId={currency}
+                     withAdvancadFilter={false}
                   />
                </div>
             </div>
@@ -248,7 +246,6 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    fetchWallets: () => dispatch(walletsFetch()),
-   clearWallets: () => dispatch(walletsData([])),
 });
 
 export const WalletDetails = compose(

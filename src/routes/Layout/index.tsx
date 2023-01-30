@@ -49,6 +49,7 @@ import {
    userFetch,
    walletsReset,
    groupFetch,
+   memberLevelsFetch,
 } from 'modules';
 import { CustomizationDataInterface, customizationFetch, selectCustomizationData } from 'modules/public/customization';
 import { rangerConnectFetch, selectRanger } from 'modules/public/ranger';
@@ -147,6 +148,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 
       this.props.fetchConfigs();
       this.props.fetchSonic();
+      this.props.fetchMemberLevel();
       if (
          !(location.pathname.includes('/magic-link')
             || location.pathname.includes('/404')
@@ -454,11 +456,12 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    fetchConfigs: () => dispatch(configsFetch()),
    fetchSonic: () => dispatch(sonicFetch()),
+   userFetch: () => dispatch(userFetch()),
+   fetchMemberLevel: () => dispatch(memberLevelsFetch()),
    fetchCustomization: () => dispatch(customizationFetch()),
    logout: () => dispatch(logoutFetch()),
    toggleChartRebuild: () => dispatch(toggleChartRebuild()),
    rangerConnect: payload => dispatch(rangerConnectFetch(payload)),
-   userFetch: () => dispatch(userFetch()),
    groupFetch: () => dispatch(groupFetch()),
    walletsReset: () => dispatch(walletsReset()),
 });

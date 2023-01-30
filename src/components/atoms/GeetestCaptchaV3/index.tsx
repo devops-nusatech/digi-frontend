@@ -44,7 +44,7 @@ export const GeetestCaptchaV3 = ({
       }, handlerForBind);
    }, [geetestCaptchaKeys]);
 
-   const handlerForBind = async (c) => {
+   const handlerForBind = async (c: any) => {
       const button = buttonRef && buttonRef?.current;
       let isReady = false;
 
@@ -66,7 +66,6 @@ export const GeetestCaptchaV3 = ({
 
       c.onError(e => {
          console.log('err', e)
-         c.reset();
       });
 
    }

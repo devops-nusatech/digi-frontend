@@ -157,14 +157,14 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                         <span className="bg-neutral5 w-3 h-0.5" />
                      </button>
                   </div>
-                  <select className="inline-flex h-8 w-15 outline-none justify-center items-center text-center rounded bg-shade4 dark:bg-neutral2">
+                  {/* <select className="inline-flex h-8 w-15 outline-none justify-center items-center text-center rounded bg-shade4 dark:bg-neutral2">
                      <option value="5">5</option>
                      <option value="10">10</option>
                      <option value="20">20</option>
                      <option value="30">30</option>
                      <option value="40">40</option>
                      <option value="50">50</option>
-                  </select>
+                  </select> */}
                </div>
                <div className="flex space-x-1 py-1 px-4 text-xs font-semibold text-neutral4 leading-custom1 mb-1">
                   <div className="">

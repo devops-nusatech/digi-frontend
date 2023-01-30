@@ -31,7 +31,7 @@ import {
    icAXS,
    ic1INCH,
 } from 'assets';
-import { imageIsExists } from 'helpers';
+// import { imageIsExists } from 'helpers';
 
 export const renderCurrencyIcon = (currency: string = '', iconUrl: string = ''): string => {
    switch (currency) {
@@ -98,6 +98,6 @@ export const renderCurrencyIcon = (currency: string = '', iconUrl: string = ''):
          return ic1INCH
 
       default:
-         return imageIsExists(iconUrl) ? iconUrl : icLogo;
+         return iconUrl || icLogo;
    }
 }

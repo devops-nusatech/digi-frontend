@@ -1,7 +1,7 @@
 import React, { FC, memo, useRef } from 'react';
 import { useMarket } from 'hooks';
 import { Nav, TableMarketTrades } from 'components';
-import { IcShorting } from 'assets';
+// import { truncateMiddle } from 'helpers';
 
 interface TradingMarketListProps {
    translate: (id: string) => string;
@@ -171,29 +171,29 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
                   <table className='w-full table-auto'>
                      <thead className='sticky top-0 bg-neutral8 dark:bg-shade2'>
                         <tr>
-                           <th className='p-1 pb-3 pl-0 text-xs leading-custom4 font-semibold text-neutral4'>
-                              <div className='flex space-x-1 items-center'>
+                           <th className='p-1 pb-3 pl-0 text-xs leading-custom4 font-semibold text-neutral4 text-left'>
+                              {translate('page.body.trade.header.markets.content.pair')}
+                              {/* <div className='flex space-x-1 items-center'>
                                  <div className='cursor-pointer'>
-                                    {translate('page.body.trade.header.markets.content.pair')}
                                  </div>
                                  <IcShorting className='fill-neutral4 cursor-pointer' />
-                              </div>
+                              </div> */}
                            </th>
-                           <th className='p-1 pb-3 text-xs leading-custom4 font-semibold text-neutral4'>
-                              <div className='flex space-x-1 items-center justify-end'>
+                           <th className='p-1 pb-3 text-xs leading-custom4 font-semibold text-neutral4 text-right'>
+                              {translate('page.body.trade.header.markets.content.price')}
+                              {/* <div className='flex space-x-1 items-center justify-end'>
                                  <div className='cursor-pointer'>
-                                    {translate('page.body.trade.header.markets.content.price')}
                                  </div>
                                  <IcShorting className='fill-neutral4 cursor-pointer' />
-                              </div>
+                              </div> */}
                            </th>
-                           <th className='p-1 pb-3 pr-0 text-xs leading-custom4 font-semibold text-neutral4'>
-                              <div className='flex space-x-1 items-center justify-end'>
+                           <th className='p-1 pb-3 pr-0 text-xs leading-custom4 font-semibold text-neutral4 text-right'>
+                              %
+                              {/* <div className='flex space-x-1 items-center justify-end'>
                                  <div className='cursor-pointer'>
-                                    {translate('page.body.trade.header.markets.content.change')}
                                  </div>
                                  <IcShorting className='fill-neutral4 cursor-pointer' />
-                              </div>
+                              </div> */}
                            </th>
                         </tr>
                      </thead>
@@ -232,7 +232,7 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
                                     key={id}
                                     onClick={() => handleRedirectToTrading(id)}
                                     style={{ transition: 'background .2s' }}
-                                    className='group'
+                                    className='group font-urw-din-500'
                                  >
                                     <td className={`cursor-pointer rounded-l-sm align-middle font-medium text-xs p-1 pl-0 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>
                                        <div className='flex space-x-1 items-center'>
@@ -264,6 +264,7 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(({ translate }
                                              }`}
                                        >
                                           {last}
+                                          {/* {Number(String(last).split('.').pop()?.length) > 3 ? truncateMiddle(last, 5) : last} */}
                                        </div>
                                     </td>
                                     <td className={`cursor-pointer rounded-r-sm align-middle font-medium text-xs p-1 pr-0 leading-custom4 ${currentMarket?.id === id ? 'bg-primary1 bg-opacity-20' : 'group-hover:bg-neutral7 dark:group-hover:bg-neutral2'} transition-all duration-300`}>

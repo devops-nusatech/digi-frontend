@@ -63,11 +63,7 @@ SliderPercent.defaultProps = {
    tooltips: true,
    connect: [true, false],
    format: {
-      to(val) {
-         return `${val}%`
-      },
-      from(val) {
-         return Number(val);
-      }
+      to: (val) => `${val}%`,
+      from: (val) => Number(val)
    }
 }

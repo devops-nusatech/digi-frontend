@@ -539,7 +539,6 @@ const WalletDetailsFC = ({
                            size="normal"
                            onClick={() => setShowDeposit(!showDeposit)}
                            disabled={!deposit_enabled}
-                        // disabled={currency === 'idr' ? false : !deposit_enabled}
                         />
                         <Button
                            text="Withdraw"
@@ -552,7 +551,6 @@ const WalletDetailsFC = ({
                            text="Transfer"
                            size="normal"
                            variant="outline"
-                           // onClick={() => setShowTransfer(!showTransfer)}
                            onClick={() => push('/transfer', currencies.find(e => e.id === currency))}
                         // disabled={Number(balance) < Number(min_withdraw_amount)}
                         />

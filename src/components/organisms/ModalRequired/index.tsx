@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import type { LocationState, Path } from 'history'
-import { selectUserInfo } from 'modules'
+import { selectMemberLevels, selectUserInfo } from 'modules'
 import { ImgBarcode, ImgTfa } from 'assets'
 import { Portal, Button } from 'components'
 
@@ -11,11 +11,18 @@ interface ModalRequiredProps {
    push?: (path: Path, state?: LocationState) => void;
 }
 
-export const ModalRequired = ({ show, close, push }: ModalRequiredProps) => {
+export const ModalRequired = ({
+   show,
+   close,
+   push
+}: ModalRequiredProps) => {
    const user = useSelector(selectUserInfo);
+   const memberLevel = useSelector(selectMemberLevels);
+
+   const withdrawLevel = Number(memberLevel && memberLevel?.withdraw?.minimum_level);
 
    const renderHeaderModal = () => {
-      if (user.level < 2) {
+      if (user.level < withdrawLevel) {
          return 'Verify your identity';
       }
       if (!user.otp) {
@@ -25,7 +32,7 @@ export const ModalRequired = ({ show, close, push }: ModalRequiredProps) => {
    }
 
    const renderContentModal = () => {
-      if (user.level < 2) {
+      if (user.level < withdrawLevel) {
          return 'Please verify your identity through the mobile application, scan the barcode below to download.';
       }
       if (!user.otp) {
@@ -35,7 +42,7 @@ export const ModalRequired = ({ show, close, push }: ModalRequiredProps) => {
    }
 
    const handleAction = () => {
-      if (user.level < 2) {
+      if (user.level < withdrawLevel) {
          return close()
       }
       if (!user.otp) {
@@ -59,14 +66,14 @@ export const ModalRequired = ({ show, close, push }: ModalRequiredProps) => {
                </div>
             </div>
             {
-               user.level < 2 ? (
+               user.level < withdrawLevel ? (
                   <div className="h-40 w-40 mx-auto p-4 rounded-lg border-2 border-dashed border-primary1">
                      <ImgBarcode className="max-w-full max-h-full" />
                   </div>
                ) : <ImgTfa className="mx-auto" />
             }
             <Button
-               text={user.level < 2 ? 'Close' : 'Enable 2FA'}
+               text={user.level < withdrawLevel ? 'Close' : 'Enable 2FA'}
                onClick={handleAction}
             />
          </div>

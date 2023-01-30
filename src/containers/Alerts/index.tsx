@@ -40,7 +40,7 @@ class AlertComponent extends Component<Props> {
       const { theme } = this.props;
       return (
          <>
-            {this.props.alerts.alerts.map(({ message, type, code }) => message?.length ? message?.map((msg, index) => (
+            {this.props.alerts.alerts.map(({ message, type, code }) => typeof message?.map === 'function' ? message?.map((msg, index) => (
                <div
                   key={index}
                   className="hidden"

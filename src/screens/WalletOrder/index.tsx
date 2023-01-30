@@ -1,18 +1,44 @@
-import React, { FunctionComponent, useState } from 'react';
-import { Button, Export, InputGroup, LayoutWallet, Nav, Portal, TableOrderHistory } from 'components';
-import { OrderCommon, RootState, marketsFetch, ordersCancelAllFetch, resetOrdersHistory, selectOrdersHistory } from 'modules';
-import { IntlProps } from 'index';
-import { MapDispatchToPropsFunction, connect } from 'react-redux';
+import React, {
+   FunctionComponent,
+   useState
+} from 'react';
 import { compose } from 'redux';
+import {
+   MapDispatchToPropsFunction,
+   connect
+} from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { IntlProps } from 'index';
+import {
+   Button,
+   InputGroup,
+   LayoutWallet,
+   Nav,
+   Portal,
+   TableOrderHistory
+} from 'components';
+import {
+   OrderCommon,
+   RootState,
+   marketsFetch,
+   ordersCancelAllFetch,
+   ordersHistoryCancelFetch,
+   resetOrdersHistory,
+   selectCancelAllFetching,
+   selectCancelFetching,
+   selectOrdersHistory
+} from 'modules';
 
 type ReduxProps = {
    list: OrderCommon[]
+   cancelAllLoading: boolean;
+   cancelLoading: boolean;
 }
 
 type DispatchProps = {
    marketsFetch: typeof marketsFetch;
    ordersCancelAll: typeof ordersCancelAllFetch;
+   ordersCancelById: typeof ordersHistoryCancelFetch;
    resetOrdersHistory: typeof resetOrdersHistory;
 }
 
@@ -23,17 +49,20 @@ const Orders = ({
    marketsFetch,
    ordersCancelAll,
    resetOrdersHistory,
+   ordersCancelById,
+   cancelAllLoading,
+   cancelLoading,
    intl
 }: Props) => {
    const [currentTab, setCurrentTab] = useState<'open' | 'close'>('close');
    const [q, setQ] = useState('');
-   const [showExport, setShowExport] = useState(false);
+   const [showCancelAll, setShowCancelAll] = useState(false);
 
-   const handleShowExport = () => setShowExport(!showExport);
-
-   const type = currentTab === 'open' ? 'Open' : 'Cancel';
-
-   // const translate = (id: string) => intl.formatMessage({ id });
+   const handleShowCancelAll = () => setShowCancelAll(!showCancelAll);
+   const handleCancelAll = () => {
+      ordersCancelAll();
+      handleShowCancelAll();
+   }
 
    const renderTable = () => {
       if (currentTab === 'close') {
@@ -45,7 +74,7 @@ const Orders = ({
 
    return (
       <LayoutWallet>
-         <div className="h-full p-8 rounded bg-neutral8 dark:bg-shade2">
+         <div className="min-h-full p-8 rounded bg-neutral8 dark:bg-shade2">
             <div className="block md:flex items-center justify-between mb-8 p-0 md:pb-8 border-b-0 md:border-b border-neutral6 dark:border-neutral3">
                <div className="flex space-x-4">
                   <Nav
@@ -93,18 +122,16 @@ const Orders = ({
                <div className="text-3.5xl leading-tight tracking-custom1 font-dm font-bold">
                   Order History
                </div>
-               <Button
-                  text="Export"
-                  size="normal"
-                  onClick={handleShowExport}
-                  icLeft={
-                     <svg className="mr-3 w-4 h-4 fill-neutral8 transition-all duration-200">
-                        <use xlinkHref="#icon-arrow-bottom" />
-                     </svg>
-                  }
-                  disabled={list.length <= 0}
-                  width="noFull"
-               />
+               {list.filter(e => e.state === 'wait').length > 0 && (
+                  <Button
+                     text="Cancel all"
+                     size="normal"
+                     onClick={handleShowCancelAll}
+                     variant="outline"
+                     disabled={list.length <= 0}
+                     width="noFull"
+                  />
+               )}
             </div>
             <div className="overflow-x-auto">
                <div className="space-y-8">
@@ -113,28 +140,18 @@ const Orders = ({
             </div>
          </div>
          <Portal
-            title="Confirm download"
-            show={showExport}
-            close={handleShowExport}
+            title="Cancel all orders"
+            show={showCancelAll}
+            close={handleShowCancelAll}
          >
-            <div>
-               <div className="mt-16.5 space-y-8">
-                  <div className="flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-primary3">
-                     <svg className="w-10 h-10 fill-neutral8 transition-colors duration-300">
-                        <use xlinkHref="#icon-arrow-bottom"></use>
-                     </svg>
-                  </div>
-                  <div className="text-center text-base leading-normal font-medium">
-                     Are you sure you want to download the filename <strong className="font-bold capitalize text-primary4 tracking-wider">{type}</strong> ?
-                  </div>
-                  <Export
-                     title="Continue"
-                     csvData={list}
-                     fileName={type}
-                     onClick={handleShowExport}
-                  />
-               </div>
+            <div className="text-center text-base leading-normal font-medium">
+               Are you sure cancel all pending order?
             </div>
+            <Button
+               text="Confirm"
+               withLoading={cancelAllLoading}
+               onClick={handleCancelAll}
+            />
          </Portal>
       </LayoutWallet>
    );
@@ -142,11 +159,14 @@ const Orders = ({
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    list: selectOrdersHistory(state),
+   cancelAllLoading: selectCancelAllFetching(state),
+   cancelLoading: selectCancelFetching(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
    marketsFetch: () => dispatch(marketsFetch()),
    ordersCancelAll: () => dispatch(ordersCancelAllFetch()),
+   ordersCancelById: payload => dispatch(ordersHistoryCancelFetch(payload)),
    resetOrdersHistory: () => dispatch(resetOrdersHistory()),
 });
 

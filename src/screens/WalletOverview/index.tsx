@@ -23,7 +23,9 @@ import {
    TableWallets,
 } from 'components';
 import {
+   MemberLevels,
    RootState,
+   selectMemberLevels,
    selectUserInfo,
    selectWallets,
    User,
@@ -32,7 +34,7 @@ import {
 } from 'modules';
 import { IntlProps } from 'index';
 import { SearchIcon } from '@heroicons/react/outline';
-import { useDocumentTitle } from 'hooks';
+import { useDebounced, useDocumentTitle } from 'hooks';
 import { arrayFilter } from 'helpers';
 import { EstimatedValue } from 'components';
 import { DEFAULT_WALLET } from '../../constants';
@@ -40,6 +42,7 @@ import { DEFAULT_WALLET } from '../../constants';
 interface ReduxProps {
    user: User;
    wallets: Wallet[];
+   memberLevel?: MemberLevels;
 }
 
 interface DispatchProps {
@@ -59,6 +62,7 @@ type WalletsProps = RouterProps & ReduxProps & DispatchProps & OwnProps & IntlPr
 const WalletOverviewFC = memo(({
    user,
    wallets,
+   memberLevel,
    fetchWallets,
    history: { push },
    location,
@@ -67,6 +71,9 @@ const WalletOverviewFC = memo(({
    const [isOpen, setIsOpen] = useState(location.state?.isOpenPortal ? location.state?.isOpenPortal : false);
    const [q, setQ] = useState<string>('');
    const [checked, setChecked] = useState<boolean>(false);
+
+   // const qDebounce = useDebounce(q, 1000);
+   const [kokom] = useDebounced(q, 1000)
 
    useDocumentTitle('Wallets');
    useEffect(() => {
@@ -78,7 +85,7 @@ const WalletOverviewFC = memo(({
    let balances: Wallet[] = wallets || [DEFAULT_WALLET];
    if (q) {
       balances = balances.length
-         ? arrayFilter(balances, q)
+         ? arrayFilter(balances, kokom)
          : [];
    }
    if (checked) {
@@ -89,7 +96,9 @@ const WalletOverviewFC = memo(({
    // const wallet = wallets.find(pair => pair.currency === 'idr');
 
    const translate = (id: string) => intl.formatMessage({ id });
-   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setQ(e.target.value);
+   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setQ(e.target.value);
+   }
    const handleShowPortal = () => setIsOpen(prev => !prev);
 
    const handleRedirectToTransfer = () => {
@@ -185,6 +194,7 @@ const WalletOverviewFC = memo(({
 const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
    wallets: selectWallets(state),
+   memberLevel: selectMemberLevels(state)
 });
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({

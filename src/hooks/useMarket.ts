@@ -62,31 +62,33 @@ export const useMarket = () => {
    }
 
    const handleLocalStorage = (id: string) => {
-      let a: string[] = [];
-      a = JSON.parse(String(localStorage.getItem('favorites'))) || [];
-      const marketId = a?.find(e => e === id);
+      let _themp: string[] = [];
+      _themp = JSON.parse(String(localStorage.getItem('favorites'))) || [];
+      const marketId = _themp?.find(e => e === id);
       if (!marketId) {
-         a.push(id);
-         setFavorites(a);
+         _themp.push(id);
+         setFavorites(_themp);
       } else {
          const index = (id: string) => id === marketId;
-         setFavorites(handleRemoveKey(a, a?.findIndex(index)));
+         setFavorites(handleRemoveKey(_themp, _themp?.findIndex(index)));
       }
    }
 
-   const favorite: Array<string> = user.data && JSON.parse(user.data).favorites;
+   const _favorites: Array<string> = user.data && JSON.parse(user.data).favorites;
    const handleSetFavorites = (id: string) => {
-      const favoriteId = favorite?.find(e => e === id);
+      const favoriteId = _favorites?.find(e => e === id);
       const index = (id: string) => id === favoriteId;
-      dispatch(changeUserDataFetch({
-         user: {
-            ...user,
-            data: JSON.stringify({
-               language: lang,
-               favorites: favoriteId ? handleRemoveKey(favorite, favorite?.findIndex(index)) : [...favorite, id]
-            }),
-         }
-      }))
+      dispatch(
+         changeUserDataFetch({
+            user: {
+               ...user,
+               data: JSON.stringify({
+                  language: lang,
+                  favorites: favoriteId ? handleRemoveKey(_favorites, _favorites?.findIndex(index)) : !_favorites ? [] : [..._favorites, id]
+               }),
+            }
+         })
+      );
    }
 
    const handleToSetFavorites = (id: string) => {
@@ -124,7 +126,7 @@ export const useMarket = () => {
    if (currentBidUnit) {
       if (currentBidUnit === 'star') {
          currentBidUnitMarkets = currentBidUnitMarkets.length
-            ? isLogin ? favorite.map(f1 => currentBidUnitMarkets?.find(e1 => e1.id === f1)) : favorites.map(f2 => currentBidUnitMarkets?.find(e2 => e2.id === f2))
+            ? isLogin ? _favorites.map(f1 => currentBidUnitMarkets?.find(e1 => e1.id === f1)) : favorites.map(f2 => currentBidUnitMarkets?.find(e2 => e2.id === f2))
             : [];
       } else {
          currentBidUnitMarkets = currentBidUnitMarkets.length
@@ -226,7 +228,7 @@ export const useMarket = () => {
          no: i + 1,
          ...itm,
          curency_data: currencies?.find(item => item.id === itm.base_unit) || null,
-         isFav: isLogin ? (favorite?.find(k => itm.id === k) ? true : false) : (favorites?.find(k => itm.id === k) ? true : false)
+         isFav: isLogin ? (_favorites?.find(k => itm.id === k) ? true : false) : (favorites?.find(k => itm.id === k) ? true : false)
       }));
 
    const marketsData = combainMarketWithIcon(formattedMarkets, currencies);

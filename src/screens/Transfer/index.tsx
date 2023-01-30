@@ -48,7 +48,13 @@ import {
    selectDetailUserIsError
 } from 'modules';
 import { IntlProps } from 'index';
-import { arrayFilter, cleanPositiveFloatInput, precisionRegExp, renderCurrencyIcon, truncateMiddle } from 'helpers';
+import {
+   arrayFilter,
+   cleanPositiveFloatInput,
+   precisionRegExp,
+   renderCurrencyIcon,
+   truncateMiddle
+} from 'helpers';
 import { imgAvatar } from 'assets';
 
 type TransferState = {

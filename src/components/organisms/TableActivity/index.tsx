@@ -53,6 +53,7 @@ interface TableActivityProps {
    isApply: boolean;
    advanceFilter: boolean;
    handleApply: () => void;
+   currencyId?: string;
 }
 
 export const TableActivity: FC<TableActivityProps> = ({
@@ -75,13 +76,15 @@ export const TableActivity: FC<TableActivityProps> = ({
    fetchHistory,
    isApply,
    advanceFilter,
-   handleApply
+   handleApply,
+   currencyId,
 }) => {
    useEffect(() => {
       fetchHistory({
          page: 0,
          type,
          limit: 10,
+         ...(currencyId && { currency: currencyId })
       });
    }, [type]);
    useEffect(() => {
@@ -611,7 +614,7 @@ export const TableActivity: FC<TableActivityProps> = ({
          }
          case 'trades': {
             const trades: PrivateTradeEvent = item;
-            const { id, created_at, side, market, price, amount, total } = trades;
+            const { created_at, side, market, price, amount, total } = trades;
             const marketToDisplay = marketsData.find(m => m.id === market) ||
                { name: '', price_precision: 0, amount_precision: 0 };
             const marketName = marketToDisplay ? marketToDisplay.name : market;
@@ -630,21 +633,18 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div className="flex space-x-3 items-center">
-                        {/* <div className="shrink-0 w-8">
-                           <img className="max-w-full" src={icBitcoin} alt="" />
-                        </div> */}
                         <div>{marketName.split('/').shift()} <span className="text-neutral4">/{marketName.split('/').pop()}</span></div>
                      </div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
-                     <div> <Decimal key={id} fixed={marketToDisplay.price_precision} thousSep=",">{price}</Decimal></div>
+                     {Decimal.format(price, marketToDisplay.price_precision, ',')}
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
-                     <div><Decimal key={id} fixed={marketToDisplay.amount_precision} thousSep=",">{amount}</Decimal></div>
+                     {Decimal.format(amount, marketToDisplay.amount_precision, ',')}
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
                      <div className="text-neutral4">
-                        <Decimal key={id} fixed={marketToDisplay.price_precision} thousSep=",">{total}</Decimal>
+                        {Decimal.format(total, marketToDisplay.amount_precision, ',')}
                      </div>
                   </td>
                   <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
@@ -659,9 +659,9 @@ export const TableActivity: FC<TableActivityProps> = ({
       }
    }
 
-   const onClickPrevPage = () => fetchHistory({ page: Number(page) - 1, type, limit: 10 });
+   const onClickPrevPage = () => fetchHistory({ page: Number(page) - 1, type, limit: 10, ...(currencyId && { currency: currencyId }) });
 
-   const onClickNextPage = () => fetchHistory({ page: Number(page) + 1, type, limit: 10 });
+   const onClickNextPage = () => fetchHistory({ page: Number(page) + 1, type, limit: 10, ...(currencyId && { currency: currencyId }) });
 
    const handleFilter = () => fetchHistory({
       page: 0,
@@ -669,6 +669,7 @@ export const TableActivity: FC<TableActivityProps> = ({
       limit: 10,
       time_from,
       time_to,
+      ...(currencyId && { currency: currencyId }),
       ...(advanceFilter && { market })
    });
 

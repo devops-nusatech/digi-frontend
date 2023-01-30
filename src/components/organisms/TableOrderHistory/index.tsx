@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { compose } from 'redux';
 import {
    MapDispatchToPropsFunction,
@@ -9,7 +9,7 @@ import { IntlProps } from 'index';
 import {
    Market,
    OrderCommon,
-   ordersHistoryCancelFetch,
+   openOrdersCancelFetch,
    selectCancelAllFetching,
    selectCancelFetching,
    selectCurrentPageIndex,
@@ -22,13 +22,15 @@ import {
    userOrdersHistoryFetch
 } from 'modules';
 import { RootState } from 'store';
-import { Badge, Decimal, Pagination, Skeleton } from 'components';
+import { Badge, Button, Decimal, Pagination, Portal, Skeleton } from 'components';
 import { IcEmty, IcShorting } from 'assets';
 import { arrayFilter, localeDate } from 'helpers';
+import { useModal } from 'hooks';
 
 interface TableOrderProps {
    type: 'open' | 'close';
    q: string;
+   setDetail: (e: OrderCommon) => void;
 }
 
 interface ReduxProps {
@@ -44,7 +46,7 @@ interface ReduxProps {
 }
 
 interface DispatchProps {
-   ordersHistoryCancelFetch: typeof ordersHistoryCancelFetch;
+   openOrderCancelById: typeof openOrdersCancelFetch;
    userOrdersHistoryFetch: typeof userOrdersHistoryFetch;
 }
 
@@ -53,6 +55,7 @@ type Props = TableOrderProps & ReduxProps & DispatchProps & IntlProps;
 const TableOrder = ({
    type,
    q,
+   setDetail,
    marketsData,
    pageIndex,
    firstElemIndex,
@@ -63,16 +66,18 @@ const TableOrder = ({
    cancelAllFetching,
    cancelFetching,
    userOrdersHistoryFetch,
-   ordersHistoryCancelFetch,
+   openOrderCancelById,
    intl
 }: Props) => {
+   const { isShow, toggle } = useModal();
+   const [detailId, setDetailId] = useState<any>();
    useEffect(() => {
       userOrdersHistoryFetch({ type, pageIndex: 0, limit: 25 });
    }, [type]);
 
    const translate = (id: string) => intl.formatMessage({ id });
 
-   const retrieveData = () => arrayFilter(list, q).map(item => renderActivity(item));
+   const retrieveData = () => arrayFilter(list, q).map(item => renderOrders(item));
 
    const setOrderStatus = (status: string) => {
       switch (status) {
@@ -99,7 +104,12 @@ const TableOrder = ({
       }
    };
 
-   const renderActivity = (item: OrderCommon) => {
+   const handleConfirm = (item: OrderCommon) => {
+      setDetailId(item);
+      toggle();
+   }
+
+   const renderOrders = (item: OrderCommon) => {
       const {
          id,
          executed_volume,
@@ -142,12 +152,12 @@ const TableOrder = ({
             </td>
             <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                <div className="text-right">
-                  {formatDecimal(actualPrice, currentMarket.price_precision)}
+                  {Decimal.format(actualPrice, currentMarket.price_precision, '')}
                </div>
             </td>
             <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                <div className="text-right">
-                  {formatDecimal(origin_volume, currentMarket.amount_precision)}
+                  {Decimal.format(origin_volume, currentMarket.amount_precision, '')}
                </div>
             </td>
             <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
@@ -171,13 +181,13 @@ const TableOrder = ({
                </div>
             </td>
             <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-               <div className="whitespace-nowrap text-neutral4">
+               <div className="whitespace-nowrap text-neutral4 text-right">
                   {date}
                </div>
             </td>
             <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
                {state === 'wait' && (
-                  <button onClick={() => handleCancel(Number(id))}>
+                  <button onClick={() => handleConfirm(item)}>
                      <svg className="w-5 h-5 fill-primary4">
                         <use xlinkHref="#icon-close-circle" />
                      </svg>
@@ -188,13 +198,13 @@ const TableOrder = ({
       );
    }
 
-   const handleCancel = (id: number) => () => {
-      if (cancelAllFetching || cancelFetching) {
-         return;
-      }
-      ordersHistoryCancelFetch({ id, type, list });
+   const handleCancel = () => {
+      openOrderCancelById({ order: detailId, list });
+      setTimeout(() => {
+         userOrdersHistoryFetch({ type, pageIndex: 0, limit: 25 });
+      }, 1000);
+      toggle();
    };
-
 
    const onClickPrevPage = () => {
       userOrdersHistoryFetch({ pageIndex: pageIndex - 1, type, limit: 25 });
@@ -274,7 +284,7 @@ const TableOrder = ({
                      </div>
                   </th>
                   <th className="px-4 pb-6 border-b border-neutral6 dark:border-neutral3 text-xs leading-custom4 font-semibold text-neutral4 text-right">
-                     <div className="flex items-center space-x-1 cursor-pointer">
+                     <div className="flex items-center space-x-1 cursor-pointer justify-end">
                         <div>{translate('page.body.history.deposit.header.date')}</div>
                         <IcShorting className="fill-neutral4" />
                      </div>
@@ -310,6 +320,25 @@ const TableOrder = ({
             </tbody>
          </table>
          {renderPaginate()}
+         <Portal
+            title="Cancel order"
+            show={isShow}
+            close={toggle}
+         >
+            <div className="space-y-2">
+               <div className="text-center font-medium leading-normal">
+                  {detailId?.side}
+               </div>
+               <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1 uppercase">
+                  {Decimal.format(detailId?.price, Number(marketsData.find(m => m.id === detailId?.market)?.price_precision), '')}
+               </div>
+            </div>
+            <Button
+               text="Confirm"
+               withLoading={cancelFetching}
+               onClick={handleCancel}
+            />
+         </Portal>
       </>
    );
 }
@@ -327,7 +356,7 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
-   ordersHistoryCancelFetch: payload => dispatch(ordersHistoryCancelFetch(payload)),
+   openOrderCancelById: payload => dispatch(openOrdersCancelFetch(payload)),
    userOrdersHistoryFetch: payload => dispatch(userOrdersHistoryFetch(payload)),
 });
 

@@ -1,4 +1,4 @@
-import { Button, GeetestCaptchaV3 } from 'components';
+import { Button, ComboboxCurrency, GeetestCaptchaV3 } from 'components';
 import { useInitGT4 } from 'hooks/useInitGT4';
 import { GeetestCaptchaResponse, setGeetestCaptchaSuccess } from 'modules';
 import React, { useEffect, useRef } from 'react';
@@ -56,7 +56,12 @@ export const Geetest = () => {
                onSuccess={handleGeetestResponse}
             />
             <Button text="GT 3" ref={gt3Ref} />
+
          </div>
+         <ComboboxCurrency
+            onChange={currency => console.log('currency', currency)}
+            filterNetwork={false}
+         />
       </>
    )
 }
