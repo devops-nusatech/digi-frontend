@@ -41,8 +41,8 @@ interface TradingOrderAsksProps {
    market: string;
    bids: string[][];
    executeLoading: boolean;
-   taker?: number;
-   maker?: number;
+   taker: number;
+   maker: number;
 }
 
 export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
@@ -248,8 +248,8 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
                            ? String(totalPriceMarket())?.split(',')?.join('')
                            : String(totalPriceMarket())
                         : orderTotal?.includes(',')
-                           ? (Number(orderTotal?.split(',')?.join('')) - ((Number(taker) * 10) * Number(orderTotal?.split(',')?.join(''))))
-                           : Number(orderTotal) - ((Number(taker) / 10) * Number(orderTotal)),
+                           ? (Number(orderTotal?.split(',')?.join('')) - (taker * Number(orderTotal?.split(',')?.join(''))))
+                           : Number(orderTotal) - (taker * Number(orderTotal)),
                      pricePrecision, ',') || 0} {from}
                </div>
             </div>
@@ -264,8 +264,8 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
                   right={orderType}
                />
                <List
-                  left="Fee processsing"
-                  right={`${(Number(taker) * 10)}% - ${(Number(maker) * 10)}%`}
+                  left="Fee processing"
+                  right={`${taker}% - ${maker}%`}
                   classNameRight="text-primary4"
                />
                <List

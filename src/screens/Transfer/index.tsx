@@ -45,7 +45,9 @@ import {
    selectDetailUserData,
    selectDetailUserLoading,
    detailUserCreate,
-   selectDetailUserIsError
+   selectDetailUserIsError,
+   MemberLevels,
+   selectMemberLevels
 } from 'modules';
 import { IntlProps } from 'index';
 import {
@@ -74,6 +76,7 @@ interface ReduxProps {
    transferLoading: boolean;
    transferSuccess: boolean;
    transferError: boolean;
+   memberLevel?: MemberLevels;
 }
 
 interface DispatchProps {
@@ -104,6 +107,7 @@ export const TransferFC = ({
    transferLoading,
    transferSuccess,
    transferError,
+   memberLevel,
    fetchWallets,
    fetchCurrencies,
    history: { push },
@@ -132,7 +136,7 @@ export const TransferFC = ({
    })
 
    useEffect(() => {
-      if (user.level < 2 || !user.otp) {
+      if (user.level < Number(memberLevel && memberLevel?.withdraw && memberLevel?.withdraw?.minimum_level) || !user.otp) {
          push('/wallets', { isOpenPortal: true });
       }
    }, []);
@@ -514,6 +518,7 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    transferLoading: selectTransferLoading(state),
    transferSuccess: selectTransferIsSuccess(state),
    transferError: selectTransferIsError(state),
+   memberLevel: selectMemberLevels(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({

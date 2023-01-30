@@ -7,6 +7,8 @@ import {
    Decimal,
    Pagination,
    Image,
+   Direction,
+   State,
 } from 'components';
 import {
    arrayFilter,
@@ -25,6 +27,7 @@ import {
    Market,
    PrivateTradeEvent,
    Transaction,
+   User,
    Wallet,
    WalletHistoryList,
    Withdraw,
@@ -54,6 +57,9 @@ interface TableActivityProps {
    advanceFilter: boolean;
    handleApply: () => void;
    currencyId?: string;
+   direction: Direction;
+   user: User;
+   state: State
 }
 
 export const TableActivity: FC<TableActivityProps> = ({
@@ -78,6 +84,9 @@ export const TableActivity: FC<TableActivityProps> = ({
    advanceFilter,
    handleApply,
    currencyId,
+   direction,
+   user,
+   state,
 }) => {
    useEffect(() => {
       fetchHistory({
@@ -414,21 +423,64 @@ export const TableActivity: FC<TableActivityProps> = ({
          }
          case 'deposits': {
             const deposits: Deposit = item;
-            const { amount, confirmations, created_at, currency, txid, blockchain_key } = deposits;
+            const { amount, created_at, currency, txid, blockchain_key } = deposits;
             const blockchainLink = getBlockchainLink(currency, blockchain_key, { txid: txid });
             const wallet = wallets.find(obj => obj.currency === currency);
-            const itemCurrency = currencies && currencies.find(cur => cur.id === currency);
-            const blockchainCurrency = itemCurrency?.networks.find(blockchain_cur => blockchain_cur.blockchain_key === item.blockchain_key);
-            const minConfirmations = blockchainCurrency?.min_confirmations;
-            const state = (item.state === 'submitted' && confirmations !== undefined && minConfirmations !== undefined) ? (
-               `${confirmations}/${minConfirmations}`
-            ) : (
-               intl(`page.body.history.deposit.content.status.${item.state}`)
-            );
+            // const itemCurrency = currencies && currencies.find(cur => cur.id === currency);
+            // const blockchainCurrency = itemCurrency?.networks.find(blockchain_cur => blockchain_cur.blockchain_key === item.blockchain_key);
+            // const minConfirmations = blockchainCurrency?.min_confirmations;
+            // const state = (item.state === 'submitted' && confirmations !== undefined && minConfirmations !== undefined) ? (
+            //    `${confirmations}/${minConfirmations}`
+            // ) : (
+            //    intl(`page.body.history.deposit.content.status.${item.state}`)
+            // );
 
             const formatCurrency = currencies.find(market => market.id === currency)
             const assetName = String(formatCurrency?.name);
             const iconUrl = String(formatCurrency?.icon_url);
+
+            const stateType = () => {
+               switch (deposits.state) {
+                  case 'collected':
+                     return 'succeed'
+                  case 'submitted':
+                  case 'accepted22':
+                  case 'aml_processing':
+                  case 'aml_suspicious':
+                  case 'processing':
+                  case 'skipped':
+                  case 'fee_processing':
+                  case 'errored':
+                     return 'pending'
+                  case 'canceled':
+                  case 'rejected':
+                     return 'failed'
+
+                  default:
+                     return '';
+               }
+            }
+            const stateVariant = () => {
+               switch (deposits.state) {
+                  case 'collected':
+                     return 'green'
+                  case 'submitted':
+                  case 'accepted22':
+                  case 'aml_processing':
+                  case 'aml_suspicious':
+                  case 'processing':
+                  case 'skipped':
+                  case 'fee_processing':
+                  case 'errored':
+                     return 'yellow'
+                  case 'canceled':
+                  case 'rejected':
+                     return 'orange'
+
+                  default:
+                     return;
+               }
+            }
 
             return (
                <tr style={{ transition: 'background .2s' }} className="group" key={txid}>
@@ -437,8 +489,8 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <Badge
-                        text={state === 'Collected' ? 'succeed' : state == 'processing' ? 'process' : 'failed'}
-                        variant={state === 'Collected' ? 'green' : state === 'processing' ? 'yellow' : 'orange'}
+                        text={stateType()}
+                        variant={stateVariant()}
                      />
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
@@ -490,7 +542,7 @@ export const TableActivity: FC<TableActivityProps> = ({
          case 'withdraws': {
             const withdraws: Withdraw = item
             const { created_at, currency, amount, rid, blockchain_txid, blockchain_key } = withdraws;
-            const state = intl(`page.body.history.withdraw.content.status.${item.state}`);
+            const t = intl(`page.body.history.withdraw.content.status.${item.state}`);
             const blockchainLink = getBlockchainLink(currency, blockchain_key, { rid });
             const blockchainTXID = getBlockchainLink(currency, blockchain_key, { txid: blockchain_txid });
             const wallet = wallets.find(obj => obj.currency === currency);
@@ -499,6 +551,45 @@ export const TableActivity: FC<TableActivityProps> = ({
             const assetName = String(formatCurrency?.name);
             const iconUrl = String(formatCurrency?.icon_url);
 
+            const stateType = () => {
+               switch (withdraws.state) {
+                  case 'succeed':
+                     return t;
+                  case 'prepared':
+                  case 'submitted':
+                  case 'accepted':
+                  case 'processing':
+                  case 'skipped':
+                     return 'pending'
+                  case 'canceled':
+                  case 'rejected':
+                  case 'failed':
+                     return t
+
+                  default:
+                     return '';
+               }
+            }
+            const stateVariant = () => {
+               switch (withdraws.state) {
+                  case 'succeed':
+                     return 'green';
+                  case 'prepared':
+                  case 'submitted':
+                  case 'accepted':
+                  case 'processing':
+                  case 'skipped':
+                     return 'yellow'
+                  case 'canceled':
+                  case 'rejected':
+                  case 'failed':
+                     return 'orange'
+
+                  default:
+                     return;
+               }
+            }
+
             return (
                <tr style={{ transition: 'background .2s' }} className="group" key={index}>
                   <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs py-5 pr-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
@@ -506,8 +597,8 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <Badge
-                        text={state}
-                        variant={item.state === 'succeed' ? 'green' : state === 'confirming' ? 'yellow' : 'orange'}
+                        text={stateType()}
+                        variant={stateVariant()}
                      />
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
@@ -566,6 +657,49 @@ export const TableActivity: FC<TableActivityProps> = ({
             const assetName = String(formatCurrency?.name);
             const iconUrl = String(formatCurrency?.icon_url);
 
+            const stateType = () => {
+               switch (status) {
+                  case 'completed':
+                     return 'succeed'
+                  case 'submitted':
+                  case 'accepted22':
+                  case 'aml_processing':
+                  case 'aml_suspicious':
+                  case 'processing':
+                  case 'skipped':
+                  case 'fee_processing':
+                  case 'errored':
+                     return 'pending'
+                  case 'canceled':
+                  case 'rejected':
+                     return 'failed'
+
+                  default:
+                     return '';
+               }
+            }
+            const stateVariant = () => {
+               switch (status) {
+                  case 'completed':
+                     return 'green'
+                  case 'submitted':
+                  case 'accepted22':
+                  case 'aml_processing':
+                  case 'aml_suspicious':
+                  case 'processing':
+                  case 'skipped':
+                  case 'fee_processing':
+                  case 'errored':
+                     return 'yellow'
+                  case 'canceled':
+                  case 'rejected':
+                     return 'orange'
+
+                  default:
+                     return;
+               }
+            }
+
             return (
                <tr style={{ transition: 'background .2s' }} className="group" key={index}>
                   <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs py-5 pr-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
@@ -573,8 +707,8 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <Badge
-                        text={status}
-                        variant={status === 'completed' ? 'green' : 'orange'}
+                        text={stateType()}
+                        variant={stateVariant()}
                      />
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
@@ -663,14 +797,49 @@ export const TableActivity: FC<TableActivityProps> = ({
 
    const onClickNextPage = () => fetchHistory({ page: Number(page) + 1, type, limit: 10, ...(currencyId && { currency: currencyId }) });
 
+   const formatState = () => {
+      switch (type) {
+         case 'deposits':
+            switch (state) {
+               case 'succeed':
+                  return 'collected'
+               case 'pending':
+                  return 'processing'
+               case 'failed':
+                  return 'rejected'
+               case 'refund':
+                  return 'refunding'
+
+               default:
+                  return;
+            }
+         case 'withdraws':
+            switch (state) {
+               case 'succeed':
+                  return state
+               case 'pending':
+                  return 'processing'
+               case 'failed':
+                  return state
+
+               default:
+                  return;
+            }
+
+         default:
+            return;
+      }
+   }
+
    const handleFilter = () => fetchHistory({
       page: 0,
       type,
       limit: 10,
-      time_from,
-      time_to,
       ...(currencyId && { currency: currencyId }),
-      ...(advanceFilter && { market })
+      ...(type !== 'transfers' && { time_from, time_to }),
+      // ...(type === 'transfers' && { sender: user.uid }),
+      ...((advanceFilter && type !== 'trades') && { currency: market, state: formatState() }),
+      ...((advanceFilter && type === 'trades') && { market })
    });
 
    useEffect(() => {

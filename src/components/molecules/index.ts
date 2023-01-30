@@ -40,4 +40,5 @@ export * from './ScreenMobile';
 export * from './LayoutWallet';
 export * from './LayoutProfile';
 export * from './ComboboxCurrency';
+export * from './AdibDropdown';
 export { Tables };

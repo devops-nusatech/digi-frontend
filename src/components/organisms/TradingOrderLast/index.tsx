@@ -131,8 +131,8 @@ const TradingOrderLastFunc = (props: Props) => {
    const from: string = String(name.toUpperCase().split('/').pop());
    const to: string = base_unit.toUpperCase();
    const marketId: string = String(currentMarket?.id);
-   const taker = tradingFees.find(e => e.group === groupMember.group)?.taker;
-   const maker = tradingFees.find(e => e.group === groupMember.group)?.maker
+   const taker = Number(tradingFees.find(e => e.group === groupMember.group)?.taker) * 100;
+   const maker = Number(tradingFees.find(e => e.group === groupMember.group)?.maker) * 100;
 
    const [orderPrice, setOrderPrice] = useState<string>('');
    const [orderType, setOrderType] = useState<OrderType>('limit');
@@ -367,10 +367,10 @@ const TradingOrderLastFunc = (props: Props) => {
                   </div>
                   <div className="flex items-center gap-3 text-xs text-neutral4 font-medium leading-custom1">
                      <div className="">
-                        Maker: <span className="text-primary4 font-bold">{Number(maker) * 10}%</span>
+                        Maker: <span className="text-primary4 font-bold">{maker}%</span>
                      </div>
                      <div className="">
-                        Taker: <span className="text-primary4 font-bold">{Number(taker) * 10}%</span>
+                        Taker: <span className="text-primary4 font-bold">{taker}%</span>
                      </div>
                   </div>
                   {/* <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">

@@ -15,6 +15,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.min.css';
 
 import {
+   AdibDropdown,
    Button,
    ComboboxCurrency,
    Dialog,
@@ -29,6 +30,8 @@ import {
    Currency,
    Market,
    RootState,
+   Sonic,
+   User,
    Wallet,
    WalletHistoryList,
    currenciesFetch,
@@ -43,12 +46,29 @@ import {
    selectLastElemIndex,
    selectMarkets,
    selectNextPageExists,
+   selectSonic,
+   selectUserInfo,
    selectWallets,
    walletsFetch
 } from 'modules';
-import { VALUATION_PRIMARY_CURRENCY, DEFAULT_WALLET } from '../../../constants';
+import { DEFAULT_WALLET } from '../../../constants';
+
+export type Direction = 'IN' | 'OUT' | '';
+export type State = 'succeed' | 'pending' | 'failed' | 'refund';
+
+type FilterState = {
+   startDate: Date;
+   endDate: Date;
+   currency: string;
+   state: State;
+   advanceFilter: boolean;
+   isApply: boolean;
+   direction: Direction;
+}
 
 interface ReduxProps {
+   user: User;
+   sonic: Sonic;
    currencies: Currency[];
    marketsData: Market[];
    wallets: Wallet[];
@@ -81,6 +101,8 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    hiddenCategory,
    currencyId,
    withAdvancadFilter,
+   user,
+   sonic,
    currencies,
    marketsData,
    wallets,
@@ -97,7 +119,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    fetchCurrencies,
    intl
 }) => {
-   const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === VALUATION_PRIMARY_CURRENCY?.toLowerCase()) || wallets[0] || DEFAULT_WALLET;
+   const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === sonic.peatio_platform_currency) || wallets[0] || DEFAULT_WALLET;
 
    const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(4) ? 1 : hiddenCategory?.includes(3) ? 4 : 0);
    const [q, setQ] = useState('');
@@ -105,15 +127,16 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    const [showFilter, setShowFilter] = useState(false);
    const [showExport, setShowExport] = useState(false);
 
-   const [filter, setFilter] = useState({
+   const [filter, setFilter] = useState<FilterState>({
       startDate: new Date((new Date).getFullYear(), (new Date).getMonth(), 1),
       endDate: new Date(),
       currency: defaultWallet?.currency || 'usdt',
-      state: '',
+      state: 'succeed',
       advanceFilter: false,
       isApply: false,
+      direction: ''
    });
-   const { startDate, endDate, currency, isApply, advanceFilter } = filter;
+   const { startDate, endDate, currency, state, isApply, advanceFilter, direction } = filter;
 
    const time_from = Math.floor(new Date(startDate).getTime() / 1000).toString()
    const time_to = Math.floor(new Date(endDate).getTime() / 1000).toString()
@@ -125,6 +148,9 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
       if (!wallets.length) {
          fetchWallets();
       }
+      if (activeTab === 3) {
+         setFilter({ ...filter, advanceFilter: true })
+      }
       return () => {
          resetHistory();
       }
@@ -132,7 +158,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
 
    const handleShowExport = () => setShowExport(!showExport);
 
-   const handleShowAdvanceFilter = () => setFilter({ ...filter, advanceFilter: !filter.advanceFilter });
+   const handleShowAdvanceFilter = () => setFilter({ ...filter, advanceFilter: !advanceFilter });
 
    const translate = (id: string) => intl.formatMessage({ id });
 
@@ -145,9 +171,26 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    const handleChangeAsset = (currency: string) => {
       setFilter({ ...filter, currency })
    }
+   const handleChangeState = (state: State) => {
+      setFilter({ ...filter, state, advanceFilter: true })
+   }
    const handleApply = () => {
       setFilter({ ...filter, isApply: !isApply });
       setShowFilter(false);
+   }
+
+   const renderStateType = (): Array<string> => {
+      switch (activeTab) {
+         case 0:
+            return ['Wade Cooper', 'Arlene Mccoy', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt']
+         case 1:
+            return ['succeed', 'pending', 'failed', 'refund']
+         case 2:
+            return ['succeed', 'pending', 'failed']
+
+         default:
+            return [''];
+      }
    }
 
    const renderActivity = () => {
@@ -174,7 +217,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                isApply={isApply}
                handleApply={handleApply}
                market={currency}
+               state={state}
                currencyId={currencyId}
+               direction={direction}
+               user={user}
             />
          case 2:
             return <TableActivity
@@ -198,7 +244,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                isApply={isApply}
                handleApply={handleApply}
                market={currency}
+               state={state}
                currencyId={currencyId}
+               direction={direction}
+               user={user}
             />
          case 3:
             return <TableActivity
@@ -222,7 +271,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                isApply={isApply}
                handleApply={handleApply}
                market={currency}
+               state={state}
                currencyId={currencyId}
+               direction={direction}
+               user={user}
             />
          case 4:
             return <TableActivity
@@ -246,7 +298,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                isApply={isApply}
                handleApply={handleApply}
                market={currency}
+               state={state}
                currencyId={currencyId}
+               direction={direction}
+               user={user}
             />
          default:
             return <TableActivity
@@ -270,7 +325,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                isApply={isApply}
                handleApply={handleApply}
                market={currency}
+               state={state}
                currencyId={currencyId}
+               direction={direction}
+               user={user}
             />
       }
    };
@@ -336,21 +394,24 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                      }
                   />
                </div>
-               <Button
-                  text='All time'
-                  variant="outline"
-                  size="normal"
-                  width="noFull"
-                  onClick={() => {
-                     setQ('');
-                     setShowFilter(true);
-                  }}
-                  icRight={
-                     <svg className="ml-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all">
-                        <use xlinkHref="#icon-calendar"></use>
-                     </svg>
-                  }
-               />
+               {(!currencyId || activeTab !== 3) && (
+                  <Button
+                     text='All time'
+                     variant="outline"
+                     size="normal"
+                     width="noFull"
+                     onClick={() => {
+                        setQ('');
+                        setShowFilter(true);
+                        setFilter({ ...filter, advanceFilter: activeTab !== 3 ? false : true });
+                     }}
+                     icRight={
+                        <svg className="ml-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all">
+                           <use xlinkHref="#icon-calendar"></use>
+                        </svg>
+                     }
+                  />
+               )}
             </div>
          </div>
          <div className="flex items-center justify-between mb-10.5">
@@ -376,86 +437,105 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
          <Dialog
             isOpen={showFilter}
             setIsOpen={() => {
-               setShowFilter(false)
-               setFilter({ ...filter, advanceFilter: false });
+               setShowFilter(false);
+               setFilter({ ...filter, advanceFilter: false, direction: '' });
             }}
             title="Filter"
          >
-            <div className="grid grid-cols-2 gap-4">
-               <div className="space-y-2.5">
-                  <Label label="start date" />
-                  <div className="relative">
-                     <DatePicker
-                        selected={startDate}
-                        onChange={handleChangeStartDate}
-                        dateFormat="MMM dd, yyyy"
-                        showMonthDropdown
-                        showYearDropdown
-                        scrollableYearDropdown
-                        scrollableMonthYearDropdown
-                     />
-                     <button className="absolute top-3 right-3.5 -z-2">
-                        <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
-                           <use xlinkHref="#icon-calendar" />
-                        </svg>
-                     </button>
-                  </div>
-               </div>
-               <div className="space-y-2.5">
-                  <Label label="start date" />
-                  <div className="relative">
-                     <DatePicker
-                        selected={endDate}
-                        onChange={handleChangeEndDate}
-                        dateFormat="MMM dd, yyyy"
-                        showMonthDropdown
-                        showYearDropdown
-                        scrollableYearDropdown
-                        scrollableMonthYearDropdown
-                     />
-                     <button className="absolute top-3 right-3.5 -z-2">
-                        <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
-                           <use xlinkHref="#icon-calendar" />
-                        </svg>
-                     </button>
-                  </div>
-               </div>
-            </div>
-            {withAdvancadFilter && (
-               <>
-                  <div className="flex justify-between items-center space-x-2">
-                     <div className="w-full h-px bg-neutral6 dark:bg-neutral3 rounded" />
-                     <div
-                        className="flex justify-between items-center space-x-2 cursor-pointer"
-                        onClick={handleShowAdvanceFilter}
-                     >
-                        <div className="text-xs font-medium whitespace-nowrap leading-5">
-                           ADVANCE FILTER
-                        </div>
-                        <svg className={`${filter.advanceFilter ? '' : 'rotate-180'} w-6 h-6 fill-neutral4 transition-all duration-300`}>
-                           <use xlinkHref="#icon-arrow-down" />
-                        </svg>
+            {activeTab !== 3 && (
+               <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2.5">
+                     <Label label="start date" />
+                     <div className="relative">
+                        <DatePicker
+                           selected={startDate}
+                           onChange={handleChangeStartDate}
+                           dateFormat="MMM dd, yyyy"
+                           showMonthDropdown
+                           showYearDropdown
+                           scrollableYearDropdown
+                           scrollableMonthYearDropdown
+                        />
+                        <button className="absolute top-3 right-3.5 -z-2">
+                           <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
+                              <use xlinkHref="#icon-calendar" />
+                           </svg>
+                        </button>
                      </div>
                   </div>
-                  <div className={`space-y-8 ${filter.advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 -translate-y-4 !mt-0 invisible'} transition-all duration-300`}>
+                  <div className="space-y-2.5">
+                     <Label label="start date" />
+                     <div className="relative">
+                        <DatePicker
+                           selected={endDate}
+                           onChange={handleChangeEndDate}
+                           dateFormat="MMM dd, yyyy"
+                           showMonthDropdown
+                           showYearDropdown
+                           scrollableYearDropdown
+                           scrollableMonthYearDropdown
+                        />
+                        <button className="absolute top-3 right-3.5 -z-2">
+                           <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
+                              <use xlinkHref="#icon-calendar" />
+                           </svg>
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            )}
+            {withAdvancadFilter && (
+               <>
+                  {activeTab !== 3 && (
+                     <div className="flex justify-between items-center space-x-2">
+                        <div className="w-full h-px bg-neutral6 dark:bg-neutral3 rounded" />
+                        <div
+                           className="flex justify-between items-center space-x-2 cursor-pointer"
+                           onClick={handleShowAdvanceFilter}
+                        >
+                           <div className="text-xs font-medium whitespace-nowrap leading-5">
+                              ADVANCE FILTER
+                           </div>
+                           <svg className={`${advanceFilter ? '' : 'rotate-180'} w-6 h-6 fill-neutral4 transition-all duration-300`}>
+                              <use xlinkHref="#icon-arrow-down" />
+                           </svg>
+                        </div>
+                     </div>
+                  )}
+                  <div className={`space-y-8 ${advanceFilter && activeTab === 3 ? '' : advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 -translate-y-4 !mt-0 invisible'} transition-all duration-300`}>
                      <ComboboxCurrency onChange={handleChangeAsset} />
-                     <InputGroup
-                        label="state type"
-                        placeholder="State"
-                     />
+                     {activeTab !== 3 ? (
+                        <AdibDropdown
+                           label="State type"
+                           data={renderStateType()}
+                           onChange={handleChangeState}
+                        />
+                     ) : (
+                        <div className="relative space-y-2.5 hidden">
+                           <Label label="Direction" />
+                           <div className="flex space-x-3">
+                              <Nav
+                                 title="IN"
+                                 theme="grey"
+                                 onClick={() => setFilter({ ...filter, direction: 'IN' })}
+                                 isActive={direction === 'IN'}
+                              />
+                              <Nav
+                                 title="OUT"
+                                 theme="grey"
+                                 onClick={() => setFilter({ ...filter, direction: 'OUT' })}
+                                 isActive={direction === 'OUT'}
+                              />
+                           </div>
+                        </div>
+                     )}
                   </div>
                </>
             )}
-            <div className="grid grid-cols-2 gap-4">
-               <Button
-                  text="Apply"
-                  onClick={handleApply}
-               />
-               <Button
-                  text="Reset"
-                  variant="outline"
-               />
-            </div>
+            <Button
+               text="Apply"
+               onClick={handleApply}
+            />
          </Dialog>
          <Portal
             title="Confirm download"
@@ -486,6 +566,8 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
 }
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
+   user: selectUserInfo(state),
+   sonic: selectSonic(state),
    currencies: selectCurrencies(state),
    marketsData: selectMarkets(state),
    wallets: selectWallets(state),
