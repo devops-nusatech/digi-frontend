@@ -63,7 +63,9 @@ export const AdibDropdown = ({
                   </div>
                )}
             </div>
-            <Listbox.Options className={({ open }) => `absolute max-h-[10.1875rem] w-full overflow-auto z-10 mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 shadow-dropdown-2 dark:shadow-dropdown-3 ${open ? 'opacity-100 visible scale-100 translate-y-0' : 'opacity-0 invisible scale-75 -translate-y-20'} transition-all duration-200`} style={{ transformOrigin: '50% 0' }}>
+            <Listbox.Options
+               className={({ open }) => `absolute max-h-[10.1875rem] w-full overflow-auto z-10 mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 shadow-dropdown-2 dark:shadow-dropdown-3 ${open ? 'opacity-100 visible scale-100 translate-y-0' : 'opacity-0 invisible scale-75 -translate-y-20'} transition-all duration-200`} style={{ transformOrigin: '50% 0' }}
+            >
                {data.map((value, index) => (
                   <Listbox.Option
                      key={index}
@@ -80,5 +82,5 @@ export const AdibDropdown = ({
             </Listbox.Options>
          </div>
       </Listbox>
-   )
-}
+   );
+};

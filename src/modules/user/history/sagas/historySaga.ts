@@ -18,7 +18,7 @@ type CoreEndpoint = {
 
 export function* historySaga(action: HistoryFetch) {
    try {
-      const { type, limit, page } = action.payload;
+      const { core, limit, page } = action.payload;
       const coreEndpoint: CoreEndpoint = {
          transactions: '/account/transactions',
          deposits: '/account/deposits',
@@ -27,7 +27,7 @@ export function* historySaga(action: HistoryFetch) {
          transfers: '/account/internal_transfers',
       };
       const params = getHistorySagaParam(action.payload);
-      const data = yield call(API.get(config), `${coreEndpoint[type]}?${params}`);
+      const data = yield call(API.get(config), `${coreEndpoint[core]}?${params}`);
 
       let nextPageExists = false;
 
@@ -38,7 +38,7 @@ export function* historySaga(action: HistoryFetch) {
             limit: 1,
          };
          const testParams = getHistorySagaParam(testActionPayload);
-         const checkData = yield call(API.get(config), `${coreEndpoint[type]}?${testParams}`);
+         const checkData = yield call(API.get(config), `${coreEndpoint[core]}?${testParams}`);
 
          if (checkData.length === 1) {
             nextPageExists = true;
@@ -46,7 +46,7 @@ export function* historySaga(action: HistoryFetch) {
       }
       let updatedData = data;
 
-      if (type === 'trades') {
+      if (core === 'trades') {
          updatedData = sliceArray(data, defaultStorageLimit());
       }
 

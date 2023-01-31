@@ -101,15 +101,8 @@ const WalletOverviewFC = memo(({
    }
    const handleShowPortal = () => setIsOpen(prev => !prev);
 
-   const handleRedirectToTransfer = () => {
-      if (user.state === 'pending') {
-         push('/email-verification')
-      } else if (user.level < 2 || !user.otp) {
-         handleShowPortal()
-      } else {
-         push('/wallets/transfer')
-      }
-   }
+   const handleRedirectToTransfer = () => push('/wallets/transfer');
+
 
    const renderTableWallets = useMemo(() => (
       <TableWallets

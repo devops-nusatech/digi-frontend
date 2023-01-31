@@ -28,6 +28,7 @@ import {
    selectCancelFetching,
    selectOrdersHistory
 } from 'modules';
+import { useDebounced } from 'hooks';
 
 type ReduxProps = {
    list: OrderCommon[]
@@ -56,6 +57,7 @@ const Orders = ({
 }: Props) => {
    const [currentTab, setCurrentTab] = useState<'open' | 'close'>('close');
    const [q, setQ] = useState('');
+   const [qDebounce] = useDebounced(q, 1000);
    const [showCancelAll, setShowCancelAll] = useState(false);
 
    const handleShowCancelAll = () => setShowCancelAll(!showCancelAll);
@@ -66,9 +68,9 @@ const Orders = ({
 
    const renderTable = () => {
       if (currentTab === 'close') {
-         return <TableOrderHistory type="all" q={q} />
+         return <TableOrderHistory type="all" q={qDebounce} />
       } else {
-         return <TableOrderHistory type="open" q={q} />
+         return <TableOrderHistory type="open" q={qDebounce} />
       }
    }
 

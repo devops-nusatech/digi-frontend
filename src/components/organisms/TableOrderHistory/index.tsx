@@ -7,13 +7,11 @@ import {
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
 import {
-   Market,
    OrderCommon,
    openOrdersCancelFetch,
    selectCancelAllFetching,
    selectCancelFetching,
    selectCurrentPageIndex,
-   selectMarkets,
    selectOrdersFirstElemIndex,
    selectOrdersHistory,
    selectOrdersHistoryLoading,
@@ -22,10 +20,10 @@ import {
    userOrdersHistoryFetch
 } from 'modules';
 import { RootState } from 'store';
-import { Badge, Button, Decimal, Pagination, Portal, Skeleton } from 'components';
+import { Badge, Button, Decimal, Pagination, Portal, Skeleton, Image } from 'components';
 import { IcEmty, IcShorting } from 'assets';
-import { arrayFilter, localeDate } from 'helpers';
-import { useModal } from 'hooks';
+import { arrayFilter, localeDate, renderCurrencyIcon } from 'helpers';
+import { useMarket, useModal } from 'hooks';
 
 interface TableOrderProps {
    type: 'open' | 'close';
@@ -34,7 +32,6 @@ interface TableOrderProps {
 }
 
 interface ReduxProps {
-   marketsData: Market[];
    pageIndex: number;
    firstElemIndex: number;
    list: OrderCommon[];
@@ -56,7 +53,6 @@ const TableOrder = ({
    type,
    q,
    setDetail,
-   marketsData,
    pageIndex,
    firstElemIndex,
    list,
@@ -70,6 +66,9 @@ const TableOrder = ({
    intl
 }: Props) => {
    const { isShow, toggle } = useModal();
+   const {
+      marketsData
+   } = useMarket();
    const [detailId, setDetailId] = useState<any>();
    useEffect(() => {
       userOrdersHistoryFetch({ type, pageIndex: 0, limit: 25 });
@@ -144,10 +143,22 @@ const TableOrder = ({
                />
             </td>
             <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-               <div className="uppercase">
-                  {marketName.includes('/') ? (
-                     <div>{marketName.split('/').shift()} <span className="text-neutral4">/{marketName.split('/').pop()}</span></div>
-                  ) : marketName}
+               <div className="flex space-x-3 items-center">
+                  <div className="shrink-0 w-8">
+                     <Image
+                        className={`w-full ${renderCurrencyIcon(currentMarket?.base_unit, currentMarket?.iconUrl)?.includes('http') ? 'polygon' : ''}`}
+                        src={renderCurrencyIcon(currentMarket?.base_unit, currentMarket?.iconUrl)}
+                        alt={marketName}
+                        title={marketName}
+                        height={40}
+                        width={40}
+                     />
+                  </div>
+                  <div className="uppercase">
+                     {marketName.includes('/') ? (
+                        <div>{marketName.split('/').shift()} <span className="text-neutral4">/{marketName.split('/').pop()}</span></div>
+                     ) : marketName}
+                  </div>
                </div>
             </td>
             <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
@@ -344,7 +355,6 @@ const TableOrder = ({
 }
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
-   marketsData: selectMarkets(state),
    pageIndex: selectCurrentPageIndex(state),
    firstElemIndex: selectOrdersFirstElemIndex(state, 25),
    list: selectOrdersHistory(state),

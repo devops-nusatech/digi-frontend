@@ -47,13 +47,13 @@ class TradingTradeMyRecentContainer extends React.Component<Props> {
    public componentDidMount() {
       const { currentMarket } = this.props;
       if (currentMarket) {
-         this.props.fetchHistory({ type: 'trades', page: 0, time_from: timeFrom, market: currentMarket.id } as any);
+         this.props.fetchHistory({ core: 'trades', page: 0, time_from: timeFrom, market: currentMarket.id } as any);
       }
    }
 
    public componentWillReceiveProps(next: Props) {
       if (next.currentMarket && this.props.currentMarket !== next.currentMarket) {
-         this.props.fetchHistory({ type: 'trades', page: 0, time_from: timeFrom, market: next.currentMarket.id });
+         this.props.fetchHistory({ core: 'trades', page: 0, time_from: timeFrom, market: next.currentMarket.id });
       }
    }
 

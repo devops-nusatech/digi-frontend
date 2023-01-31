@@ -70,7 +70,7 @@ export const ModalRequired = ({
                   <div className="h-40 w-40 mx-auto p-4 rounded-lg border-2 border-dashed border-primary1">
                      <ImgBarcode className="max-w-full max-h-full" />
                   </div>
-               ) : <ImgTfa className="mx-auto" />
+               ) : !user.otp && <ImgTfa className="mx-auto" />
             }
             <Button
                text={user.level < withdrawLevel ? 'Close' : 'Enable 2FA'}

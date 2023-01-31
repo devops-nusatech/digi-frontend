@@ -8,6 +8,7 @@ import { History, Pagination } from '../../components';
 import { Decimal } from '../../components/Decimal';
 import { localeDate } from '../../helpers';
 import {
+   Core,
    currenciesFetch,
    Currency,
    fetchHistory,
@@ -29,7 +30,7 @@ import { SucceedIcon } from './SucceedIcon';
 
 export interface HistoryProps {
    label: string;
-   type: string;
+   core: Core;
    currency: string;
 }
 
@@ -57,9 +58,9 @@ export class WalletTable extends React.Component<Props> {
       const {
          currencies,
          currency,
-         type,
+         core,
       } = this.props;
-      this.props.fetchHistory({ page: 0, currency, type, limit: 6 });
+      this.props.fetchHistory({ page: 0, currency, core, limit: 6 });
 
       if (!currencies.length) {
          this.props.fetchCurrencies();
@@ -70,11 +71,11 @@ export class WalletTable extends React.Component<Props> {
       const {
          currencies,
          currency,
-         type,
+         core,
       } = this.props;
-      if (nextProps.currency !== currency || nextProps.type !== type) {
+      if (nextProps.currency !== currency || nextProps.core !== core) {
          this.props.resetHistory();
-         this.props.fetchHistory({ page: 0, currency: nextProps.currency, type, limit: 6 });
+         this.props.fetchHistory({ page: 0, currency: nextProps.currency, core, limit: 6 });
       }
 
       if (!currencies.length && nextProps.currencies.length) {
@@ -118,13 +119,13 @@ export class WalletTable extends React.Component<Props> {
    ];
 
    private onClickPrevPage = () => {
-      const { page, type, currency } = this.props;
-      this.props.fetchHistory({ page: Number(page) - 1, currency, type, limit: 6 });
+      const { page, core, currency } = this.props;
+      this.props.fetchHistory({ page: Number(page) - 1, currency, core, limit: 6 });
    };
 
    private onClickNextPage = () => {
-      const { page, type, currency } = this.props;
-      this.props.fetchHistory({ page: Number(page) + 1, currency, type, limit: 6 });
+      const { page, core, currency } = this.props;
+      this.props.fetchHistory({ page: Number(page) + 1, currency, core, limit: 6 });
    };
 
    private retrieveData = list => {
@@ -132,7 +133,7 @@ export class WalletTable extends React.Component<Props> {
          currency,
          currencies,
          intl,
-         type,
+         core,
          wallets,
       } = this.props;
       const { fixed } = wallets.find(w => w.currency === currency) || { fixed: 8 };
@@ -144,7 +145,7 @@ export class WalletTable extends React.Component<Props> {
          return localeDate(a.created_at, 'fullDate') > localeDate(b.created_at, 'fullDate') ? -1 : 1;
       }).map((item, index) => {
          const amount = 'amount' in item ? Number(item.amount) : Number(item.price) * Number(item.volume);
-         const confirmations = type === 'deposits' && item.confirmations;
+         const confirmations = core === 'deposits' && item.confirmations;
          const itemCurrency = currencies && currencies.find(cur => cur.id === currency);
          const blockchainCurrency = itemCurrency?.networks.find(blockchain_cur => blockchain_cur.blockchain_key === item.blockchain_key);
          const minConfirmations = blockchainCurrency?.min_confirmations;

@@ -9,6 +9,7 @@ import {
    Image,
    Direction,
    State,
+   AdibTooltip,
 } from 'components';
 import {
    arrayFilter,
@@ -24,7 +25,7 @@ import {
    Deposit,
    fetchHistory,
    InternalTransfer,
-   Market,
+   OrderSide,
    PrivateTradeEvent,
    Transaction,
    User,
@@ -34,16 +35,17 @@ import {
 } from 'modules';
 import { IcEmty, IcShorting } from 'assets';
 import { toast } from 'react-toastify';
+import { useMarket } from 'hooks';
 
 interface TableActivityProps {
-   type: string;
+   core: 'transactions' | 'deposits' | 'withdraws' | 'transfers' | 'trades';
    search: string;
    market?: string;
+   currency?: string;
    time_from?: string;
    time_to?: string;
    intl: any;
    currencies: Currency[];
-   marketsData: Market[];
    wallets: Wallet[];
    list: WalletHistoryList;
    fetching: boolean;
@@ -60,17 +62,18 @@ interface TableActivityProps {
    direction: Direction;
    user: User;
    state: State
+   type?: OrderSide | ''
 }
 
 export const TableActivity: FC<TableActivityProps> = ({
-   type,
+   core,
    search,
+   currency,
    market,
    time_from,
    time_to,
    intl,
    currencies,
-   marketsData,
    wallets,
    list,
    fetching,
@@ -87,21 +90,25 @@ export const TableActivity: FC<TableActivityProps> = ({
    direction,
    user,
    state,
+   type,
 }) => {
+   const {
+      marketsData
+   } = useMarket();
    useEffect(() => {
       fetchHistory({
          page: 0,
-         type,
+         core,
          limit: 10,
          ...(currencyId && { currency: currencyId })
       });
-   }, [type]);
+   }, [core]);
    useEffect(() => {
       fetchCurrencies();
    }, [!currencies.length]);
 
    const renderHead = () => {
-      switch (type) {
+      switch (core) {
          case 'transactions':
             return (
                <tr>
@@ -346,7 +353,7 @@ export const TableActivity: FC<TableActivityProps> = ({
    };
 
    const renderActivity = (item, index: number) => {
-      switch (type) {
+      switch (core) {
          case 'transactions': {
             const transactions: Transaction = item;
             const {
@@ -399,18 +406,42 @@ export const TableActivity: FC<TableActivityProps> = ({
                      </div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{truncateMiddle(address, 20)}</div>
+                     <AdibTooltip
+                        content={
+                           <div className="font-pop text-xs font-medium leading-none">
+                              {address}
+                           </div>
+                        }
+                     >
+                        <div>{truncateMiddle(address, 20)}</div>
+                     </AdibTooltip>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div className="flex items-center">
-                        <div className="text-neutral4">
-                           {truncateMiddle(txid, 20)}
-                        </div>
-                        <div title="Copy to clipboard" onClick={() => handleCopy(txid)}>
-                           <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 cursor-pointer transition-all duration-300">
-                              <use xlinkHref="#icon-copy" />
-                           </svg>
-                        </div>
+                        <AdibTooltip
+                           content={
+                              <div className="font-pop text-xs font-medium leading-none">
+                                 {txid}
+                              </div>
+                           }
+                        >
+                           <div className="text-neutral4">
+                              {truncateMiddle(txid, 20)}
+                           </div>
+                        </AdibTooltip>
+                        <AdibTooltip
+                           content={
+                              <div className="font-pop text-xs font-medium leading-none">
+                                 Copy to clipboard
+                              </div>
+                           }
+                        >
+                           <div className="cursor-copy" onClick={() => handleCopy(txid)}>
+                              <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 transition-all duration-300">
+                                 <use xlinkHref="#icon-copy" />
+                              </svg>
+                           </div>
+                        </AdibTooltip>
                      </div>
                   </td>
                   <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
@@ -515,19 +546,34 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div className="flex items-center">
-                        <a href={blockchainLink} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline">
-                           {truncateMiddle(txid, 20)}
-                        </a>
+                        <AdibTooltip
+                           content={
+                              <div className="font-pop text-xs font-medium leading-none">
+                                 {txid}
+                              </div>
+                           }
+                        >
+                           <a href={blockchainLink} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline">
+                              {truncateMiddle(txid, 20)}
+                           </a>
+                        </AdibTooltip>
                         {txid && (
-                           <div
-                              title="Copy to clipboard"
-                              className="cursor-copy"
-                              onClick={() => handleCopy(txid)}
+                           <AdibTooltip
+                              content={
+                                 <div className="font-pop text-xs font-medium leading-none">
+                                    Copy to clipboard
+                                 </div>
+                              }
                            >
-                              <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 cursor-pointer transition-all duration-300">
-                                 <use xlinkHref="#icon-copy" />
-                              </svg>
-                           </div>
+                              <div
+                                 className="cursor-copy"
+                                 onClick={() => handleCopy(txid)}
+                              >
+                                 <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 transition-all duration-300">
+                                    <use xlinkHref="#icon-copy" />
+                                 </svg>
+                              </div>
+                           </AdibTooltip>
                         )}
                      </div>
                   </td>
@@ -622,23 +668,49 @@ export const TableActivity: FC<TableActivityProps> = ({
                      <div>{wallet && Decimal.format(amount, currency === 'idr' ? 0 : wallet.fixed, ',')} {String(currency)?.toUpperCase()}</div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>
-                        <a href={blockchainLink} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline">
-                           {truncateMiddle(rid, 20)}
-                        </a>
-                     </div>
+                     <AdibTooltip
+                        content={
+                           <div className="font-pop text-xs font-medium leading-none">
+                              {rid}
+                           </div>
+                        }
+                     >
+                        <div>
+                           <a href={blockchainLink} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline">
+                              {truncateMiddle(rid, 20)}
+                           </a>
+                        </div>
+                     </AdibTooltip>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
                      <div className="flex items-center">
-                        <a href={blockchainTXID} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline" >
-                           {truncateMiddle(blockchain_txid, 20)}
-                        </a>
+                        <AdibTooltip
+                           content={
+                              <div className="font-pop text-xs font-medium leading-none">
+                                 {blockchain_txid}
+                              </div>
+                           }
+                           followCursorProps={false}
+                        >
+                           <a href={blockchainTXID} target="_blank" rel="noopener noreferrer" className="hover:text-primary1 hover:underline" >
+                              {truncateMiddle(blockchain_txid, 20)}
+                           </a>
+                        </AdibTooltip>
                         {blockchain_txid && (
-                           <div title="Copy to clipboard" onClick={() => handleCopy(blockchain_txid)}>
-                              <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 cursor-pointer transition-all duration-300">
-                                 <use xlinkHref="#icon-copy" />
-                              </svg>
-                           </div>
+                           <AdibTooltip
+                              content={
+                                 <div className="font-pop text-xs font-medium leading-none">
+                                    Copy to clipboard
+                                 </div>
+                              }
+                              followCursorProps={false}
+                           >
+                              <div className="cursor-copy" onClick={() => handleCopy(blockchain_txid)}>
+                                 <svg className="ml-2 w-4 h-4 fill-neutral4 hover:fill-neutral2 transition-all duration-300">
+                                    <use xlinkHref="#icon-copy" />
+                                 </svg>
+                              </div>
+                           </AdibTooltip>
                         )}
                      </div>
                   </td>
@@ -650,7 +722,7 @@ export const TableActivity: FC<TableActivityProps> = ({
          }
          case 'transfers': {
             const transfers: InternalTransfer = item
-            const { sender_uid, receiver_uid, created_at, currency, amount, status, direction } = transfers;
+            const { sender_uid, receiver_uid, created_at, currency, amount, status, direction, receiver_username, sender_username } = transfers;
             const wallet = wallets.find(obj => obj.currency === currency);
 
             const formatCurrency = currencies.find(market => market.id === currency)
@@ -732,10 +804,28 @@ export const TableActivity: FC<TableActivityProps> = ({
                      <div>{wallet && Decimal.format(amount, currency === 'idr' ? 0 : wallet.fixed, ',')} {String(currency)?.toUpperCase()}</div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{sender_uid}</div>
+                     <AdibTooltip
+                        content={
+                           <div className="font-pop text-xs font-medium leading-none">
+                              {sender_username}
+                           </div>
+                        }
+                        followCursorProps={false}
+                     >
+                        <div>{sender_uid}</div>
+                     </AdibTooltip>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{receiver_uid}</div>
+                     <AdibTooltip
+                        content={
+                           <div className="font-pop text-xs font-medium leading-none">
+                              {receiver_username}
+                           </div>
+                        }
+                        followCursorProps={false}
+                     >
+                        <div>{receiver_uid}</div>
+                     </AdibTooltip>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div className={`${direction === 'in' ? 'text-primary5' : 'text-primary4'} uppercase`}>{direction}</div>
@@ -749,8 +839,7 @@ export const TableActivity: FC<TableActivityProps> = ({
          case 'trades': {
             const trades: PrivateTradeEvent = item;
             const { created_at, side, market, price, amount, total } = trades;
-            const marketToDisplay = marketsData.find(m => m.id === market) ||
-               { name: '', price_precision: 0, amount_precision: 0 };
+            const marketToDisplay = marketsData.find(m => m.id === market) || { name: '', price_precision: 0, amount_precision: 0 };
             const marketName = marketToDisplay ? marketToDisplay.name : market;
             const sideText = setTradesType(side).text.toLowerCase() ? intl(`page.body.history.trade.content.side.${setTradesType(side).text.toLowerCase()}`) : '';
 
@@ -767,7 +856,21 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                      <div className="flex space-x-3 items-center">
-                        <div>{marketName.split('/').shift()} <span className="text-neutral4">/{marketName.split('/').pop()}</span></div>
+                        <div className="shrink-0 w-8">
+                           <Image
+                              className={`w-full ${renderCurrencyIcon(marketToDisplay?.base_unit, marketToDisplay?.iconUrl)?.includes('http') ? 'polygon' : ''}`}
+                              src={renderCurrencyIcon(marketToDisplay?.base_unit, marketToDisplay?.iconUrl)}
+                              alt={marketName}
+                              title={marketName}
+                              height={40}
+                              width={40}
+                           />
+                        </div>
+                        <div className="uppercase">
+                           {marketName.includes('/') ? (
+                              <div>{marketName.split('/').shift()} <span className="text-neutral4">/{marketName.split('/').pop()}</span></div>
+                           ) : marketName}
+                        </div>
                      </div>
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
@@ -778,7 +881,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                   </td>
                   <td className="py-5 px-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
                      <div className="text-neutral4">
-                        {Decimal.format(total, marketToDisplay.amount_precision, ',')}
+                        {total}
                      </div>
                   </td>
                   <td className="rounded-r-xl py-5 pl-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 text-right transition-all duration-300">
@@ -793,12 +896,12 @@ export const TableActivity: FC<TableActivityProps> = ({
       }
    }
 
-   const onClickPrevPage = () => fetchHistory({ page: Number(page) - 1, type, limit: 10, ...(currencyId && { currency: currencyId }) });
+   const onClickPrevPage = () => fetchHistory({ page: Number(page) - 1, core, limit: 10, ...(currencyId && { currency: currencyId }) });
 
-   const onClickNextPage = () => fetchHistory({ page: Number(page) + 1, type, limit: 10, ...(currencyId && { currency: currencyId }) });
+   const onClickNextPage = () => fetchHistory({ page: Number(page) + 1, core, limit: 10, ...(currencyId && { currency: currencyId }) });
 
    const formatState = () => {
-      switch (type) {
+      switch (core) {
          case 'deposits':
             switch (state) {
                case 'succeed':
@@ -833,13 +936,13 @@ export const TableActivity: FC<TableActivityProps> = ({
 
    const handleFilter = () => fetchHistory({
       page: 0,
-      type,
+      core,
       limit: 10,
       ...(currencyId && { currency: currencyId }),
-      ...(type !== 'transfers' && { time_from, time_to }),
-      // ...(type === 'transfers' && { sender: user.uid }),
-      ...((advanceFilter && type !== 'trades') && { currency: market, state: formatState() }),
-      ...((advanceFilter && type === 'trades') && { market })
+      ...(core !== 'transfers' && { time_from, time_to }),
+      // ...(core === 'transfers' && { sender: user.uid }),
+      ...((advanceFilter && core !== 'trades') && { currency, state: formatState() }),
+      ...((advanceFilter && core === 'trades') && { market, type })
    });
 
    useEffect(() => {

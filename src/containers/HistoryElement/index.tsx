@@ -15,6 +15,7 @@ import {
    truncateMiddle,
 } from '../../helpers';
 import {
+   Core,
    currenciesFetch,
    Currency,
    fetchHistory,
@@ -34,7 +35,7 @@ import {
 } from 'modules';
 
 interface HistoryProps {
-   type: string;
+   core: Core;
 }
 
 interface ReduxProps {
@@ -58,8 +59,8 @@ type Props = HistoryProps & ReduxProps & DispatchProps & IntlProps;
 
 class HistoryComponent extends React.Component<Props> {
    public componentDidMount() {
-      const { currencies, type } = this.props;
-      this.props.fetchHistory({ page: 0, type, limit: 25 });
+      const { currencies, core } = this.props;
+      this.props.fetchHistory({ page: 0, core, limit: 25 });
 
       if (currencies.length === 0) {
          this.props.fetchCurrencies();
@@ -87,11 +88,11 @@ class HistoryComponent extends React.Component<Props> {
    }
 
    public renderContent = () => {
-      const { type, firstElemIndex, lastElemIndex, page, nextPageExists } = this.props;
+      const { core, firstElemIndex, lastElemIndex, page, nextPageExists } = this.props;
 
       return (
          <React.Fragment>
-            <History headers={this.renderHeaders(type)} data={this.retrieveData()} />
+            <History headers={this.renderHeaders(core)} data={this.retrieveData()} />
             <Pagination
                firstElemIndex={firstElemIndex}
                lastElemIndex={lastElemIndex}
@@ -105,13 +106,13 @@ class HistoryComponent extends React.Component<Props> {
    };
 
    private onClickPrevPage = () => {
-      const { page, type } = this.props;
-      this.props.fetchHistory({ page: Number(page) - 1, type, limit: 25 });
+      const { page, core } = this.props;
+      this.props.fetchHistory({ page: Number(page) - 1, core, limit: 25 });
    };
 
    private onClickNextPage = () => {
-      const { page, type } = this.props;
-      this.props.fetchHistory({ page: Number(page) + 1, type, limit: 25 });
+      const { page, core } = this.props;
+      this.props.fetchHistory({ page: Number(page) + 1, core, limit: 25 });
    };
 
    private renderHeaders = (type: string) => {
@@ -149,10 +150,10 @@ class HistoryComponent extends React.Component<Props> {
 
 
    private retrieveData = () => {
-      const { type, list } = this.props;
+      const { core, list } = this.props;
 
       return [...list]
-         .map(item => this.renderTableRow(type, item));
+         .map(item => this.renderTableRow(core, item));
    };
 
    private renderTableRow = (type, item) => {

@@ -18,6 +18,7 @@ import {
    AdibDropdown,
    Button,
    ComboboxCurrency,
+   ComboboxMarket,
    Dialog,
    Export,
    InputGroup,
@@ -28,7 +29,7 @@ import {
 } from 'components';
 import {
    Currency,
-   Market,
+   OrderSide,
    RootState,
    Sonic,
    User,
@@ -44,7 +45,6 @@ import {
    selectHistory,
    selectHistoryLoading,
    selectLastElemIndex,
-   selectMarkets,
    selectNextPageExists,
    selectSonic,
    selectUserInfo,
@@ -52,6 +52,7 @@ import {
    walletsFetch
 } from 'modules';
 import { DEFAULT_WALLET } from '../../../constants';
+import { useDebounced } from 'hooks';
 
 export type Direction = 'IN' | 'OUT' | '';
 export type State = 'succeed' | 'pending' | 'failed' | 'refund';
@@ -60,7 +61,9 @@ type FilterState = {
    startDate: Date;
    endDate: Date;
    currency: string;
+   market: string;
    state: State;
+   type: OrderSide | '';
    advanceFilter: boolean;
    isApply: boolean;
    direction: Direction;
@@ -70,7 +73,6 @@ interface ReduxProps {
    user: User;
    sonic: Sonic;
    currencies: Currency[];
-   marketsData: Market[];
    wallets: Wallet[];
    list: WalletHistoryList;
    fetching: boolean;
@@ -81,7 +83,6 @@ interface ReduxProps {
 }
 interface DispatchProps {
    resetHistory: typeof resetHistory;
-   fetchMarkets: typeof marketsFetch;
    fetchWallets: typeof walletsFetch;
    fetchHistory: typeof fetchHistory;
    fetchCurrencies: typeof currenciesFetch;
@@ -104,7 +105,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    user,
    sonic,
    currencies,
-   marketsData,
    wallets,
    list,
    fetching,
@@ -113,7 +113,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    lastElemIndex,
    nextPageExists,
    resetHistory,
-   fetchMarkets,
    fetchWallets,
    fetchHistory,
    fetchCurrencies,
@@ -123,6 +122,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
 
    const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(4) ? 1 : hiddenCategory?.includes(3) ? 4 : 0);
    const [q, setQ] = useState('');
+   const [qDebounce] = useDebounced(q, 1000);
 
    const [showFilter, setShowFilter] = useState(false);
    const [showExport, setShowExport] = useState(false);
@@ -131,20 +131,19 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
       startDate: new Date((new Date).getFullYear(), (new Date).getMonth(), 1),
       endDate: new Date(),
       currency: defaultWallet?.currency || 'usdt',
+      market: '',
       state: 'succeed',
+      type: '',
       advanceFilter: false,
       isApply: false,
       direction: ''
    });
-   const { startDate, endDate, currency, state, isApply, advanceFilter, direction } = filter;
+   const { startDate, endDate, currency, market, state, isApply, advanceFilter, direction, type } = filter;
 
    const time_from = Math.floor(new Date(startDate).getTime() / 1000).toString()
    const time_to = Math.floor(new Date(endDate).getTime() / 1000).toString()
 
    useEffect(() => {
-      if (!marketsData.length) {
-         fetchMarkets();
-      }
       if (!wallets.length) {
          fetchWallets();
       }
@@ -171,8 +170,14 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    const handleChangeAsset = (currency: string) => {
       setFilter({ ...filter, currency })
    }
+   const handleChangeMarket = (market: string) => {
+      setFilter({ ...filter, market })
+   }
    const handleChangeState = (state: State) => {
       setFilter({ ...filter, state, advanceFilter: true })
+   }
+   const handleChangeType = (type: OrderSide | '') => {
+      setFilter({ ...filter, type })
    }
    const handleApply = () => {
       setFilter({ ...filter, isApply: !isApply });
@@ -197,11 +202,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
       switch (activeTab) {
          case 1:
             return <TableActivity
-               type="deposits"
-               search={q}
+               core="deposits"
+               search={qDebounce}
                intl={translate}
                currencies={currencies}
-               marketsData={marketsData}
                wallets={wallets}
                list={list}
                fetching={fetching}
@@ -216,7 +220,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                time_to={time_to}
                isApply={isApply}
                handleApply={handleApply}
-               market={currency}
+               currency={currency}
                state={state}
                currencyId={currencyId}
                direction={direction}
@@ -224,11 +228,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
             />
          case 2:
             return <TableActivity
-               type="withdraws"
-               search={q}
+               core="withdraws"
+               search={qDebounce}
                intl={translate}
                currencies={currencies}
-               marketsData={marketsData}
                wallets={wallets}
                list={list}
                fetching={fetching}
@@ -243,7 +246,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                time_to={time_to}
                isApply={isApply}
                handleApply={handleApply}
-               market={currency}
+               currency={currency}
                state={state}
                currencyId={currencyId}
                direction={direction}
@@ -251,11 +254,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
             />
          case 3:
             return <TableActivity
-               type="transfers"
-               search={q}
+               core="transfers"
+               search={qDebounce}
                intl={translate}
                currencies={currencies}
-               marketsData={marketsData}
                wallets={wallets}
                list={list}
                fetching={fetching}
@@ -270,7 +272,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                time_to={time_to}
                isApply={isApply}
                handleApply={handleApply}
-               market={currency}
+               currency={currency}
                state={state}
                currencyId={currencyId}
                direction={direction}
@@ -278,11 +280,10 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
             />
          case 4:
             return <TableActivity
-               type="trades"
-               search={q}
+               core="trades"
+               search={qDebounce}
                intl={translate}
                currencies={currencies}
-               marketsData={marketsData}
                wallets={wallets}
                list={list}
                fetching={fetching}
@@ -297,19 +298,20 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                time_to={time_to}
                isApply={isApply}
                handleApply={handleApply}
-               market={currency}
+               currency={currency}
+               market={market}
                state={state}
+               type={type}
                currencyId={currencyId}
                direction={direction}
                user={user}
             />
          default:
             return <TableActivity
-               type="transactions"
-               search={q}
+               core="transactions"
+               search={qDebounce}
                intl={translate}
                currencies={currencies}
-               marketsData={marketsData}
                wallets={wallets}
                list={list}
                fetching={fetching}
@@ -324,7 +326,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                time_to={time_to}
                isApply={isApply}
                handleApply={handleApply}
-               market={currency}
+               currency={currency}
                state={state}
                currencyId={currencyId}
                direction={direction}
@@ -333,7 +335,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
       }
    };
 
-   const type = activeTab === 0
+   const typeName = activeTab === 0
       ? 'transactions' : activeTab === 1
          ? 'deposit' : activeTab === 2
             ? 'withdrawls' : activeTab === 3
@@ -438,7 +440,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
             isOpen={showFilter}
             setIsOpen={() => {
                setShowFilter(false);
-               setFilter({ ...filter, advanceFilter: false, direction: '' });
+               setFilter({ ...filter, advanceFilter: false, direction: '', type: '' });
             }}
             title="Filter"
          >
@@ -503,28 +505,33 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                      </div>
                   )}
                   <div className={`space-y-8 ${advanceFilter && activeTab === 3 ? '' : advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 -translate-y-4 !mt-0 invisible'} transition-all duration-300`}>
-                     <ComboboxCurrency onChange={handleChangeAsset} />
-                     {activeTab !== 3 ? (
+                     {activeTab === 4 && (
+                        <ComboboxMarket onChange={handleChangeMarket} />
+                     )}
+                     {activeTab !== 4 && (
+                        <ComboboxCurrency onChange={handleChangeAsset} />
+                     )}
+                     {(activeTab !== 3 && activeTab !== 4) && (
                         <AdibDropdown
                            label="State type"
                            data={renderStateType()}
                            onChange={handleChangeState}
                         />
-                     ) : (
-                        <div className="relative space-y-2.5 hidden">
-                           <Label label="Direction" />
+                     )} {activeTab === 4 && (
+                        <div className="relative space-y-2.5">
+                           <Label label="Order type" />
                            <div className="flex space-x-3">
                               <Nav
-                                 title="IN"
+                                 title="BUY"
                                  theme="grey"
-                                 onClick={() => setFilter({ ...filter, direction: 'IN' })}
-                                 isActive={direction === 'IN'}
+                                 onClick={() => handleChangeType('buy')}
+                                 isActive={type === 'buy'}
                               />
                               <Nav
-                                 title="OUT"
+                                 title="SELL"
                                  theme="grey"
-                                 onClick={() => setFilter({ ...filter, direction: 'OUT' })}
-                                 isActive={direction === 'OUT'}
+                                 onClick={() => handleChangeType('sell')}
+                                 isActive={type === 'sell'}
                               />
                            </div>
                         </div>
@@ -550,12 +557,12 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                      </svg>
                   </div>
                   <div className="text-center text-base leading-normal font-medium">
-                     Are you sure you want to download the filename <strong className="font-bold capitalize text-primary4 tracking-wider">{type}</strong> ?
+                     Are you sure you want to download the filename <strong className="font-bold capitalize text-primary4 tracking-wider">{typeName}</strong> ?
                   </div>
                   <Export
                      title="Continue"
                      csvData={list}
-                     fileName={type}
+                     fileName={typeName}
                      onClick={handleShowExport}
                   />
                </div>
@@ -569,7 +576,6 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
    sonic: selectSonic(state),
    currencies: selectCurrencies(state),
-   marketsData: selectMarkets(state),
    wallets: selectWallets(state),
    list: selectHistory(state),
    fetching: selectHistoryLoading(state),

@@ -26,7 +26,7 @@ const HistoryTable = (props: any) => {
 
    useWalletsFetch();
    useCurrenciesFetch();
-   useHistoryFetch({ type: props.type, currency: props.currency, limit: DEFAULT_LIMIT, page: currentPage });
+   useHistoryFetch({ core: props.core, currency: props.currency, limit: DEFAULT_LIMIT, page: currentPage });
 
    const onClickPrevPage = () => {
       setCurrentPage(Number(page) - 1);

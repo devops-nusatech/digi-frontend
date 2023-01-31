@@ -479,13 +479,7 @@ const WithdrawalFC = memo(({
                         key={userWallet.currency}
                         style={{ transition: 'background .2s' }}
                         className="group"
-                        onClick={() => {
-                           if ((userWallet.type === 'fiat' && Number(memberLevels?.withdraw.minimum_level) < 4)) {
-                              toggle();
-                           } else {
-                              handleToStepBeneficiary(userWallet.currency);
-                           }
-                        }}
+                        onClick={() => handleToStepBeneficiary(userWallet.currency)}
                      >
                         <td className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
                            <div className="flex space-x-2 items-center">

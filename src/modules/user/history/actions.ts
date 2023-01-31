@@ -1,4 +1,4 @@
-import { CommonError } from '../../types';
+import { CommonError, OrderSide } from '../../types';
 import {
    HISTORY_DATA,
    HISTORY_ERROR,
@@ -9,10 +9,13 @@ import {
 } from './constants';
 import { PrivateTradeEvent, WalletHistoryList } from './types';
 
+export type Core = 'transactions' | 'deposits' | 'withdraws' | 'transfers' | 'trades';
+
 export interface HistoryFetchPayload {
    currency?: string;
    page: number;
-   type: string;
+   core: Core;
+   type?: OrderSide | '';
    limit?: number;
    market?: string;
    time_from?: string;
