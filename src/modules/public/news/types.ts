@@ -40,11 +40,12 @@ export interface NewsFetch {
    type: typeof NEWS_FETCH;
    payload?: {
       limit?: number;
-      next?: number;
-      page?: number;
-      pages?: number;
-      prev?: number | null;
-      total?: number;
+      tag?: string;
+      // next?: number;
+      // page?: number;
+      // pages?: number;
+      // prev?: number | null;
+      // total?: number;
    }
 }
 

@@ -7,6 +7,7 @@ export * from './useDocumentTitle';
 export * from './useHistoryFetch';
 export * from './useMarketsFetch';
 export * from './useNewsFetch';
+export * from './useNews2Fetch';
 export * from './usePrevious';
 export * from './useResetCaptchaState';
 export * from './useSetMobileDevice';

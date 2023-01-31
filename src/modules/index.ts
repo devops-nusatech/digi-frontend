@@ -14,6 +14,7 @@ import { KlineState, rootKlineFetchSaga } from './public/kline';
 import { MarketsState, rootMarketsSaga } from './public/markets';
 import { MemberLevelsState, rootMemberLevelsSaga } from './public/memberLevels';
 import { NewsState, rootNewsSaga } from './public/news';
+import { News2State, rootNews2Saga } from './public/news2';
 import { DepthIncrementState, DepthState, OrderBookState, rootOrderBookSaga } from './public/orderBook';
 import { RangerState } from './public/ranger/reducer';
 import { RecentTradesState, rootRecentTradesSaga } from './public/recentTrades';
@@ -57,6 +58,7 @@ export * from './public/kline';
 export * from './public/markets';
 export * from './public/memberLevels';
 export * from './public/news';
+export * from './public/news2';
 export * from './public/orderBook';
 export * from './public/recentTrades';
 export * from './public/tradingFees';
@@ -99,6 +101,7 @@ export interface RootState {
       markets: MarketsState;
       memberLevels: MemberLevelsState;
       news: NewsState;
+      news2: News2State;
       orderBook: OrderBookState;
       ranger: RangerState;
       recentTrades: RecentTradesState;
@@ -161,6 +164,7 @@ export function* rootSaga() {
       call(rootMarketsSaga),
       call(rootMemberLevelsSaga),
       call(rootNewsSaga),
+      call(rootNews2Saga),
       call(rootOpenOrdersSaga),
       call(rootOrderBookSaga),
       call(rootOrdersHistorySaga),

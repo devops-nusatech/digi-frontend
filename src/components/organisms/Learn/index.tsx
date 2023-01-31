@@ -19,7 +19,7 @@ import { localeDate } from 'helpers';
 
 const LearnMemo: FC = () => {
    const { push } = useHistory();
-   useNewsFetch();
+   useNewsFetch(25, 'digiassetnews');
    const newsLoadig = useSelector(selectNewsLoading);
    const news = useSelector(selectNews);
 

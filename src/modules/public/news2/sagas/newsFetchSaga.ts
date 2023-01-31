@@ -1,18 +1,18 @@
 import { call, put } from 'redux-saga/effects';
-import { newsData, newsError } from '../actions';
-import { News, NewsFetch } from '../types';
-import { sendError } from 'modules';
+import { news2Data, news2Error } from '../actions';
+import { News2Fetch } from '../types';
+import { sendError, News } from 'modules';
 import axios from 'axios';
 
-const fetchNews = async (action: NewsFetch['payload']) => {
-   const apiKey = '3c91665a1b107878484d3b3316';
-   const url = `https://news.digiassetindo.com/ghost/api/v3/content/posts/?key=${apiKey}&limit=${action && action.limit
+const fetchNews = async (action: News2Fetch['payload']) => {
+   const apiKey2 = '42540eb9712803a79aaeb06f65';
+   const url = `https://www.digiassetindo.com/blog/ghost/api/v3/content/posts/?key=${apiKey2}&limit=${action && action.limit
       }&tag=${action && action.tag}`;
    const { data } = await axios.get<News>(url);
    return data;
 };
 
-export function* newsFetchSaga(action: NewsFetch) {
+export function* news2FetchSaga(action: News2Fetch) {
    try {
       const { posts }: { posts: News[] } = yield call(fetchNews, {
          ...(typeof action.payload?.limit !== 'undefined' && {
@@ -22,14 +22,14 @@ export function* newsFetchSaga(action: NewsFetch) {
             tag: action.payload?.tag,
          }),
       });
-      yield put(newsData(posts));
+      yield put(news2Data(posts));
    } catch (error) {
       yield put(
          sendError({
             error,
             processingType: 'alert',
             extraOptions: {
-               actionError: newsError,
+               actionError: news2Error,
             },
          })
       );

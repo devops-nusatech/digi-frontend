@@ -1,70 +1,35 @@
 import React, {
+   useEffect,
    useState
 } from 'react';
-import { Accordion, AdibTooltip, Nav } from 'components';
-import { useScrollUp } from 'hooks';
+import { Accordion, AccordionData, AdibTooltip, Nav } from 'components';
+import { useNews2Fetch, useScrollUp } from 'hooks';
 import {
    illusContact,
    illusContact2
 } from 'assets';
 import { openInNewTab } from 'helpers';
 
+type State = 'general' | 'launchpad' | 'airdrop' | 'p2p';
+
 export const Contact = () => {
    useScrollUp();
-   const [tab, setTab] = useState(0);
-   const accordionItems = [
-      {
-         title: 'Accordion Item #1',
-         content: (
-            <div>
-               <strong>This is the first item's accordion body.</strong> It is hidden
-               by default, but shown when title is clicked. It will also be hidden if
-               the title is clicked again or when another item is clicked. You can
-               pass HTML tags in the content such as <u>underline tag</u>,{' '}
-               <i>italic</i>, or even another list like this:
-               <ul>
-                  <li>Bread</li>
-                  <li>Eggs</li>
-                  <li>Milk</li>
-               </ul>
-            </div>
-         ),
-      },
-      {
-         title: 'Accordion Item #2',
-         content: (
-            <div>
-               <strong>This is the second item's accordion body.</strong> It is
-               hidden by default, but shown when title is clicked. It will also be
-               hidden if the title is clicked again or when another item is clicked.
-               You can pass HTML tags in the content such as <u>underline tag</u>,{' '}
-               <i>italic</i>, or even another list like this:
-               <ul>
-                  <li>Bread</li>
-                  <li>Eggs</li>
-                  <li>Milk</li>
-               </ul>
-            </div>
-         ),
-      },
-      {
-         title: 'Accordion Item #3',
-         content: (
-            <div>
-               <strong>This is the third item's accordion body.</strong> It is hidden
-               by default, but shown when title is clicked. It will also be hidden if
-               the title is clicked again or when another item is clicked. You can
-               pass HTML tags in the content such as <u>underline tag</u>,{' '}
-               <i>italic</i>, or even another list like this:
-               <ul>
-                  <li>Bread</li>
-                  <li>Eggs</li>
-                  <li>Milk</li>
-               </ul>
-            </div>
-         ),
-      },
-   ];
+
+   const [tag, setTag] = useState<State>('general');
+
+   const {
+      news
+   } = useNews2Fetch(25, tag);
+
+   const accordionItems: AccordionData[] = news.map(e => ({
+      title: e.meta_title,
+      content: <div dangerouslySetInnerHTML={{ __html: e.html }} />,
+   }));
+
+   useEffect(() => {
+      console.log('accordionItems', news)
+   }, [tag]);
+
 
    const renderSocialIcon = (name: string, url: string) => (
       <AdibTooltip
@@ -130,23 +95,23 @@ export const Contact = () => {
                   <div className="hidden md:flex justify-center space-x-3 mb-10">
                      <Nav
                         title="General"
-                        isActive={tab === 0}
-                        onClick={() => setTab(0)}
+                        isActive={tag === 'general'}
+                        onClick={() => setTag('general')}
                      />
                      <Nav
                         title="Louncpad"
-                        isActive={tab === 1}
-                        onClick={() => setTab(1)}
+                        isActive={tag === 'launchpad'}
+                        onClick={() => setTag('launchpad')}
                      />
                      <Nav
                         title="Airdrop"
-                        isActive={tab === 2}
-                        onClick={() => setTab(2)}
+                        isActive={tag === 'airdrop'}
+                        onClick={() => setTag('airdrop')}
                      />
                      <Nav
                         title="P2P"
-                        isActive={tab === 3}
-                        onClick={() => setTab(3)}
+                        isActive={tag === 'p2p'}
+                        onClick={() => setTag('p2p')}
                      />
                   </div>
                   <div className="md:hidden">
