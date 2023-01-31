@@ -56,7 +56,7 @@ type Props = OrdersProps & ReduxProps & DispatchProps & IntlProps;
 class OrdersComponent extends React.PureComponent<Props, OrdersState>  {
    public componentDidMount() {
       const { type } = this.props;
-      this.props.userOrdersHistoryFetch({ pageIndex: 0, type, limit: 25 });
+      this.props.userOrdersHistoryFetch({ pageIndex: 0, core: type, limit: 25 });
    }
 
    public render() {
@@ -98,12 +98,12 @@ class OrdersComponent extends React.PureComponent<Props, OrdersState>  {
 
    private onClickPrevPage = () => {
       const { pageIndex, type } = this.props;
-      this.props.userOrdersHistoryFetch({ pageIndex: Number(pageIndex) - 1, type, limit: 25 });
+      this.props.userOrdersHistoryFetch({ pageIndex: Number(pageIndex) - 1, core: type, limit: 25 });
    };
 
    private onClickNextPage = () => {
       const { pageIndex, type } = this.props;
-      this.props.userOrdersHistoryFetch({ pageIndex: Number(pageIndex) + 1, type, limit: 25 });
+      this.props.userOrdersHistoryFetch({ pageIndex: Number(pageIndex) + 1, core: type, limit: 25 });
    };
 
    private renderHeaders = () => {

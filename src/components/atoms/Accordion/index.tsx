@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { AccordionItem } from 'components';
 import { AccordionData } from '../types';
+import { Item } from './Item';
 
 type AccordionProps = {
    items: Array<AccordionData>
@@ -13,9 +13,10 @@ export const Accordion = ({ items }: AccordionProps) => {
    return (
       <ul>
          {items.map((item, index) => (
-            <AccordionItem
+            <Item
                key={index}
                data={item}
+               no={index + 1}
                isOpen={index === currentIndex}
                onClick={() => handleOpen(index)}
             />

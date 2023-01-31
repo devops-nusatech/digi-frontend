@@ -1,5 +1,7 @@
 import { DropdownMenu } from 'components/atoms'
+import { selectSonic } from 'modules';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 interface DropdownListFlag {
    isOpen: boolean;
@@ -8,6 +10,7 @@ interface DropdownListFlag {
 }
 
 export const DropdownListFlag = ({ isOpen, langActive, onSelect }: DropdownListFlag) => {
+   const sonic = useSelector(selectSonic);
    const activeClassLang = (id: string) =>
       langActive === id
          ? 'text-neutral2 dark:text-neutral8'
@@ -42,15 +45,15 @@ export const DropdownListFlag = ({ isOpen, langActive, onSelect }: DropdownListF
                   Currency
                </div>
                <div className="flex flex-col">
-                  <div className="relative py-3 pl-7 font-dm leading-custom3 font-bold text-neutral2 cursor-pointer [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3 transition-colors duration-200 before:absolute before:content-[''] before:top-1/2 before:left-1.5 before:w-2 before:h-2 before:-translate-y-1/2 before:rounded-full before:bg-neutral3">
-                     IDR
+                  <div className="relative py-3 pl-7 font-dm leading-custom3 font-bold text-neutral2 dark:text-neutral8 cursor-pointer [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3 transition-colors duration-200 before:absolute before:content-[''] before:top-1/2 before:left-1.5 before:w-2 before:h-2 before:-translate-y-1/2 before:rounded-full before:bg-neutral3 before:dark:bg-neutral6">
+                     {sonic?.peatio_platform_currency?.toUpperCase()}
                   </div>
-                  <div className="relative py-3 pl-7 font-dm leading-custom3 font-bold text-neutral4 hover:text-neutral2 dark:hover:text-neutral8 cursor-pointer [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3 transition-colors duration-200 before:absolute before:content-[''] before:top-1/2 before:left-1.5 before:w-2 before:h-2 before:-translate-y-1/2 before:rounded-full before:bg-neutral6 before:hover:bg-neutral3 before:dark:bg-neutral3  before:dark:hover:bg-neutral6">
+                  {/* <div className="relative py-3 pl-7 font-dm leading-custom3 font-bold text-neutral4 hover:text-neutral2 dark:hover:text-neutral8 cursor-pointer [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3 transition-colors duration-200 before:absolute before:content-[''] before:top-1/2 before:left-1.5 before:w-2 before:h-2 before:-translate-y-1/2 before:rounded-full before:bg-neutral6 before:hover:bg-neutral3 before:dark:bg-neutral3  before:dark:hover:bg-neutral6">
                      USDT
                   </div>
                   <div className="relative py-3 pl-7 font-dm leading-custom3 font-bold text-neutral4 hover:text-neutral2 dark:hover:text-neutral8 cursor-pointer [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3 transition-colors duration-200 before:absolute before:content-[''] before:top-1/2 before:left-1.5 before:w-2 before:h-2 before:-translate-y-1/2 before:rounded-full before:bg-neutral6 before:hover:bg-neutral3 before:dark:bg-neutral3  before:dark:hover:bg-neutral6">
                      USDC
-                  </div>
+                  </div> */}
                </div>
             </div>
          </div>

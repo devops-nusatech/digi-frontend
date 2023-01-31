@@ -36,7 +36,6 @@ export * from './Label';
 export * from './LabelAlt';
 export * from './GenericSelect';
 export * from './Accordion';
-export * from './AccordionItem';
 export * from './Listbox';
 export * from './CellDetail';
 export * from './PriceChart';

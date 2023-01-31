@@ -329,7 +329,7 @@ const HeaderFC = ({
                               </div>
                               <DropdownListProfile
                                  isOpen={dropDwonProfile}
-                                 isDarkMode={isDarkMode}
+                                 headerFull={shouldRenderHeaderFull}
                                  handleSetShowModalConfirmLogout={handleSetShowModalConfirmLogout}
                                  translate={translate}
                               />

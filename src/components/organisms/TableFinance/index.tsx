@@ -504,14 +504,14 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                         </div>
                      </div>
                   )}
-                  <div className={`space-y-8 ${advanceFilter && activeTab === 3 ? '' : advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 -translate-y-4 !mt-0 invisible'} transition-all duration-300`}>
+                  <div className={`space-y-8 ${advanceFilter && (activeTab === 3 || activeTab === 0) ? '' : advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 -translate-y-4 !mt-0 invisible'} transition-all duration-300`}>
                      {activeTab === 4 && (
                         <ComboboxMarket onChange={handleChangeMarket} />
                      )}
                      {activeTab !== 4 && (
                         <ComboboxCurrency onChange={handleChangeAsset} />
                      )}
-                     {(activeTab !== 3 && activeTab !== 4) && (
+                     {(activeTab === 1 || activeTab === 2) && (
                         <AdibDropdown
                            label="State type"
                            data={renderStateType()}
@@ -519,7 +519,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                         />
                      )} {activeTab === 4 && (
                         <div className="relative space-y-2.5">
-                           <Label label="Order type" />
+                           <Label label="Order side" />
                            <div className="flex space-x-3">
                               <Nav
                                  title="BUY"

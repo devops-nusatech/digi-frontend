@@ -123,7 +123,7 @@ export const ComboboxMarket: FC<ComboboxMarketProps> = ({
          onChange={handleChangeMarket}
       >
          <div className="relative">
-            <Label label="Select currency" />
+            <Label label="Select market" />
             <div className="relative mt-2.5">
                <Combobox.Input
                   className={({ open }) => `px-3.5 rounded-xl font-medium leading-12 outline-none border-2 ${open ? 'text-primary1 border-neutral4 dark:border-neutral4' : 'border-neutral6 dark:border-neutral3'} bg-none bg-transparent shadow-none transition ease-in-out duration-300 pr-12 h-12 w-full truncate`}

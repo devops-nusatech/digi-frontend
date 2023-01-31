@@ -3,14 +3,19 @@ import { DropdownMenu, ListDropdown } from 'components';
 
 interface DropdownListProfileProps {
    isOpen: boolean;
-   isDarkMode: boolean;
+   headerFull: boolean;
    handleSetShowModalConfirmLogout: () => void;
    translate: (id: string) => string;
 }
 
-export const DropdownListProfile = ({ isOpen, isDarkMode, handleSetShowModalConfirmLogout, translate }: DropdownListProfileProps) => {
+export const DropdownListProfile = ({
+   isOpen,
+   headerFull,
+   handleSetShowModalConfirmLogout,
+   translate
+}: DropdownListProfileProps) => {
    return (
-      <DropdownMenu isOpen={isOpen} className="py-1">
+      <DropdownMenu isOpen={isOpen} className={`py-1 ${!headerFull ? '!-translate-x-60' : ''}`}>
          <ListDropdown
             to="/profile"
             icon="user"

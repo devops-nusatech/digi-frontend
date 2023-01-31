@@ -9,27 +9,27 @@ import { ModalExpiredSession, Loader, ScreenMobile } from 'components';
 import { WalletsFetch } from 'containers';
 import { toggleColorTheme } from 'helpers';
 import {
-   ChangeForgottenPasswordMobileScreen,
-   ConfirmMobileScreen,
-   EmailVerificationMobileScreen,
-   ForgotPasswordMobileScreen,
+   // ChangeForgottenPasswordMobileScreen,
+   // ConfirmMobileScreen,
+   // EmailVerificationMobileScreen,
+   // ForgotPasswordMobileScreen,
    // LandingScreenMobile,
-   OrdersMobileScreen,
-   ProfileAccountActivityMobileScreen,
-   ProfileApiKeysMobileScreen,
-   ProfileAuthMobileScreen,
-   ProfileChangePasswordMobileScreen,
-   ProfileLanguageMobileScreen,
-   ProfileMobileScreen,
-   ProfileThemeMobileScreen,
-   ProfileVerificationMobileScreen,
-   SelectedWalletMobileScreen,
-   SignInMobileScreen,
-   SignUpMobileScreen,
-   TradingScreenMobile,
-   WalletDeposit,
-   WalletsMobileScreen,
-   WalletWithdraw,
+   // OrdersMobileScreen,
+   // ProfileAccountActivityMobileScreen,
+   // ProfileApiKeysMobileScreen,
+   // ProfileAuthMobileScreen,
+   // ProfileChangePasswordMobileScreen,
+   // ProfileLanguageMobileScreen,
+   // ProfileMobileScreen,
+   // ProfileThemeMobileScreen,
+   // ProfileVerificationMobileScreen,
+   // SelectedWalletMobileScreen,
+   // SignInMobileScreen,
+   // SignUpMobileScreen,
+   // TradingScreenMobile,
+   // WalletDeposit,
+   // WalletsMobileScreen,
+   // WalletWithdraw,
 } from 'mobile/screens';
 import {
    configsFetch,
@@ -263,7 +263,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
          return (
             <main className={'flex flex-col grow'}>
                <Switch>
-                  <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/signin" component={SignInMobileScreen} />
+                  {/* <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/signin" component={SignInMobileScreen} />
                   <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/signup" component={SignUpMobileScreen} />
                   <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/forgot_password" component={ForgotPasswordMobileScreen} />
                   <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/accounts/password_reset" component={ChangeForgottenPasswordMobileScreen} />
@@ -283,10 +283,11 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/profile/verification" component={ProfileVerificationMobileScreen} />
                   <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/profile/theme" component={ProfileThemeMobileScreen} />
                   <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/profile" component={ProfileMobileScreen} />
-                  <Route exact={true} path="/trading/:market?" component={TradingScreenMobile} />
+                  <Route exact={true} path="/trading/:market?" component={TradingScreenMobile} /> */}
                   {showLanding() && <Route exact={true} path="/" component={ScreenMobile} />}
                   {/* {showLanding() && <Route exact={true} path="/" component={LandingScreenMobile} />} */}
-                  <Route path="**"><Redirect to="/trading/" /></Route>
+                  {/* <Route path="**"><Redirect to="/trading/" /></Route> */}
+                  <Route path="**"><Redirect to="/" /></Route>
                </Switch>
                {isLoggedIn && <WalletsFetch />}
                {isShownExpSessionModal && this.handleRenderExpiredSessionModal()}
@@ -307,7 +308,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/forgot_password" component={ForgotPassword} />
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/accounts/password_reset" component={ChangeForgotPassword} />
                <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/email-verification" component={EmailVerification} />
-               <Route path="/contact" component={Contact} />
+               <Route path="/faq" component={Contact} />
                <Route path="/404" component={RestrictedScreen} />
                <Route path="/500" component={MaintenanceScreen} />
                <Route exact={true} path="/trading/:market?" component={Trading} />

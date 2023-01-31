@@ -7,7 +7,10 @@ import {
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
 import {
+   OrderBy,
    OrderCommon,
+   OrderSide,
+   OrderType,
    openOrdersCancelFetch,
    selectCancelAllFetching,
    selectCancelFetching,
@@ -26,9 +29,18 @@ import { arrayFilter, localeDate, renderCurrencyIcon } from 'helpers';
 import { useMarket, useModal } from 'hooks';
 
 interface TableOrderProps {
-   type: 'open' | 'close';
+   core: 'open' | 'close';
    q: string;
    setDetail: (e: OrderCommon) => void;
+   isApply?: boolean;
+   advanceFilter?: boolean;
+   handleApply?: () => void;
+   market?: string;
+   order_by?: OrderBy;
+   ord_type?: OrderType | '';
+   type?: OrderSide | '';
+   time_from?: string;
+   time_to?: string;
 }
 
 interface ReduxProps {
@@ -50,9 +62,18 @@ interface DispatchProps {
 type Props = TableOrderProps & ReduxProps & DispatchProps & IntlProps;
 
 const TableOrder = ({
-   type,
+   core,
    q,
    setDetail,
+   isApply,
+   advanceFilter,
+   handleApply,
+   market,
+   order_by,
+   ord_type,
+   type,
+   time_from,
+   time_to,
    pageIndex,
    firstElemIndex,
    list,
@@ -71,8 +92,26 @@ const TableOrder = ({
    } = useMarket();
    const [detailId, setDetailId] = useState<any>();
    useEffect(() => {
-      userOrdersHistoryFetch({ type, pageIndex: 0, limit: 25 });
-   }, [type]);
+      userOrdersHistoryFetch({ core, pageIndex: 0, limit: 25 });
+   }, [core]);
+
+   const handleFilter = () => {
+      console.log('order_by :>> ', order_by);
+      userOrdersHistoryFetch({
+         pageIndex: 0,
+         core,
+         limit: 10,
+         ...(core !== 'close' && { time_from, time_to }),
+         ...((core !== 'close' && advanceFilter) && { market, type, ord_type, order_by }),
+      });
+   }
+
+   useEffect(() => {
+      if (isApply) {
+         handleFilter();
+         handleApply && handleApply();
+      }
+   }, [isApply]);
 
    const translate = (id: string) => intl.formatMessage({ id });
 
@@ -212,16 +251,16 @@ const TableOrder = ({
    const handleCancel = () => {
       openOrderCancelById({ order: detailId, list });
       setTimeout(() => {
-         userOrdersHistoryFetch({ type, pageIndex: 0, limit: 25 });
+         userOrdersHistoryFetch({ core, pageIndex: 0, limit: 25 });
       }, 1000);
       toggle();
    };
 
    const onClickPrevPage = () => {
-      userOrdersHistoryFetch({ pageIndex: pageIndex - 1, type, limit: 25 });
+      userOrdersHistoryFetch({ pageIndex: pageIndex - 1, core, limit: 25 });
    };
    const onClickNextPage = () => {
-      userOrdersHistoryFetch({ pageIndex: pageIndex + 1, type, limit: 25 });
+      userOrdersHistoryFetch({ pageIndex: pageIndex + 1, core, limit: 25 });
    };
 
    const renderPaginate = () => (
@@ -237,7 +276,7 @@ const TableOrder = ({
 
    let updateList = list;
 
-   if (type === 'open') {
+   if (core === 'open') {
       updateList = list.filter(o => o.state === 'wait');
    }
 

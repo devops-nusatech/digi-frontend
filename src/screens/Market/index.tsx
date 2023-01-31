@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import { Button, Nav, PriceChart3, Skeleton, Image, Badge } from 'components';
 import { IcEmty, IcShorting, illusMarket, illusMarket2 } from 'assets';
-import { useMarket, useNewsFetch } from 'hooks';
+import { useMarket, useNewsFetch, useScrollUp } from 'hooks';
 import { localeDate, renderCurrencyIcon } from 'helpers';
 import { IntlProps } from 'index';
 import { compose } from 'redux';
@@ -12,6 +12,7 @@ const rows = 3;
 type Props = IntlProps;
 
 const MarketFC = ({ intl }: Props) => {
+   useScrollUp();
    const {
       isLoading,
       marketsData,

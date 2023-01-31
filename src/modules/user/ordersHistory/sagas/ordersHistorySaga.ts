@@ -9,8 +9,8 @@ const ordersOptions: RequestOptions = {
 
 export function* ordersHistorySaga(action: UserOrdersHistoryFetch) {
    try {
-      const { pageIndex, limit, type } = action.payload;
-      const params = `${type === 'all' ? '' : '&state[]=wait&state[]=trigger_wait'}`;
+      const { pageIndex, limit, core, market, time_from, time_to, type, ord_type, order_by } = action.payload;
+      const params = core === 'all' ? '' : `${typeof market !== 'undefined' ? `&market=${market}` : ''}${typeof type !== 'undefined' && type !== '' ? `&type=${type}` : ''}${typeof ord_type !== 'undefined' && ord_type !== '' ? `&ord_type=${ord_type}` : ''}${typeof order_by !== 'undefined' && order_by !== '' ? `&order_by=${order_by}` : ''}${typeof time_from !== 'undefined' ? `&time_from=${time_from}` : ''}${typeof time_to !== 'undefined' ? `&time_to=${time_to}` : ''}&state[]=wait&state[]=trigger_wait`;
       const data = yield call(API.get(ordersOptions), `/market/orders?page=${pageIndex + 1}&limit=${limit}${params}`);
       let nextPageExists = false;
 

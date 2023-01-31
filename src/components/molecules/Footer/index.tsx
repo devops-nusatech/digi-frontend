@@ -76,10 +76,10 @@ const FooterFC: FC<FooterProps> = ({
                         </div>
                         <div className="hidden md:flex flex-col items-start space-y-6 font-dm font-bold text-neutral4 pt-10 md:pt-0">
                            <Link to="/trading" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Exchange</Link>
-                           <Link to="/buy-crypto" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Buy crypto</Link>
-                           <Link to="/market" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Market</Link>
-                           <Link to="/learn-crypto" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Learn crypto</Link>
-                           <Link to="/contact" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Contact</Link>
+                           {/* <Link to="/buy-crypto" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Buy crypto</Link> */}
+                           <Link to="/markets" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Market</Link>
+                           {/* <Link to="/learn-crypto" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Learn crypto</Link> */}
+                           <Link to="/faq" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">FAQ</Link>
                         </div>
                      </div>
                   </div>
