@@ -6,6 +6,7 @@ import {
    illusStep31,
    illusStep32
 } from 'assets'
+import { openInNewTab } from 'helpers';
 
 export const TutorialAlt = () => (
    <div className="flex flex-nowrap md:flex-wrap mt-0 md:-mt-8 -mx-8 md:-mx-4 overflow-auto">
@@ -15,17 +16,18 @@ export const TutorialAlt = () => (
          </div>
          <div className="flex flex-col items-start grow">
             <div className="mb-2 text-base md:text-2xl font-semibold leading-custom2 tracking-custom1">
-               Bank deposit
+               Withdraw
             </div>
             <div className="mb-4 text-neutral4">
-               Deposit crypto or cash currency to your wallet and start trading on the world largest exchange!
+               The steps to withdraw crypto from Digiasset to your other wallet
             </div>
             <Button
-               text="Bank deposit"
+               text="View tutorial"
                variant="outline"
                size="normal"
                className="mt-auto"
                width="noFull"
+               onClick={() => openInNewTab('https://www.digiassetindo.com/blog/how-to-withdraw-your-crypto-to-another-wallet')}
             />
          </div>
       </div>
@@ -35,17 +37,18 @@ export const TutorialAlt = () => (
          </div>
          <div className="flex flex-col items-start grow">
             <div className="mb-2 text-base md:text-2xl font-semibold leading-custom2 tracking-custom1">
-               Transfer
+               Deposit
             </div>
             <div className="mb-4 text-neutral4">
-               Internal transfers are free on Digiasset.
+               Deposit crypto or cash currency to your wallet and start trading on the world largest exchange!
             </div>
             <Button
-               text="Transfer coin"
+               text="View tutorial"
                variant="outline"
                size="normal"
                className="mt-auto"
                width="noFull"
+               onClick={() => openInNewTab('https://www.digiassetindo.com/blog/how-to-deposit-cryptocurrency-to-your-digiasset-wallet')}
             />
          </div>
       </div>

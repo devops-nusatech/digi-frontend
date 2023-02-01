@@ -42,7 +42,7 @@ export const WalletSidebar = () => {
    return (
       <>
          <aside className="flex flex-col grow-0 shrink-0 basis-44.05 lg2:basis-64 w-full lg:w-44.05 lg2:w-64 h-auto lg:h-c-screen-22.5 lg-max:mb-4 pt-0 lg:pt-6 bg-none lg:bg-neutral8 dark:lg:bg-shade2 rounded">
-            <div className="lg-max:relative lg-max:z-5 lg-max:m-0 lg-max:mt-8 mb-auto lg:overflow-y-scroll">
+            <div className="lg-max:relative lg-max:z-5 lg-max:m-0 lg-max:mt-8 mb-auto lg:overflow-y-scroll hide-scroll">
                <div
                   onClick={handleDropdown}
                   className={`lg-max:select-none lg-max:relative lg-max:flex lg-max:items-center lg-max:h-12 lg-max:pr-16 lg-max:rounded-xl lg-max:bg-neutral8 dark:lg-max:bg-shade1 lg-max:font-medium lg-max:transition-all lg-max:duration-200 ${openDropdown ? 'lg-max:shadow-dropdown-primary after:lg-max:-translate-y-1/2 after:lg-max:rotate-180' : 'lg-max:shadow-input dark:lg-max:shadow-border-dark'} hidden after:lg-max:content-[''] after:lg-max:absolute after:lg-max:top-1/2 after:lg-max:right-4 after:lg-max:w-6 after:lg-max:h-6 after:lg-max:-translate-y-1/2 after:lg-max:icon-arrow after:lg-max:cursor-pointer after:lg-max:transition-transform after:lg-max:duration-200`}

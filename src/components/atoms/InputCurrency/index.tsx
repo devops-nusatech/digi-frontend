@@ -17,6 +17,9 @@ interface InputOrder extends NumericFormatProps {
    onKeyPress?: (e: KeyboardEvent<HTMLInputElement>) => void;
    placeholder?: string;
    className?: string;
+   classNameInfo?: string;
+   info?: string;
+   withError?: boolean;
 }
 
 export const InputCurrency: FC<InputOrder> = ({
@@ -32,29 +35,39 @@ export const InputCurrency: FC<InputOrder> = ({
    onKeyPress,
    placeholder,
    className,
+   classNameInfo,
+   info,
+   withError,
    ...rest
 }): JSX.Element => {
    return (
-      <div className={`flex items-center px-4 py-0.5 rounded-xl shadow-input dark:shadow-input-dark cursor-pointer ${disabled && 'bg-neutral7 dark:bg-shade1 pointer-events-none select-none'}`}>
-         <div className="font-medium text-neutral4 pointer-events-none">
-            {titleLeft}
+      <div className="space-y-2.5">
+         <div className={`flex items-center px-4 py-0.5 rounded-xl ${withError ? 'ring-2 ring-primary4 ring-inset' : 'shadow-input dark:shadow-input-dark'} cursor-pointer ${disabled && 'bg-neutral7 dark:bg-shade1 pointer-events-none select-none'}`}>
+            <div className="font-medium text-neutral4 pointer-events-none">
+               {titleLeft}
+            </div>
+            <NumericFormat
+               type={type}
+               value={value}
+               title={title}
+               onChange={({ target: { value } }) => onChange && onChange(value)}
+               onFocus={onFocus}
+               onKeyPress={onKeyPress}
+               placeholder={placeholder}
+               className={`grow h-11.5 px-[10px] text-right font-medium outline-none m-0 border-none bg-neutral8 dark:bg-shade2 ${disabled && 'bg-neutral7 placeholder:text-center placeholder:text-neutral3 pointer-events-none select-none'} ${className}`}
+               disabled={disabled}
+               readOnly={readOnly}
+               {...rest}
+            />
+            <div className="font-medium text-neutral4 pointer-events-none">
+               {titleRight}
+            </div>
          </div>
-         <NumericFormat
-            type={type}
-            value={value}
-            title={title}
-            onChange={({ target: { value } }) => onChange && onChange(value)}
-            onFocus={onFocus}
-            onKeyPress={onKeyPress}
-            placeholder={placeholder}
-            className={`grow h-11.5 px-[10px] text-right font-medium outline-none m-0 border-none bg-neutral8 dark:bg-shade2 ${disabled && 'bg-neutral7 placeholder:text-center placeholder:text-neutral3 pointer-events-none select-none'} ${className}`}
-            disabled={disabled}
-            readOnly={readOnly}
-            {...rest}
-         />
-         <div className="font-medium text-neutral4 pointer-events-none">
-            {titleRight}
-         </div>
+         {info && (
+            <div className={`${classNameInfo ? classNameInfo : ''} ${withError && 'text-primary4'} text-x leading-relaxed font-medium`}>
+               {info}
+            </div>
+         )}
       </div>
    )
 }

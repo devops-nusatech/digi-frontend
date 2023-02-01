@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Link, RouteProps, withRouter } from 'react-router-dom';
+import { RouterProps } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -16,7 +17,7 @@ import {
    illusNews12
 } from 'assets';
 import { Hero, Learn, Download, Step, MyMarketsTable, Button } from 'components';
-import { toggleColorTheme } from 'helpers';
+import { openInNewTab, toggleColorTheme } from 'helpers';
 // import { LogoIcon } from '../../assets/images/LogoIcon';
 // import { MarketsTable } from '../../containers';
 import {
@@ -49,7 +50,7 @@ interface ReduxProps {
    colorTheme: string;
 }
 
-type Props = ReduxProps & RouteProps & IntlProps;
+type Props = ReduxProps & RouterProps & IntlProps;
 
 class Landing extends React.Component<Props> {
    public componentDidMount() {
@@ -269,6 +270,7 @@ class Landing extends React.Component<Props> {
                            variant="outline"
                            size="normal"
                            width="noFull"
+                           onClick={() => this.props.history.push('/trading/')}
                         />
                      </div>
                      <div className="flex flex-col items-center py-12 px-8 rounded-20 bg-neutral8 dark:bg-neutral2 text-center hover:border-[0.09375rem] hover:shadow-card dark:shadow-input-dark h-auto mx-3 transition-all duration-300">
@@ -282,6 +284,7 @@ class Landing extends React.Component<Props> {
                            variant="outline"
                            size="normal"
                            width="noFull"
+                           onClick={() => this.props.history.push('/trading/')}
                         />
                      </div>
                      <div className="flex flex-col items-center py-12 px-8 rounded-20 bg-neutral8 dark:bg-neutral2 text-center hover:border-[0.09375rem] hover:shadow-card dark:shadow-input-dark h-auto mx-3 transition-all duration-300">
@@ -295,6 +298,7 @@ class Landing extends React.Component<Props> {
                            variant="outline"
                            size="normal"
                            width="noFull"
+                           onClick={() => openInNewTab('https://www.digiassetindo.com/blog/')}
                         />
                      </div>
                   </Carousel>
@@ -304,6 +308,7 @@ class Landing extends React.Component<Props> {
                      text="Contact us"
                      variant="outline"
                      className="md:w-2/6 lg:w-auto"
+                     onClick={() => this.props.history.push('/faq')}
                   />
                </div>
             </div>
@@ -360,6 +365,7 @@ class Landing extends React.Component<Props> {
                            variant="outline"
                            size="normal"
                            width="noFull"
+                           onClick={() => this.props.isLoggedIn ? this.props.history.push('/wallets') : this.props.history.push('/register')}
                         />
                      </div>
                      <div className="w-full lg:w-1/2 order-1 lg:order-2">
@@ -384,6 +390,7 @@ class Landing extends React.Component<Props> {
                            variant="outline"
                            size="normal"
                            width="noFull"
+                           onClick={() => this.props.isLoggedIn ? this.props.history.push('/wallets') : this.props.history.push('/register')}
                         />
                      </div>
                      <div className="w-full lg:w-1/2 order-1 lg:order-2">
@@ -408,6 +415,7 @@ class Landing extends React.Component<Props> {
                            variant="outline"
                            size="normal"
                            width="noFull"
+                           onClick={() => this.props.isLoggedIn ? this.props.history.push('/wallets') : this.props.history.push('/register')}
                         />
                      </div>
                      <div className="w-full lg:w-1/2 order-1 lg:order-2">

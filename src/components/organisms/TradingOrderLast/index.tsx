@@ -125,7 +125,7 @@ const TradingOrderLastFunc = (props: Props) => {
    const price_precision: number = Number(currentMarket?.price_precision);
    const amount_precision: number = Number(currentMarket?.amount_precision);
    const min_amount: number = Number(currentMarket?.min_amount);
-   const min_price: number = Number(currentMarket?.min_price);
+   const min_price: string = String(currentMarket?.min_price);
    const max_price: number = Number(currentMarket?.max_price);
    const lastPrice: string = marketTickers[String(currentMarket?.id)]?.last;
    const from: string = String(name.toUpperCase().split('/').pop());
@@ -456,6 +456,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      disabled={executeLoading || user?.level < memberLevel?.trading?.minimum_level}
                      minAmount={min_amount}
                      minPrice={min_price}
+                     maxPrice={max_price}
                      priceMarket={lastPrice}
                      amountVolume={amountVolume}
                      market={marketId}
@@ -478,6 +479,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      disabled={executeLoading || user?.level < memberLevel?.trading?.minimum_level}
                      minAmount={min_amount}
                      minPrice={min_price}
+                     maxPrice={max_price}
                      priceMarket={lastPrice}
                      amountVolume={amountVolume}
                      market={marketId}

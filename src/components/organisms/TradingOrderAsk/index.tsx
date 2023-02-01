@@ -35,7 +35,8 @@ interface TradingOrderAsksProps {
    orderType: OrderType;
    handleOrder: (order: IOrderProps) => void;
    minAmount: number;
-   minPrice: number;
+   minPrice: string;
+   maxPrice: number;
    priceMarket: string;
    amountVolume: string;
    market: string;
@@ -58,6 +59,7 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
    handleOrder,
    minAmount,
    minPrice,
+   maxPrice,
    priceMarket,
    amountVolume,
    market,
@@ -72,6 +74,9 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
    const [slide, setSlide] = useState<number>((0));
    const [ref, setRef] = useState<Ref>(null);
 
+   const [priceError, setPriceError] = useState('');
+   const [amountError, setAmountError] = useState('');
+
    const [modalConfirmOrder, setModalConfirmOrder] = useState(false);
    const handleOrderConfirm = () => setModalConfirmOrder(!modalConfirmOrder);
 
@@ -82,19 +87,23 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
    };
 
    useEffect(() => {
+      setListenPrice(orderPrice);
+      setOrderVolume(amountVolume);
+   }, [orderPrice, amountVolume]);
+
+   useEffect(() => {
+      if (market) {
+         setPriceError('');
+         setListenPrice('');
+      }
       return () => {
          resetState();
       };
    }, [market]);
 
    useEffect(() => {
-      setListenPrice(orderPrice);
-      setOrderVolume(amountVolume);
-   }, [orderPrice, amountVolume]);
-
-   useEffect(() => {
       const formatPrice = Number(typeof orderPrice === 'string' ? orderPrice.split(',').join('') : orderPrice);
-      setOrderTotal(Decimal.format(formatPrice * Number(orderVolume), pricePrecision, ','));
+      setOrderTotal(Decimal.format(formatPrice * Number(orderVolume.includes(',') ? orderVolume?.split(',')?.join('') : orderVolume), pricePrecision, ','));
       handleResetSlider();
    }, [orderPrice]);
 
@@ -104,12 +113,14 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
    }, [slide]);
 
    const handleChangePrice = (value: string) => {
-      const formatPrice = Number(value.split(',').join(''));
+      const formatPrice = value.split(',').join('');
       setListenPrice(value);
-      setOrderTotal(Decimal.format(formatPrice * Number(orderVolume), pricePrecision, ','));
+      setOrderTotal(Decimal.format(+formatPrice * Number(orderVolume), pricePrecision, ','));
+      ((+formatPrice < +minPrice) && value.length) ? setPriceError(`Minimum price ${Decimal.format(minPrice, pricePrecision, ',')} ${from}`) : ((+formatPrice > maxPrice) && value.length) ? setPriceError(`Maximum price ${Decimal.format(maxPrice, pricePrecision, ',')} ${from}`) : setPriceError('');
    }
 
    const handleChangeAmount = (value: string) => {
+      ((+value < minAmount) && value.length) ? setAmountError(`Minimum amount ${Decimal.format(minAmount, amountPrecision, ',')} ${from}`) : +value > availableBase ? setAmountError('Balance is insufficient') : setAmountError('');
       const convertedValue = cleanPositiveFloatInput(value)
       if (convertedValue.match(precisionRegExp(amountPrecision))) {
          setOrderVolume(convertedValue);
@@ -191,6 +202,8 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
                   className={orderType === 'market' ? '!bg-neutral7 dark:!bg-shade1' : ''}
                   value={orderType === 'market' ? '' : listenPrice}
                   onChange={handleChangePrice}
+                  withError={!!priceError.length}
+                  info={priceError}
                />
                <InputOrder
                   titleLeft={translate('page.body.trade.header.newOrder.content.amount')}
@@ -198,6 +211,8 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
                   value={orderVolume}
                   onChange={handleChangeAmount}
                   className="caret-primary1"
+                  withError={!!amountError.length}
+                  info={amountError}
                />
                <SliderPercent
                   instanceRef={instance => {

@@ -202,7 +202,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                                     {Decimal.format(volume, amountFixed, ',')}
                                  </div>
                                  <div className="text-right w-[30%] tracking-wider z-2">
-                                    {Decimal.format((Number(price) * Number(volume)), priceFixed, ',')}
+                                    {Decimal.format((Number(price) * Number(volume)), amountFixed < priceFixed ? amountFixed : priceFixed, ',')}
                                  </div>
                                  <div className="absolute inset-y-0 right-0 bg-primary4 bg-opacity-20 dark:bg-opacity-30 transition ease-in-out pointer-events-none z-0" style={{ width: `${bgWidthAsks[index]}%` }} />
                               </div>
@@ -237,7 +237,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                                  {Decimal.format(volume, amountFixed, ',')}
                               </div>
                               <div className="w-[30%] text-right tracking-wider z-2">
-                                 {Decimal.format((Number(price) * Number(volume)), priceFixed, ',')}
+                                 {Decimal.format((Number(price) * Number(volume)), amountFixed < priceFixed ? amountFixed : priceFixed, ',')}
                               </div>
                               <div className={`absolute inset-y-0 right-0 bg-primary5 dark:bg-chart1 bg-opacity-20 dark:bg-opacity-30 transition ease-in-out pointer-events-none z-0`} style={{ width: `${bgWidthBids[index]}%` }} />
                            </div>

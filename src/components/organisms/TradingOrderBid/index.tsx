@@ -26,7 +26,8 @@ interface TradingOrderBidProps {
    orderType: OrderType;
    handleOrder: (order: IOrderProps) => void;
    minAmount: number;
-   minPrice: number;
+   minPrice: string;
+   maxPrice: number;
    priceMarket: string;
    amountVolume: string;
    market: string;
@@ -50,6 +51,7 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    handleOrder,
    minAmount,
    minPrice,
+   maxPrice,
    priceMarket,
    amountVolume,
    market,
@@ -64,25 +66,30 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    const [slide, setSlide] = useState<number>(0);
    const [ref, setRef] = useState<Ref>(null);
 
+   const [priceError, setPriceError] = useState('');
+   const [amountError, setAmountError] = useState('');
+
    const [modalConfirmOrder, setModalConfirmOrder] = useState(false);
    const handleOrderConfirm = () => setModalConfirmOrder(!modalConfirmOrder);
 
    useEffect(() => {
+      setListenPrice(orderPrice);
+      setOrderVolume(amountVolume);
+   }, [orderPrice, amountVolume]);
+
+   useEffect(() => {
+      if (market) {
+         setPriceError('');
+         setListenPrice('');
+      }
       return () => {
          resetState();
-         console.log('effect :>> ', 1);
       };
    }, [market]);
 
    useEffect(() => {
-      setListenPrice(orderPrice);
-      setOrderVolume(amountVolume);
-      console.log('effect :>> ', 2);
-   }, [orderPrice, amountVolume]);
-
-   useEffect(() => {
       const formatPrice = Number(typeof orderPrice === 'string' ? orderPrice.split(',').join('') : orderPrice);
-      setOrderTotal(Decimal.format(formatPrice * Number(orderVolume), pricePrecision, ','));
+      setOrderTotal(Decimal.format(formatPrice * Number(orderVolume.includes(',') ? orderVolume?.split(',')?.join('') : orderVolume), pricePrecision, ','));
       handleResetSlider();
       console.log('effect :>> ', 3);
    }, [orderPrice]);
@@ -98,23 +105,32 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    }, [slide]);
 
    const handleChangePrice = (value: string) => {
-      const formatPrice = Number(value.split(',').join(''));
+      const formatPrice = value.split(',').join('');
       setListenPrice(value);
-      setOrderTotal(Decimal.format(formatPrice * Number(orderVolume), pricePrecision, ','));
+      setOrderTotal(Decimal.format(+formatPrice * Number(orderVolume), pricePrecision, ','));
+      ((+formatPrice < +minPrice) && value.length) ? setPriceError(`Minimum price ${Decimal.format(minPrice, pricePrecision, ',')} ${from}`) : ((+formatPrice > maxPrice) && value.length) ? setPriceError(`Maximum price ${Decimal.format(maxPrice, pricePrecision, ',')} ${from}`) : setPriceError('');
    }
 
    const handleChangeAmount = (value: string) => {
-      if (value === '') {
-         setOrderVolume(amountVolume);
-      } else {
-         const convertedValue = cleanPositiveFloatInput(value)
-         if (convertedValue.match(precisionRegExp(amountPrecision))) {
-            setOrderVolume(convertedValue);
-            setOrderTotal(Decimal.format(convertPrice() * Number(convertedValue), pricePrecision, ','));
-            setSlide(0);
-            handleResetSlider();
-         };
-      }
+      ((+value < minAmount) && value.length) ? setAmountError(`Minimum amount ${Decimal.format(minAmount, amountPrecision, ',')} ${from}`) : ((+value * convertPrice()) > availableQuote) ? setAmountError('Balance is insufficient') : setAmountError('');
+      const convertedValue = cleanPositiveFloatInput(value)
+      if (convertedValue.match(precisionRegExp(amountPrecision))) {
+         setOrderVolume(convertedValue);
+         setOrderTotal(Decimal.format(convertPrice() * Number(convertedValue), pricePrecision, ','));
+         setSlide(0);
+         handleResetSlider();
+      };
+      // if (value === '') {
+      //    setOrderVolume(amountVolume);
+      // } else {
+      //    const convertedValue = cleanPositiveFloatInput(value)
+      //    if (convertedValue.match(precisionRegExp(amountPrecision))) {
+      //       setOrderVolume(convertedValue);
+      //       setOrderTotal(Decimal.format(convertPrice() * Number(convertedValue), pricePrecision, ','));
+      //       setSlide(0);
+      //       handleResetSlider();
+      //    };
+      // }
    }
 
    const handleChangePercentage = (a, b, c) => setSlide(c[0] / 100);
@@ -217,6 +233,8 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
                   value={orderType === 'market' ? '' : listenPrice}
                   onChange={handleChangePrice}
                   className={orderType === 'market' ? '!bg-neutral7 dark:!bg-shade1' : ''}
+                  withError={!!priceError.length}
+                  info={priceError}
                />
                <InputOrder
                   titleLeft={translate('page.body.trade.header.newOrder.content.amount')}
@@ -224,6 +242,8 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
                   value={orderVolume === '' ? '' : orderVolume}
                   onChange={handleChangeAmount}
                   className="caret-primary1"
+                  withError={!!amountError.length}
+                  info={amountError}
                />
                <SliderPercent
                   instanceRef={instance => {

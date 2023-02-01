@@ -1,16 +1,13 @@
 import React from 'react'
 import { IcEmty } from 'assets';
-import { Wallet, selectCurrencies, selectMarketTickers, selectMarkets, selectSonic } from 'modules';
+import { Wallet, selectSonic } from 'modules';
 import {
    Decimal,
    Image,
-   formatWithSeparators
 } from 'components';
-import {
-   renderCurrencyIcon,
-   estimateUnitValue
-} from 'helpers';
+import { renderCurrencyIcon } from 'helpers';
 import { useSelector } from 'react-redux';
+import { useMarket } from 'hooks';
 
 type TableWalletsPRops = {
    /**
@@ -27,19 +24,12 @@ export const TableWallets = ({
    translate
 }: TableWalletsPRops) => {
    const { peatio_platform_currency } = useSelector(selectSonic);
-   const currencies = useSelector(selectCurrencies);
-   const markets = useSelector(selectMarkets);
-   const tickers = useSelector(selectMarketTickers);
+   const {
+      otherMarkets
+   } = useMarket();
 
-   const estimatedValue = (currency: string, fixed: number, value?: string) => currency && Number(value)
-      ? estimateUnitValue(
-         currency.toUpperCase(),
-         peatio_platform_currency,
-         Number(value),
-         currencies,
-         markets,
-         tickers
-      ) : Decimal.format(0, fixed);
+   const ceckString = (value: string) => value?.includes(',') ? value?.split(',')?.join('') : value;
+   const lastPrice = Number(ceckString(otherMarkets?.find(e => e?.quote_unit === peatio_platform_currency)?.last)) || 0;
 
    return (
       <div className="overflow-x-auto">
@@ -64,7 +54,7 @@ export const TableWallets = ({
                {balances.length > 0 ? balances.map(({ currency, name, iconUrl, locked, balance, fixed }) => (
                   <tr
                      key={currency}
-                     onClick={() => push(`wallets/${currency}`, { estimateValue: `${formatWithSeparators(estimatedValue(currency, currency === 'idr' ? 0 : fixed, String(Number(balance) + Number(locked))), ',')} ${peatio_platform_currency?.toUpperCase()}` })}
+                     onClick={() => push(`wallets/${currency}`, { estimateValue: `${Decimal.format((lastPrice * (Number(balance) + Number(locked))), currency === 'idr' ? 0 : fixed, ',')} ${peatio_platform_currency?.toUpperCase()}` })}
                      className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3 hover:bg-neutral7 dark:hover:bg-neutral2 cursor-pointer"
                   >
                      <td className="p-4 first:pl-8 last:pr-8">
@@ -94,15 +84,15 @@ export const TableWallets = ({
                            {Decimal.format(locked, currency === 'idr' ? 0 : fixed, ',')} {currency}
                         </div>
                         <div className="text-neutral4">
-                           &asymp; {formatWithSeparators(estimatedValue(currency, fixed, locked), ',')} {peatio_platform_currency}
+                           &asymp; {Decimal.format((lastPrice * Number(locked)), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
                         </div>
                      </td>
                      <td className="p-4 first:pl-8 last:pr-8 text-right uppercase">
                         <div className="font-medium">
-                           {Decimal.format(balance, currency === 'idr' ? 0 : fixed, ',')} {currency}
+                           {Decimal.format(balance, currency === 'idr' ? 0 : currency === 'idr' ? 0 : fixed, ',')} {currency}
                         </div>
                         <div className="text-neutral4">
-                           &asymp; {formatWithSeparators(estimatedValue(currency, fixed, balance), ',')} {peatio_platform_currency}
+                           &asymp; {Decimal.format((lastPrice * Number(balance)), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
                         </div>
                      </td>
                      <td className="p-4 first:pl-8 last:pr-8 text-right uppercase">
@@ -110,7 +100,7 @@ export const TableWallets = ({
                            {Decimal.format(Number(balance) + Number(locked), currency === 'idr' ? 0 : fixed, ',')} {currency}
                         </div>
                         <div className="text-neutral4">
-                           &asymp; {formatWithSeparators(estimatedValue(currency, currency === 'idr' ? 0 : fixed, String(Number(balance) + Number(locked))), ',')} {peatio_platform_currency}
+                           &asymp; {Decimal.format((lastPrice * (Number(balance) + Number(locked))), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
                         </div>
                      </td>
                   </tr>

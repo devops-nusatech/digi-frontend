@@ -203,7 +203,7 @@ export const Contact = () => {
                      >
                         <svg
                            onClick={handleChangeFull}
-                           className="absolute bottom-0 right-0 w-4 h-4 fill-neutral4 cursor-pointer outline-none"
+                           className="absolute bottom-0 right-0 w-6 h-6 fill-neutral4 hover:fill-neutral2 dark:hover:fill-neutral8 cursor-pointer outline-none transition-all duration-300"
                         >
                            <use xlinkHref="#icon-full-screen" />
                         </svg>

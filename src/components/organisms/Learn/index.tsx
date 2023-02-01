@@ -15,7 +15,7 @@ import {
 import { selectNewsLoading, selectNews } from 'modules';
 import { useNewsFetch } from 'hooks';
 import { useHistory } from 'react-router';
-import { localeDate } from 'helpers';
+import { localeDate, openInNewTab } from 'helpers';
 
 const LearnMemo: FC = () => {
    const { push } = useHistory();
@@ -31,7 +31,7 @@ const LearnMemo: FC = () => {
                <div className="whitespace-normal text-4.5xl md:text-5xl font-dm">Learn crypto</div>
                <Button
                   text="View more"
-                  onClick={() => push('/learn-crypto')}
+                  onClick={() => openInNewTab('https://www.digiassetindo.com/blog/')}
                   variant="outline"
                   width="noFull"
                />
