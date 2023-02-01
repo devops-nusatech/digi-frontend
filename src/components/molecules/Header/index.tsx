@@ -239,6 +239,12 @@ const HeaderFC = ({
                         >
                            {translate('page.body.trade.header.markets')}
                         </Link>
+                        <Link
+                           to="/faq"
+                           className={`cursor-pointer ${location.pathname.includes('/faq') ? 'text-neutral2 dark:text-neutral8' : 'hover:text-neutral2 dark:hover:text-neutral8'} transition-colors duration-300`}
+                        >
+                           FAQ
+                        </Link>
                         {/* <Link
                            to="/learn-crypto"
                            className={`cursor-pointer ${location.pathname.includes('/learn-crypto') ? 'text-neutral2 dark:text-neutral8' : 'hover:text-neutral2 dark:hover:text-neutral8'} transition-colors duration-300`}

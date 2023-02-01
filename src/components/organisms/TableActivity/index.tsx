@@ -92,20 +92,35 @@ export const TableActivity: FC<TableActivityProps> = ({
    state,
    type,
 }) => {
-   const {
-      marketsData
-   } = useMarket();
+   const { marketsData } = useMarket();
+
+   const fetchUpdate = ({ page }: { page: number }) => fetchHistory({
+      page,
+      core,
+      limit: 10,
+      ...(currencyId && { currency: currencyId }),
+      ...(isApply && core !== 'transfers' && { time_from, time_to }),
+      // ...(core === 'transfers' && { sender: user.uid }),
+      ...((advanceFilter && core !== 'trades') && { currency, state: formatState() }),
+      ...((advanceFilter && core === 'trades') && { market, type })
+   });
+
+   const handleFilter = () => fetchUpdate({ page: 0 });
+
    useEffect(() => {
-      fetchHistory({
-         page: 0,
-         core,
-         limit: 10,
-         ...(currencyId && { currency: currencyId })
-      });
-   }, [core]);
+      if (isApply) {
+         handleFilter();
+         handleApply();
+      }
+   }, [isApply]);
    useEffect(() => {
-      fetchCurrencies();
-   }, [!currencies.length]);
+      if (core) {
+         fetchUpdate({ page: 0 });
+      }
+      if (!currencies.length) {
+         fetchCurrencies();
+      }
+   }, [core, currencies]);
 
    const renderHead = () => {
       switch (core) {
@@ -896,9 +911,9 @@ export const TableActivity: FC<TableActivityProps> = ({
       }
    }
 
-   const onClickPrevPage = () => fetchHistory({ page: Number(page) - 1, core, limit: 10, ...(currencyId && { currency: currencyId }) });
+   const onClickPrevPage = () => fetchUpdate({ page: page - 1 });
 
-   const onClickNextPage = () => fetchHistory({ page: Number(page) + 1, core, limit: 10, ...(currencyId && { currency: currencyId }) });
+   const onClickNextPage = () => fetchUpdate({ page: page + 1 });
 
    const formatState = () => {
       switch (core) {
@@ -933,24 +948,6 @@ export const TableActivity: FC<TableActivityProps> = ({
             return;
       }
    }
-
-   const handleFilter = () => fetchHistory({
-      page: 0,
-      core,
-      limit: 10,
-      ...(currencyId && { currency: currencyId }),
-      ...(core !== 'transfers' && { time_from, time_to }),
-      // ...(core === 'transfers' && { sender: user.uid }),
-      ...((advanceFilter && core !== 'trades') && { currency, state: formatState() }),
-      ...((advanceFilter && core === 'trades') && { market, type })
-   });
-
-   useEffect(() => {
-      if (isApply) {
-         handleFilter();
-         handleApply();
-      }
-   }, [isApply]);
 
    function handleCopy(id: string) {
       copyToClipboard(id);

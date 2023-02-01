@@ -72,6 +72,7 @@ interface InputGroupProps {
    maxLength?: number;
    minLength?: number;
    autoComplete?: 'on' | 'off';
+   required?: boolean;
 }
 
 export const InputGroup = forwardRef<Ref, InputGroupProps>(({
@@ -113,7 +114,8 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(({
    tabIndex,
    maxLength,
    minLength,
-   autoComplete
+   autoComplete,
+   required,
 }, ref, ...rest) => {
    const [showPassword, setShowPassword] = useState(false);
    const handleShowPassword = () => setShowPassword(!showPassword);
@@ -199,6 +201,7 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(({
                maxLength={maxLength}
                minLength={minLength}
                autoComplete={autoComplete}
+               required={required}
                className={
                   classNames(`
                      ${classes.base}

@@ -92,11 +92,10 @@ const TableOrder = ({
    } = useMarket();
    const [detailId, setDetailId] = useState<any>();
    useEffect(() => {
-      userOrdersHistoryFetch({ core, pageIndex: 0, limit: 25 });
+      userOrdersHistoryFetch({ core, pageIndex: 0, limit: 10 });
    }, [core]);
 
    const handleFilter = () => {
-      console.log('order_by :>> ', order_by);
       userOrdersHistoryFetch({
          pageIndex: 0,
          core,
@@ -251,16 +250,28 @@ const TableOrder = ({
    const handleCancel = () => {
       openOrderCancelById({ order: detailId, list });
       setTimeout(() => {
-         userOrdersHistoryFetch({ core, pageIndex: 0, limit: 25 });
+         userOrdersHistoryFetch({
+            pageIndex: 0,
+            core,
+            limit: 10,
+            ...(core !== 'close' && { time_from, time_to }),
+            ...((core !== 'close' && advanceFilter) && { market, type, ord_type, order_by }),
+         });
       }, 1000);
       toggle();
    };
 
    const onClickPrevPage = () => {
-      userOrdersHistoryFetch({ pageIndex: pageIndex - 1, core, limit: 25 });
+      userOrdersHistoryFetch({
+         pageIndex: pageIndex - 1, core, limit: 10, ...(core !== 'close' && { time_from, time_to }),
+         ...((core !== 'close' && advanceFilter) && { market, type, ord_type, order_by }),
+      });
    };
    const onClickNextPage = () => {
-      userOrdersHistoryFetch({ pageIndex: pageIndex + 1, core, limit: 25 });
+      userOrdersHistoryFetch({
+         pageIndex: pageIndex + 1, core, limit: 10, ...(core !== 'close' && { time_from, time_to }),
+         ...((core !== 'close' && advanceFilter) && { market, type, ord_type, order_by }),
+      });
    };
 
    const renderPaginate = () => (

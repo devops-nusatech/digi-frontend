@@ -37,7 +37,7 @@ export const AdibDropdown = ({
    defaultValue,
    info,
 }: AdibDropdownProps) => {
-   const [value, setValue] = useState(defaultValue ? defaultValue : data[0]);
+   const [value, setValue] = useState(defaultValue?.length ? defaultValue : data[0]);
 
    const handleChange = useCallback((e: string) => {
       setValue(e);

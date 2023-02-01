@@ -56,7 +56,7 @@ interface ComboboxCurrencyProps {
    displayValue?: 'currency' | 'name';
    /**
       * defaultValue
-      * @default
+      * @default null
       */
    defaultValue?: string;
 }
