@@ -27,7 +27,7 @@ const MarketFC = ({ intl }: Props) => {
    const {
       newsLoadig,
       news
-   } = useNewsFetch();
+   } = useNewsFetch(25, 'news');
    const [more, setMore] = useState<number>(rows);
 
    const translate = (id: string) => intl.formatMessage({ id });

@@ -1,6 +1,7 @@
 import React, {
    FunctionComponent,
    memo,
+   useCallback,
    useEffect,
    useMemo,
    useRef,
@@ -31,7 +32,6 @@ import {
    InputOtp,
    Image,
 } from 'components';
-// import { Listbox } from '@headlessui/react'
 import {
    alertPush,
    beneficiariesFetch,
@@ -68,6 +68,7 @@ import {
    WithdrawLimits,
    selectWithdrawLimits,
    selectWithdrawSuccess,
+   GroupMember,
 } from 'modules';
 import type {
    Beneficiary,
@@ -94,6 +95,7 @@ import { useForm, useModal } from 'hooks';
 import { toast } from 'react-toastify';
 import { getCurrencies, validate } from 'multicoin-address-validator';
 import { defaultBeneficiary } from 'screens/WalletDetails/types';
+import { selectGroupMember } from 'modules/user/groupMember/selectors';
 
 type State = {
    accountName: string;
@@ -107,6 +109,7 @@ type State = {
 
 type ReduxProps = {
    user: User;
+   groupMember: GroupMember;
    theme: string;
    wallets: Wallet[];
    beneficiary: Beneficiary;
@@ -158,6 +161,7 @@ type WithdrawalProps = ReduxProps & OwnProps & DispatchProps & RouterProps & Int
 
 const WithdrawalFC = memo(({
    user,
+   groupMember,
    theme,
    wallets,
    beneficiary,
@@ -235,6 +239,7 @@ const WithdrawalFC = memo(({
          label: '',
          description: ''
       });
+      setCoinAddressValid(false);
    }
 
    const resetFieldWD = () => {
@@ -377,7 +382,7 @@ const WithdrawalFC = memo(({
       setId(id);
    }
 
-   const withdrawLimited = withdrawLimits.find(e => Number(e.kyc_level) === user.level) ? withdrawLimits.find(e => Number(e.kyc_level) === user.level) : withdrawLimits[0];
+   const withdrawLimited = withdrawLimits.find(e => e.group === groupMember?.group) ? withdrawLimits.find(e => e.group === groupMember?.group) : withdrawLimits[0];
    const network = userWallets[0]?.networks.find(e => e.blockchain_key === filteredBeneficiary?.find(e => e.id === id)?.blockchain_key);
    const currency = userWallets[0]?.currency;
    const withdrawFee = Decimal.format(network?.withdraw_fee, userWallets[0]?.fixed, ',');
@@ -424,8 +429,8 @@ const WithdrawalFC = memo(({
    const isDisbaledWithdraw = () => {
       const limit = Number(withdrawLimited?.limit_24_hour) - Number(withdrawLimit?.last_24_hours);
       const tax = Number(network?.withdraw_fee) + Number(network?.min_withdraw_amount);
-      const balance = userWallets[0]?.balance;
-      return limit < tax || !amount || otp.length < 6 || Number(balance) < Number(amount);
+      const balance = Number(userWallets[0]?.balance);
+      return limit < tax || !amount || otp.length < 6 || balance < +amount || balance > +withdrawLimit24H;
    }
 
    const renderAsset = useMemo(() => (
@@ -781,7 +786,7 @@ const WithdrawalFC = memo(({
                      value={state.amount}
                      onChange={handleChangeAmount}
                      withError={state.amountError}
-                     info={state.amountError ? translate('account.withdraw.insufficient_balance') : ''}
+                     info={state.amountError ? translate('account.withdraw.insufficient_balance') : Number(userWallets[0]?.balance) > +withdrawLimit24H ? 'amount exceeds daily' : ''}
                      parentClassName="w-full"
                      autoFocus
                   />
@@ -840,7 +845,7 @@ const WithdrawalFC = memo(({
             </div>
          </div>
       </>
-   ), [userWallets, state, handleChangeAmount, handleChangeOtp, id]);
+   ), [userWallets, state, handleChangeAmount, handleChangeOtp, id, withdrawLimit]);
 
    const isRipple = userWallets[0]?.currency === 'xrp';
    const handleCreateBeneficiary = () => {
@@ -885,12 +890,15 @@ const WithdrawalFC = memo(({
          </svg>
       </button>
    );
-   const validateCoinAddressFormat = (value: string) => {
-      if (getCurrencies().some(currency => currency.symbol === userWallets[0]?.currency)) {
-         const valid = validate(value, userWallets[0]?.currency, 'mainnet');
+   const validateCoinAddressFormat = useCallback((value: string) => {
+      const networkType = selectedNetwork.blockchain_key ? selectedNetwork.blockchain_key.split('-').pop() : '';
+      const currency = String(userWallets[0]?.networks.find(e => e.blockchain_key === selectedNetwork.blockchain_key)?.parent_id);
+      const availableNetwork = getCurrencies().some(({ symbol }) => symbol === currency);
+      if (availableNetwork) {
+         const valid = validate(value, currency, networkType);
          setCoinAddressValid(valid ? false : true);
       }
-   };
+   }, [selectedNetwork]);
    const renderModalBeneficiary = useMemo(() => (
       <>
          {userWallets[0]?.type === 'coin' && (
@@ -905,38 +913,6 @@ const WithdrawalFC = memo(({
                      info={!selectedNetwork?.withdrawal_enabled ? 'This network disabled' : ''}
                   />
                )}
-               {/* <Listbox
-                  value={selectedNetwork}
-                  onChange={setSelectedNetwork}
-               >
-                  <div className="relative">
-                     <div className="space-y-2.5">
-                        <div className="text-xs text-neutral5 leading-none font-bold uppercase">
-                           Network
-                        </div>
-                        <Listbox.Button className={({ open }) => `relative w-full h-12 pl-4 pr-12 shadow-input outline-none ${open ? 'shadow-dropdown-1' : 'dark:shadow-border-dark'} bg-neutral8 dark:bg-neutral2 rounded-xl border-none font-medium leading-12 text-left transition-shadow duration-200 before:content-[''] before:absolute before:top-1/2 before:right-2 before:h-6 before:w-6 before:-translate-y-1/2 before:rounded-full before:transition-transform before:duration-200 before:icon-arrow ${open ? 'before:rotate-180' : ''}`}>
-                           <span className="block truncate font-medium">
-                              {selectedNetwork?.protocol}
-                           </span>
-                        </Listbox.Button>
-                     </div>
-                     <Listbox.Options className={({ open }) => `absolute max-h-40 w-full overflow-auto z-[9] mt-0.5 rounded-xl outline-none bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral1 shadow-dropdown-2 dark:shadow-dropdown-3 ${open ? 'opacity-100 visible scale-100 translate-y-0' : 'opacity-0 invisible scale-75 -translate-y-20'} transition-all duration-200`} style={{ transformOrigin: '50% 0' }}>
-                        {listNetwork?.map((wallet, index) => (
-                           <Listbox.Option
-                              key={index}
-                              className={({ active }) => `px-3.5 py-2.5 leading-[1.4] font-medium ${active ? 'bg-neutral7 dark:bg-neutral2' : ''} transition-all duration-200`}
-                              value={wallet}
-                           >
-                              {({ selected }) => (
-                                 <span className={`block truncate ${selected ? 'text-primary1' : ''}`}>
-                                    {wallet.protocol}
-                                 </span>
-                              )}
-                           </Listbox.Option>
-                        ))}
-                     </Listbox.Options>
-                  </div>
-               </Listbox> */}
                <InputGroup
                   id="address"
                   label="Address"
@@ -992,6 +968,10 @@ const WithdrawalFC = memo(({
          />
       </>
    ), [selectedNetwork, setSelectedNetwork, userWallets, listNetwork, address, label, description, destinationTag, setField, handleCreateBeneficiary])
+
+   useEffect(() => {
+      resetField();
+   }, [selectedNetwork]);
 
    const renderModalDetail = () => (
       <div className="mt-10 space-y-8">
@@ -1211,6 +1191,7 @@ const WithdrawalFC = memo(({
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
+   groupMember: selectGroupMember(state),
    theme: selectCurrentColorTheme(state),
    wallets: selectWallets(state),
    beneficiary: selectBeneficiariesCreate(state),

@@ -3,7 +3,7 @@
    const { hostname, search, origin, pathname, replace } = location;
 
    // const hostUrl = hostname === 'localhost' ? 'http://localhost:9002' : origin;
-   const hostUrl = 'https://www.heavenexchange.io';
+   const hostUrl = 'https://api.heavenexchange.io';
    const fetchConfig = new XMLHttpRequest();
    fetchConfig.open('GET', `${hostUrl}/api/v2/sonic/public/config`, false);
    fetchConfig.send(null);

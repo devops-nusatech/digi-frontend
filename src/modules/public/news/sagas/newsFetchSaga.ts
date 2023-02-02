@@ -6,8 +6,8 @@ import axios from 'axios';
 
 const fetchNews = async (action: NewsFetch['payload']) => {
    const apiKey = '3c91665a1b107878484d3b3316';
-   const url = `https://news.digiassetindo.com/ghost/api/v3/content/posts/?key=${apiKey}&limit=${action && action.limit
-      }&tag=${action && action.tag}`;
+   const url = `https://news.digiassetindo.com/ghost/api/v3/content/posts/?key=${apiKey}${typeof action?.limit !== 'undefined' && `&limit=${action?.limit}`
+      }${typeof action?.tag !== 'undefined' && `&filter=tag%3A${action?.tag}`}`;
    const { data } = await axios.get<News>(url);
    return data;
 };

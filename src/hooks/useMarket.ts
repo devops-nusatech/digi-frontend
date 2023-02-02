@@ -114,7 +114,7 @@ export const useMarket = () => {
 
    let currentBidUnitsList: string[] = ['star', ''];
 
-   if (markets.length > 0) {
+   if (markets?.length > 0) {
       currentBidUnitsList = markets.reduce(
          formatFilteredMarkets,
          currentBidUnitsList
@@ -125,11 +125,11 @@ export const useMarket = () => {
 
    if (currentBidUnit) {
       if (currentBidUnit === 'star') {
-         currentBidUnitMarkets = currentBidUnitMarkets.length
-            ? isLogin ? _favorites.map(f1 => currentBidUnitMarkets?.find(e1 => e1.id === f1)) : favorites.map(f2 => currentBidUnitMarkets?.find(e2 => e2.id === f2))
+         currentBidUnitMarkets = currentBidUnitMarkets?.length
+            ? isLogin ? _favorites?.map(f1 => currentBidUnitMarkets?.find(e1 => e1.id === f1)) : favorites?.map(f2 => currentBidUnitMarkets?.find(e2 => e2.id === f2))
             : [];
       } else {
-         currentBidUnitMarkets = currentBidUnitMarkets.length
+         currentBidUnitMarkets = currentBidUnitMarkets?.length
             ? currentBidUnitMarkets.filter(
                market => market.quote_unit === currentBidUnit
             )
@@ -138,13 +138,13 @@ export const useMarket = () => {
    }
 
    if (searchMarket) {
-      currentBidUnitMarkets = currentBidUnitMarkets.length
+      currentBidUnitMarkets = currentBidUnitMarkets?.length
          ? arrayFilter(currentBidUnitMarkets, searchMarket) : [];
    }
 
 
-   const formattedMarkets = currentBidUnitMarkets.length
-      ? currentBidUnitMarkets.map(market => ({
+   const formattedMarkets = currentBidUnitMarkets?.length
+      ? currentBidUnitMarkets?.map(market => ({
          ...market,
          last: Decimal.format(
             Number((tikcers[market?.id] || DEFAULT_TICKER).last),
@@ -183,7 +183,7 @@ export const useMarket = () => {
       }))
       : [];
 
-   const formatOtherMarkets = markets.length ? markets.map(market => ({
+   const formatOtherMarkets = markets?.length ? markets?.map(market => ({
       ...market,
       last: Decimal.format(
          Number((tikcers[market?.id] || DEFAULT_TICKER).last),
@@ -224,7 +224,7 @@ export const useMarket = () => {
 
 
    const combainMarketWithIcon = (markets, currencies) =>
-      markets.map((itm, i) => ({
+      markets?.map((itm, i) => ({
          no: i + 1,
          ...itm,
          curency_data: currencies?.find(item => item.id === itm.base_unit) || null,

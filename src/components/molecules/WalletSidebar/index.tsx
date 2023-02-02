@@ -31,7 +31,7 @@ export const WalletSidebar = () => {
          case '/trades':
             return 'Trade History';
          case '/orders':
-            return 'Market Order';
+            return 'Order History';
          case '/wallets/finances':
             return 'Finances';
          default:
@@ -70,7 +70,7 @@ export const WalletSidebar = () => {
                      className={`lg-max:hover:bg-neutral6 dark:lg-max:hover:bg-neutral3 lg-max:hover:text-neutral2 dark:lg-max:hover:text-neutral8 ${pathname === '/orders' ? 'lg-max:bg-neutral6 lg-max:dark:bg-neutral3' : ''} flex items-center h-12 font-dm leading-custom3 font-bold transition-colors duration-300 ${pathname.includes('/orders') ? '' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'}`}
                   >
                      <div className="bg-secondary1 shrink-0 w-3 h-3 mt-0 mr-4.5 mb-0 ml-6.5 rounded" />
-                     Market Order
+                     Order History
                   </Link>
                   <Link
                      to="/wallets/finances"

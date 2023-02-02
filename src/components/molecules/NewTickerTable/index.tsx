@@ -3,15 +3,14 @@ import React, {
    memo,
    useMemo,
 } from 'react';
-import { useSelector } from 'react-redux';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useIntl } from 'react-intl';
-import { Market, selectCurrencies } from 'modules';
-import { Decimal, Cuk, Nav, Button, PriceChart3, Image } from 'components';
-import { useCurrenciesFetch } from 'hooks';
+import { Cuk, Nav, Button, PriceChart3, Image } from 'components';
+import { useCurrenciesFetch, useMarket } from 'hooks';
 import { renderCurrencyIcon } from 'helpers';
 import { useHistory } from 'react-router';
+import { Market } from 'modules';
 
 interface Props {
    currentBidUnit: string;
@@ -22,24 +21,13 @@ interface Props {
 }
 
 export const NewTickerTable: FC<Props> = memo(({
-   currentBidUnit,
-   markets,
-   setCurrentBidUnit,
-   currentBidUnitsList,
    redirectToTrading,
 }) => {
    useCurrenciesFetch();
-   const currencies = useSelector(selectCurrencies);
    const { formatMessage } = useIntl();
    const { push } = useHistory();
 
-   const combainById = (a1, a2) =>
-      a1.map((itm, i) => ({
-         no: i + 1,
-         ...a2.find(item => (item.id === itm.base_unit) && item),
-         ...itm
-      }));
-   const combineMarkets = combainById(markets, currencies);
+   const { otherMarkets, setCurrentBidUnit, currentBidUnit, currentBidUnitsList } = useMarket();
 
    const optionsPositive = (data?: []) => {
       return {
@@ -177,12 +165,12 @@ export const NewTickerTable: FC<Props> = memo(({
       },
       {
          Header: formatMessage({ id: 'page.body.marketsTable.header.pair' }),
-         accessor: ({ base_unit, name, icon_url }) => (
+         accessor: ({ base_unit, curency_data, name, icon_url }) => (
             <div className="flex space-x-4 md:space-x-5 items-center">
                <div className="shrink-0 w-10">
                   <Image
-                     src={renderCurrencyIcon(base_unit, icon_url)}
-                     className={`w-full ${renderCurrencyIcon(base_unit, icon_url)?.includes('http') ? 'polygon bg-neutral8' : ''}`}
+                     src={renderCurrencyIcon(base_unit, curency_data?.icon_url)}
+                     className={`w-full ${renderCurrencyIcon(base_unit, curency_data?.icon_url)?.includes('http') ? 'polygon bg-neutral8' : ''}`}
                      alt={name?.split('/').shift()}
                      title={name?.split('/').shift()}
                      width={40}
@@ -209,7 +197,7 @@ export const NewTickerTable: FC<Props> = memo(({
       },
       {
          Header: formatMessage({ id: 'page.body.marketsTable.header.lastPrice' }),
-         accessor: ({ last, price_precision }) => Decimal.format(last, price_precision, ','),
+         accessor: ({ last }) => last,
       },
       {
          Header: formatMessage({ id: 'page.body.marketsTable.header.change' }),
@@ -221,15 +209,15 @@ export const NewTickerTable: FC<Props> = memo(({
       },
       {
          Header: formatMessage({ id: 'page.body.marketsTable.header.high' }),
-         accessor: ({ high, price_precision }) => Decimal.format(high, price_precision, ','),
+         accessor: ({ high }) => high,
       },
       {
          Header: formatMessage({ id: 'page.body.marketsTable.header.low' }),
-         accessor: ({ low, price_precision }) => Decimal.format(low, price_precision, ','),
+         accessor: ({ low }) => low,
       },
       {
          Header: formatMessage({ id: 'page.body.marketsTable.header.volume' }),
-         accessor: ({ volume, price_precision }) => Decimal.format(volume, price_precision, ','),
+         accessor: ({ volume }) => volume,
       },
       {
          Header: 'Chart',
@@ -295,7 +283,7 @@ export const NewTickerTable: FC<Props> = memo(({
                />
             </div>
             <div className="flex space-x-6 items-start mb-[70px]">
-               {currentBidUnitsList.map((item, index) => (
+               {currentBidUnitsList.splice(1, currentBidUnitsList.length).map((item, index) => (
                   <Nav
                      key={index}
                      title={item ? item.toUpperCase() : formatMessage({ id: 'page.body.marketsTable.filter.all' })}
@@ -320,7 +308,7 @@ export const NewTickerTable: FC<Props> = memo(({
                      </tr>
                   </thead>
                   <tbody>
-                     {combineMarkets?.length > 0 ? combineMarkets.map(({ id, name, icon_url, last, high, low, volume, price_precision, change, price_change_percent, kline, base_unit }, index) => {
+                     {otherMarkets?.length > 0 ? otherMarkets.map(({ id, name, icon_url, last, high, low, volume, price_precision, change, price_change_percent, kline, base_unit }, index) => {
                         return (
                            <tr key={index}>
                               <td className="px-2 align-middle text-base font-medium">{index + 1}</td>
@@ -341,7 +329,7 @@ export const NewTickerTable: FC<Props> = memo(({
                                  </div>
                               </td>
                               <td className="px-2 align-middle text-base font-medium">
-                                 {Decimal.format(last, price_precision, ',')}
+                                 {last}
                               </td>
                               <td className="px-2 align-middle text-base font-medium">
                                  <span className={+(change || 0) < 0 ? 'text-primary4' : 'text-chart1'}>
@@ -349,13 +337,13 @@ export const NewTickerTable: FC<Props> = memo(({
                                  </span>
                               </td>
                               <td className="px-2 align-middle text-base font-medium">
-                                 {Decimal.format(high, price_precision, ',')}
+                                 {high}
                               </td>
                               <td className="px-2 align-middle text-base font-medium">
-                                 {Decimal.format(low, price_precision, ',')}
+                                 {low}
                               </td>
                               <td className="px-2 align-middle text-base font-medium">
-                                 {Decimal.format(volume, price_precision, ',')}
+                                 {volume}
                               </td>
                               <td className="px-2 align-middle text-base font-medium">
                                  <div className="-mx-6">
@@ -378,8 +366,7 @@ export const NewTickerTable: FC<Props> = memo(({
                         )
                      }) : (
                         <div className="">Null</div>
-                     )
-                     }
+                     )}
                   </tbody>
                </table>
                {/* <Paginations
@@ -388,7 +375,7 @@ export const NewTickerTable: FC<Props> = memo(({
                   maxLength={7}
                   setCurrentPage={setCurrentPage}
                /> */}
-               <Cuk columns={columns} data={combineMarkets} />
+               <Cuk columns={columns} data={otherMarkets} />
             </div>
          </div>
       </section>

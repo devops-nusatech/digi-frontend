@@ -9,9 +9,9 @@ export const useNewsFetch = (limit?: number, tag?: string) => {
 
    useEffect(() => {
       if (navigator.onLine) {
-         if (!news.length) dispatch(newsFetch({ limit, tag }));
+         dispatch(newsFetch({ limit, tag }));
       }
-   }, [news, dispatch, navigator, tag]);
+   }, [dispatch, navigator, tag]);
 
    return {
       newsLoadig,

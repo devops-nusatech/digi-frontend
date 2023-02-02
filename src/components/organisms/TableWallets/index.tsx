@@ -29,7 +29,8 @@ export const TableWallets = ({
    } = useMarket();
 
    const ceckString = (value: string) => value?.includes(',') ? value?.split(',')?.join('') : value;
-   const lastPrice = Number(ceckString(otherMarkets?.find(e => e?.quote_unit === peatio_platform_currency)?.last)) || 0;
+   // const lastPrice = () => Number(ceckString(otherMarkets?.find(e => e?.quote_unit === peatio_platform_currency)?.last)) || 0;
+   const lastPrice = (currency: string, defualt: number) => Number(ceckString(otherMarkets?.find(e => e?.base_unit === currency)?.last)) || defualt;
 
    return (
       <div className="overflow-x-auto">
@@ -54,7 +55,7 @@ export const TableWallets = ({
                {balances.length > 0 ? balances.map(({ currency, name, iconUrl, locked, balance, fixed }) => (
                   <tr
                      key={currency}
-                     onClick={() => push(`wallets/${currency}`, { estimateValue: `${Decimal.format((lastPrice * (Number(balance) + Number(locked))), currency === 'idr' ? 0 : fixed, ',')} ${peatio_platform_currency?.toUpperCase()}` })}
+                     onClick={() => push(`wallets/${currency}`, { estimateValue: `${Decimal.format((lastPrice(currency, (Number(balance) + Number(locked))) * (Number(balance) + Number(locked))), currency === 'idr' ? 0 : fixed, ',')} ${peatio_platform_currency?.toUpperCase()}` })}
                      className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3 hover:bg-neutral7 dark:hover:bg-neutral2 cursor-pointer"
                   >
                      <td className="p-4 first:pl-8 last:pr-8">
@@ -83,8 +84,10 @@ export const TableWallets = ({
                         <div className="font-medium">
                            {Decimal.format(locked, currency === 'idr' ? 0 : fixed, ',')} {currency}
                         </div>
+                        {ceckString(otherMarkets?.find(e => e?.base_unit === currency)?.last)}
+                        {/* {JSON.stringify(lastPrice(currency, Number(locked)))} */}
                         <div className="text-neutral4">
-                           &asymp; {Decimal.format((lastPrice * Number(locked)), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
+                           &asymp; {Decimal.format(lastPrice(currency, Number(locked)), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
                         </div>
                      </td>
                      <td className="p-4 first:pl-8 last:pr-8 text-right uppercase">
@@ -92,7 +95,7 @@ export const TableWallets = ({
                            {Decimal.format(balance, currency === 'idr' ? 0 : currency === 'idr' ? 0 : fixed, ',')} {currency}
                         </div>
                         <div className="text-neutral4">
-                           &asymp; {Decimal.format((lastPrice * Number(balance)), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
+                           &asymp; {Decimal.format(lastPrice(currency, Number(balance)), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
                         </div>
                      </td>
                      <td className="p-4 first:pl-8 last:pr-8 text-right uppercase">
@@ -100,7 +103,7 @@ export const TableWallets = ({
                            {Decimal.format(Number(balance) + Number(locked), currency === 'idr' ? 0 : fixed, ',')} {currency}
                         </div>
                         <div className="text-neutral4">
-                           &asymp; {Decimal.format((lastPrice * (Number(balance) + Number(locked))), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
+                           &asymp; {Decimal.format(lastPrice(currency, (Number(balance) + Number(locked))), currency === 'idr' ? 0 : fixed, ',')} {peatio_platform_currency}
                         </div>
                      </td>
                   </tr>

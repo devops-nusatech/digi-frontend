@@ -255,13 +255,15 @@ const BeneficiariesFC = ({
       </button>
    );
 
-   const validateCoinAddressFormat = (value: string) => {
+   const validateCoinAddressFormat = useCallback((value: string) => {
       const networkType = selectedNetwork.blockchain_key ? selectedNetwork.blockchain_key.split('-').pop() : '';
-      if (getCurrencies().some(currency => currency.symbol === selectedAsset.currency)) {
-         const valid = validate(value, selectedAsset.currency, networkType);
+      const currency = String(selectedAsset?.networks.find(e => e.blockchain_key === selectedNetwork.blockchain_key)?.parent_id);
+      const availableNetwork = getCurrencies().some(({ symbol }) => symbol === currency);
+      if (availableNetwork) {
+         const valid = validate(value, currency, networkType);
          setCoinAddressValid(valid ? false : true);
       }
-   };
+   }, [selectedNetwork]);
 
    // const renderSelectTypeBeneficiaryModal = () => (
    //    <div className="pt-10 space-y-8">
