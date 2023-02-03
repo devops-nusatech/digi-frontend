@@ -45,7 +45,8 @@ import {
    // DropdownListBuyCrypto,
    ModalConfirmLogout,
    DropdownListNotification,
-   DropdownListProfile
+   DropdownListProfile,
+   DropdownEvent
 } from 'components';
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
@@ -145,11 +146,13 @@ const HeaderFC = ({
    const [dropDwonFlag, setDropDwonFlag] = useState<boolean>(false);
    const [dropDwonNotif, setDropDwonNotif] = useState<boolean>(false);
    const [dropDwonProfile, setDropDwonProfile] = useState<boolean>(false);
+   const [dropDownEvent, setDropDownEvent] = useState<boolean>(false);
 
    // const refDropDwonCrypto = useRef<HTMLDivElement>(null);
    const refDropDwonFlag = useRef<HTMLDivElement>(null);
    const refDropDwonNotif = useRef<HTMLButtonElement>(null);
    const refDropDwonProfile = useRef<HTMLDivElement>(null);
+   const refDropDownEvent = useRef<HTMLDivElement>(null);
 
    // const handleSetDropDwonCrypto = () => setDropDwonCrypto(!dropDwonCrypto);
    const handleSetDropDwonFlag = () => setDropDwonFlag(!dropDwonFlag);
@@ -158,6 +161,7 @@ const HeaderFC = ({
       e.stopPropagation();
       setDropDwonProfile(!dropDwonProfile);
    }
+   const handleSetDropDownEvent = () => setDropDownEvent(!dropDownEvent);
 
    // const handleOutsideDropDwonCrypto = (e: any) => {
    //    if (refDropDwonCrypto && !refDropDwonCrypto?.current?.contains(e.target)) setDropDwonCrypto(false);
@@ -170,6 +174,9 @@ const HeaderFC = ({
    }
    const handleOutsideDropDwonProfile = (e: any) => {
       if (refDropDwonProfile && !refDropDwonProfile?.current?.contains(e.target)) setDropDwonProfile(false);
+   }
+   const handleOutsideDropDownEvent = (e: any) => {
+      if (refDropDownEvent && !refDropDownEvent?.current?.contains(e.target)) setDropDownEvent(false);
    }
 
    // useEffect(() => {
@@ -187,6 +194,10 @@ const HeaderFC = ({
    useEffect(() => {
       document.addEventListener('mousedown', handleOutsideDropDwonProfile);
       return () => document.removeEventListener('mousedown', handleOutsideDropDwonProfile);
+   }, []);
+   useEffect(() => {
+      document.addEventListener('mousedown', handleOutsideDropDownEvent);
+      return () => document.removeEventListener('mousedown', handleOutsideDropDownEvent);
    }, []);
 
    const handleSwithTheme = () => dropDwonCryptoDarkMode(isDarkMode ? false : true);
@@ -251,6 +262,24 @@ const HeaderFC = ({
                         >
                            {translate('page.body.trade.header.discover')}
                         </Link> */}
+                        <div
+                           ref={refDropDownEvent}
+                           onClick={handleSetDropDownEvent}
+                           className="relative select-none"
+                        >
+                           <div className="flex items-center space-x-1 group">
+                              <div className="cursor-pointer group-hover:text-neutral2 dark:group-hover:text-neutral8 transition-colors duration-300">
+                                 Events
+                              </div>
+                              <svg className={`w-4 h-4 ${dropDownEvent ? 'rotate-180 fill-neutral1 dark:fill-neutral8' : 'fill-neutral4 group-hover:fill-neutral1 dark:group-hover:fill-neutral8'} transition ease-out duration-300`}>
+                                 <use xlinkHref="#icon-arrow-down" />
+                              </svg>
+                           </div>
+                           <DropdownEvent
+                              isOpen={dropDownEvent}
+                              translate={translate}
+                           />
+                        </div>
                      </div>
                   </div>
                   <div className="flex items-center space-x-0 md:space-x-4 lg:space-x-8">

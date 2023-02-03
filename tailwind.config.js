@@ -61,6 +61,8 @@ module.exports = {
 
          chart1: '#00C076',
 
+         'member-bronze': '#FFA215',
+
          inherit: colors.inherit,
          current: colors.current,
          transparent: colors.transparent,
@@ -377,6 +379,7 @@ module.exports = {
          'step': '0px 4px 16px -8px rgb(15 15 15 / 10%)',
          'sidebar-dropdown': '0px 40px 32px -24px rgb(15 15 15 / 12%)',
          'dropdown-primary': 'inset 0 0 0 2px #0A937F',
+         'thin': '0px 2px 4px rgba(0, 0, 0, 0.1)',
       },
       boxShadowColor: ({ theme }) => theme('colors'),
       caretColor: ({ theme }) => theme('colors'),

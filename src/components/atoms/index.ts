@@ -44,3 +44,5 @@ export * from './PriceChart3';
 export * from './Image';
 export * from './InputPassword';
 export * from './AdibTooltip';
+export * from './Heading2';
+export * from './Heading3';

@@ -9,6 +9,7 @@ import { alertPush, changePasswordError, changePasswordFetch, Configs, entropyPa
 import { IntlProps } from 'index';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { useModal } from 'hooks';
+import { IcBronze } from 'assets';
 
 interface ReduxProps {
    user: User;
@@ -87,6 +88,12 @@ const ProfileFC = ({
                   <div className="space-y-3">
                      <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
                         {user.username ?? profiles[0]?.first_name ?? ''}
+                     </div>
+                     <div className="flex space-x-3 items-center">
+                        <IcBronze />
+                        <div className="font-medium text-member-bronze">
+                           Bronze Member
+                        </div>
                      </div>
                      <div className="font-medium text-neutral4">
                         {user.email}

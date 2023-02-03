@@ -14,9 +14,11 @@ import {
    illusCard31,
    illusCard32,
    illusNews11,
-   illusNews12
+   illusNews12,
+   illusCard,
+   illusCard2
 } from 'assets';
-import { Hero, Learn, Download, Step, MyMarketsTable, Button } from 'components';
+import { Hero, Learn, Download, Step, MyMarketsTable, Button, StaticticCurrency } from 'components';
 import { openInNewTab, toggleColorTheme } from 'helpers';
 // import { LogoIcon } from '../../assets/images/LogoIcon';
 // import { MarketsTable } from '../../containers';
@@ -433,7 +435,23 @@ class Landing extends React.Component<Props> {
    public renderMain() {
       return (
          <>
-            <Hero />
+            <Hero
+               title={
+                  <>
+                     <span className="hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-tr hover:from-primary1 hover:to-primary5 transition-all duration-300">
+                        Buy & sell
+                     </span>
+                     <br />
+                     crypto in minutes
+                  </>
+               }
+               subTitle="Trade Bitcoin, Ethereum, USDT, and the top altcoins on the legendary crypto asset exchange."
+               path="/markets"
+               src={illusCard}
+               srcSet={illusCard2}
+            >
+               <StaticticCurrency />
+            </Hero>
             <Learn />
             <MyMarketsTable />
             {this.renderPopular()}

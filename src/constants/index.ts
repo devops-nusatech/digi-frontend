@@ -1,6 +1,6 @@
 import type { Ticker, Wallet } from "modules";
 
-export const PG_TITLE_PREFIX = 'Cryptobase';
+export const PG_TITLE_PREFIX = 'Digiassetindo';
 
 export const pgRoutes = (isLoggedIn: boolean, isLight?: boolean): string[][] => {
    const routes = [

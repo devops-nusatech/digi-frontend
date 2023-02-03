@@ -47,3 +47,5 @@ export * from './WalletFinance';
 export * from './WalletOrder';
 export * from './Exchange';
 export * from './Geetest';
+export * from './Membership';
+export * from './JoinAffiliate';

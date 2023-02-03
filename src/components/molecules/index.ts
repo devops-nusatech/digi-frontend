@@ -42,4 +42,6 @@ export * from './LayoutProfile';
 export * from './ComboboxCurrency';
 export * from './ComboboxMarket';
 export * from './AdibDropdown';
+export * from './MembershipList';
+export * from './MembershipCard';
 export { Tables };

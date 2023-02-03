@@ -106,6 +106,8 @@ import {
    RegisterKu,
    Geetest,
    Notifications,
+   Membership,
+   JoinAffiliate,
 } from 'screens';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -318,6 +320,8 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <Route path="/deposit" component={Deposit} />
                <Route path="/exchange" component={Exchange} />
                <Route path="/geetest" component={Geetest} />
+               <Route path="/membership" component={Membership} />
+               <Route path="/join-affiliate" component={JoinAffiliate} />
                {showLanding() && <Route exact path="/" component={LandingScreen} />}
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/docs" component={ApiDocs} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/orders" component={WalletOrder} />
