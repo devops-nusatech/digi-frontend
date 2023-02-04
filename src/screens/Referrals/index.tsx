@@ -195,9 +195,11 @@ const ReferralsFC = ({ intl, user }: Props) => {
                                     </td>
                                  </tr>
                               )) : (
-                                 <div className="">
-                                    Kosong
-                                 </div>
+                                 <tr>
+                                    <td className="px-2 text-center text-neutral4 align-middle text-base font-medium" colSpan={12}>
+                                       <div>{intl.formatMessage({ id: 'page.noDataToShow' })}</div>
+                                    </td>
+                                 </tr>
                               )}
                            </tbody>
                         </table>

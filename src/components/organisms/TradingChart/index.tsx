@@ -1,13 +1,9 @@
 import React, { FC, ReactElement, useState } from 'react';
-// import { useSelector } from 'react-redux';
-// import { useIntl } from 'react-intl';
-// import { selectCurrentMarket } from 'modules';
 import { MarketDepthsComponent, TradingChart as Chart } from 'containers';
 import { icLogoLight } from 'assets';
 import { Nav } from 'components';
 import { useDispatch, useSelector } from 'react-redux';
 import { klineFetch, klineUpdatePeriod, klineUpdateTimeRange, selectCurrentMarket } from 'modules';
-// import { TabPanel, MyTab } from 'components';
 
 type ChartPeriode = '1M' | '5M' | '15M' | '30M';
 type Resolution = 1 | 5 | 15 | 30;

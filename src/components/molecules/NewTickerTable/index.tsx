@@ -365,7 +365,11 @@ export const NewTickerTable: FC<Props> = memo(({
                            </tr>
                         )
                      }) : (
-                        <div className="">Null</div>
+                        <tr>
+                           <td className="px-2 text-center text-neutral4 align-middle text-base font-medium" colSpan={12}>
+                              <div>{formatMessage({ id: 'page.noDataToShow' })}</div>
+                           </td>
+                        </tr>
                      )}
                   </tbody>
                </table>

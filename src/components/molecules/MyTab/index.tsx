@@ -1,39 +1,10 @@
-// import React from 'react';
-// import PropTypes from 'prop-types';
-// // import { Tab as MyTab } from '@headlessui/react';
-
-// interface TabProps {
-//    titles: string[];
-//    isActive: boolean;
-// }
-
-// export const MyTab = ({ titles, isActive }: TabProps) => {
-//    return (
-//       <div className="nav">
-//          {
-//             titles?.map((title, index) => (
-//                <button key={index} className={`nav__link ${isActive}`}>{title}</button>
-//             ))
-//          }
-//       </div>
-//    )
-// }
-
-// MyTab.propTypes = {
-//    titles: PropTypes.string.isRequired,
-//    isActive: PropTypes.bool.isRequired,
-// }
-
-import React, { ReactNode } from 'react';
+import React, { FC } from 'react';
 import { Tab } from '@headlessui/react';
-import PropTypes from 'prop-types';
-
 interface TabProps {
-   titles: Array<ReactNode>;
-   children?: JSX.Element | JSX.Element[];
+   titles: Array<string>;
 }
 
-export const MyTab = ({ titles, children }: TabProps) => {
+export const MyTab: FC<TabProps> = ({ titles, children }) => {
    return (
       <Tab.Group>
          <Tab.List className="flex space-x-6 items-start mb-20">
@@ -49,7 +20,3 @@ export const MyTab = ({ titles, children }: TabProps) => {
       </Tab.Group>
    );
 };
-
-MyTab.propTypes = {
-   titles: PropTypes.string.isRequired,
-}

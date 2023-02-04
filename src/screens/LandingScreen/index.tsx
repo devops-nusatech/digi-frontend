@@ -436,9 +436,9 @@ class Landing extends React.Component<Props> {
             <Hero />
             <Learn />
             <MyMarketsTable />
-            {this.renderPopular()}
+            {/* {this.renderPopular()} */}
             <Download />
-            {this.renderNews()}
+            {/* {this.renderNews()} */}
             <Step />
          </>
       )
