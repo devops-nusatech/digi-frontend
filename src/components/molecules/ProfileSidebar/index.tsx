@@ -41,6 +41,8 @@ export const ProfileSidebar = () => {
             return 'API keys';
          case '/beneficiaries':
             return 'beneficiaries';
+         case '/tier':
+            return 'Tier membership';
          case '/sessions-history':
             return 'Sessions history';
          case '/2fa':
@@ -103,6 +105,15 @@ export const ProfileSidebar = () => {
                      <use xlinkHref="#icon-beneficiary"></use>
                   </svg>
                   <div>Beneficiaries</div>
+               </Link>
+               <Link
+                  to="/tier"
+                  className={`group flex space-x-2 items-center h-10 px-0 lg2:px-4 font-dm leading-custom3 ${pathname.includes('/tier') ? '' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} transition-colors duration-300`}
+               >
+                  <svg className={`w-6 h-6 ${pathname.includes('/tier') ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8' : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'}`}>
+                     <use xlinkHref="#icon-membership"></use>
+                  </svg>
+                  <div>Tier membership</div>
                </Link>
                <div className="h-[1px] bg-neutral6 dark:bg-neutral3" />
                <Link

@@ -23,3 +23,4 @@ export * from './TierMembershipSVG2';
 export * from './TierMembershipSVG3';
 export * from './TierMembershipSVG4';
 export * from './TierMembershipSVG5';
+export * from './TierMembershipSVG6';

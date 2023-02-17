@@ -24,6 +24,7 @@ declare global {
          finexUrl: string;
          p2pUrl: string;
          newsUrl?: string;
+         membershipUrl?: string;
       };
       finex: string | boolean;
       withCredentials: string | boolean;

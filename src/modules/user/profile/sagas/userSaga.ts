@@ -10,7 +10,6 @@ const userOptions: RequestOptions = {
 export function* userSaga(action: UserFetch) {
    try {
       const user = yield call(API.get(userOptions), '/resource/users/me');
-
       yield put(userData({ user }));
    } catch (error) {
       yield put(sendError({

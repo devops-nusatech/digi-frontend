@@ -10,7 +10,8 @@ export const defaultConfig: Config = {
       rangerUrl: `${rangerHostUrl}/api/v2/ranger`,
       finexUrl: `${hostUrl}/api/v2/finex`,
       p2pUrl: `${hostUrl}/api/v2/p2p`,
-      newsUrl: ''
+      newsUrl: '',
+      membershipUrl: 'http://149.28.140.240:8080/v2/tier_user',
    },
    finex: false,
    withCredentials: false,
@@ -46,7 +47,7 @@ export const defaultConfig: Config = {
    account_upload_size_min_range: '1',
    account_upload_size_max_range: '20',
    themeSwitcher: 'visible',
-   peatio_platform_currency: 'usdt'
+   peatio_platform_currency: 'eth'
 };
 
 export const Cryptobase = {
@@ -66,6 +67,7 @@ export const applogicUrl = () => Cryptobase.config.api.applogicUrl;
 export const rangerUrl = () => Cryptobase.config.api.rangerUrl;
 export const finexUrl = () => Cryptobase.config.api.finexUrl || tradeUrl();
 export const p2pUrl = () => Cryptobase.config.api.p2pUrl;
+export const membershipUrl = () => Cryptobase.config.api.membershipUrl;
 export const newsUrl = () => Cryptobase.config.api.newsUrl;
 export const withCredentials = () => convertToBoolean(Cryptobase.config.withCredentials);
 export const incrementalOrderBook = () => convertToBoolean(Cryptobase.config.incrementalOrderBook);

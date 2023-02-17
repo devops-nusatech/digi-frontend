@@ -12,6 +12,7 @@ import {
    withCredentials,
    newsUrl,
    p2pUrl,
+   membershipUrl
 } from './config';
 
 export type HTTPMethod =
@@ -27,7 +28,7 @@ export interface JsonBody {
 }
 
 export interface RequestOptions {
-   apiVersion: 'applogic' | 'peatio' | 'barong' | 'finex' | 'sonic' | 'p2p' | 'news';
+   apiVersion: 'applogic' | 'peatio' | 'barong' | 'finex' | 'sonic' | 'p2p' | 'news' | 'membership';
    withHeaders?: boolean;
    headers?: Object;
 }
@@ -56,6 +57,7 @@ const getAPI = () => {
       sonic: `${hostUrl}/api/v2/sonic`,
       p2p: p2pUrl(),
       news: newsUrl(),
+      membership: membershipUrl(),
    }
 };
 

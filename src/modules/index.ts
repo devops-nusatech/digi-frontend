@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { all, call } from 'redux-saga/effects';
 import { publicReducer, userReducer } from './app';
+import { AirdropsState, rootAirdropsSaga } from './public/airdrops';
 import { AlertState, rootHandleAlertSaga } from './public/alert';
 import { BlocklistAccessState, rootBlocklistAccessSaga } from './public/blocklistAccess';
 import { ConfigsState, rootConfigsSaga } from './public/configs';
@@ -13,6 +14,7 @@ import { LanguageState } from './public/i18n';
 import { KlineState, rootKlineFetchSaga } from './public/kline';
 import { MarketsState, rootMarketsSaga } from './public/markets';
 import { MemberLevelsState, rootMemberLevelsSaga } from './public/memberLevels';
+import { MembershipsState, rootMembershipsSaga } from './public/memberships';
 import { NewsState, rootNewsSaga } from './public/news';
 import { News2State, rootNews2Saga } from './public/news2';
 import { DepthIncrementState, DepthState, OrderBookState, rootOrderBookSaga } from './public/orderBook';
@@ -40,12 +42,14 @@ import { OrdersState, rootOrdersSaga } from './user/orders';
 import { OrdersHistoryState, rootOrdersHistorySaga } from './user/ordersHistory';
 import { PasswordState, rootPasswordSaga } from './user/password';
 import { ProfileState, rootProfileSaga } from './user/profile';
+import { TierState, rootTierSaga } from './user/tier';
 import { TransactionsState, rootTransactionsSaga } from './user/transactions';
 import { TransferState, rootTransferSaga } from './user/transfers';
 import { rootUserActivitySaga, UserActivityState } from './user/userActivity';
 import { rootWalletsSaga, WalletsState } from './user/wallets';
 import { rootWithdrawLimitSaga, WithdrawLimitState } from './user/withdrawLimit';
 
+export * from './public/airdrops';
 export * from './public/alert';
 export * from './public/blocklistAccess';
 export * from './public/configs';
@@ -57,6 +61,7 @@ export * from './public/i18n';
 export * from './public/kline';
 export * from './public/markets';
 export * from './public/memberLevels';
+export * from './public/memberships';
 export * from './public/news';
 export * from './public/news2';
 export * from './public/orderBook';
@@ -78,6 +83,7 @@ export * from './user/orders';
 export * from './user/ordersHistory';
 export * from './user/password';
 export * from './user/profile';
+export * from './user/tier';
 export * from './user/transactions';
 export * from './user/transfers';
 export * from './user/userActivity';
@@ -88,6 +94,7 @@ export * from './types';
 
 export interface RootState {
    public: {
+      airdrops: AirdropsState;
       alerts: AlertState;
       blocklistAccess: BlocklistAccessState;
       colorTheme: ColorThemeState;
@@ -100,6 +107,7 @@ export interface RootState {
       errorHandler: ErrorHandlerState;
       markets: MarketsState;
       memberLevels: MemberLevelsState;
+      memberships: MembershipsState;
       news: NewsState;
       news2: News2State;
       orderBook: OrderBookState;
@@ -128,6 +136,7 @@ export interface RootState {
       ordersHistory: OrdersHistoryState;
       password: PasswordState;
       profile: ProfileState;
+      tier: TierState;
       groupMember: GroupMemberState;
       transactions: TransactionsState;
       transfer: TransferState;
@@ -157,12 +166,14 @@ export function* rootSaga() {
       call(rootErrorHandlerSaga),
       call(rootEmailVerificationSaga),
       call(rootGeetestCaptchaSaga),
+      call(rootAirdropsSaga),
       call(rootHandleAlertSaga),
       call(rootHistorySaga),
       call(rootKlineFetchSaga),
       call(rootLabelSaga),
       call(rootMarketsSaga),
       call(rootMemberLevelsSaga),
+      call(rootMembershipsSaga),
       call(rootNewsSaga),
       call(rootNews2Saga),
       call(rootOpenOrdersSaga),
@@ -171,6 +182,7 @@ export function* rootSaga() {
       call(rootOrdersSaga),
       call(rootPasswordSaga),
       call(rootProfileSaga),
+      call(rootTierSaga),
       call(rootMemberGroupSaga),
       call(rootTransactionsSaga),
       call(rootTransferSaga),

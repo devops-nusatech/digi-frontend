@@ -4,10 +4,13 @@ import { membershipStep1, membershipStep2, membershipStep3 } from 'assets';
 import { useHistory, withRouter } from 'react-router';
 import { compose } from 'redux';
 import { injectIntl } from 'react-intl';
+import { Membership as IMembership } from 'modules';
+import { numberFormat } from 'helpers';
 
 const MembershipFC = () => {
    const [expandFaq, setExpandFaq] = useState(false);
    const handleSetExpandFaq = () => setExpandFaq(!expandFaq);
+   const [membership, setMembership] = useState<IMembership>();
 
    const { push } = useHistory();
 
@@ -21,6 +24,8 @@ const MembershipFC = () => {
       title: 'How many times can a referral code be used?',
       content: 'How many times can a referral code be used?',
    }];
+
+   const requirement = membership?.requirement;
 
    return (
       <>
@@ -39,7 +44,7 @@ const MembershipFC = () => {
          <section className="relative mb-6 md:mb-10 -mt-24" id="list">
             <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
                <Heading2 text="Digiasset Tier Membership List" />
-               <MembershipList />
+               <MembershipList onClick={setMembership} />
                <div className="space-y-6">
                   <Heading3 text="Tier Requirement" />
                   <div className="space-y-2.5">
@@ -47,9 +52,9 @@ const MembershipFC = () => {
                         Diamond Tier Requirements:
                      </div>
                      <ul className="list-decimal list-outside text-neutral4 pl-3">
-                        <li>Minimum KYC Must be <span className="text-primary1">Level 1</span></li>
-                        <li>The minimum number of referrals that must be owned is <span className="text-primary1">100 active referrals</span></li>
-                        <li>Minimum trading volume that must be owned is $ 1.000.000 USDT and have a good trade history</li>
+                        <li>Minimum KYC Must be <span className="text-primary1">Level {requirement?.kyc}</span></li>
+                        <li>The minimum number of referrals that must be owned is <span className="text-primary1">{requirement?.reff} active referrals</span></li>
+                        <li>Minimum trading volume that must be owned is {numberFormat(requirement?.trx_vol)} USDT and have a good trade history</li>
                         <li>After you have achieved all the requirements, every time you level up you will get a reward that you can claim 1X every time you level up</li>
                      </ul>
                   </div>

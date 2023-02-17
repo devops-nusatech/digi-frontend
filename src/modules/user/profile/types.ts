@@ -39,6 +39,7 @@ export type User = {
    updated_at: string;
 }
 
+
 // export interface User {
 //     uid: string;
 //     username?: string;

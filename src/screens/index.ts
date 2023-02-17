@@ -49,3 +49,4 @@ export * from './Exchange';
 export * from './Geetest';
 export * from './Membership';
 export * from './JoinAffiliate';
+export * from './Tier';

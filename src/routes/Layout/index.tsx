@@ -47,6 +47,7 @@ import {
    selectUserLoggedIn,
    toggleChartRebuild,
    userFetch,
+   tierFetch,
    walletsReset,
    groupFetch,
    memberLevelsFetch,
@@ -108,6 +109,7 @@ import {
    Notifications,
    Membership,
    JoinAffiliate,
+   Tier,
 } from 'screens';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -169,6 +171,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                if (token) {
                   this.props.userFetch();
                   this.props.groupFetch();
+                  this.props.tierFetch();
                   this.initInterval();
                   this.checkSession();
                }
@@ -333,6 +336,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/referrals" component={Referrals} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/api-keys" component={ApiKeys} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/beneficiaries" component={Beneficiaries} />
+               <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/tier" component={Tier} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/sessions-history" component={SessionsHistory} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/2fa" component={TwoFA} />
                <PrivateRoute loading={userLoading} isLogged={isLoggedIn} path="/change-password" component={ChangePassword} />
@@ -462,6 +466,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    fetchConfigs: () => dispatch(configsFetch()),
    fetchSonic: () => dispatch(sonicFetch()),
    userFetch: () => dispatch(userFetch()),
+   tierFetch: () => dispatch(tierFetch()),
    fetchMemberLevel: () => dispatch(memberLevelsFetch()),
    fetchCustomization: () => dispatch(customizationFetch()),
    logout: () => dispatch(logoutFetch()),

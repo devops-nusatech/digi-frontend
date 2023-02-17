@@ -1,14 +1,14 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, LayoutProfile, ModalRequired, ProfileSidebar } from 'components';
 import { injectIntl } from 'react-intl';
 // import { RouterProps } from 'react-router';
 import { compose } from 'redux';
-import { copyToClipboard, setDocumentTitle } from '../../helpers';
+import { copyToClipboard } from '../../helpers';
 import { alertPush, changePasswordError, changePasswordFetch, Configs, entropyPasswordFetch, RootState, selectChangePasswordSuccess, selectConfigs, selectCurrentPasswordEntropy, selectUserInfo, toggle2faFetch, User } from 'modules';
 import { IntlProps } from 'index';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
-import { useModal } from 'hooks';
+import { useDocumentTitle, useModal, useMyTierFetch } from 'hooks';
 import { IcBronze } from 'assets';
 
 interface ReduxProps {
@@ -53,11 +53,12 @@ const ProfileFC = ({
    user,
    fetchSuccess
 }: Props, { code2FA }: State) => {
+   useDocumentTitle('Profile')
+   const {
+      tier
+   } = useMyTierFetch();
    const { profiles, } = user;
    const { isShow, toggle } = useModal();
-   useEffect(() => {
-      setDocumentTitle('Profile');
-   }, []);
    const level = user.level;
    const referralLink = `${window.document.location.origin}/register?refid=${user.uid}`;
 
@@ -91,8 +92,8 @@ const ProfileFC = ({
                      </div>
                      <div className="flex space-x-3 items-center">
                         <IcBronze />
-                        <div className="font-medium text-member-bronze">
-                           Bronze Member
+                        <div className="font-medium text-member-bronze capitalize">
+                           {tier.tier} Member
                         </div>
                      </div>
                      <div className="font-medium text-neutral4">

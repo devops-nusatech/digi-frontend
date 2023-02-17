@@ -74,7 +74,7 @@ export const formatWithSeparators = (value: string, thousSep?: string, floatSep?
    return fmtNum;
 };
 
-export class Decimal extends React.Component<DecimalProps> {
+export abstract class Decimal extends React.Component<DecimalProps> {
    public static format(value: DecimalProps['children'], precision: number, thousSep?: string, floatSep?: string) {
       if (typeof value === 'undefined') {
          return '0';
