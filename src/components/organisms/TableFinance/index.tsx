@@ -53,6 +53,7 @@ import {
 } from 'modules';
 import { DEFAULT_WALLET } from '../../../constants';
 import { useDebounced } from 'hooks';
+import { peatioPlatformCurrency } from 'api';
 
 export type Direction = 'IN' | 'OUT' | '';
 export type State = 'succeed' | 'pending' | 'failed' | 'refund';
@@ -118,7 +119,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    fetchCurrencies,
    intl
 }) => {
-   const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === sonic.peatio_platform_currency) || wallets[0] || DEFAULT_WALLET;
+   const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === sonic.peatio_platform_currency || peatioPlatformCurrency()?.toLowerCase()) || wallets[0] || DEFAULT_WALLET;
 
    const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(4) ? 1 : hiddenCategory?.includes(3) ? 4 : 0);
    const [q, setQ] = useState('');

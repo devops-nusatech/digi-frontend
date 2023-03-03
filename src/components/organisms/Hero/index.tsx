@@ -21,8 +21,8 @@ export const Hero: FC = (props: any) => {
    }
 
    return (
-      <section className="relative overflow-hidden pt-8 lg:pt-20 lg2:pt-40 mb-34">
-         <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
+      <section className="overflow-hidden pt-8 lg:pt-20 lg2:pt-40 mb-34">
+         <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
             <div className="grid grid-cols-2 mb-4 md:mb-20 lg2:mb-[143px]">
                <div className="col-span-2 md:col-span-1 select-none">
                   <div className="mb-5 text-5xl md:text-64 tracking-custom font-dm font-bold">
@@ -56,7 +56,7 @@ export const Hero: FC = (props: any) => {
                </div>
                <div className="col-span-2 md:col-span-1">
                   <div
-                     className="absolute -top-20 lg2:-top-36 -right-6 pointer-events-none"
+                     className="absolute -top-40 lg2:-top-76 -right-28 pointer-events-none"
                   >
                      <img
                         className="hidden md:block md:w-[500px] lg:w-[700px] xl:w-auto"

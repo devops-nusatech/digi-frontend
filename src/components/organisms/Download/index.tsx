@@ -2,8 +2,8 @@ import React from 'react'
 import { icApple, icGp, illusDownloadApp11, illusDownloadApp12 } from 'assets';
 
 export const Download = () => (
-   <section className="relative flex items-center md:min-h-908 py-16 lg:py-28 lg2:py-34">
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
+   <section className="flex items-center md:min-h-908 py-16 lg:py-28 lg2:py-34">
+      <div className="relative w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
          <div className="grid grid-cols-2">
             <div className="col-span-2 md:col-span-1 select-none">
                <div className="whitespace-normal text-4.5xl md:text-5xl font-dm font-bold tracking-custom leading-custom1">
@@ -65,7 +65,7 @@ export const Download = () => (
             </div>
             <div className="col-span-2 md:col-span-1">
                <div
-                  className="absolute lg:top-0 -right-6 pointer-events-none"
+                  className="absolute lg:-top-56 -right-6 pointer-events-none"
                >
                   <img
                      className="hidden md:block md:w-[500px] lg:w-[700px] xl:w-auto"

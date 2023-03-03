@@ -20,6 +20,7 @@ import {
    selectSonic,
    Sonic
 } from 'modules';
+import { peatioPlatformCurrency } from 'api';
 
 interface EstimatedValueProps {
    wallets: Wallet[];
@@ -98,11 +99,11 @@ class EstimatedValueContainer extends React.Component<Props> {
          wallets,
          sonic,
       } = this.props;
-      const estimatedValue = estimateValue(sonic.peatio_platform_currency, currencies, wallets, markets, tickers);
-      const estimatedValueLocked = estimateValueLocked(sonic.peatio_platform_currency, currencies, wallets, markets, tickers);
-      const estimatedValueAvailable = estimateValueAvailable(sonic.peatio_platform_currency, currencies, wallets, markets, tickers);
+      const estimatedValue = estimateValue(sonic.peatio_platform_currency || peatioPlatformCurrency(), currencies, wallets, markets, tickers);
+      const estimatedValueLocked = estimateValueLocked(sonic.peatio_platform_currency || peatioPlatformCurrency(), currencies, wallets, markets, tickers);
+      const estimatedValueAvailable = estimateValueAvailable(sonic.peatio_platform_currency || peatioPlatformCurrency(), currencies, wallets, markets, tickers);
 
-      const wallet = wallets.find(e => e.currency === sonic.peatio_platform_currency.toLowerCase())
+      const wallet = wallets.find(e => e.currency === (sonic.peatio_platform_currency?.toLowerCase() || peatioPlatformCurrency()?.toLowerCase()))
 
       return (
          <div className="flex items-start justify-between">
@@ -112,10 +113,10 @@ class EstimatedValueContainer extends React.Component<Props> {
                   <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
                      {Decimal.format(wallet?.balance, Number(wallet?.fixed), ',')}
                   </div>
-                  <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
+                  <Badge variant="green" text={sonic.peatio_platform_currency?.toUpperCase() || peatioPlatformCurrency()?.toUpperCase()} />
                </div>
                <div className="text-base text-neutral4">
-                  &asymp; {formatWithSeparators(estimatedValue, ',')} {sonic.peatio_platform_currency.toUpperCase()}
+                  &asymp; {formatWithSeparators(estimatedValue, ',')} {sonic.peatio_platform_currency?.toUpperCase() || peatioPlatformCurrency()?.toUpperCase()}
                </div>
             </div>
             <div>
@@ -124,10 +125,10 @@ class EstimatedValueContainer extends React.Component<Props> {
                   <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
                      {Decimal.format(wallet?.locked, Number(wallet?.fixed), ',')}
                   </div>
-                  <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
+                  <Badge variant="green" text={sonic.peatio_platform_currency?.toUpperCase() || peatioPlatformCurrency()?.toUpperCase()} />
                </div>
                <div className="text-base text-neutral4">
-                  &asymp; {formatWithSeparators(estimatedValueLocked, ',')} {sonic.peatio_platform_currency.toUpperCase()}
+                  &asymp; {formatWithSeparators(estimatedValueLocked, ',')} {sonic.peatio_platform_currency?.toUpperCase() || peatioPlatformCurrency()?.toUpperCase()}
                </div>
             </div>
             <div>
@@ -136,10 +137,10 @@ class EstimatedValueContainer extends React.Component<Props> {
                   <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
                      {Decimal.format(Number(wallet?.balance) + Number(wallet?.locked), Number(wallet?.fixed), ',')}
                   </div>
-                  <Badge variant="green" text={sonic.peatio_platform_currency.toUpperCase()} />
+                  <Badge variant="green" text={sonic.peatio_platform_currency?.toUpperCase() || peatioPlatformCurrency()?.toUpperCase()} />
                </div>
                <div className="text-base text-neutral4">
-                  &asymp; {formatWithSeparators(estimatedValueAvailable, ',')} {sonic.peatio_platform_currency.toUpperCase()}
+                  &asymp; {formatWithSeparators(estimatedValueAvailable, ',')} {sonic.peatio_platform_currency?.toUpperCase() || peatioPlatformCurrency()?.toUpperCase()}
                </div>
             </div>
          </div>

@@ -22,5 +22,5 @@
    "semi": true,
    "tslintIntegration": true,
    "stylelintIntegration": true,
-   "ignorePath": ".gitignore"
+   "ignorePath": ".gitignore",
 }

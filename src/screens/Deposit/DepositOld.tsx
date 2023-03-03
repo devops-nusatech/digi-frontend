@@ -38,6 +38,7 @@ import { IntlProps } from 'index';
 import { arrayFilter, copyToClipboard, renderCurrencyIcon } from 'helpers';
 import { Button, Decimal, LayoutProfile, Skeleton, InputGroup, QRCode, Nav, Label, ComboboxCurrency } from 'components';
 import { DEFAULT_WALLET } from '../../constants';
+import { peatioPlatformCurrency } from 'api';
 
 
 type ReduxProps = {
@@ -77,7 +78,7 @@ const DepositFC = memo(({
    history: { push },
    intl
 }: DepositProps) => {
-   const defaultWallet: Wallet = wallets.find(e => e.currency === sonic.peatio_platform_currency) || DEFAULT_WALLET;
+   const defaultWallet: Wallet = wallets.find(e => e.currency === sonic.peatio_platform_currency || peatioPlatformCurrency()?.toLowerCase()) || DEFAULT_WALLET;
 
    const [selected, setSelected] = useState<Wallet>(location.state ? location.state : defaultWallet);
    const [networkActive, setNetworkActive] = useState(0);

@@ -37,8 +37,8 @@ const getWalletTotal = (wallet: Wallet): number => {
 };
 
 export const estimateWithMarket = (targetCurrency: string, walletCurrency: string, walletTotal: number, currencies: Currency[], markets: Market[], marketTickers: MarketTicker): number => {
-   const formattedTargetCurrency = targetCurrency.toLowerCase();
-   const formattedWalletCurrency = walletCurrency.toLowerCase();
+   const formattedTargetCurrency = targetCurrency?.toLowerCase();
+   const formattedWalletCurrency = walletCurrency?.toLowerCase();
    const market = findMarket(formattedTargetCurrency, formattedWalletCurrency, markets);
    const marketTicker = findMarketTicker((market && market.id) || '', marketTickers);
    const targetCurrencyPrecision = handleCCYPrecision(currencies, formattedTargetCurrency, DEFAULT_CCY_PRECISION);
@@ -64,8 +64,8 @@ export const estimateWithMarket = (targetCurrency: string, walletCurrency: strin
 
 const estimateWithoutMarket = (targetCurrency: string, walletCurrency: string, walletTotal: number, currencies: Currency[], markets: Market[], marketTickers: MarketTicker): number => {
    const secondaryCurrencies: string[] = [];
-   const formattedTargetCurrency = targetCurrency.toLowerCase();
-   const formattedWalletCurrency = walletCurrency.toLowerCase();
+   const formattedTargetCurrency = targetCurrency?.toLowerCase();
+   const formattedWalletCurrency = walletCurrency?.toLowerCase();
 
    for (const market of markets) {
       if (market.base_unit === formattedTargetCurrency) {
@@ -100,12 +100,12 @@ const estimateWithoutMarket = (targetCurrency: string, walletCurrency: string, w
 };
 
 export const estimateValue = (targetCurrency: string, currencies: Currency[], wallets: Wallet[], markets: Market[], marketTickers: MarketTicker): string => {
-   const formattedTargetCurrency = targetCurrency.toLowerCase();
+   const formattedTargetCurrency = targetCurrency?.toLowerCase();
    let estimatedValue = 0;
 
    if (wallets && wallets.length) {
       for (const wallet of wallets) {
-         const formattedWalletCurrency = wallet.currency.toLowerCase();
+         const formattedWalletCurrency = wallet.currency?.toLowerCase();
 
          if (formattedWalletCurrency === formattedTargetCurrency) {
             const walletTotal = (Number(wallet.balance) || 0) + (Number(wallet.locked) || 0);
@@ -124,12 +124,12 @@ export const estimateValue = (targetCurrency: string, currencies: Currency[], wa
    return precisedEstimatedValue;
 };
 export const estimateValueLocked = (targetCurrency: string, currencies: Currency[], wallets: Wallet[], markets: Market[], marketTickers: MarketTicker): string => {
-   const formattedTargetCurrency = targetCurrency.toLowerCase();
+   const formattedTargetCurrency = targetCurrency?.toLowerCase();
    let estimatedValue = 0;
 
    if (wallets && wallets.length) {
       for (const wallet of wallets) {
-         const formattedWalletCurrency = wallet.currency.toLowerCase();
+         const formattedWalletCurrency = wallet.currency?.toLowerCase();
 
          if (formattedWalletCurrency === formattedTargetCurrency) {
             const walletTotal = (Number(wallet.locked) || 0)
@@ -144,12 +144,12 @@ export const estimateValueLocked = (targetCurrency: string, currencies: Currency
    return precisedEstimatedValue;
 };
 export const estimateValueAvailable = (targetCurrency: string, currencies: Currency[], wallets: Wallet[], markets: Market[], marketTickers: MarketTicker): string => {
-   const formattedTargetCurrency = targetCurrency.toLowerCase();
+   const formattedTargetCurrency = targetCurrency?.toLowerCase();
    let estimatedValue = 0;
 
    if (wallets && wallets.length) {
       for (const wallet of wallets) {
-         const formattedWalletCurrency = wallet.currency.toLowerCase();
+         const formattedWalletCurrency = wallet.currency?.toLowerCase();
 
          if (formattedWalletCurrency === formattedTargetCurrency) {
             const walletTotal = (Number(wallet.balance) || 0);
@@ -170,7 +170,7 @@ export const estimateValueAvailable = (targetCurrency: string, currencies: Curre
 
 export const estimateUnitValue = (targetCurrency: string, currentCurrency: string, total: number, currencies: Currency[], markets: Market[], marketTickers: MarketTicker): string => {
    const estimated = estimateWithMarket(targetCurrency, currentCurrency, total, currencies, markets, marketTickers) || estimateWithoutMarket(targetCurrency, currentCurrency, total, currencies, markets, marketTickers);
-   const formattedTargetCurrency = targetCurrency.toLowerCase();
+   const formattedTargetCurrency = targetCurrency?.toLowerCase();
    const targetCurrencyPrecision = handleCCYPrecision(currencies, formattedTargetCurrency, DEFAULT_CCY_PRECISION);
 
    return Decimal.format(estimated, targetCurrencyPrecision);

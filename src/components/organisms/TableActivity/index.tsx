@@ -490,6 +490,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                   case 'collected':
                      return 'succeed'
                   case 'submitted':
+                  case 'accepted':
                   case 'accepted22':
                   case 'aml_processing':
                   case 'aml_suspicious':
@@ -503,7 +504,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                      return 'failed'
 
                   default:
-                     return '';
+                     return deposits.state;
                }
             }
             const stateVariant = () => {
@@ -511,6 +512,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                   case 'collected':
                      return 'green'
                   case 'submitted':
+                  case 'accepted':
                   case 'accepted22':
                   case 'aml_processing':
                   case 'aml_suspicious':
@@ -749,6 +751,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                   case 'completed':
                      return 'succeed'
                   case 'submitted':
+                  case 'accepted':
                   case 'accepted22':
                   case 'aml_processing':
                   case 'aml_suspicious':
@@ -762,7 +765,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                      return 'failed'
 
                   default:
-                     return '';
+                     return status;
                }
             }
             const stateVariant = () => {
@@ -770,6 +773,7 @@ export const TableActivity: FC<TableActivityProps> = ({
                   case 'completed':
                      return 'green'
                   case 'submitted':
+                  case 'accepted':
                   case 'accepted22':
                   case 'aml_processing':
                   case 'aml_suspicious':

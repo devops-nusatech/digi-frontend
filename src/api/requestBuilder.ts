@@ -46,7 +46,7 @@ export interface ApiVariety {
 
 const getAPI = () => {
    // const hostUrl = window.location.hostname === 'localhost' ? 'http://localhost:9002' : '';
-   const hostUrl = 'https://api.heavenexchange.io'
+   const hostUrl = 'https://dev.heavenexchange.io'
 
    return {
       barong: authUrl(),
