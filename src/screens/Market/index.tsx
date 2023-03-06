@@ -63,8 +63,8 @@ const MarketFC = ({ intl }: Props) => {
                      ) : otherMarkets?.length ? otherMarkets?.slice(0, 3)?.map(market => {
                         const klinesData: number[] = market?.kline;
                         let labels: number[], data: number[];
-                        labels = klinesData.map(e => e[0]);
-                        data = klinesData.map(e => e[2]);
+                        labels = klinesData?.map(e => e[0]);
+                        data = klinesData?.map(e => e[2]);
                         return (
                            <div
                               key={market?.id}
@@ -254,8 +254,8 @@ const MarketFC = ({ intl }: Props) => {
                         ) : marketsData?.length ? marketsData?.map(market => {
                            const klinesData: number[] = market?.kline;
                            let labels: number[], data: number[];
-                           labels = klinesData.map(e => e[0]);
-                           data = klinesData.map(e => e[2]);
+                           labels = klinesData?.map(e => e[0]);
+                           data = klinesData?.map(e => e[2]);
                            return (
                               <tr key={market?.id} style={{ transition: 'background .2s' }} className="group relative">
                                  <td
