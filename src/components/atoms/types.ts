@@ -30,3 +30,19 @@ export type AccordionData = {
    title: string;
    content: ReactNode;
 };
+
+
+export type TextProps = {
+   text: ReactNode;
+   withDark?: boolean;
+   className?: string;
+};
+
+export type TLabel = {
+   label: string;
+};
+export type TClassName = {
+   className: string;
+};
+
+export type LabelProps = TLabel & TClassName;
