@@ -25,7 +25,7 @@ const MembershipFC = () => {
       content: 'How many times can a referral code be used?',
    }];
 
-   const requirement = membership?.requirement;
+   const requirement = membership?.requirements;
 
    return (
       <>

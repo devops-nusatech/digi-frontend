@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 interface MembershipCard {
    banner: ReactNode;
    tier: Membership['tier'];
-   directReff: number;
-   subReff: number;
-   withdrawLimit1H: number;
+   directReff: string;
+   subReff: string;
+   withdrawLimit1H: string;
    onClick: () => void;
 }
 
@@ -34,7 +34,7 @@ export const MembershipCard = ({
                      Refferal Comision on Direct
                   </div>
                   <div className="text-base font-medium text-primary1">
-                     {directReff * 100}%
+                     {+directReff * 100}%
                   </div>
                </div>
                <div className="flex gap-2 justify-between items-center">
@@ -42,7 +42,7 @@ export const MembershipCard = ({
                      Refferal Comision 1st Level
                   </div>
                   <div className="text-base font-medium text-primary1">
-                     {subReff * 100}%
+                     {+subReff * 100}%
                   </div>
                </div>
                <div className="flex gap-2 justify-between items-center">

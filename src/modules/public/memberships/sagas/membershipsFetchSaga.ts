@@ -5,7 +5,7 @@ import { membershipsData, membershipsError } from '../actions';
 import axios from 'axios';
 
 const fetchMemberships = async () => {
-   const url = 'http://149.28.140.240:8080/v2/tier_user/list_tier';
+   const url = 'http://139.180.130.141:3000/api/v2/tiers/config';
    const { data } = await axios.get<Membership>(url);
    return data;
 };

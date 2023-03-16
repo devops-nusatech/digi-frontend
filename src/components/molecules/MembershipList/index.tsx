@@ -8,7 +8,7 @@ import {
    TierMembershipSVG5,
    TierMembershipSVG6,
 } from 'assets';
-import { useAirdropFetch, useAirdropsFetch, useMembershipsFetch } from 'hooks';
+import { useMembershipsFetch } from 'hooks';
 import { Membership } from 'modules';
 
 interface MembershipListProps {
@@ -22,17 +22,17 @@ export const MembershipList = ({
       memberships,
       membershipsLoading,
    } = useMembershipsFetch();
-   const { airdrops } = useAirdropsFetch();
-   const { airdrop } = useAirdropFetch('0908e49c-34c7-495f-bb99-56225be74992');
+   // const { airdrops } = useAirdropsFetch();
+   // const { airdrop } = useAirdropFetch('0908e49c-34c7-495f-bb99-56225be74992');
 
    useEffect(() => {
       onClick(memberships[0]);
    }, [memberships]);
 
-   useEffect(() => {
-      console.log('airdrops', airdrops);
-      console.log('airdrop', airdrop);
-   }, [airdrops, airdrop]);
+   // useEffect(() => {
+   //    console.log('airdrops', airdrops);
+   //    console.log('airdrop', airdrop);
+   // }, [airdrops, airdrop]);
 
    const renderTierBanner = (tier: Membership['tier']) => {
       switch (tier) {
@@ -66,10 +66,10 @@ export const MembershipList = ({
             <MembershipCard
                key={member.tier}
                banner={renderTierBanner(member.tier)}
-               directReff={member.benefit.direct_reff}
+               directReff={member.benefits.direct_reff}
                tier={member.tier}
-               subReff={member.benefit.sub_reff}
-               withdrawLimit1H={member.benefit.withdraw_limit_24}
+               subReff={member.benefits.sub_reff}
+               withdrawLimit1H={member.benefits.withdraw_limit_24}
                onClick={() => onClick(member)}
             />
          )) : (
