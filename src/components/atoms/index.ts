@@ -44,3 +44,15 @@ export * from './PriceChart3';
 export * from './Image';
 export * from './InputPassword';
 export * from './AdibTooltip';
+<<<<<<< HEAD
+=======
+export * from './Heading1';
+export * from './Heading2';
+export * from './Heading3';
+export * from './Heading4';
+export * from './TextBase';
+export * from './TextXs';
+export * from './Menu';
+export * from './IconCopy';
+export * from './RowDetail';
+>>>>>>> 56520fa (bux fix deposite)

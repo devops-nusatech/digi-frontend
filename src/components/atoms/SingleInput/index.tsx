@@ -1,5 +1,6 @@
 import React, { memo, useRef, useLayoutEffect } from 'react';
 import { usePrevious } from 'hooks';
+
 export interface SingleOTPInputProps
    extends React.InputHTMLAttributes<HTMLInputElement> {
    focus?: boolean;
@@ -21,7 +22,12 @@ export function SingleOTPInputComponent(props: SingleOTPInputProps) {
       }
    }, [autoFocus, focus, prevFocus]);
 
-   return <input ref={inputRef} {...rest} />;
+   return (
+      <input
+         ref={inputRef}
+         {...rest}
+      />
+   );
 }
 
 const SingleInput = memo(SingleOTPInputComponent);

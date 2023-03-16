@@ -13,6 +13,7 @@ import {
    newsUrl,
    p2pUrl,
 } from './config';
+import { API_URL } from 'config';
 
 export type HTTPMethod =
    'get'
@@ -46,7 +47,7 @@ export interface ApiVariety {
 
 const getAPI = () => {
    // const hostUrl = window.location.hostname === 'localhost' ? 'http://localhost:9002' : '';
-   const hostUrl = 'https://dev.heavenexchange.io'
+   const hostUrl = API_URL
 
    return {
       barong: authUrl(),

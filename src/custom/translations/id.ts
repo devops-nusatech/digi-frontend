@@ -740,7 +740,7 @@ export const id: LangType = {
    'identity.user.active_or_doesnt_exist': 'User doesn\'t exist or has already been activated',
    'identity.password.user_doesnt_exist': 'User doesn\'t exist',
    'identity.user.passwords_doesnt_match': 'Passwords don\'t match',
-   'identity.user.utilized_token': 'JWT has already been used',
+   'identity.user.utilized_token': 'Kode pin salah',
    'identity.session.invalid_login_params': 'Invalid Email or Password',
    'identity.session.invalid': 'Invalid Session',
    'identity.captcha.required': 'captcha_response is required',

@@ -210,6 +210,7 @@ const ChangeForgotPasswordFC = ({
             translate={translate}
             renderCaptcha={renderCaptcha()}
             handleResendGenerateCode={configs.captcha_type !== 'none' ? useShowGeetestCaptcha : handleResendGenerateCode}
+            captcha_response={captcha_response}
          />
       </LayoutAuth>
    )

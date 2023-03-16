@@ -847,14 +847,16 @@ const WithdrawalFC = memo(({
       </>
    ), [userWallets, state, handleChangeAmount, handleChangeOtp, id, withdrawLimit]);
 
-   const isRipple = userWallets[0]?.currency === 'xrp';
+   const isRipple = useMemo(() => userWallets[0]?.currency === 'xrp', [userWallets[0]?.currency]);
+   const isStellar = useMemo(() => userWallets[0]?.currency === 'xlm', [userWallets[0]?.currency]);
+
    const handleCreateBeneficiary = () => {
       const payloadCoin: BeneficiariesCreate['payload'] = {
          currency: userWallets[0]?.currency,
          blockchain_key: selectedNetwork.blockchain_key || '',
          name: label,
          data: JSON.stringify({
-            address: ((isRipple && destinationTag) ? `${address}?dt=${destinationTag}` : address)
+            address: (((isRipple || isStellar) && destinationTag) ? `${address}?dt=${destinationTag}` : address)
          }),
          ...(description && { description })
       }
@@ -943,13 +945,13 @@ const WithdrawalFC = memo(({
                onChangeAlt={setField}
             />
          )}
-         {isRipple && (
+         {(isRipple || isStellar) && (
             <InputGroup
                id="destinationTag"
-               label="Description"
+               label={isRipple ? 'Destination tag' : 'Memo'}
                value={destinationTag}
                onChangeAlt={setField}
-               placeholder="Enter destination tag (optional)"
+               placeholder={`Enter ${isRipple ? 'destination tag' : 'memo'} (require)`}
             />
          )}
          <div className="bg-neutral7 dark:bg-neutral3 py-5 px-6 rounded text-center">
@@ -967,7 +969,7 @@ const WithdrawalFC = memo(({
             withLoading={beneficiariesCreateLoading}
          />
       </>
-   ), [selectedNetwork, setSelectedNetwork, userWallets, listNetwork, address, label, description, destinationTag, setField, handleCreateBeneficiary])
+   ), [selectedNetwork, setSelectedNetwork, userWallets, listNetwork, address, label, description, destinationTag, setField, handleCreateBeneficiary, isRipple, isStellar])
 
    useEffect(() => {
       resetField();
@@ -1035,7 +1037,6 @@ const WithdrawalFC = memo(({
          <InputOtp
             length={6}
             className="flex -mx-2"
-            isNumberInput
             onChangeOTP={setPin}
          />
          <div className="space-y-3 text-center">

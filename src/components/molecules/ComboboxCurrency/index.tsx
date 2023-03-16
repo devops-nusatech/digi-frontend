@@ -59,6 +59,11 @@ interface ComboboxCurrencyProps {
       * @default null
       */
    defaultValue?: string;
+   /**
+      * withBalance
+      * @default null
+      */
+   withBalance?: boolean;
 }
 
 export const ComboboxCurrency: FC<ComboboxCurrencyProps> = ({
@@ -67,6 +72,7 @@ export const ComboboxCurrency: FC<ComboboxCurrencyProps> = ({
    withFiat,
    displayValue,
    defaultValue,
+   withBalance,
 }) => {
    const dispatch = useDispatch();
    const sonic = useSelector(selectSonic);
@@ -189,9 +195,11 @@ export const ComboboxCurrency: FC<ComboboxCurrencyProps> = ({
                                        {wallet?.name} <span className="text-neutral4">{wallet.currency.toUpperCase()}</span>
                                     </div>
                                  </div>
-                                 <div className="text-neutral4">
-                                    {Decimal.format(wallet.balance || 0, wallet.fixed, ',')} {wallet.currency.toUpperCase()}
-                                 </div>
+                                 {withBalance && (
+                                    <div className="text-neutral4">
+                                       {Decimal.format(wallet.balance || 0, wallet.fixed, ',')} {wallet.currency.toUpperCase()}
+                                    </div>
+                                 )}
                               </div>
                            )}
                         </Combobox.Option>
@@ -207,4 +215,5 @@ export const ComboboxCurrency: FC<ComboboxCurrencyProps> = ({
 ComboboxCurrency.defaultProps = {
    filterNetwork: true,
    displayValue: 'currency',
+   withBalance: true,
 }

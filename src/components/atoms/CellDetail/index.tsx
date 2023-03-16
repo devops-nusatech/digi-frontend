@@ -7,7 +7,7 @@ type CellDetailProps = {
 }
 
 export const CellDetail = ({ title, value, rightAlt }: CellDetailProps) => (
-   <div className="flex items-center gap-5 justify-between">
+   <div className="flex items-center gap-3 justify-between">
       <div className="text-neutral4">
          {title}
       </div>

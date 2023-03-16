@@ -3,6 +3,7 @@ import React, {
    FunctionComponent,
    useCallback,
    useEffect,
+   useMemo,
    useState
 } from 'react';
 import {
@@ -440,13 +441,13 @@ const BeneficiariesFC = ({
                placeholder="Enter Description (optional)"
             />
          )}
-         {isRipple && (
+         {(isRipple || isStellar) && (
             <InputGroup
                id="destinationTag"
-               label="Description"
+               label={isRipple ? 'Destination tag' : 'Memo'}
                value={destinationTag}
                onChangeAlt={setForm}
-               placeholder="Enter destination tag (optional)"
+               placeholder={`Enter ${isRipple ? 'destination tag' : 'memo'} (require)`}
             />
          )}
          <div className="bg-neutral7 dark:bg-neutral3 py-5 px-6 rounded text-center">
@@ -466,12 +467,13 @@ const BeneficiariesFC = ({
       </>
    );
 
-   const isDisabled = (): boolean => {
+   const isDisabled = () => {
       const withdrawEnabled = selectedNetwork?.withdrawal_enabled;
       return !withdrawEnabled || !address || !label || coinAddressValid;
    }
 
-   const isRipple = selectedAsset.currency === 'xrp';
+   const isRipple = useMemo(() => selectedAsset.currency === 'xrp', [selectedAsset.currency]);
+   const isStellar = useMemo(() => selectedAsset.currency === 'xlm', [selectedAsset.currency]);
 
    const handleCreateBeneficiary = () => {
       const payloadCoin: BeneficiariesCreate['payload'] = {
@@ -479,7 +481,7 @@ const BeneficiariesFC = ({
          blockchain_key: selectedNetwork.blockchain_key || '',
          name: label,
          data: JSON.stringify({
-            address: ((isRipple && destinationTag) ? `${address}?dt=${destinationTag}` : address)
+            address: (((isRipple || isStellar) && destinationTag) ? `${address}?dt=${destinationTag}` : address)
          }),
          ...(description && { description })
       }
@@ -605,7 +607,6 @@ const BeneficiariesFC = ({
                <InputOtp
                   length={6}
                   className="flex -mx-2"
-                  isNumberInput
                   onChangeOTP={setPin}
                />
                <div className="space-y-3 text-center">

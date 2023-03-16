@@ -154,7 +154,7 @@ const TwoFAFC = ({
                {!otp && (
                   <div className="flex bg-neutral7 dark:bg-neutral2 rounded-2xl">
                      <div className="max-w-64 mt-16 mx-auto py-8 px-12 bg-neutral8 dark:bg-neutral3 rounded-t-5xl">
-                        <div className="p-4 rounded-lg border-2 border-dashed border-primary1">
+                        <div className="rounded-lg border-2 border-dashed border-primary1 p-4">
                            {!otp && renderTwoFactorAuthQR(barcode)}
                         </div>
                         <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" rel="noopener noreferrer" target="_blank">
@@ -171,7 +171,7 @@ const TwoFAFC = ({
                <div className="text-center">
                   <Button
                      text={!otp ? 'Enabled 2FA' : 'Disabled 2FA'}
-                     variant={otp ? 'orange' : 'green'}
+                     variant={otp ? 'orange' : 'primary'}
                      onClick={submitHandler}
                      disabled={otpCode.length < 6}
                      width="noFull"

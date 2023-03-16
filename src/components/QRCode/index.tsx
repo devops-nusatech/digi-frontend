@@ -20,13 +20,11 @@ interface QRCodeProps {
  */
 const QRCodeComponent: React.FC<QRCodeProps> = ({ data = '', dimensions }) => {
     return (
-        <div className="qr-code">
-            <QRCodeGenerator
-                value={data}
-                size={dimensions}
-                renderAs="svg"
-            />
-        </div>
+      <QRCodeGenerator
+         value={data}
+         size={dimensions}
+         renderAs="svg"
+      />
     );
 };
 

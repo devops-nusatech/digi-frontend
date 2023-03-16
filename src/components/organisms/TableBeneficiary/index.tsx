@@ -45,11 +45,14 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
    const [openDelete, setOpenDelete] = useState(false);
    const [openActivate, setOpenActivate] = useState(false);
    const [searchBeneciciary, setSearchBeneciciary] = useState('');
+
    useBeneficiariesFetch();
    useMemberLevelFetch();
+
    const beneficiaries = useSelector(selectBeneficiaries);
    const beneficiariesLoading = useSelector(selectBeneficiariesFetchLoading);
    const memberLevels = useSelector(selectMemberLevelsLoading);
+
    console.log('memberLevels :>> ', memberLevels);
 
    let beneficiariesList = beneficiaries || [];
@@ -58,7 +61,7 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
       beneficiariesList = beneficiariesList.length ? arrayFilter(beneficiariesList, searchBeneciciary) : [];
    }
 
-   console.log('beneficiariesList', beneficiariesList)
+   // console.log('beneficiariesList', beneficiariesList)
 
    const handleShowModalActivate = (id: number, state: string) => {
       if (state === 'pending') {
@@ -72,6 +75,12 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
    }
 
    const handleActivate = () => activateBeneficiary({ id, pin });
+
+   useEffect(() => {
+      if (pin.length === 6) {
+         handleActivate();
+      }
+   }, [pin]);
 
    const renderContentDeleted = () => (
       <div className="pt-10 space-y-8">
@@ -103,7 +112,6 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
          <InputOtp
             length={6}
             className="flex -mx-2"
-            isNumberInput
             onChangeOTP={setPin}
          />
          <div className="space-y-3 text-center">

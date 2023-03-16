@@ -313,7 +313,7 @@ const HeaderFC = ({
                            </button>
                            <Link
                               to="/wallets"
-                              className={`select-none inline-flex font-dm justify-center items-center h-10 rounded-20 py-0 px-4 whitespace-nowrap ${location.pathname.includes('/wallet-') ? 'bg-neutral2 text-neutral8 dark:bg-neutral3' : 'bg-none shadow-border dark:shadow-none dark:border-2 dark:border-neutral4'} hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:text-neutral8 transition-all duration-300 cursor-pointer`}
+                              className={`select-none inline-flex font-dm justify-center items-center h-10 rounded-20 py-0 px-4 whitespace-nowrap ${location.pathname.includes('/wallets') ? 'bg-neutral2 text-neutral8 dark:bg-neutral3' : 'bg-none shadow-border dark:shadow-none dark:border-2 dark:border-neutral4'} hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:text-neutral8 transition-all duration-300 cursor-pointer`}
                            >
                               Wallet
                            </Link>

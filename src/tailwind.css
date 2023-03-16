@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@supports not (color-scheme: dark) {
+   [data-mode='dark'] {
+      @apply bg-neutral1;
+   }
+}
+
 /* @font-face {
    font-family: 'crypto';
    src: url('./assets/fonts/cryptofont-webfont.ttf');
@@ -144,10 +150,21 @@
 }
 
 @layer base {
+   *::selection {
+      background-color: rgb(10 147 127 / 0.3);
+   }
    input[type='number']::-webkit-inner-spin-button,
    input[type='number']::-webkit-outer-spin-button {
-     -webkit-appearance: none;
-     margin: 0;
+      -webkit-appearance: none;
+      margin: 0;
+   }
+   input[type='number'] {
+      -moz-appearance: textfield;
+      margin: 0;
+   }
+   td,
+   th {
+      @apply px-0;
    }
  }
 

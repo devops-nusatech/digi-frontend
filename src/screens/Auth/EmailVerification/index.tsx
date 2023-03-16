@@ -1,5 +1,5 @@
 import { History } from 'history';
-import React, { FC, FunctionComponent, useEffect, useState } from 'react';
+import React, { FC, FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { injectIntl } from 'react-intl';
 import { connect, MapStateToProps } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -27,8 +27,10 @@ import {
    User,
    selectEmailVerified,
    GeetestCaptchaV4Response,
+   selectCaptchaDataObjectLoading,
 } from 'modules';
 import type { CommonError } from 'modules/types';
+import { useCounter } from 'hooks';
 
 interface OwnProps {
    history: History;
@@ -57,6 +59,9 @@ interface ReduxProps {
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
    user: User;
+   captchaLoading: boolean;
+   generateCodeLoading: boolean;
+   generateCodeSucccess: boolean;
 }
 
 type Props = DispatchProps & ReduxProps & OwnProps & IntlProps;
@@ -81,29 +86,14 @@ const EmailVerificationComponent: FC<Props> = ({
    resetCaptchaState,
 
    intl: { formatMessage },
+   captchaLoading,
+   generateCodeLoading,
+   generateCodeSucccess,
 }) => {
-   const [code, setCode] = useState<string>('');
-
-   const initialMinute = 0;
-   const [initialSeconds, setInitialSeconds] = useState<number>(60);
-   const [minutes, setMinutes] = useState(initialMinute);
-   const [seconds, setSeconds] = useState(initialSeconds);
-   useEffect(() => {
-      let myInterval = setInterval(() => {
-         if (seconds > 0) {
-            setSeconds(seconds - 1);
-         }
-         if (seconds === 0) {
-            if (minutes === 0) {
-               clearInterval(myInterval)
-            } else {
-               setMinutes(minutes - 1);
-               setSeconds(59);
-            }
-         }
-      }, 1000)
-      return () => clearInterval(myInterval);
-   }, [minutes, seconds]);
+   const { email } = state;
+   const geetestCaptchaRef = useRef<HTMLButtonElement>(null);
+   const [code, setCode] = useState('');
+   const { counter, setCounter } = useCounter();
 
    useEffect(() => {
       setDocumentTitle('Email verification');
@@ -125,14 +115,17 @@ const EmailVerificationComponent: FC<Props> = ({
       }
    }, [code]);
 
-   const translate = (id: string) => formatMessage({ id });
+   const translate = useCallback(
+      (id: string) => formatMessage({ id }),
+      [formatMessage]
+   );
 
-   const renderCaptcha = () => {
-      return <Captcha error={error} success={success} />;
-   };
+   const renderCaptcha = useMemo(
+      () => <Captcha geetestCaptchaRef={geetestCaptchaRef} />,
+      []
+   );
 
-   const handleResendCode = () => {
-      const { email } = state;
+   const handleResendCode = useCallback(() => {
       switch (captcha_type) {
          case 'recaptcha':
          case 'geetest':
@@ -146,27 +139,36 @@ const EmailVerificationComponent: FC<Props> = ({
             break;
       }
       resetCaptchaState();
-      setInitialSeconds(60);
-   };
+      setCounter(3);
+   }, [
+      captcha_response,
+      email,
+      emailVerificationFetch,
+      resetCaptchaState,
+      setCounter,
+   ]);
 
+   useEffect(() => {
+      captcha_response && handleResendCode();
+   }, [captcha_response]);
 
-   const handleVerification = () => {
-      const { email } = state;
+   const handleClick = useCallback(
+      (e: any) => captcha_type === 'none' && handleResendCode(),
+      [handleResendCode, captcha_type]
+   );
+
+   const handleVerification = useCallback(() => {
       verificationFetch({ email, code });
-   }
+   }, [code, verificationFetch, email]);
 
-   const disableButton = (): boolean => {
+   const disableButton = useMemo(() => {
       if (state && state.email && !state.email.match(EMAIL_REGEX)) {
          return true;
       }
-      if (captcha_type === 'recaptcha' && !reCaptchaSuccess) {
-         return true;
-      }
-      if (captcha_type === 'geetest' && !geetestCaptchaSuccess) {
-         return true;
-      }
       return false;
-   };
+   }, [state]);
+
+   const isReady = useMemo(() => counter < 1, [counter]);
 
    const title = translate('page.header.signUp.modal.header');
    const text = translate('page.header.signUp.modal.body');
@@ -182,33 +184,29 @@ const EmailVerificationComponent: FC<Props> = ({
       >
          <InputOtp
             length={6}
-            className="flex mb-8 -mx-2"
-            isNumberInput
-            onChangeOTP={otp => setCode(otp)}
+            className="-mx-2 mb-8 flex"
+            onChangeOTP={setCode}
          />
-         {renderCaptcha()}
-         <div className="flex justify-between items-center">
-            {
-               minutes === 0 && seconds === 0
-                  ? (
-                     <Button
-                        text={button || 'Resend Code'}
-                        size="small"
-                        variant="outline"
-                        width="noFull"
-                        onClick={handleResendCode}
-                        disabled={disableButton()}
-                        withLoading={emailVerificationLoading}
-                     />
-                  )
-                  : (<div> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</div>)
-            }
+         {renderCaptcha}
+         <div className="flex items-center justify-between">
+            <Button
+               ref={geetestCaptchaRef}
+               text={button || 'Resend Code'}
+               size="small"
+               variant="outline"
+               width="noFull"
+               onClick={handleClick}
+               disabled={disableButton}
+               withLoading={generateCodeLoading || captchaLoading}
+               className={isReady ? '' : 'hidden'}
+            />
+            {!isReady && <div>00:{counter < 10 ? `0${counter}` : counter}</div>}
             <Button
                text={emailVerificationLoading ? 'Loading...' : 'Continue'}
                size="small"
                width="noFull"
                onClick={handleVerification}
-               disabled={emailVerificationLoading}
+               disabled={emailVerificationLoading || code.length < 6}
                withLoading={emailVerificationLoading}
             />
          </div>
@@ -228,6 +226,9 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
    user: selectUserInfo(state),
+   captchaLoading: selectCaptchaDataObjectLoading(state),
+   generateCodeLoading: selectSendEmailVerificationLoading(state),
+   generateCodeSucccess: selectSendEmailVerificationSuccess(state),
 });
 
 const mapDispatchToProps = {

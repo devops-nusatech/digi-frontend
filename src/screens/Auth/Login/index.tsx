@@ -181,42 +181,40 @@ class LoginClass extends Component<Props, LoginState> {
       const { intl: { formatMessage }, captchaLoading } = this.props;
 
       return (
-         <>
-            <FormLogin
-               geetestCaptchaRef={this.geetestCaptchaRef}
-               title="Login to Digiasset"
-               subTitle="Please ensure you are visiting the correct url."
-               email={email}
-               emailError={emailError}
-               emailFocused={emailFocused}
-               emailPlaceholder={formatMessage({ id: 'page.header.signIn.email' })}
-               password={password}
-               passwordError={passwordError}
-               passwordFocused={passwordFocused}
-               passwordPlaceholder={formatMessage({ id: 'page.header.signIn.password' })}
-               labelSignIn={formatMessage({ id: 'page.header.signIn' })}
-               labelSignUp={formatMessage({ id: 'page.header.signUp' })}
-               emailLabel={formatMessage({ id: 'page.header.signIn.email' })}
-               passwordLabel={formatMessage({ id: 'page.header.signIn.password' })}
-               receiveConfirmationLabel={formatMessage({ id: 'page.header.signIn.receiveConfirmation' })}
-               forgotPasswordLabel={formatMessage({ id: 'page.header.signIn.forgotPassword' })}
-               isLoading={isLoading || captchaLoading}
-               onForgotPassword={this.forgotPassword}
-               onSignUp={this.handleSignUp}
-               onSignIn={this.handleSignIn}
-               handleChangeFocusField={this.handleFieldFocus}
-               isFormValid={this.validateForm}
-               refreshError={this.refreshError}
-               changeEmail={this.handleChangeEmailValue}
-               resetEmail={this.resetEmail}
-               changePassword={this.handleChangePasswordValue}
-               captchaType={configs.captcha_type}
-               renderCaptcha={this.renderCaptcha()}
-               reCaptchaSuccess={reCaptchaSuccess}
-               geetestCaptchaSuccess={geetestCaptchaSuccess}
-               captcha_response={captcha_response}
-            />
-         </>
+         <FormLogin
+            geetestCaptchaRef={this.geetestCaptchaRef}
+            title="Login to Digiasset"
+            subTitle="Please ensure you are visiting the correct url."
+            email={email}
+            emailError={emailError}
+            emailFocused={emailFocused}
+            emailPlaceholder={formatMessage({ id: 'page.header.signIn.email' })}
+            password={password}
+            passwordError={passwordError}
+            passwordFocused={passwordFocused}
+            passwordPlaceholder={formatMessage({ id: 'page.header.signIn.password' })}
+            labelSignIn={formatMessage({ id: 'page.header.signIn' })}
+            labelSignUp={formatMessage({ id: 'page.header.signUp' })}
+            emailLabel={formatMessage({ id: 'page.header.signIn.email' })}
+            passwordLabel={formatMessage({ id: 'page.header.signIn.password' })}
+            receiveConfirmationLabel={formatMessage({ id: 'page.header.signIn.receiveConfirmation' })}
+            forgotPasswordLabel={formatMessage({ id: 'page.header.signIn.forgotPassword' })}
+            isLoading={isLoading || captchaLoading}
+            onForgotPassword={this.forgotPassword}
+            onSignUp={this.handleSignUp}
+            onSignIn={this.handleSignIn}
+            handleChangeFocusField={this.handleFieldFocus}
+            isFormValid={this.validateForm}
+            refreshError={this.refreshError}
+            changeEmail={this.handleChangeEmailValue}
+            resetEmail={this.resetEmail}
+            changePassword={this.handleChangePasswordValue}
+            captchaType={configs.captcha_type}
+            renderCaptcha={this.renderCaptcha()}
+            reCaptchaSuccess={reCaptchaSuccess}
+            geetestCaptchaSuccess={geetestCaptchaSuccess}
+            captcha_response={captcha_response}
+         />
       )
 
    }

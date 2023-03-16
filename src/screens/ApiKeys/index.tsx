@@ -307,7 +307,6 @@ const ApiKeysFC = ({
             <InputOtp
                length={6}
                className="flex -mx-2"
-               isNumberInput
                onChangeOTP={setOtpCode}
                onKeyPress={handleEnterPress as any}
             />

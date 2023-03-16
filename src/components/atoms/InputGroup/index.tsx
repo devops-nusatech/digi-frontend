@@ -177,7 +177,7 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(({
    );
 
    return (
-      <div className={`space-y-2.5 ${parentClassName ? parentClassName : ''}`}>
+      <div className={`space-y-2.5 ${parentClassName || ''}`}>
          {renderLabel()}
          <div className="relative">
             <input

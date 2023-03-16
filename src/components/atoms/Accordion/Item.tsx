@@ -7,13 +7,15 @@ interface ItemProps {
    isOpen: boolean;
    onClick: () => void;
    no: number;
+   withNumber?: boolean;
 }
 
 export const Item = ({
    data: { title, content },
    isOpen,
    onClick,
-   no
+   no,
+   withNumber,
 }: ItemProps) => {
    const contentRef = useRef<HTMLDivElement>(null);
    const [height, setHeight] = useState(0);
@@ -30,9 +32,11 @@ export const Item = ({
    return (
       <li className="group">
          <div onClick={onClick} className="border-b border-neutral6 dark:border-neutral3 group-last:border-none relative flex items-center py-6 hover:text-primary1 text-base leading-normal font-medium cursor-pointer transition-colors duration-200">
-            <div className="shrink-0 w-10 text-neutral4 group-hover:text-primary1 transition-colors duration-300">
-               0{no}
-            </div>
+            {withNumber && (
+               <div className="shrink-0 w-10 text-neutral4 group-hover:text-primary1 transition-colors duration-300">
+                  0{no}
+               </div>
+            )}
             <div className="grow">
                {title}
             </div>
@@ -42,7 +46,7 @@ export const Item = ({
                </svg>
             </div>
          </div>
-         <div className="overflow-hidden" style={{ height, transition: 'height 0.3s ease-in-out' }}>
+         <div className="overflow-hidden transition-all duration-500 ease-in-out" style={{ height }}>
             <div ref={contentRef} className="pt-6 pl-10 text-neutral4">
                {content}
             </div>

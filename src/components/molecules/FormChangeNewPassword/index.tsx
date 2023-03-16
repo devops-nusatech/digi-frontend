@@ -8,7 +8,8 @@ import {
    FormChangePassword,
    InputOtp,
 } from 'components';
-import { useCountdown } from 'hooks';
+import { useCounter } from 'hooks';
+import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from 'modules';
 
 type PasswordProps = {
    password: string;
@@ -28,6 +29,7 @@ interface FormChangeNewPasswordProps {
    isLoading?: boolean;
    renderCaptcha: JSX.Element;
    handleResendGenerateCode(): void
+   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
 }
 
 export const FormChangeNewPassword = memo(({
@@ -43,20 +45,28 @@ export const FormChangeNewPassword = memo(({
    isLoading,
    renderCaptcha,
    handleResendGenerateCode,
+   captcha_response,
 }: FormChangeNewPasswordProps) => {
-   const { minutes, seconds } = useCountdown(5);
+   const { counter, setCounter } = useCounter();
 
    useEffect(() => {
       if (otpCode.length === 6 && isRendered === 0)
          return handleChangeRendered(1)
    }, [otpCode]);
 
+   useEffect(() => {
+      if (!captcha_response) {
+         setCounter(60);
+      }
+   }, [captcha_response]);
+
+   const isReady = useMemo(() => counter < 1, [counter]);
+
    const renderInputOtp = useMemo(() => (
       <form className="space-y-8">
          <InputOtp
             length={6}
             className="flex -mx-2"
-            isNumberInput
             onChangeOTP={handleChangeOTP}
          />
          <div className="text-center">
@@ -65,15 +75,11 @@ export const FormChangeNewPassword = memo(({
                type="button"
                tabIndex={-1}
                ref={geetestCaptchaRef}
-               className={`text-xs font-semibold text-primary1 hover:text-primary1/90 leading-normal ${minutes === 0 && seconds === 0 ? '' : 'hidden'}`}
+               className={`text-xs cursor-pointer font-semibold text-primary1 hover:text-primary1/90 leading-normal ${isReady ? '' : 'hidden'}`}
             >
                Resend
             </button>
-            {(minutes > 0 || seconds > 0) && (
-               <div className="text-center text-xs font-semibold text-primary1 hover:text-primary1/90 leading-normal">
-                  {minutes}: {seconds < 10 ? `0${seconds}` : seconds}
-               </div>
-            )}
+            {!isReady && <div>00:{counter < 10 ? `0${counter}` : counter}</div>}
          </div>
       </form >
    ), [
@@ -82,8 +88,8 @@ export const FormChangeNewPassword = memo(({
       renderCaptcha,
       geetestCaptchaRef,
       isRendered,
-      minutes,
-      seconds
+      counter,
+      isReady,
    ]);
 
    if (isRendered === 0) return renderInputOtp;
@@ -97,7 +103,7 @@ export const FormChangeNewPassword = memo(({
          />
          <div
             onClick={() => handleChangeRendered(0)}
-            className="text-center text-xs font-semibold text-primary1 hover:text-primary1/90 leading-normal">
+            className="cursor-pointer text-center text-xs font-semibold text-primary1 hover:text-primary1/90 leading-normal">
             Back
          </div>
       </div>

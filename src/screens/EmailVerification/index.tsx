@@ -159,7 +159,6 @@ const EmailVerificationComponentOld = (props: Props) => {
          >
             <InputOtp
                length={6}
-               isNumberInput
                className="flex mb-8 -mx-2 bg-neutral8"
                onChangeOTP={otp => console.log(`OTP => : ${otp}`)}
             />

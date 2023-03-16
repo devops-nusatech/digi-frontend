@@ -34,7 +34,7 @@ import type {
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
 import { copyToClipboard, renderCurrencyIcon } from 'helpers';
-import { Button, Decimal, LayoutProfile, Skeleton, InputGroup, QRCode, Nav, Label, ComboboxCurrency } from 'components';
+import { Button, Decimal, LayoutProfile, Skeleton, InputGroup, QRCode, Nav, Label, ComboboxCurrency, IconCopy, TextBase, Accordion, AccordionData, RowDetail, IRowItem, AdibDropdown } from 'components';
 import { DEFAULT_WALLET } from '../../constants';
 
 type DepositState = {
@@ -106,7 +106,8 @@ const DepositFC = memo(({
 
    const handleChangeCurrency = (currency: string) => setState({
       ...state,
-      currency
+      currency,
+      currentNetwork: 0,
    });
    const handleChangeCurrentNetwork = (currentNetwork: number) => setState({
       ...state,
@@ -143,30 +144,50 @@ const DepositFC = memo(({
       return !filteredWallet || filteredWallet?.name === '' || !depositEnabled || loadingFetchGenerate;
    }, [filteredWallet, loadingFetchGenerate, currentNetwork]);
 
+   const isRipple = useMemo(() => currency === 'xrp', [currency]);
+   const isStellar = useMemo(() => currency === 'xlm', [currency]);
+
    const renderAddressAvailable = useMemo(() => (
-      <div className="flex items-center space-x-12">
-         <div>
-            <div className="p-4 rounded-lg border-2 border-dashed border-primary1 w-40 h-40">
-               <QRCode
-                  dimensions={128}
-                  data={depositAddress?.address || ''}
+      <>
+         <div className="grid grid-cols-2 gap-4">
+            <InputGroup
+               label="Deposit address"
+               value={depositAddress?.address}
+               icon={
+                  <IconCopy
+                     title="Address"
+                     value={depositAddress?.address!}
+                  />
+               }
+               parentClassName={(isRipple || isStellar) ? 'col-span-1' : 'col-span-2'}
+            />
+            {(isRipple || isStellar) && (
+               <InputGroup
+                  label={isRipple ? 'Distination tag' : 'Memo'}
+                  value={depositAddress?.address?.split('?dt=').pop()}
+                  icon={
+                     <IconCopy
+                        title={`${isRipple ? 'Destination tag' : 'Memo'}`}
+                        value={depositAddress?.address?.split('?dt=').pop()!}
+                     />
+                  }
+               />
+            )}
+         </div>
+         <div className="flex rounded-2xl bg-neutral7 dark:bg-neutral2">
+            <div className="mx-auto mt-16 max-w-64 rounded-t-5xl bg-neutral8 py-8 px-12 dark:bg-neutral3">
+               <div className="rounded-lg border-2 border-dashed border-primary1 p-5">
+                  <QRCode data={depositAddress?.address || ''} dimensions={116} />
+               </div>
+               <Button
+                  text="Scan address"
+                  className="pointer-events-none mt-12"
+                  variant="outline"
+                  width="noFull"
                />
             </div>
          </div>
-         <div className="w-full">
-            <InputGroup
-               value={depositAddress?.address}
-               icon={
-                  <svg
-                     onClick={() => handleCopy(depositAddress?.address || '', 'Address')}
-                     className="cursor-copy -translate-x-0.5 w-6 h-6 fill-neutral4 group-hover:fill-neutral2"
-                  >
-                     <use xlinkHref="#icon-copy" />
-                  </svg>
-               }
-            />
-         </div>
-      </div>
+      </>
    ), [depositAddress, handleCopy]);
 
    const renderAddressSkeleton = useMemo(() => (
@@ -190,14 +211,100 @@ const DepositFC = memo(({
       </div>
    ), []);
 
-   const renderButtonGenerated = useMemo(() => (
-      <Button
-         text={network ? translate('deposit.content.button.enabled') : translate('deposit.content.button.disabled')}
-         disabled={isDisabled || generateAddressLoading}
-         onClick={handleGenerateAddress}
-         withLoading={generateAddressLoading || loadingFetchGenerate}
-      />
-   ), [network, isDisabled, generateAddressLoading, handleGenerateAddress, loadingFetchGenerate, translate]);
+   const renderButtonGenerate = useMemo(
+      () => (
+         <div className="text-center">
+            <Button
+               text={
+                  network
+                     ? translate('deposit.content.button.enabled')
+                     : translate('deposit.content.button.disabled')
+               }
+               disabled={isDisabled || generateAddressLoading}
+               onClick={handleGenerateAddress}
+               withLoading={generateAddressLoading || loadingFetchGenerate}
+               width="noFull"
+            />
+         </div>
+      ),
+      [
+         network,
+         isDisabled,
+         generateAddressLoading,
+         handleGenerateAddress,
+         loadingFetchGenerate,
+         translate,
+      ]
+   );
+
+   const accordionItems = useMemo<AccordionData[]>(
+      () => [
+         {
+            title: 'Instruction of deposit',
+            content: (
+               <ul className="list-outside list-decimal text-neutral4">
+                  {filteredWallet.type === 'coin' ? (
+                     <>
+                        <li>
+                           {filteredWallet?.currency.toUpperCase()} deposit will be
+                           into the account after the {network?.min_confirmations}{' '}
+                           confirmation, and it can be allowed to withdraw after
+                           the {network?.min_confirmations! + 2} confirmation.
+                        </li>
+                        <li>
+                           Minimum deposits are{' '}
+                           {Decimal.format(
+                              network?.min_deposit_amount,
+                              filteredWallet?.fixed,
+                              ','
+                           )}{' '}
+                           {filteredWallet?.currency.toUpperCase()}, and deposits
+                           will be not into the account if they are less the
+                           minimum.
+                        </li>
+                        <li>
+                           Please note that depositing other tokens to the address
+                           below will cause your asset to be permanent lost
+                        </li>
+                     </>
+                  ) : (
+                     <li>
+                        Please note the minimum deposit is{' '}
+                        {Decimal.format(
+                           network?.min_deposit_amount,
+                           filteredWallet?.fixed,
+                           ','
+                        )}{' '}
+                        {filteredWallet?.currency.toUpperCase()} and if you deposit
+                        below that amount, the deposit will not be credited to your
+                        account.
+                     </li>
+                  )}
+               </ul>
+            ),
+         },
+      ],
+      [filteredWallet, network]
+   );
+
+   const rowDetails = useMemo<Array<IRowItem>>(() => [
+      {
+         left: translate('currency'),
+         right: filteredWallet?.name || ''
+      },
+      {
+         left: 'Total balance',
+         right: `${Decimal.format((Number(filteredWallet?.balance) + Number(filteredWallet?.locked) || 0), filteredWallet?.fixed, ',')} ${filteredWallet?.currency.toUpperCase()}`
+      },
+      {
+         left: 'Locked balance',
+         right: `${Decimal.format(filteredWallet?.locked || 0, filteredWallet?.fixed, ',')} ${filteredWallet?.currency?.toUpperCase()}`
+      },
+      {
+         left: 'Available balance',
+         right: `${Decimal.format(filteredWallet?.balance || 0, filteredWallet?.fixed, ',')} ${filteredWallet?.currency?.toUpperCase()}`
+      },
+   ], [translate, filteredWallet]);
 
    return (
       <LayoutProfile
@@ -208,14 +315,24 @@ const DepositFC = memo(({
             active: 'Deposit'
          }}
       >
-         <div className="flex space-x-10">
-            <div className="w-2/3">
+         <div className="flex w-full gap-10 lg-max:flex-wrap">
+            <div className="w-full lg:w-3/5 lg2:w-2/3">
                <div className="bg-neutral8 dark:bg-shade1 shadow-card rounded-2xl p-10 space-y-8">
-                  <ComboboxCurrency
-                     onChange={handleChangeCurrency}
-                     displayValue="name"
-                     defaultValue={location.state?.currency}
-                  />
+                  <div className="grid grid-cols-2 gap-4">
+                     <ComboboxCurrency
+                        onChange={handleChangeCurrency}
+                        displayValue="name"
+                        defaultValue={location.state?.currency}
+                        withBalance={false}
+                     />
+                     <AdibDropdown
+                        label="Select network"
+                        onChange={e => console.log('e :>> ', filteredWallet.networks.map((p, i) => p.protocol.toUpperCase() === e?.toUpperCase()))}
+                        data={
+                           filteredWallet.networks.map(({ protocol }) => protocol)
+                        }
+                     />
+                  </div>
                   <div className="space-y-2.5">
                      <Label label={filteredWallet.type === 'coin' ? 'Pick network' : 'Select bank'} />
                      {(!filteredWallet || filteredWallet.name === '') ? (
@@ -227,25 +344,13 @@ const DepositFC = memo(({
                      ) : (filteredWallet.networks.length && filteredWallet.name !== '' && filteredWallet.type === 'coin') ? (
                         <div className="flex space-x-4">
                            {filteredWallet.networks.map(({ blockchain_key, protocol }, index) => (
-                              <>
-                                 <Nav
-                                    key={blockchain_key}
-                                    title={protocol}
-                                    isActive={currentNetwork === index}
-                                    onClick={() => handleChangeCurrentNetwork(index)}
-                                    theme="grey"
-                                 />
-                                 {/* <Button
-                                 key={network.blockchain_key}
-                                 text={network.protocol}
-                                 size="normal"
-                                 width="noFull"
-                                 rounded="lg"
-                                 fontDM={false}
-                                 variant={currentNetwork === index ? "primary" : "outline"}
+                              <Nav
+                                 key={blockchain_key}
+                                 title={protocol.toUpperCase()}
+                                 isActive={currentNetwork === index}
                                  onClick={() => handleChangeCurrentNetwork(index)}
-                              /> */}
-                              </>
+                                 theme="grey"
+                              />
                            ))}
                         </div>
                      ) : (
@@ -255,41 +360,31 @@ const DepositFC = memo(({
                         </div>
                      )}
                   </div>
-                  <div className="space-y-2.5">
-                     <Label label="Payment address" />
-                     {(filteredWallet?.name !== '' && filteredWallet?.type === 'coin') && (
-                        depositAddress?.state === 'pending'
-                           ? renderAddressSkeleton
-                           : depositAddress?.address
-                              ? renderAddressAvailable
-                              : renderButtonGenerated
-                     )}
-                     {(filteredWallet?.name !== '' && filteredWallet?.type === 'fiat') && (
-                        renderButtonGenerated
-                     )}
-                  </div>
-                  <div className="bg-neutral7 dark:bg-neutral2 flex flex-col rounded-2xl px-6 py-4">
-                     <div className="font-medium leading-6">
-                        Instruction of deposit
-                     </div>
-                     <ul className="list-decimal list-outside text-xs pl-3 leading-5">
-                        {filteredWallet.type === 'coin' ? (
-                           <>
-                              <li>{filteredWallet?.currency.toUpperCase()} deposit will be into the account after the {network?.min_confirmations} confirmation, and it can be allowed to withdraw after the {Number(network?.min_confirmations) + 2} confirmation.</li>
-                              <li>Minimum deposits are {Decimal.format(network?.min_deposit_amount, Number(filteredWallet?.fixed), ',')} {filteredWallet?.currency.toUpperCase()}, and deposits will be not into the account if they are less the minimum.</li>
-                              <li>Please note that depositing other tokens to the address below will cause your asset to be permanent lost</li>
-                           </>
-                        ) : (
-                           <li>Please note the minimum deposit is {Decimal.format(network?.min_deposit_amount, Number(filteredWallet?.fixed), ',')} {filteredWallet?.currency.toUpperCase()} and if you deposit below that amount, the deposit will not be credited to your account.</li>
-                        )}
-                     </ul>
-                  </div>
+                  {(filteredWallet?.name !== '' && filteredWallet?.type === 'coin') && (
+                     depositAddress?.state === 'pending'
+                        ? renderAddressSkeleton
+                        : depositAddress?.address
+                           ? renderAddressAvailable
+                           : renderButtonGenerate
+                  )}
+                  {(filteredWallet?.name !== '' && filteredWallet?.type === 'fiat') && (
+                     renderButtonGenerate
+                  )}
+                  {(filteredWallet.virtual_account?.length! > 0 || filteredWallet.deposit_addresses?.length! > 0) && (
+                     <Accordion
+                        items={accordionItems}
+                        withNumber={false}
+                     />
+                  )}
                </div>
             </div>
-            <div className="w-1/3">
-               <div className="bg-neutral8 dark:bg-shade1 shadow-card rounded-2xl py-10 px-6">
+            <div className="w-full lg:w-2/5 lg2:w-1/3">
+               <div className="bg-neutral8 dark:bg-shade1 shadow-card rounded-2xl p-10">
                   <div className="space-y-3">
-                     <Label label={translate('deposit.content.right.title')} />
+                     <TextBase
+                        text={translate('deposit.content.right.title')}
+                        className="font-medium"
+                     />
                      <div className="mx-auto w-20 h-20 overflow-hidden pointer-events-none">
                         <img
                            className={`w-full ${renderCurrencyIcon(filteredWallet?.currency, filteredWallet?.iconUrl)?.includes('http') ? 'object-cover polygon bg-neutral8' : ''}`}
@@ -298,30 +393,7 @@ const DepositFC = memo(({
                            title={filteredWallet?.name || ''}
                         />
                      </div>
-                     <div className="flex items-center justify-between space-x-3">
-                        <div>{translate('currency')}</div>
-                        <div className="text-right font-medium truncate">
-                           {filteredWallet?.name || ''}
-                        </div>
-                     </div>
-                     <div className="flex items-center justify-between space-x-3">
-                        <div>Total balance</div>
-                        <div className="text-right font-medium truncate">
-                           {Decimal.format((Number(filteredWallet?.balance) + Number(filteredWallet?.locked) || 0), Number(filteredWallet?.fixed), ',')} {filteredWallet?.currency.toUpperCase()}
-                        </div>
-                     </div>
-                     <div className="flex items-center justify-between space-x-3">
-                        <div>Locked balance</div>
-                        <div className="text-right font-medium truncate">
-                           {Decimal.format(Number(filteredWallet?.locked) || 0, Number(filteredWallet?.fixed), ',')} {filteredWallet?.currency?.toUpperCase()}
-                        </div>
-                     </div>
-                     <div className="flex items-center justify-between space-x-3">
-                        <div>Available balance</div>
-                        <div className="text-right font-medium truncate">
-                           {Decimal.format(filteredWallet?.balance || 0, filteredWallet?.fixed, ',')} {filteredWallet?.currency?.toUpperCase()}
-                        </div>
-                     </div>
+                     <RowDetail items={rowDetails} />
                   </div>
                </div>
             </div>
