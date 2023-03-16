@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { TextProps } from '../types';
 
 export const TextXs = ({ text, className }: TextProps) => {

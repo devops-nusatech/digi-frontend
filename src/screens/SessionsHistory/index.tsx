@@ -1,26 +1,16 @@
-import React, {
-   FunctionComponent,
-   useEffect
-} from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import {
-   connect,
-   MapDispatchToPropsFunction
-} from 'react-redux';
+import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
 import {
    LayoutProfile,
    Pagination,
    ProfileSidebar,
-   Skeleton
+   Skeleton,
 } from 'components';
-import {
-   localeDate,
-   setDocumentTitle,
-   getUserAgent
-} from 'helpers';
+import { localeDate, setDocumentTitle, getUserAgent } from 'helpers';
 import {
    getUserActivity,
    RootState,
@@ -32,7 +22,7 @@ import {
    selectUserActivityLoading,
    selectUserActivityNextPageExists,
    selectUserActivityPageCount,
-   UserActivityDataInterface
+   UserActivityDataInterface,
 } from 'modules';
 import { IcEmty } from 'assets';
 
@@ -77,7 +67,7 @@ const SessionsHistoryFC = ({
    total,
    page,
    nextPageExists,
-   pageCount
+   pageCount,
 }: Props) => {
    useEffect(() => {
       setDocumentTitle('Sessions History');
@@ -99,7 +89,9 @@ const SessionsHistoryFC = ({
          case 'login::2fa':
             return translate('page.body.profile.content.action.login.2fa');
          case 'request password reset':
-            return translate('page.body.profile.content.action.requestPasswordReset');
+            return translate(
+               'page.body.profile.content.action.requestPasswordReset'
+            );
          case 'password reset':
             return translate('page.body.profile.content.action.passwordReset');
          default:
@@ -107,9 +99,11 @@ const SessionsHistoryFC = ({
       }
    };
 
-   const onClickPrevPage = () => getUserActivity({ page: page - 1, limit: paginationLimit });
+   const onClickPrevPage = () =>
+      getUserActivity({ page: page - 1, limit: paginationLimit });
 
-   const onClickNextPage = () => getUserActivity({ page: page + 1, limit: paginationLimit });
+   const onClickNextPage = () =>
+      getUserActivity({ page: page + 1, limit: paginationLimit });
 
    return (
       <LayoutProfile
@@ -118,12 +112,13 @@ const SessionsHistoryFC = ({
             display: 'Home',
             href: '/',
             active: 'Sessions history',
-         }}
-      >
+         }}>
          <ProfileSidebar />
-         <div className="grow p-4 md:px-8 md:py-10 lg:p-10 shadow-card2 rounded-2xl bg-neutral8 dark:bg-shade1" style={{ animationDuration: '100ms' }}>
+         <div
+            className="grow rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 md:py-10 lg:p-10"
+            style={{ animationDuration: '100ms' }}>
             <div className="space-y-4">
-               <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+               <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                   Sessions history
                </div>
                {/* <Table columns={columns} data={userActivity} /> */}
@@ -131,19 +126,19 @@ const SessionsHistoryFC = ({
                   <table className="w-full table-auto">
                      <thead>
                         <tr className="border-b border-neutral7 dark:border-neutral2">
-                           <th className="p-4 pl-0 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
+                           <th className="p-4 pl-0 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
                               Date / time
                            </th>
-                           <th className="p-4 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
+                           <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
                               Action
                            </th>
-                           <th className="p-4 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
+                           <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
                               IP address
                            </th>
-                           <th className="p-4 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
+                           <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
                               Device
                            </th>
-                           <th className="p-4 pr-0 text-xs font-semibold leading-custom4 text-right dark:text-neutral5">
+                           <th className="p-4 pr-0 text-right text-xs font-semibold leading-custom4 dark:text-neutral5">
                               Status
                            </th>
                         </tr>
@@ -152,56 +147,96 @@ const SessionsHistoryFC = ({
                         {loading ? (
                            <>
                               <tr>
-                                 <td colSpan={5} className="py-3 last:pb-0">
-                                    <Skeleton height={20} isWithFull rounded="md" />
+                                 <td
+                                    colSpan={5}
+                                    className="py-3 last:pb-0">
+                                    <Skeleton
+                                       height={20}
+                                       isWithFull
+                                       rounded="md"
+                                    />
                                  </td>
                               </tr>
                               <tr>
-                                 <td colSpan={5} className="py-3 last:pb-0">
-                                    <Skeleton height={20} isWithFull rounded="md" />
+                                 <td
+                                    colSpan={5}
+                                    className="py-3 last:pb-0">
+                                    <Skeleton
+                                       height={20}
+                                       isWithFull
+                                       rounded="md"
+                                    />
                                  </td>
                               </tr>
                               <tr>
-                                 <td colSpan={5} className="py-3 last:pb-0">
-                                    <Skeleton height={20} isWithFull rounded="md" />
+                                 <td
+                                    colSpan={5}
+                                    className="py-3 last:pb-0">
+                                    <Skeleton
+                                       height={20}
+                                       isWithFull
+                                       rounded="md"
+                                    />
                                  </td>
                               </tr>
                            </>
-                        ) : userActivity.length ? userActivity.map(({ created_at, action, result, user_ip, user_agent }, index) => (
-                           <tr className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
-                              <td className="p-4 pl-0">
-                                 <div className="font-medium whitespace-nowrap">
-                                    {localeDate(created_at, 'shortDate').split(' ').shift()}
-                                 </div>
-                                 <div className="text-neutral4">
-                                    {localeDate(created_at, 'time')}
-                                 </div>
-                              </td>
-                              <td className="p-4">
-                                 <div className="font-medium whitespace-nowrap">
-                                    {getResultOfUserAction(action)}
-                                 </div>
-                              </td>
-                              <td className="p-4">
-                                 <div className="font-medium w-24 truncate">
-                                    {user_ip}
-                                 </div>
-                              </td>
-                              <td className="p-4">
-                                 <div className="font-medium">
-                                    {getUserAgent(user_agent)}
-                                 </div>
-                              </td>
-                              <td className="p-4 pr-0 text-right">
-                                 <div className={`${result === 'succeed' ? 'text-primary1' : 'text-primary4'}`}>
-                                    {translate(`page.body.profile.content.result.${result}`)}
-                                 </div>
-                              </td>
-                           </tr>
-                        )) : (
+                        ) : userActivity.length ? (
+                           userActivity.map(
+                              (
+                                 {
+                                    created_at,
+                                    action,
+                                    result,
+                                    user_ip,
+                                    user_agent,
+                                 },
+                                 index
+                              ) => (
+                                 <tr className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
+                                    <td className="p-4 pl-0">
+                                       <div className="whitespace-nowrap font-medium">
+                                          {localeDate(created_at, 'shortDate')
+                                             .split(' ')
+                                             .shift()}
+                                       </div>
+                                       <div className="text-neutral4">
+                                          {localeDate(created_at, 'time')}
+                                       </div>
+                                    </td>
+                                    <td className="p-4">
+                                       <div className="whitespace-nowrap font-medium">
+                                          {getResultOfUserAction(action)}
+                                       </div>
+                                    </td>
+                                    <td className="p-4">
+                                       <div className="w-24 truncate font-medium">
+                                          {user_ip}
+                                       </div>
+                                    </td>
+                                    <td className="p-4">
+                                       <div className="font-medium">
+                                          {getUserAgent(user_agent)}
+                                       </div>
+                                    </td>
+                                    <td className="p-4 pr-0 text-right">
+                                       <div
+                                          className={`${
+                                             result === 'succeed'
+                                                ? 'text-primary1'
+                                                : 'text-primary4'
+                                          }`}>
+                                          {translate(
+                                             `page.body.profile.content.result.${result}`
+                                          )}
+                                       </div>
+                                    </td>
+                                 </tr>
+                              )
+                           )
+                        ) : (
                            <tr>
                               <td colSpan={5}>
-                                 <div className="min-h-96 flex flex-col items-center justify-center space-y-3">
+                                 <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
                                     <IcEmty />
                                     <div className="text-xs font-semibold text-neutral4">
                                        {translate('noResultFound')}
@@ -225,8 +260,8 @@ const SessionsHistoryFC = ({
             </div>
          </div>
       </LayoutProfile>
-   )
-}
+   );
+};
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    userActivity: selectUserActivity(state),
@@ -239,7 +274,10 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    nextPageExists: selectUserActivityNextPageExists(state, paginationLimit),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    getUserActivity: params => dispatch(getUserActivity(params)),
 });
 

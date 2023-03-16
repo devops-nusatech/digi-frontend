@@ -5,9 +5,9 @@ const classes = {
    width: {
       sm: 'md:w-64',
       def: 'md:w-71.25',
-      md: 'md:w-82.5'
-   }
-}
+      md: 'md:w-82.5',
+   },
+};
 
 type Width = 'sm' | 'def' | 'md';
 
@@ -18,42 +18,50 @@ interface DropdownMenuProps {
    translateX?: string;
 }
 
-export const DropdownMenu: FC<DropdownMenuProps> = ({ isOpen, width, className, children, translateX }) => (
-   <div className={`
+export const DropdownMenu: FC<DropdownMenuProps> = ({
+   isOpen,
+   width,
+   className,
+   children,
+   translateX,
+}) => (
+   <div
+      className={`
       absolute
-      bg-neutral8
-      dark:bg-neutral2
       top-full
-      md:top-c-full+5
-      md-max:right-4
       left-4
-      md:left-1/2
       z-2
       w-auto
+      translate-x-0
+      rounded-xl
+      bg-neutral8
       p-4
       shadow-dropdown
-      rounded-xl
-      translate-x-0
+      dark:bg-neutral2
+      md:top-c-full+5
+      md:left-1/2
+      md-max:right-4
       ${translateX ? translateX : 'md:-translate-x-1/2'}
-      ${isOpen
-         ? 'visible opacity-100 translate-y-0 scale-100'
-         : 'invisible opacity-0 -translate-y-10 scale-75 shadow-primary1/75 dark:shadow-neutral8/60'
+      ${
+         isOpen
+            ? 'visible translate-y-0 scale-100 opacity-100'
+            : 'invisible -translate-y-10 scale-75 opacity-0 shadow-primary1/75 dark:shadow-neutral8/60'
       }
       ${classNames(`
          ${width ? classes.width[String(width)] : ''}
          ${className ? className : ''}
       `)}
+      before:icon-dropdown
+      before:dark:icon-dropdown-dark
       transition-all
       duration-300
       before:absolute
-      before:content-['']
       before:bottom-full
-      before:w-6
-      before:h-3
-      before:icon-dropdown
-      before:dark:icon-dropdown-dark
       before:left-1/2
+      before:h-3
+      before:w-6
       before:-translate-x-1/2
+      before:content-['']
       before:md-max:left-auto
       before:md-max:right-52
    `}>
@@ -61,7 +69,6 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({ isOpen, width, className, 
    </div>
 );
 
-
 DropdownMenu.defaultProps = {
-   width: 'sm'
-}
+   width: 'sm',
+};

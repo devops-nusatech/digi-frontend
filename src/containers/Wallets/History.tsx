@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-   injectIntl,
-} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { IntlProps } from '../../';
 import { History, Pagination } from '../../components';
@@ -55,11 +53,7 @@ export type Props = HistoryProps & ReduxProps & DispatchProps & IntlProps;
 
 export class WalletTable extends React.Component<Props> {
    public componentDidMount() {
-      const {
-         currencies,
-         currency,
-         core,
-      } = this.props;
+      const { currencies, currency, core } = this.props;
       this.props.fetchHistory({ page: 0, currency, core, limit: 6 });
 
       if (!currencies.length) {
@@ -68,14 +62,15 @@ export class WalletTable extends React.Component<Props> {
    }
 
    public componentWillReceiveProps(nextProps) {
-      const {
-         currencies,
-         currency,
-         core,
-      } = this.props;
+      const { currencies, currency, core } = this.props;
       if (nextProps.currency !== currency || nextProps.core !== core) {
          this.props.resetHistory();
-         this.props.fetchHistory({ page: 0, currency: nextProps.currency, core, limit: 6 });
+         this.props.fetchHistory({
+            page: 0,
+            currency: nextProps.currency,
+            core,
+            limit: 6,
+         });
       }
 
       if (!currencies.length && nextProps.currencies.length) {
@@ -88,7 +83,14 @@ export class WalletTable extends React.Component<Props> {
    }
 
    public render() {
-      const { label, list, firstElemIndex, lastElemIndex, page, nextPageExists } = this.props;
+      const {
+         label,
+         list,
+         firstElemIndex,
+         lastElemIndex,
+         page,
+         nextPageExists,
+      } = this.props;
 
       if (!list.length) {
          return null;
@@ -97,9 +99,14 @@ export class WalletTable extends React.Component<Props> {
       return (
          <div className="pg-history-elem__wallet">
             <div className="pg-history-elem__label">
-               {this.props.intl.formatMessage({ id: `page.body.history.${label}` })}
+               {this.props.intl.formatMessage({
+                  id: `page.body.history.${label}`,
+               })}
             </div>
-            <History headers={this.getHeaders(label)} data={this.retrieveData(list)} />
+            <History
+               headers={this.getHeaders(label)}
+               data={this.retrieveData(list)}
+            />
             <Pagination
                firstElemIndex={firstElemIndex}
                lastElemIndex={lastElemIndex}
@@ -113,53 +120,93 @@ export class WalletTable extends React.Component<Props> {
    }
 
    private getHeaders = (label: string) => [
-      this.props.intl.formatMessage({ id: `page.body.history.${label}.header.date` }),
-      this.props.intl.formatMessage({ id: `page.body.history.${label}.header.status` }),
-      this.props.intl.formatMessage({ id: `page.body.history.${label}.header.amount` }),
+      this.props.intl.formatMessage({
+         id: `page.body.history.${label}.header.date`,
+      }),
+      this.props.intl.formatMessage({
+         id: `page.body.history.${label}.header.status`,
+      }),
+      this.props.intl.formatMessage({
+         id: `page.body.history.${label}.header.amount`,
+      }),
    ];
 
    private onClickPrevPage = () => {
       const { page, core, currency } = this.props;
-      this.props.fetchHistory({ page: Number(page) - 1, currency, core, limit: 6 });
+      this.props.fetchHistory({
+         page: Number(page) - 1,
+         currency,
+         core,
+         limit: 6,
+      });
    };
 
    private onClickNextPage = () => {
       const { page, core, currency } = this.props;
-      this.props.fetchHistory({ page: Number(page) + 1, currency, core, limit: 6 });
+      this.props.fetchHistory({
+         page: Number(page) + 1,
+         currency,
+         core,
+         limit: 6,
+      });
    };
 
    private retrieveData = list => {
-      const {
-         currency,
-         currencies,
-         intl,
-         core,
-         wallets,
-      } = this.props;
-      const { fixed } = wallets.find(w => w.currency === currency) || { fixed: 8 };
+      const { currency, currencies, intl, core, wallets } = this.props;
+      const { fixed } = wallets.find(w => w.currency === currency) || {
+         fixed: 8,
+      };
       if (list.length === 0) {
          return [[intl.formatMessage({ id: 'page.noDataToShow' }), '', '']];
       }
 
-      return list.sort((a, b) => {
-         return localeDate(a.created_at, 'fullDate') > localeDate(b.created_at, 'fullDate') ? -1 : 1;
-      }).map((item, index) => {
-         const amount = 'amount' in item ? Number(item.amount) : Number(item.price) * Number(item.volume);
-         const confirmations = core === 'deposits' && item.confirmations;
-         const itemCurrency = currencies && currencies.find(cur => cur.id === currency);
-         const blockchainCurrency = itemCurrency?.networks.find(blockchain_cur => blockchain_cur.blockchain_key === item.blockchain_key);
-         const minConfirmations = blockchainCurrency?.min_confirmations;
-         const state = 'state' in item ? this.formatTxState(item.state, confirmations, minConfirmations) : '';
+      return list
+         .sort((a, b) => {
+            return localeDate(a.created_at, 'fullDate') >
+               localeDate(b.created_at, 'fullDate')
+               ? -1
+               : 1;
+         })
+         .map((item, index) => {
+            const amount =
+               'amount' in item
+                  ? Number(item.amount)
+                  : Number(item.price) * Number(item.volume);
+            const confirmations = core === 'deposits' && item.confirmations;
+            const itemCurrency =
+               currencies && currencies.find(cur => cur.id === currency);
+            const blockchainCurrency = itemCurrency?.networks.find(
+               blockchain_cur =>
+                  blockchain_cur.blockchain_key === item.blockchain_key
+            );
+            const minConfirmations = blockchainCurrency?.min_confirmations;
+            const state =
+               'state' in item
+                  ? this.formatTxState(
+                       item.state,
+                       confirmations,
+                       minConfirmations
+                    )
+                  : '';
 
-         return [
-            localeDate(item.created_at, 'fullDate'),
-            state,
-            <Decimal key={index} fixed={fixed} thousSep=",">{amount}</Decimal>,
-         ];
-      });
+            return [
+               localeDate(item.created_at, 'fullDate'),
+               state,
+               <Decimal
+                  key={index}
+                  fixed={fixed}
+                  thousSep=",">
+                  {amount}
+               </Decimal>,
+            ];
+         });
    };
 
-   private formatTxState = (tx: string, confirmations?: number, minConfirmations?: number) => {
+   private formatTxState = (
+      tx: string,
+      confirmations?: number,
+      minConfirmations?: number
+   ) => {
       const statusMapping = {
          succeed: <SucceedIcon />,
          failed: <FailIcon />,
@@ -167,20 +214,24 @@ export class WalletTable extends React.Component<Props> {
          collected: <SucceedIcon />,
          canceled: <FailIcon />,
          rejected: <FailIcon />,
-         processing: this.props.intl.formatMessage({ id: 'page.body.wallets.table.pending' }),
-         prepared: this.props.intl.formatMessage({ id: 'page.body.wallets.table.pending' }),
-         submitted: (confirmations !== undefined && minConfirmations !== undefined) ? (
-            `${confirmations}/${minConfirmations}`
-         ) : (
-            this.props.intl.formatMessage({ id: 'page.body.wallets.table.pending' })
-         ),
+         processing: this.props.intl.formatMessage({
+            id: 'page.body.wallets.table.pending',
+         }),
+         prepared: this.props.intl.formatMessage({
+            id: 'page.body.wallets.table.pending',
+         }),
+         submitted:
+            confirmations !== undefined && minConfirmations !== undefined
+               ? `${confirmations}/${minConfirmations}`
+               : this.props.intl.formatMessage({
+                    id: 'page.body.wallets.table.pending',
+                 }),
          skipped: <SucceedIcon />,
       };
 
       return statusMapping[tx];
    };
 }
-
 
 export const mapStateToProps = (state: RootState): ReduxProps => ({
    currencies: selectCurrencies(state),
@@ -193,11 +244,15 @@ export const mapStateToProps = (state: RootState): ReduxProps => ({
    nextPageExists: selectNextPageExists(state, 6),
 });
 
-export const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
-   dispatch => ({
-      fetchCurrencies: () => dispatch(currenciesFetch()),
-      fetchHistory: params => dispatch(fetchHistory(params)),
-      resetHistory: () => dispatch(resetHistory()),
-   });
+export const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   fetchCurrencies: () => dispatch(currenciesFetch()),
+   fetchHistory: params => dispatch(fetchHistory(params)),
+   resetHistory: () => dispatch(resetHistory()),
+});
 
-export const WalletHistory = injectIntl(connect(mapStateToProps, mapDispatchToProps)(WalletTable)) as any;
+export const WalletHistory = injectIntl(
+   connect(mapStateToProps, mapDispatchToProps)(WalletTable)
+) as any;

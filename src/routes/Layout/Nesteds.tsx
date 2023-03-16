@@ -1,5 +1,11 @@
-import React from 'react'
-import { Link, Switch, useRouteMatch, Route, useParams } from 'react-router-dom';
+import React from 'react';
+import {
+   Link,
+   Switch,
+   useRouteMatch,
+   Route,
+   useParams,
+} from 'react-router-dom';
 import { Transfer, WalletOverview } from 'screens';
 
 export const Nesteds = () => {
@@ -22,15 +28,22 @@ export const Nesteds = () => {
             </li>
          </ul>
          <Switch>
-            <Route exact path={path} component={WalletOverview} />
-            <Route path={`${path}/cuk`} component={Transfer} />
+            <Route
+               exact
+               path={path}
+               component={WalletOverview}
+            />
+            <Route
+               path={`${path}/cuk`}
+               component={Transfer}
+            />
             <Route path={`${path}/:topicId`}>
                <Topic />
             </Route>
          </Switch>
       </div>
-   )
-}
+   );
+};
 
 function Topic() {
    // The <Route> that rendered this component has a

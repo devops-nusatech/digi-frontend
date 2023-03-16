@@ -19,7 +19,7 @@ export const SliderPercent: FC<NouisliderProps> = ({
    format,
 }) => {
    return (
-      <div className="relative h-6 z-20">
+      <div className="relative z-20 h-6">
          <Nouislider
             instanceRef={instanceRef}
             range={range}
@@ -34,36 +34,36 @@ export const SliderPercent: FC<NouisliderProps> = ({
             onSet={onSet}
             onEnd={onEnd}
             format={format}
-            className="!cursor-pointer !absolute !top-[12px] !inset-x-0 !border-none !bg-neutral6 dark:!bg-neutral3 !shadow-none !h-0.5"
+            className="!absolute !inset-x-0 !top-[12px] !h-0.5 !cursor-pointer !border-none !bg-neutral6 !shadow-none dark:!bg-neutral3"
          />
-         <div className="absolute top-[10px] inset-x-0 flex justify-between pointer-events-none">
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-            <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
+         <div className="pointer-events-none absolute inset-x-0 top-[10px] flex justify-between">
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+            <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
          </div>
       </div>
-   )
+   );
 };
 
 SliderPercent.defaultProps = {
    range: {
       min: 0,
-      max: 100
+      max: 100,
    },
    start: 0,
    step: 10,
    tooltips: true,
    connect: [true, false],
    format: {
-      to: (val) => `${val}%`,
-      from: (val) => Number(val)
-   }
-}
+      to: val => `${val}%`,
+      from: val => Number(val),
+   },
+};

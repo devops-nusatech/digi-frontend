@@ -1,6 +1,6 @@
 import { IllusChart } from './IllusChart';
 import { IllusWorld } from './IllusWorld';
-import illusCard from './cards.png'
+import illusCard from './cards.png';
 import illusCard2 from './cards@2x.png';
 import illusCard11 from './card-pic-1.png';
 import illusCard12 from './card-pic-1@2x.png';
@@ -57,12 +57,10 @@ import illusFaq2 from './faq-pic-1@2x.jpg';
 import illusFaq11 from './faq-pic-2.jpg';
 import illusFaq12 from './faq-pic-2@2x.jpg';
 
-
 import illusNews11 from './news-pic-1.png';
 import illusNews12 from './news-pic-1@2x.png';
 
 import illusLogin from './bg-login.png';
-
 
 export {
    illusCard,
@@ -73,7 +71,6 @@ export {
    illusCard22,
    illusCard31,
    illusCard32,
-
    illusLearn11,
    illusLearn12,
    illusLearn21,
@@ -82,7 +79,6 @@ export {
    illusLearn32,
    illusLearn41,
    illusLearn42,
-
    illusStep11,
    illusStep12,
    illusStep21,
@@ -91,42 +87,32 @@ export {
    illusStep32,
    illusStep41,
    illusStep42,
-
    illusContact,
    illusContact2,
-
    illusMarket,
    illusMarket2,
-
    illusDiscover,
-
    illusLesson,
    illusLesson2,
    illusLesson11,
    illusLesson12,
    illusLesson21,
    illusLesson22,
-
    illusReleases,
    illusReleases2,
    illusReleases21,
    illusReleases22,
    illusReleases31,
    illusReleases32,
-
    illusDownloadApp11,
    illusDownloadApp12,
-
    illusFaq,
    illusFaq2,
    illusFaq11,
    illusFaq12,
-
    illusNews11,
    illusNews12,
-
    illusLogin,
-
    IllusWorld,
    IllusChart,
 };

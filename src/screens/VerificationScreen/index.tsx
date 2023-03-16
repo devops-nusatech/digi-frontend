@@ -35,8 +35,10 @@ export interface RouterProps {
 
 type Props = DispatchProps & RouterProps & ReduxProps;
 
-export const extractToken = (props: RouterProps) => new URLSearchParams(props.location.search).get('confirmation_token');
-export const extractLang = (props: RouterProps) => new URLSearchParams(props.location.search).get('lang');
+export const extractToken = (props: RouterProps) =>
+   new URLSearchParams(props.location.search).get('confirmation_token');
+export const extractLang = (props: RouterProps) =>
+   new URLSearchParams(props.location.search).get('lang');
 
 class Verification extends React.Component<Props, IntlProps> {
    public componentDidMount() {
@@ -53,9 +55,7 @@ class Verification extends React.Component<Props, IntlProps> {
    }
 
    public render() {
-      return (
-         <Redirect to={'/login'} />
-      );
+      return <Redirect to={'/login'} />;
    }
 }
 
@@ -63,13 +63,15 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    isEmailVerified: selectEmailVerified(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
-   dispatch => ({
-      verification: data => dispatch(verificationFetch(data)),
-      changeLanguage: lang => dispatch(changeLanguage(lang)),
-   });
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   verification: data => dispatch(verificationFetch(data)),
+   changeLanguage: lang => dispatch(changeLanguage(lang)),
+});
 
 export const VerificationScreen = compose(
    injectIntl,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(Verification) as React.ComponentClass;

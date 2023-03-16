@@ -92,12 +92,8 @@ export const MyTable: FC<TableProps> = ({
    rowBackgroundColor,
    colSpan,
 }) => {
-   return (
-      <div className="overflow-x-auto">
-
-      </div>
-   )
-}
+   return <div className="overflow-x-auto"></div>;
+};
 export class Tableeeee extends React.Component<TableProps, TableState> {
    constructor(props: TableProps) {
       super(props);
@@ -125,7 +121,7 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
    public componentDidUpdate(prevProps: TableProps) {
       if (prevProps.data !== this.props.data && this.props.filters) {
          const activeFilter = this.props.filters.find(
-            filter => filter.name === this.state.activeFilter,
+            filter => filter.name === this.state.activeFilter
          );
 
          if (activeFilter) {
@@ -135,22 +131,30 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
    }
 
    public render() {
-      const { data, header, titleComponent, filters = [], rowKeyIndex } = this.props;
+      const {
+         data,
+         header,
+         titleComponent,
+         filters = [],
+         rowKeyIndex,
+      } = this.props;
 
       this.ensureDataIsValid(data);
 
       const cn = classNames('cr-table-header__content', {
-         'cr-table-header__content-empty': !titleComponent && filters.length === 0,
+         'cr-table-header__content-empty':
+            !titleComponent && filters.length === 0,
       });
 
       return (
          <div className="cr-table-container">
             <div className={cn}>
                {titleComponent ? this.renderTitleComponent() : null}
-               {filters.length
-                  ?
-                  <div className="cr-table__filters">{this.renderFilters()}</div>
-                  : null}
+               {filters.length ? (
+                  <div className="cr-table__filters">
+                     {this.renderFilters()}
+                  </div>
+               ) : null}
             </div>
             <table className={'cr-table'}>
                {header && header.length && this.renderHead(header)}
@@ -168,10 +172,15 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
    }
 
    private renderRowCells(row: CellData[]) {
-
-      return row && row.length ?
-         row.map((c, index: number) =>
-            <td key={index} colSpan={row.length === 1 ? this.props.colSpan : undefined}>{c}</td>) : [];
+      return row && row.length
+         ? row.map((c, index: number) => (
+              <td
+                 key={index}
+                 colSpan={row.length === 1 ? this.props.colSpan : undefined}>
+                 {c}
+              </td>
+           ))
+         : [];
    }
 
    private handleFilter(item: Filter) {
@@ -195,13 +204,16 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
       const { onSelect } = this.props;
 
       if (onSelect) {
-         this.setState({
-            selectedRowKey: key,
-         }, () => {
-            if (onSelect) {
-               onSelect(key);
+         this.setState(
+            {
+               selectedRowKey: key,
+            },
+            () => {
+               if (onSelect) {
+                  onSelect(key);
+               }
             }
-         });
+         );
       }
    };
 
@@ -209,9 +221,10 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
       const { filters = [] } = this.props;
       const { activeFilter } = this.state;
 
-      const cn = (filterName: string) => classNames('cr-table__filter', {
-         'cr-table__filter--active': activeFilter === filterName,
-      });
+      const cn = (filterName: string) =>
+         classNames('cr-table__filter', {
+            'cr-table__filter--active': activeFilter === filterName,
+         });
 
       return filters.map((item: Filter) => {
          const handleFilterClick = () => {
@@ -222,8 +235,7 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
             <div
                className={cn(item.name)}
                key={item.name}
-               onClick={handleFilterClick}
-            >
+               onClick={handleFilterClick}>
                {item.name}
             </div>
          );
@@ -231,7 +243,9 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
    }
 
    private renderHead(row: CellData[]) {
-      const cells = row.map((c, index) => c ? <th key={index}>{c}</th> : <th key={index}>&nbsp;</th>);
+      const cells = row.map((c, index) =>
+         c ? <th key={index}>{c}</th> : <th key={index}>&nbsp;</th>
+      );
 
       return (
          <thead className={'cr-table__head'}>
@@ -241,23 +255,29 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
    }
 
    private renderRowBackground(i: number) {
-      const { rowBackground, rowBackgroundColor = 'rgba(184, 233, 245, 0.7)' } = this.props;
+      const { rowBackground, rowBackgroundColor = 'rgba(184, 233, 245, 0.7)' } =
+         this.props;
       const rowBackgroundResult = rowBackground ? rowBackground(i) : {};
       const style = {
          ...rowBackgroundResult,
          backgroundColor: rowBackgroundColor,
       };
 
-      return (rowBackground
-         ? <span key={i} style={style} className="cr-table-background__row" />
-         : null);
+      return rowBackground ? (
+         <span
+            key={i}
+            style={style}
+            className="cr-table-background__row"
+         />
+      ) : null;
    }
 
    private renderBackground(rows: CellData[][]) {
       const { resultData } = this.state;
       const { rowBackground, side } = this.props;
       const dataToBeMapped = resultData || rows;
-      const renderBackgroundRow = (r: CellData[], i: number) => this.renderRowBackground(i);
+      const renderBackgroundRow = (r: CellData[], i: number) =>
+         this.renderRowBackground(i);
 
       const className = classNames('cr-table-background', {
          'cr-table-background--left': side === 'left',
@@ -274,30 +294,26 @@ export class Tableeeee extends React.Component<TableProps, TableState> {
    private renderBody(rows: CellData[][], rowKeyIndex: number | undefined) {
       const { resultData, selectedRowKey } = this.state;
 
-      const rowClassName = (key: string) => classNames({
-         'cr-table__row--selected': selectedRowKey === key,
-      });
+      const rowClassName = (key: string) =>
+         classNames({
+            'cr-table__row--selected': selectedRowKey === key,
+         });
 
       const dataToBeMapped = resultData || rows;
       const rowElements = dataToBeMapped.map((r, i) => {
-         const rowKey = String((rowKeyIndex !== undefined) ? r[rowKeyIndex] : i);
+         const rowKey = String(rowKeyIndex !== undefined ? r[rowKeyIndex] : i);
 
          return (
             <tr
                className={rowClassName(rowKey)}
                key={rowKey}
-               onClick={this.handleSelect(rowKey)}
-            >
+               onClick={this.handleSelect(rowKey)}>
                {this.renderRowCells(r)}
             </tr>
          );
       });
 
-      return (
-         <tbody className={'cr-table__body'}>
-            {rowElements}
-         </tbody>
-      );
+      return <tbody className={'cr-table__body'}>{rowElements}</tbody>;
    }
 
    private ensureDataIsValid(data: CellData[][]) {

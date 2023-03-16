@@ -1,13 +1,15 @@
 import classnames from 'classnames';
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
-import {
-   FilterPrice,
-   PriceValidation,
-   validatePriceStep,
-} from 'filters';
+import { FilterPrice, PriceValidation, validatePriceStep } from 'filters';
 import { cleanPositiveFloatInput, precisionRegExp } from 'helpers';
-import { Decimal, DropdownComponent, PercentageButton, OrderInput, OrderProps } from 'components';
+import {
+   Decimal,
+   DropdownComponent,
+   PercentageButton,
+   OrderInput,
+   OrderProps,
+} from 'components';
 
 type OnSubmitCallback = (order: OrderProps) => void;
 type DropdownElem = number | string | React.ReactNode;
@@ -76,7 +78,12 @@ export interface TradingOrderNewTabFormProps {
    isMobileDevice?: boolean;
    currentMarketFilters: FilterPrice[];
    handleAmountChange: (amount: string, type: FormType) => void;
-   handleChangeAmountByButton: (value: number, orderType: string | React.ReactNode, price: string, type: string) => void;
+   handleChangeAmountByButton: (
+      value: number,
+      orderType: string | React.ReactNode,
+      price: string,
+      type: string
+   ) => void;
    translate: (id: string, value?: any) => string;
 }
 
@@ -89,11 +96,15 @@ interface TradingOrderNewTabFormState {
    priceFocused: boolean;
 }
 
-const handleSetValue = (value: string | number | undefined, defaultValue: string) => (
-   value || defaultValue
-);
+const handleSetValue = (
+   value: string | number | undefined,
+   defaultValue: string
+) => value || defaultValue;
 
-export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewTabFormProps, TradingOrderNewTabFormState> {
+export class TradingOrderNewTabForm extends React.PureComponent<
+   TradingOrderNewTabFormProps,
+   TradingOrderNewTabFormState
+> {
    constructor(props: TradingOrderNewTabFormProps) {
       super(props);
       this.state = {
@@ -110,9 +121,16 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
    }
 
    public componentWillReceiveProps(next: TradingOrderNewTabFormProps) {
-      const nextPriceLimitTruncated = Decimal.format(next.priceLimit, this.props.currentMarketBidPrecision);
+      const nextPriceLimitTruncated = Decimal.format(
+         next.priceLimit,
+         this.props.currentMarketBidPrecision
+      );
 
-      if (this.state.orderType === 'Limit' && next.priceLimit && nextPriceLimitTruncated !== this.state.price) {
+      if (
+         this.state.orderType === 'Limit' &&
+         next.priceLimit &&
+         nextPriceLimitTruncated !== this.state.price
+      ) {
          this.handlePriceChange(nextPriceLimitTruncated);
       }
 
@@ -154,28 +172,46 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
       const safeAmount = Number(amount) || 0;
       const safePrice = totalPrice / Number(amount) || priceMarket;
 
-      const total = orderType === 'Market'
-         ? totalPrice : safeAmount * (Number(price) || 0);
+      const total =
+         orderType === 'Market'
+            ? totalPrice
+            : safeAmount * (Number(price) || 0);
       const amountPercentageArray = [0.25, 0.5, 0.75, 1];
 
-      const availablePrecision = type === 'buy' ? currentMarketBidPrecision : currentMarketAskPrecision;
+      const availablePrecision =
+         type === 'buy' ? currentMarketBidPrecision : currentMarketAskPrecision;
       const availableCurrency = type === 'buy' ? from : to;
 
       const priceErrorClass = classnames('error-message', {
-         'error-message--visible': (priceFocused || isMobileDevice) && !isPriceValid.valid,
+         'error-message--visible':
+            (priceFocused || isMobileDevice) && !isPriceValid.valid,
       });
 
-      const priceText = this.props.translate('page.body.trade.header.newOrder.content.price');
-      const amountText = this.props.translate('page.body.trade.header.newOrder.content.amount');
-      const submitButtonText = translate(`page.body.trade.header.newOrder.content.tabs.${type}`);
+      const priceText = this.props.translate(
+         'page.body.trade.header.newOrder.content.price'
+      );
+      const amountText = this.props.translate(
+         'page.body.trade.header.newOrder.content.amount'
+      );
+      const submitButtonText = translate(
+         `page.body.trade.header.newOrder.content.tabs.${type}`
+      );
 
       return (
-         <div className={classnames('cr-order-form', className)} onKeyPress={this.handleEnterPress}>
+         <div
+            className={classnames('cr-order-form', className)}
+            onKeyPress={this.handleEnterPress}>
             <div className="cr-order-item">
                <div className="cr-order-item__dropdown__label">
-                  {translate('page.body.trade.header.newOrder.content.orderType')}
+                  {translate(
+                     'page.body.trade.header.newOrder.content.orderType'
+                  )}
                </div>
-               <DropdownComponent list={orderTypes} onSelect={this.handleOrderTypeChange} placeholder="" />
+               <DropdownComponent
+                  list={orderTypes}
+                  onSelect={this.handleOrderTypeChange}
+                  placeholder=""
+               />
             </div>
             {orderType === 'Limit' ? (
                <div className="cr-order-item">
@@ -190,7 +226,10 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
                      handleFocusInput={this.handleFieldFocus}
                   />
                   <div className={priceErrorClass}>
-                     {translate('page.body.trade.header.newOrder.content.filterPrice', { priceStep: isPriceValid.priceStep })}
+                     {translate(
+                        'page.body.trade.header.newOrder.content.filterPrice',
+                        { priceStep: isPriceValid.priceStep }
+                     )}
                   </div>
                </div>
             ) : (
@@ -201,8 +240,16 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
                            {priceText}
                         </legend>
                         <div className="cr-order-input__fieldset__input">
-                           &asymp;<span className="cr-order-input__fieldset__input__price">
-                              {handleSetValue(Decimal.format(safePrice, currentMarketBidPrecision, ','), '0')}
+                           &asymp;
+                           <span className="cr-order-input__fieldset__input__price">
+                              {handleSetValue(
+                                 Decimal.format(
+                                    safePrice,
+                                    currentMarketBidPrecision,
+                                    ','
+                                 ),
+                                 '0'
+                              )}
                            </span>
                         </div>
                      </fieldset>
@@ -226,25 +273,32 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
 
             <div className="cr-order-item">
                <div className="cr-order-item__percentage-buttons">
-                  {
-                     amountPercentageArray.map((value, index) => <PercentageButton
+                  {amountPercentageArray.map((value, index) => (
+                     <PercentageButton
                         value={value}
                         key={index}
                         onClick={this.handleChangeAmountByButton}
-                     />)
-                  }
+                     />
+                  ))}
                </div>
             </div>
 
             <div className="cr-order-item">
                <div className="cr-order-item__total">
                   <label className="cr-order-item__total__label">
-                     {translate('page.body.trade.header.newOrder.content.total')}
+                     {translate(
+                        'page.body.trade.header.newOrder.content.total'
+                     )}
                   </label>
                   <div className="cr-order-item__total__content">
                      <span className="cr-order-item__total__content__amount">
                         {orderType === 'Market' ? <span>&asymp;</span> : null}
-                        {Decimal.format(total, currentMarketAskPrecision + currentMarketBidPrecision, ',')}
+                        {Decimal.format(
+                           total,
+                           currentMarketAskPrecision +
+                              currentMarketBidPrecision,
+                           ','
+                        )}
                      </span>
                      <span className="cr-order-item__total__content__currency">
                         {from.toUpperCase()}
@@ -255,11 +309,15 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
             <div className="cr-order-item">
                <div className="cr-order-item__available">
                   <label className="cr-order-item__available__label">
-                     {translate('page.body.trade.header.newOrder.content.available')}
+                     {translate(
+                        'page.body.trade.header.newOrder.content.available'
+                     )}
                   </label>
                   <div className="cr-order-item__available__content">
                      <span className="cr-order-item__available__content__amount">
-                        {available ? Decimal.format(available, availablePrecision, ',') : ''}
+                        {available
+                           ? Decimal.format(available, availablePrecision, ',')
+                           : ''}
                      </span>
                      <span className="cr-order-item__available__content__currency">
                         {available ? availableCurrency.toUpperCase() : ''}
@@ -270,12 +328,11 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
             <div className="cr-order-item">
                <Button
                   block={true}
-                  className="btn-block mr-1 mt-1 btn-lg"
+                  className="btn-block btn-lg mr-1 mt-1"
                   disabled={this.checkButtonIsDisabled()}
                   onClick={this.handleSubmit}
                   size="lg"
-                  variant={type === 'buy' ? 'success' : 'danger'}
-               >
+                  variant={type === 'buy' ? 'success' : 'danger'}>
                   {submitButtonText || type}
                </Button>
             </div>
@@ -291,8 +348,12 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
    };
 
    private handleFieldFocus = (field: string | undefined) => {
-      const priceText = this.props.translate('page.body.trade.header.newOrder.content.price');
-      const amountText = this.props.translate('page.body.trade.header.newOrder.content.amount');
+      const priceText = this.props.translate(
+         'page.body.trade.header.newOrder.content.price'
+      );
+      const amountText = this.props.translate(
+         'page.body.trade.header.newOrder.content.amount'
+      );
 
       switch (field) {
          case priceText:
@@ -318,7 +379,10 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
       if (convertedValue.match(precisionRegExp(currentMarketBidPrecision))) {
          this.setState({
             price: convertedValue,
-            isPriceValid: validatePriceStep(convertedValue, currentMarketFilters),
+            isPriceValid: validatePriceStep(
+               convertedValue,
+               currentMarketFilters
+            ),
          });
       }
 
@@ -337,7 +401,12 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
    private handleChangeAmountByButton = (value: number) => {
       const { orderType, price } = this.state;
 
-      this.props.handleChangeAmountByButton(value, orderType, price, this.props.type);
+      this.props.handleChangeAmountByButton(
+         value,
+         orderType,
+         price,
+         this.props.type
+      );
    };
 
    private handleSubmit = () => {
@@ -363,13 +432,22 @@ export class TradingOrderNewTabForm extends React.PureComponent<TradingOrderNewT
       const safePrice = totalPrice / Number(amount) || priceMarket;
 
       const invalidAmount = Number(amount) <= 0;
-      const invalidLimitPrice = orderType === 'Limit' && (Number(price) <= 0 || !isPriceValid.valid);
+      const invalidLimitPrice =
+         orderType === 'Limit' && (Number(price) <= 0 || !isPriceValid.valid);
       const invalidMarketPrice = safePrice <= 0 && orderType === 'Market';
 
-      return disabled || !available || invalidAmount || invalidLimitPrice || invalidMarketPrice;
+      return (
+         disabled ||
+         !available ||
+         invalidAmount ||
+         invalidLimitPrice ||
+         invalidMarketPrice
+      );
    };
 
-   private handleEnterPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+   private handleEnterPress = (
+      event: React.KeyboardEvent<HTMLInputElement>
+   ) => {
       if (event.key === 'Enter') {
          event.preventDefault();
 

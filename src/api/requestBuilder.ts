@@ -15,12 +15,7 @@ import {
 } from './config';
 import { API_URL } from 'config';
 
-export type HTTPMethod =
-   'get'
-   | 'post'
-   | 'delete'
-   | 'put'
-   | 'patch';
+export type HTTPMethod = 'get' | 'post' | 'delete' | 'put' | 'patch';
 
 export interface JsonBody {
    //  tslint:disable-next-line no-any
@@ -28,7 +23,14 @@ export interface JsonBody {
 }
 
 export interface RequestOptions {
-   apiVersion: 'applogic' | 'peatio' | 'barong' | 'finex' | 'sonic' | 'p2p' | 'news';
+   apiVersion:
+      | 'applogic'
+      | 'peatio'
+      | 'barong'
+      | 'finex'
+      | 'sonic'
+      | 'p2p'
+      | 'news';
    withHeaders?: boolean;
    headers?: Object;
 }
@@ -47,7 +49,7 @@ export interface ApiVariety {
 
 const getAPI = () => {
    // const hostUrl = window.location.hostname === 'localhost' ? 'http://localhost:9002' : '';
-   const hostUrl = API_URL
+   const hostUrl = API_URL;
 
    return {
       barong: authUrl(),
@@ -57,7 +59,7 @@ const getAPI = () => {
       sonic: `${hostUrl}/api/v2/sonic`,
       p2p: p2pUrl(),
       news: newsUrl(),
-   }
+   };
 };
 
 const buildRequest = (request: Request, configData: RequestOptions) => {
@@ -65,9 +67,8 @@ const buildRequest = (request: Request, configData: RequestOptions) => {
    const { apiVersion, headers } = configData;
    const api = getAPI();
 
-   const contentType = body instanceof FormData
-      ? 'multipart/form-data'
-      : 'application/json';
+   const contentType =
+      body instanceof FormData ? 'multipart/form-data' : 'application/json';
 
    const defaultHeaders = {
       'content-type': contentType,
@@ -96,7 +97,8 @@ export const defaultResponse: Partial<AxiosError['response']> = {
 
 export const formatError = (responseError: AxiosError) => {
    const response = responseError.response || defaultResponse;
-   const errors = (response.data && (response.data.errors || [response.data.error])) || [];
+   const errors =
+      (response.data && (response.data.errors || [response.data.error])) || [];
 
    return {
       code: response.status,
@@ -104,7 +106,10 @@ export const formatError = (responseError: AxiosError) => {
    };
 };
 
-export const makeRequest = async (request: Request, configData: RequestOptions) => {
+export const makeRequest = async (
+   request: Request,
+   configData: RequestOptions
+) => {
    const requestConfig = buildRequest(request, configData);
 
    return new Promise((resolve, reject) => {

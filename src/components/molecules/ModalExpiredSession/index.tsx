@@ -19,11 +19,12 @@ export const ModalExpiredSession: FC<ModalExpiredSession> = ({
    return (
       <Portal
          show={show}
-         close={close}
-      >
+         close={close}>
          <div className="mt-10 space-y-8">
-            <div className="text-5xl text-center font-dm font-bold leading-custom1 tracking-custom">Hufh! ⏰</div>
-            <div className="max-w-71.25 mx-auto text-center text-base font-medium leading-normal">
+            <div className="text-center font-dm text-5xl font-bold leading-custom1 tracking-custom">
+               Hufh! ⏰
+            </div>
+            <div className="mx-auto max-w-71.25 text-center text-base font-medium leading-normal">
                {title}
             </div>
             <Button
@@ -33,5 +34,5 @@ export const ModalExpiredSession: FC<ModalExpiredSession> = ({
             />
          </div>
       </Portal>
-   )
+   );
 };

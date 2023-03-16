@@ -25,12 +25,11 @@ export const AdibTooltip = ({
       singleton={singleton}
       followCursor={followCursorProps}
       plugins={[followCursor]}
-      {...props}
-   >
+      {...props}>
       {children}
    </Tippy>
-)
+);
 
 AdibTooltip.defaultProps = {
    followCursorProps: true,
-}
+};

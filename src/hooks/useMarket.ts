@@ -1,12 +1,6 @@
-import {
-   useState,
-   ChangeEvent
-} from 'react';
+import { useState, ChangeEvent } from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-   useSelector,
-   useDispatch
-} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
    Market,
    selectUserInfo,
@@ -26,7 +20,7 @@ import {
    useCurrenciesFetch,
    useLocalStorage,
    useMarketsFetch,
-   useMarketsTickersFetch
+   useMarketsTickersFetch,
 } from 'hooks';
 import { arrayFilter } from 'helpers';
 import { Decimal } from 'components';
@@ -51,7 +45,8 @@ export const useMarket = () => {
    const [currentBidUnit, setCurrentBidUnit] = useState('');
    const [searchMarket, setSearchMarket] = useState('');
 
-   const handleSearchMarket = (e: ChangeEvent<HTMLInputElement>) => setSearchMarket(e.target.value);
+   const handleSearchMarket = (e: ChangeEvent<HTMLInputElement>) =>
+      setSearchMarket(e.target.value);
 
    const [favorites, setFavorites] = useLocalStorage<string[]>('favorites', []);
 
@@ -59,7 +54,7 @@ export const useMarket = () => {
       let firstArray = array.slice(0, index);
       let lastArray = array.slice(index + 1);
       return [...firstArray, ...lastArray];
-   }
+   };
 
    const handleLocalStorage = (id: string) => {
       let _themp: string[] = [];
@@ -72,9 +67,10 @@ export const useMarket = () => {
          const index = (id: string) => id === marketId;
          setFavorites(handleRemoveKey(_themp, _themp?.findIndex(index)));
       }
-   }
+   };
 
-   const _favorites: Array<string> = user.data && JSON.parse(user.data).favorites;
+   const _favorites: Array<string> =
+      user.data && JSON.parse(user.data).favorites;
    const handleSetFavorites = (id: string) => {
       const favoriteId = _favorites?.find(e => e === id);
       const index = (id: string) => id === favoriteId;
@@ -84,16 +80,20 @@ export const useMarket = () => {
                ...user,
                data: JSON.stringify({
                   language: lang,
-                  favorites: favoriteId ? handleRemoveKey(_favorites, _favorites?.findIndex(index)) : !_favorites ? [] : [..._favorites, id]
+                  favorites: favoriteId
+                     ? handleRemoveKey(_favorites, _favorites?.findIndex(index))
+                     : !_favorites
+                     ? []
+                     : [..._favorites, id],
                }),
-            }
+            },
          })
       );
-   }
+   };
 
    const handleToSetFavorites = (id: string) => {
       isLogin ? handleSetFavorites(id) : handleLocalStorage(id);
-   }
+   };
 
    const handleRedirectToTrading = (id: string) => {
       const currentMarket: Market | undefined = markets?.find(
@@ -126,109 +126,122 @@ export const useMarket = () => {
    if (currentBidUnit) {
       if (currentBidUnit === 'star') {
          currentBidUnitMarkets = currentBidUnitMarkets?.length
-            ? isLogin ? _favorites?.map(f1 => currentBidUnitMarkets?.find(e1 => e1.id === f1)) : favorites?.map(f2 => currentBidUnitMarkets?.find(e2 => e2.id === f2))
+            ? isLogin
+               ? _favorites?.map(f1 =>
+                    currentBidUnitMarkets?.find(e1 => e1.id === f1)
+                 )
+               : favorites?.map(f2 =>
+                    currentBidUnitMarkets?.find(e2 => e2.id === f2)
+                 )
             : [];
       } else {
          currentBidUnitMarkets = currentBidUnitMarkets?.length
             ? currentBidUnitMarkets.filter(
-               market => market.quote_unit === currentBidUnit
-            )
+                 market => market.quote_unit === currentBidUnit
+              )
             : [];
       }
    }
 
    if (searchMarket) {
       currentBidUnitMarkets = currentBidUnitMarkets?.length
-         ? arrayFilter(currentBidUnitMarkets, searchMarket) : [];
+         ? arrayFilter(currentBidUnitMarkets, searchMarket)
+         : [];
    }
-
 
    const formattedMarkets = currentBidUnitMarkets?.length
       ? currentBidUnitMarkets?.map(market => ({
-         ...market,
-         last: Decimal.format(
-            Number((tikcers[market?.id] || DEFAULT_TICKER).last),
-            market?.price_precision,
-            ','
-         ),
-         open: Decimal.format(
-            Number((tikcers[market?.id] || DEFAULT_TICKER).open),
-            market?.price_precision,
-            ','
-         ),
-         price_change_percent: String(
-            (tikcers[market?.id] || DEFAULT_TICKER).price_change_percent
-         ),
-         high: Decimal.format(
-            Number((tikcers[market?.id] || DEFAULT_TICKER).high),
-            market?.price_precision,
-            ','
-         ),
-         low: Decimal.format(
-            Number((tikcers[market?.id] || DEFAULT_TICKER).low),
-            market?.price_precision,
-            ','
-         ),
-         volume: Decimal.format(
-            Number((tikcers[market?.id] || DEFAULT_TICKER).volume),
-            market?.price_precision,
-            ','
-         ),
-         change: Decimal.format(
-            Number((tikcers[market?.id] || DEFAULT_TICKER).last) -
-            Number((tikcers[market?.id] || DEFAULT_TICKER).open),
-            market?.price_precision,
-            ','
-         ),
-      }))
+           ...market,
+           last: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).last),
+              market?.price_precision,
+              ','
+           ),
+           open: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).open),
+              market?.price_precision,
+              ','
+           ),
+           price_change_percent: String(
+              (tikcers[market?.id] || DEFAULT_TICKER).price_change_percent
+           ),
+           high: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).high),
+              market?.price_precision,
+              ','
+           ),
+           low: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).low),
+              market?.price_precision,
+              ','
+           ),
+           volume: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).volume),
+              market?.price_precision,
+              ','
+           ),
+           change: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).last) -
+                 Number((tikcers[market?.id] || DEFAULT_TICKER).open),
+              market?.price_precision,
+              ','
+           ),
+        }))
       : [];
 
-   const formatOtherMarkets = markets?.length ? markets?.map(market => ({
-      ...market,
-      last: Decimal.format(
-         Number((tikcers[market?.id] || DEFAULT_TICKER).last),
-         market?.price_precision,
-         ','
-      ),
-      open: Decimal.format(
-         Number((tikcers[market?.id] || DEFAULT_TICKER).open),
-         market?.price_precision,
-         ','
-      ),
-      price_change_percent: String(
-         (tikcers[market?.id] || DEFAULT_TICKER).price_change_percent
-      ),
-      high: Decimal.format(
-         Number((tikcers[market?.id] || DEFAULT_TICKER).high),
-         market?.price_precision,
-         ','
-      ),
-      low: Decimal.format(
-         Number((tikcers[market?.id] || DEFAULT_TICKER).low),
-         market?.price_precision,
-         ','
-      ),
-      volume: Decimal.format(
-         Number((tikcers[market?.id] || DEFAULT_TICKER).volume),
-         market?.price_precision,
-         ','
-      ),
-      change: Decimal.format(
-         Number((tikcers[market?.id] || DEFAULT_TICKER).last) -
-         Number((tikcers[market?.id] || DEFAULT_TICKER).open),
-         market?.price_precision,
-         ','
-      ),
-   }))
+   const formatOtherMarkets = markets?.length
+      ? markets?.map(market => ({
+           ...market,
+           last: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).last),
+              market?.price_precision,
+              ','
+           ),
+           open: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).open),
+              market?.price_precision,
+              ','
+           ),
+           price_change_percent: String(
+              (tikcers[market?.id] || DEFAULT_TICKER).price_change_percent
+           ),
+           high: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).high),
+              market?.price_precision,
+              ','
+           ),
+           low: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).low),
+              market?.price_precision,
+              ','
+           ),
+           volume: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).volume),
+              market?.price_precision,
+              ','
+           ),
+           change: Decimal.format(
+              Number((tikcers[market?.id] || DEFAULT_TICKER).last) -
+                 Number((tikcers[market?.id] || DEFAULT_TICKER).open),
+              market?.price_precision,
+              ','
+           ),
+        }))
       : [];
-
 
    const combainMarketWithIcon = (markets, currencies) =>
       markets?.map((itm, i) => ({
          no: i + 1,
          ...itm,
-         curency_data: currencies?.find(item => item.id === itm.base_unit) || null,
-         isFav: isLogin ? (_favorites?.find(k => itm.id === k) ? true : false) : (favorites?.find(k => itm.id === k) ? true : false)
+         curency_data:
+            currencies?.find(item => item.id === itm.base_unit) || null,
+         isFav: isLogin
+            ? _favorites?.find(k => itm.id === k)
+               ? true
+               : false
+            : favorites?.find(k => itm.id === k)
+            ? true
+            : false,
       }));
 
    const marketsData = combainMarketWithIcon(formattedMarkets, currencies);
@@ -248,6 +261,6 @@ export const useMarket = () => {
       isLoading,
       marketLoading,
       currentMarket,
-      handleToSetFavorites
+      handleToSetFavorites,
    };
 };

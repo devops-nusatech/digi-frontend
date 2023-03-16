@@ -36,29 +36,26 @@ const mockConfig: Config = {
    captcha_type: 'none',
    storage: {
       defaultStorageLimit: '50',
-      orderBookSideLimit: '25'
+      orderBookSideLimit: '25',
    },
    languages: ['en'],
-   kycSteps: [
-      'email',
-      'phone',
-      'profile',
-      'document',
-      'address'
-   ],
+   kycSteps: ['email', 'phone', 'profile', 'document', 'address'],
    themeSwitcher: 'visible',
    peatio_platform_currency: 'bnb',
 };
 
 // tslint:disable no-any no-console
-export const loggerMiddleware: Middleware = (store: {}) => (next: any) => (action: Action) => {
-   console.log(`dispatching: ${JSON.stringify(action)}`);
+export const loggerMiddleware: Middleware =
+   (store: {}) => (next: any) => (action: Action) => {
+      console.log(`dispatching: ${JSON.stringify(action)}`);
 
-   return next(action);
-};
+      return next(action);
+   };
 
 export const setupMockStore = (appMiddleware: Middleware, log = false) => {
-   const middlewares = log ? [loggerMiddleware, appMiddleware] : [appMiddleware];
+   const middlewares = log
+      ? [loggerMiddleware, appMiddleware]
+      : [appMiddleware];
 
    return configureMockStore(middlewares);
 };

@@ -1,5 +1,13 @@
 import { History } from 'history';
-import React, { FC, FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+   FC,
+   FunctionComponent,
+   useCallback,
+   useEffect,
+   useMemo,
+   useRef,
+   useState,
+} from 'react';
 import { injectIntl } from 'react-intl';
 import { connect, MapStateToProps } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -55,7 +63,10 @@ interface ReduxProps {
    emailVerified: boolean;
    isMobileDevice: boolean;
    configs: Configs;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
    user: User;
@@ -180,8 +191,7 @@ const EmailVerificationComponent: FC<Props> = ({
          linkToTxt="Login"
          descLinkTo="Already have an account?"
          title={title}
-         subTitle={text}
-      >
+         subTitle={text}>
          <InputOtp
             length={6}
             className="-mx-2 mb-8 flex"
@@ -212,7 +222,7 @@ const EmailVerificationComponent: FC<Props> = ({
          </div>
       </LayoutAuth>
    );
-}
+};
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    emailVerificationLoading: selectSendEmailVerificationLoading(state),
@@ -240,5 +250,5 @@ const mapDispatchToProps = {
 export const EmailVerification = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(EmailVerificationComponent) as FunctionComponent;

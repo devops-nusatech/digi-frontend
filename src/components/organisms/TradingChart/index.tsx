@@ -3,7 +3,12 @@ import { MarketDepthsComponent, TradingChart as Chart } from 'containers';
 import { icLogoLight } from 'assets';
 import { Nav } from 'components';
 import { useDispatch, useSelector } from 'react-redux';
-import { klineFetch, klineUpdatePeriod, klineUpdateTimeRange, selectCurrentMarket } from 'modules';
+import {
+   klineFetch,
+   klineUpdatePeriod,
+   klineUpdateTimeRange,
+   selectCurrentMarket,
+} from 'modules';
 
 type ChartPeriode = '1M' | '5M' | '15M' | '30M';
 type Resolution = 1 | 5 | 15 | 30;
@@ -39,22 +44,32 @@ export const TradingChart: FC = (): ReactElement => {
       );
       const to = Math.floor(Date.now() / 1000);
 
-      dispatch(klineFetch({
-         market,
-         resolution,
-         from: from.toString(),
-         to: to.toString()
-      }));
+      dispatch(
+         klineFetch({
+            market,
+            resolution,
+            from: from.toString(),
+            to: to.toString(),
+         })
+      );
       dispatch(klineUpdateTimeRange({ from, to }));
       dispatch(klineUpdatePeriod(resolution.toString()));
-      setChartPeriode(resolution === 1 ? '1M' : resolution === 5 ? '5M' : resolution === 15 ? '15M' : '30M');
-   }
+      setChartPeriode(
+         resolution === 1
+            ? '1M'
+            : resolution === 5
+            ? '5M'
+            : resolution === 15
+            ? '15M'
+            : '30M'
+      );
+   };
 
    return (
-      <div className="lg:block relative z-3 shadow-card2 rounded">
-         <div className="flex items-center justify-between p-4 rounded bg-neutral8 border-b border-neutral6 dark:bg-shade2 dark:border-0">
+      <div className="relative z-3 rounded shadow-card2 lg:block">
+         <div className="flex items-center justify-between rounded border-b border-neutral6 bg-neutral8 p-4 dark:border-0 dark:bg-shade2">
             {currentTabIndex !== 0 ? (
-               <div className="font-dm font-bold text-base text-neutral3 dark:text-neutral8">
+               <div className="font-dm text-base font-bold text-neutral3 dark:text-neutral8">
                   Chart Depth
                </div>
             ) : (
@@ -62,7 +77,7 @@ export const TradingChart: FC = (): ReactElement => {
                   <Nav
                      title="Time"
                      theme="grey"
-                     className="!text-neutral3 dark:!text-neutral8 pointer-events-none"
+                     className="pointer-events-none !text-neutral3 dark:!text-neutral8"
                   />
                   <Nav
                      title="1M"
@@ -111,22 +126,29 @@ export const TradingChart: FC = (): ReactElement => {
                /> */}
             </div>
          </div>
-         <div className="block relative">
+         <div className="relative block">
             <div className="overflow-hidden rounded bg-neutral8 dark:bg-shade2">
                <div className={currentTabIndex !== 0 ? 'hidden' : ''}>
                   <Chart />
                </div>
-               <div className={`!h-[492px] -m-px ${currentTabIndex !== 1 ? 'hidden' : ''}`}>
+               <div
+                  className={`-m-px !h-[492px] ${
+                     currentTabIndex !== 1 ? 'hidden' : ''
+                  }`}>
                   <MarketDepthsComponent />
                </div>
                {/* <div className={`!h-[492px] -m-px ${currentTabIndex !== 2 ? 'hidden' : ''}`}>
                   <Depth />
                </div> */}
             </div>
-            <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
-               <img className="opacity-25" src={icLogoLight} alt="Logo" />
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+               <img
+                  className="opacity-25"
+                  src={icLogoLight}
+                  alt="Logo"
+               />
             </div>
          </div>
       </div>
-   )
-}
+   );
+};

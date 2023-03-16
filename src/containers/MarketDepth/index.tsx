@@ -30,28 +30,33 @@ const settings = {
 
 class MarketDepthContainer extends React.Component<Props> {
    public shouldComponentUpdate(nextProps: Props) {
-      const {
-         asksItems,
-         bidsItems,
-         chartRebuild,
-         colorTheme,
-         currentMarket,
-      } = this.props;
+      const { asksItems, bidsItems, chartRebuild, colorTheme, currentMarket } =
+         this.props;
       const colorThemeChanged = nextProps.colorTheme !== colorTheme;
-      const currentMarketChanged = nextProps.currentMarket ? nextProps.currentMarket !== currentMarket : false;
+      const currentMarketChanged = nextProps.currentMarket
+         ? nextProps.currentMarket !== currentMarket
+         : false;
       const chartRebuildTriggered = nextProps.chartRebuild !== chartRebuild;
-      const ordersChanged = JSON.stringify(nextProps.asksItems) !== JSON.stringify(asksItems) ||
+      const ordersChanged =
+         JSON.stringify(nextProps.asksItems) !== JSON.stringify(asksItems) ||
          JSON.stringify(nextProps.bidsItems) !== JSON.stringify(bidsItems);
 
-      return ordersChanged || currentMarketChanged || chartRebuildTriggered || colorThemeChanged;
+      return (
+         ordersChanged ||
+         currentMarketChanged ||
+         chartRebuildTriggered ||
+         colorThemeChanged
+      );
    }
 
    public render() {
       const { asksItems, bidsItems } = this.props;
 
       return (
-         <div className="flex flex-col h-full w-full">
-            {(asksItems.length || bidsItems.length) ? this.renderMarketDepth() : null}
+         <div className="flex h-full w-full flex-col">
+            {asksItems.length || bidsItems.length
+               ? this.renderMarketDepth()
+               : null}
          </div>
       );
    }
@@ -65,7 +70,8 @@ class MarketDepthContainer extends React.Component<Props> {
             className={'pg-market-depth'}
             data={this.convertToDepthFormat()}
             colorTheme={colorTheme}
-         />);
+         />
+      );
    }
 
    private convertToCumulative = (data, type) => {
@@ -75,31 +81,59 @@ class MarketDepthContainer extends React.Component<Props> {
          return;
       }
 
-      const [askCurrency, bidCurrency] = [currentMarket.base_unit.toUpperCase(), currentMarket.quote_unit.toUpperCase()];
-      const tipLayout = ({ volume, price, cumulativeVolume, cumulativePrice }) => (
+      const [askCurrency, bidCurrency] = [
+         currentMarket.base_unit.toUpperCase(),
+         currentMarket.quote_unit.toUpperCase(),
+      ];
+      const tipLayout = ({
+         volume,
+         price,
+         cumulativeVolume,
+         cumulativePrice,
+      }) => (
          <div className="flex flex-col space-y-1 dark:text-neutral8">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                <FormattedMessage id="page.body.trade.header.marketDepths.content.price" />
-               <div className="font-medium pl-3 font-urw-din-500 tracking-widest">
-                  {Decimal.format(price, currentMarket.price_precision, ',')} <span className="tracking-tighter font-normal text-neutral4 dark:text-neutral6">{bidCurrency}</span>
+               <div className="pl-3 font-urw-din-500 font-medium tracking-widest">
+                  {Decimal.format(price, currentMarket.price_precision, ',')}{' '}
+                  <span className="font-normal tracking-tighter text-neutral4 dark:text-neutral6">
+                     {bidCurrency}
+                  </span>
                </div>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                <FormattedMessage id="page.body.trade.header.marketDepths.content.volume" />
-               <div className="font-medium pl-3 font-urw-din-500 tracking-widest">
-                  {Decimal.format(volume, currentMarket.amount_precision, ',')} <span className="tracking-tighter font-normal text-neutral4 dark:text-neutral6">{askCurrency}</span>
+               <div className="pl-3 font-urw-din-500 font-medium tracking-widest">
+                  {Decimal.format(volume, currentMarket.amount_precision, ',')}{' '}
+                  <span className="font-normal tracking-tighter text-neutral4 dark:text-neutral6">
+                     {askCurrency}
+                  </span>
                </div>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                <FormattedMessage id="page.body.trade.header.marketDepths.content.cumulativeVolume" />
-               <div className="font-medium pl-3 font-urw-din-500 tracking-widest">
-                  {Decimal.format(cumulativeVolume, currentMarket.amount_precision, ',')} <span className="tracking-tighter font-normal text-neutral4 dark:text-neutral6">{askCurrency}</span>
+               <div className="pl-3 font-urw-din-500 font-medium tracking-widest">
+                  {Decimal.format(
+                     cumulativeVolume,
+                     currentMarket.amount_precision,
+                     ','
+                  )}{' '}
+                  <span className="font-normal tracking-tighter text-neutral4 dark:text-neutral6">
+                     {askCurrency}
+                  </span>
                </div>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                <FormattedMessage id="page.body.trade.header.marketDepths.content.cumulativeValue" />
-               <div className="font-medium pl-3 font-urw-din-500 tracking-widest">
-                  {Decimal.format(cumulativePrice, currentMarket.price_precision, ',')} <span className="tracking-tighter font-normal text-neutral4 dark:text-neutral6">{bidCurrency}</span>
+               <div className="pl-3 font-urw-din-500 font-medium tracking-widest">
+                  {Decimal.format(
+                     cumulativePrice,
+                     currentMarket.price_precision,
+                     ','
+                  )}{' '}
+                  <span className="font-normal tracking-tighter text-neutral4 dark:text-neutral6">
+                     {bidCurrency}
+                  </span>
                </div>
             </div>
          </div>
@@ -110,24 +144,56 @@ class MarketDepthContainer extends React.Component<Props> {
 
       const cumulative = data.map((item, index) => {
          const [price, volume] = item;
-         const numberVolume = Decimal.format(volume, currentMarket.amount_precision);
-         const numberPrice = Decimal.format(price, currentMarket.price_precision);
+         const numberVolume = Decimal.format(
+            volume,
+            currentMarket.amount_precision
+         );
+         const numberPrice = Decimal.format(
+            price,
+            currentMarket.price_precision
+         );
          cumulativeVolumeData = +numberVolume + cumulativeVolumeData;
-         cumulativePriceData = cumulativePriceData + (+numberPrice * +numberVolume);
+         cumulativePriceData =
+            cumulativePriceData + +numberPrice * +numberVolume;
 
          return {
-            [type]: Decimal.format(cumulativeVolumeData, currentMarket.amount_precision, ','),
-            cumulativePrice: Decimal.format(cumulativePriceData, currentMarket.price_precision, ','),
-            cumulativeVolume: +Decimal.format(cumulativeVolumeData, currentMarket.amount_precision, ','),
-            volume: Decimal.format(+volume, currentMarket.amount_precision, ','),
-            price: Decimal.format(+numberPrice, currentMarket.price_precision, ','),
-            name: tipLayout({ volume, price, cumulativeVolume: cumulativeVolumeData, cumulativePrice: cumulativePriceData }),
+            [type]: Decimal.format(
+               cumulativeVolumeData,
+               currentMarket.amount_precision,
+               ','
+            ),
+            cumulativePrice: Decimal.format(
+               cumulativePriceData,
+               currentMarket.price_precision,
+               ','
+            ),
+            cumulativeVolume: +Decimal.format(
+               cumulativeVolumeData,
+               currentMarket.amount_precision,
+               ','
+            ),
+            volume: Decimal.format(
+               +volume,
+               currentMarket.amount_precision,
+               ','
+            ),
+            price: Decimal.format(
+               +numberPrice,
+               currentMarket.price_precision,
+               ','
+            ),
+            name: tipLayout({
+               volume,
+               price,
+               cumulativeVolume: cumulativeVolumeData,
+               cumulativePrice: cumulativePriceData,
+            }),
          };
       });
 
-      return type === 'bid' ? cumulative
-         .sort((a, b) => b.bid - a.bid) :
-         cumulative.sort((a, b) => a.ask - b.ask);
+      return type === 'bid'
+         ? cumulative.sort((a, b) => b.bid - a.bid)
+         : cumulative.sort((a, b) => a.ask - b.ask);
    };
 
    private convertToDepthFormat() {
@@ -135,13 +201,17 @@ class MarketDepthContainer extends React.Component<Props> {
       const asksItemsLength = asksItems.length;
       const bidsItemsLength = bidsItems.length;
 
-
-      const resultLength = asksItemsLength > bidsItemsLength ? bidsItemsLength : asksItemsLength;
+      const resultLength =
+         asksItemsLength > bidsItemsLength ? bidsItemsLength : asksItemsLength;
       const asks = asksItems.slice(0, resultLength);
       const bids = bidsItems.slice(0, resultLength);
 
-      const asksVolume = this.convertToCumulative(asks, 'ask').slice(0).reverse();
-      const bidsVolume = this.convertToCumulative(bids, 'bid').slice(0).reverse();
+      const asksVolume = this.convertToCumulative(asks, 'ask')
+         .slice(0)
+         .reverse();
+      const bidsVolume = this.convertToCumulative(bids, 'bid')
+         .slice(0)
+         .reverse();
 
       return [...asksVolume, ...bidsVolume];
    }
@@ -155,4 +225,5 @@ const mapStateToProps = (state: RootState) => ({
    currentMarket: selectCurrentMarket(state),
 });
 
-export const MarketDepthsComponent = connect(mapStateToProps)(MarketDepthContainer);
+export const MarketDepthsComponent =
+   connect(mapStateToProps)(MarketDepthContainer);

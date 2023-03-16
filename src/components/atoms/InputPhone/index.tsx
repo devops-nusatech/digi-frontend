@@ -1,13 +1,13 @@
-import React, { FC } from 'react'
-import PhoneInput, { PhoneInputProps, CountryData } from 'react-phone-input-2'
-import 'react-phone-input-2/lib/plain.css'
+import React, { FC } from 'react';
+import PhoneInput, { PhoneInputProps, CountryData } from 'react-phone-input-2';
+import 'react-phone-input-2/lib/plain.css';
 
-interface InputPhoneProps extends PhoneInputProps, CountryData { }
+interface InputPhoneProps extends PhoneInputProps, CountryData {}
 
 export const InputPhone: FC<InputPhoneProps> = ({
    value,
    country,
-   onChange
+   onChange,
 }) => {
    return (
       <PhoneInput
@@ -18,5 +18,5 @@ export const InputPhone: FC<InputPhoneProps> = ({
          value={value}
          onChange={onChange}
       />
-   )
-}
+   );
+};

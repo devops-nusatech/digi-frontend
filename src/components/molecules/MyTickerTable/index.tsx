@@ -6,7 +6,10 @@ import { Market } from 'modules';
 import { Button, Decimal } from 'components';
 // import jQuery from 'jquery';
 import {
-   icBitcoin, icDash, icEthereum, icRipple,
+   icBitcoin,
+   icDash,
+   icEthereum,
+   icRipple,
    // icBitcoinCash,
    // icChainlink,
    // icEthereum,
@@ -18,7 +21,6 @@ import { useTable, usePagination, useSortBy } from 'react-table';
 import { useHistory } from 'react-router';
 import { removeClass } from 'helpers';
 // import styled from 'styled-components'
-
 
 interface Props {
    currentBidUnit: string;
@@ -35,18 +37,18 @@ const optionsPositive = {
       type: 'areaspline',
       height: 70,
       width: 136,
-      backgroundColor: 'none'
+      backgroundColor: 'none',
    },
    title: {
-      text: null
+      text: null,
    },
    legend: false,
    credits: false,
    xAxis: {
-      visible: false
+      visible: false,
    },
    yAxis: {
-      visible: false
+      visible: false,
    },
    tooltip: {
       backgroundColor: '#a3a3a3',
@@ -61,28 +63,33 @@ const optionsPositive = {
          color: '#fcfcf5',
          fontSize: 16,
          whiteSpace: 'nowrap',
-      }
+      },
    },
    plotOptions: {
       areaspline: {
          lineWidth: 2,
          states: {
             hover: {
-               lineWidth: 2
-            }
+               lineWidth: 2,
+            },
          },
          marker: false,
          fillColor: {
             linearGradient: [0, 0, 0, '80%'],
-            stops: [[0, Highcharts.color('#58BD7D').setOpacity(0.4).get('rgba')], [1, Highcharts.color('#58BD7D').setOpacity(0).get('rgba')]]
-         }
-      }
+            stops: [
+               [0, Highcharts.color('#58BD7D').setOpacity(0.4).get('rgba')],
+               [1, Highcharts.color('#58BD7D').setOpacity(0).get('rgba')],
+            ],
+         },
+      },
    },
-   series: [{
-      data: [3, 4, 3, 5, 4, 10, 12, 6, 3],
-      color: '#58BD7D'
-   }]
-}
+   series: [
+      {
+         data: [3, 4, 3, 5, 4, 10, 12, 6, 3],
+         color: '#58BD7D',
+      },
+   ],
+};
 
 const optionsNegative = {
    chart: {
@@ -91,18 +98,18 @@ const optionsNegative = {
       type: 'areaspline',
       height: 70,
       width: 136,
-      backgroundColor: 'none'
+      backgroundColor: 'none',
    },
    title: {
-      text: null
+      text: null,
    },
    legend: false,
    credits: false,
    xAxis: {
-      visible: false
+      visible: false,
    },
    yAxis: {
-      visible: false
+      visible: false,
    },
    tooltip: {
       backgroundColor: '#a3a3a3',
@@ -117,28 +124,33 @@ const optionsNegative = {
          color: '#fcfcf5',
          fontSize: 16,
          whiteSpace: 'nowrap',
-      }
+      },
    },
    plotOptions: {
       areaspline: {
          lineWidth: 2,
          states: {
             hover: {
-               lineWidth: 2
-            }
+               lineWidth: 2,
+            },
          },
          marker: false,
          fillColor: {
             linearGradient: [0, 0, 0, '80%'],
-            stops: [[0, Highcharts.color('#FF6838').setOpacity(0.4).get('rgba')], [1, Highcharts.color('#FF6838').setOpacity(0).get('rgba')]]
-         }
-      }
+            stops: [
+               [0, Highcharts.color('#FF6838').setOpacity(0.4).get('rgba')],
+               [1, Highcharts.color('#FF6838').setOpacity(0).get('rgba')],
+            ],
+         },
+      },
    },
-   series: [{
-      data: [4, 5, 6, 3, 3, 4, 3, 5, 4],
-      color: '#FF6838'
-   }]
-}
+   series: [
+      {
+         data: [4, 5, 6, 3, 3, 4, 3, 5, 4],
+         color: '#FF6838',
+      },
+   ],
+};
 
 // const Styles = styled.div`
 //   padding: 1rem;
@@ -198,8 +210,8 @@ function Table({ columns, data }) {
          data,
       },
       useSortBy,
-      usePagination,
-   )
+      usePagination
+   );
 
    // Render the UI for your table
    return (
@@ -219,12 +231,18 @@ function Table({ columns, data }) {
                )}
             </code>
          </pre>
-         <table {...getTableProps()} className="table-auto w-full border-collapse">
+         <table
+            {...getTableProps()}
+            className="w-full table-auto border-collapse">
             <thead className="shadow-header dark:shadow-none">
                {headerGroups.map(headerGroup => (
                   <tr {...headerGroup.getHeaderGroupProps()}>
                      {headerGroup.headers.map(column => (
-                        <th {...column.getHeaderProps(column.getSortByToggleProps())} className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
+                        <th
+                           {...column.getHeaderProps(
+                              column.getSortByToggleProps()
+                           )}
+                           className="px-2 py-5 text-start align-middle font-normal text-neutral4">
                            {column.render('Header')}
                            {/* Add a sort direction indicator */}
                            <span>
@@ -241,14 +259,20 @@ function Table({ columns, data }) {
             </thead>
             <tbody {...getTableBodyProps()}>
                {page.map((row, i) => {
-                  prepareRow(row)
+                  prepareRow(row);
                   return (
                      <tr {...row.getRowProps()}>
                         {row.cells.map(cell => {
-                           return <td {...cell.getCellProps()} className="px-2 align-middle text-base font-medium">{cell.render('Cell')}</td>
+                           return (
+                              <td
+                                 {...cell.getCellProps()}
+                                 className="px-2 align-middle text-base font-medium">
+                                 {cell.render('Cell')}
+                              </td>
+                           );
                         })}
                      </tr>
-                  )
+                  );
                })}
             </tbody>
          </table>
@@ -257,16 +281,24 @@ function Table({ columns, data }) {
          This is just a very basic UI implementation:
        */}
          <div className="pagination">
-            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            <button
+               onClick={() => gotoPage(0)}
+               disabled={!canPreviousPage}>
                {'<<'}
             </button>{' '}
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+            <button
+               onClick={() => previousPage()}
+               disabled={!canPreviousPage}>
                {'<'}
             </button>{' '}
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
+            <button
+               onClick={() => nextPage()}
+               disabled={!canNextPage}>
                {'>'}
             </button>{' '}
-            <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+            <button
+               onClick={() => gotoPage(pageCount - 1)}
+               disabled={!canNextPage}>
                {'>>'}
             </button>{' '}
             <span>
@@ -281,8 +313,10 @@ function Table({ columns, data }) {
                   type="number"
                   defaultValue={pageIndex + 1}
                   onChange={e => {
-                     const page = e.target.value ? Number(e.target.value) - 1 : 0
-                     gotoPage(page)
+                     const page = e.target.value
+                        ? Number(e.target.value) - 1
+                        : 0;
+                     gotoPage(page);
                   }}
                   style={{ width: '100px' }}
                />
@@ -290,18 +324,19 @@ function Table({ columns, data }) {
             <select
                value={pageSize}
                onChange={e => {
-                  setPageSize(Number(e.target.value))
-               }}
-            >
+                  setPageSize(Number(e.target.value));
+               }}>
                {[10, 20, 30, 40, 50].map(pageSize => (
-                  <option key={pageSize} value={pageSize}>
+                  <option
+                     key={pageSize}
+                     value={pageSize}>
                      Show {pageSize}
                   </option>
                ))}
             </select>
          </div>
       </>
-   )
+   );
 }
 
 export const MyTickerTable: FC<Props> = ({
@@ -337,52 +372,76 @@ export const MyTickerTable: FC<Props> = ({
          {
             Header: formatMessage({ id: 'page.body.marketsTable.header.pair' }),
             accessor: ({ name }) => (
-               <div className="flex space-x-5 items-center">
-                  <div className="shrink-0 w-10">
-                     <img className="max-w-full" src={
-                        name.split('/').shift() === 'DASH'
-                           ? icDash : name.split('/').shift() === 'ETH'
-                              ? icEthereum : name.split('/').shift() === 'BTC'
-                                 ? icBitcoin : icRipple
-                     } alt={name.split('/').shift()} />
+               <div className="flex items-center space-x-5">
+                  <div className="w-10 shrink-0">
+                     <img
+                        className="max-w-full"
+                        src={
+                           name.split('/').shift() === 'DASH'
+                              ? icDash
+                              : name.split('/').shift() === 'ETH'
+                              ? icEthereum
+                              : name.split('/').shift() === 'BTC'
+                              ? icBitcoin
+                              : icRipple
+                        }
+                        alt={name.split('/').shift()}
+                     />
                   </div>
                   <div className="flex space-x-3">
                      <div>{name.split('/').shift()}</div>
-                     <div className="text-neutral5">{name.split('/').pop()}</div>
+                     <div className="text-neutral5">
+                        {name.split('/').pop()}
+                     </div>
                   </div>
                </div>
             ),
          },
          {
-            Header: formatMessage({ id: 'page.body.marketsTable.header.lastPrice' }),
-            accessor: ({ last, price_precision }) => Decimal.format(last, price_precision, ','),
+            Header: formatMessage({
+               id: 'page.body.marketsTable.header.lastPrice',
+            }),
+            accessor: ({ last, price_precision }) =>
+               Decimal.format(last, price_precision, ','),
          },
          {
-            Header: formatMessage({ id: 'page.body.marketsTable.header.change' }),
+            Header: formatMessage({
+               id: 'page.body.marketsTable.header.change',
+            }),
             accessor: ({ change, price_change_percent }) => (
-               <span className={+(change || 0) < 0 ? 'text-primary4' : 'text-chart1'}>
+               <span
+                  className={
+                     +(change || 0) < 0 ? 'text-primary4' : 'text-chart1'
+                  }>
                   {price_change_percent}
                </span>
             ),
          },
          {
             Header: formatMessage({ id: 'page.body.marketsTable.header.high' }),
-            accessor: ({ high, price_precision }) => Decimal.format(high, price_precision, ','),
+            accessor: ({ high, price_precision }) =>
+               Decimal.format(high, price_precision, ','),
          },
          {
             Header: formatMessage({ id: 'page.body.marketsTable.header.low' }),
-            accessor: ({ low, price_precision }) => Decimal.format(low, price_precision, ','),
+            accessor: ({ low, price_precision }) =>
+               Decimal.format(low, price_precision, ','),
          },
          {
-            Header: formatMessage({ id: 'page.body.marketsTable.header.volume' }),
-            accessor: ({ low, price_precision }) => Decimal.format(low, price_precision, ','),
+            Header: formatMessage({
+               id: 'page.body.marketsTable.header.volume',
+            }),
+            accessor: ({ low, price_precision }) =>
+               Decimal.format(low, price_precision, ','),
          },
          {
             Header: 'Chart',
             accessor: ({ change }) => (
                <HighchartsReact
                   highcharts={Highcharts}
-                  options={+(change || 0) < 0 ? optionsNegative : optionsPositive}
+                  options={
+                     +(change || 0) < 0 ? optionsNegative : optionsPositive
+                  }
                />
             ),
          },
@@ -391,8 +450,7 @@ export const MyTickerTable: FC<Props> = ({
             accessor: ({ id }) => (
                <div
                   onClick={() => redirectToTrading(id)}
-                  className="inline-flex font-dm justify-center items-center h-10 rounded-20 py-0 px-4 whitespace-nowrap bg-none shadow-border dark:shadow-none dark:border-2 dark:border-solid dark:border-neutral4 hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:text-neutral8 transition-all duration-300 cursor-pointer"
-               >
+                  className="inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-20 bg-none py-0 px-4 font-dm shadow-border transition-all duration-300 hover:-translate-y-1 hover:bg-neutral2 hover:text-neutral8 hover:shadow-sm dark:border-2 dark:border-solid dark:border-neutral4 dark:text-neutral8 dark:shadow-none">
                   Trade
                </div>
             ),
@@ -442,7 +500,9 @@ export const MyTickerTable: FC<Props> = ({
          selector: row => (
             <HighchartsReact
                highcharts={Highcharts}
-               options={+(row.change || 0) < 0 ? optionsNegative : optionsPositive}
+               options={
+                  +(row.change || 0) < 0 ? optionsNegative : optionsPositive
+               }
             />
          ),
          sortable: false,
@@ -453,8 +513,7 @@ export const MyTickerTable: FC<Props> = ({
             <td className="px-2 align-middle text-base font-medium">
                <div
                   onClick={() => redirectToTrading(row.id)}
-                  className="inline-flex font-dm justify-center items-center h-10 rounded-20 py-0 px-4 whitespace-nowrap bg-none shadow-border dark:shadow-none dark:border-2 dark:border-solid dark:border-neutral4 hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:text-neutral8 transition-all duration-300 cursor-pointer"
-               >
+                  className="inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-20 bg-none py-0 px-4 font-dm shadow-border transition-all duration-300 hover:-translate-y-1 hover:bg-neutral2 hover:text-neutral8 hover:shadow-sm dark:border-2 dark:border-solid dark:border-neutral4 dark:text-neutral8 dark:shadow-none">
                   Trade
                </div>
             </td>
@@ -464,51 +523,71 @@ export const MyTickerTable: FC<Props> = ({
    ];
    const renderBody = useCallback(
       (market, index: number) => {
-         const marketChangeColor = +(market.change || 0) < 0 ? 'text-primary4' : 'text-chart1';
-         const marketChangeChart = +(market.change || 0) < 0 ? optionsNegative : optionsPositive;
+         const marketChangeColor =
+            +(market.change || 0) < 0 ? 'text-primary4' : 'text-chart1';
+         const marketChangeChart =
+            +(market.change || 0) < 0 ? optionsNegative : optionsPositive;
          const marketChangeIcon = market.name.split('/').shift();
          return (
             <>
                <tr key={index}>
-                  <td className="px-2 text-center text-neutral4 align-middle text-base font-medium">
+                  <td className="px-2 text-center align-middle text-base font-medium text-neutral4">
                      {index + 1}
                   </td>
                   <td className="px-2 align-middle text-base font-medium">
-                     <div className="flex space-x-5 items-center">
-                        <div className="shrink-0 w-10">
-                           <img className="max-w-full" src={
-                              marketChangeIcon === 'DASH'
-                                 ? icDash : marketChangeIcon === 'ETH'
-                                    ? icEthereum : marketChangeIcon === 'BTC'
-                                       ? icBitcoin : icRipple
-                           } alt={market && market.name.split('/').shift()} />
+                     <div className="flex items-center space-x-5">
+                        <div className="w-10 shrink-0">
+                           <img
+                              className="max-w-full"
+                              src={
+                                 marketChangeIcon === 'DASH'
+                                    ? icDash
+                                    : marketChangeIcon === 'ETH'
+                                    ? icEthereum
+                                    : marketChangeIcon === 'BTC'
+                                    ? icBitcoin
+                                    : icRipple
+                              }
+                              alt={market && market.name.split('/').shift()}
+                           />
                         </div>
                         <div className="flex space-x-3">
                            <div>{market && market.name.split('/').shift()}</div>
-                           <div className="text-neutral5">{market && market.name.split('/').pop()}</div>
+                           <div className="text-neutral5">
+                              {market && market.name.split('/').pop()}
+                           </div>
                         </div>
                      </div>
                   </td>
                   <td className="px-2 align-middle text-base font-medium">
-                     <Decimal fixed={market?.price_precision} thousSep=",">
+                     <Decimal
+                        fixed={market?.price_precision}
+                        thousSep=",">
                         {market?.last}
                      </Decimal>
                   </td>
-                  <td className={`px-2 align-middle text-base font-medium ${marketChangeColor}`}>
+                  <td
+                     className={`px-2 align-middle text-base font-medium ${marketChangeColor}`}>
                      {market.price_change_percent}
                   </td>
                   <td className="px-2 align-middle text-base font-medium">
-                     <Decimal fixed={market.price_precision} thousSep=",">
+                     <Decimal
+                        fixed={market.price_precision}
+                        thousSep=",">
                         {market.high}
                      </Decimal>
                   </td>
                   <td className="px-2 align-middle text-base font-medium">
-                     <Decimal fixed={market.price_precision} thousSep=",">
+                     <Decimal
+                        fixed={market.price_precision}
+                        thousSep=",">
                         {market.low}
                      </Decimal>
                   </td>
                   <td className="px-2 align-middle text-base font-medium">
-                     <Decimal fixed={market.price_precision} thousSep=",">
+                     <Decimal
+                        fixed={market.price_precision}
+                        thousSep=",">
                         {market.volume}
                      </Decimal>
                   </td>
@@ -521,8 +600,7 @@ export const MyTickerTable: FC<Props> = ({
                   <td className="px-2 align-middle text-base font-medium">
                      <div
                         onClick={() => redirectToTrading(market.id)}
-                        className="inline-flex font-dm justify-center items-center h-10 rounded-20 py-0 px-4 whitespace-nowrap bg-none shadow-border dark:shadow-none dark:border-2 dark:border-solid dark:border-neutral4 hover:bg-neutral2 hover:-translate-y-1 hover:shadow-sm hover:text-neutral8 dark:text-neutral8 transition-all duration-300 cursor-pointer"
-                     >
+                        className="inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-20 bg-none py-0 px-4 font-dm shadow-border transition-all duration-300 hover:-translate-y-1 hover:bg-neutral2 hover:text-neutral8 hover:shadow-sm dark:border-2 dark:border-solid dark:border-neutral4 dark:text-neutral8 dark:shadow-none">
                         Trade
                      </div>
                   </td>
@@ -533,12 +611,11 @@ export const MyTickerTable: FC<Props> = ({
       [redirectToTrading]
    );
 
-
    return (
       <section className="relative lg:mb-28 lg2:mb-34">
-         <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
-            <div className="flex justify-between mb-10">
-               <div className="whitespace-normal text-4.5xl md:text-5xl font-dm font-bold">
+         <div className="mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
+            <div className="mb-10 flex justify-between">
+               <div className="whitespace-normal font-dm text-4.5xl font-bold md:text-5xl">
                   Market trend
                </div>
 
@@ -549,63 +626,89 @@ export const MyTickerTable: FC<Props> = ({
                   width="noFull"
                />
             </div>
-            <div className="flex space-x-6 items-start mb-[70px]">
+            <div className="mb-[70px] flex items-start space-x-6">
                {currentBidUnitsList.map((item, index) => (
                   <button
                      key={index}
-                     className={`flex py-1.5 px-3 rounded-1xl font-dm text-sm font-bold cursor-pointer outline-none transition-all duration-300 ${item === currentBidUnit ? 'bg-neutral2 text-neutral8' : 'text-neutral4 hover:text-neutral3 dark:hover:text-neutral5 bg-none'}`}
-                     onClick={() => setCurrentBidUnit(item)}
-                  >
-                     {item ? item.toUpperCase() : formatMessage({ id: 'page.body.marketsTable.filter.all' })}
+                     className={`flex cursor-pointer rounded-1xl py-1.5 px-3 font-dm text-sm font-bold outline-none transition-all duration-300 ${
+                        item === currentBidUnit
+                           ? 'bg-neutral2 text-neutral8'
+                           : 'bg-none text-neutral4 hover:text-neutral3 dark:hover:text-neutral5'
+                     }`}
+                     onClick={() => setCurrentBidUnit(item)}>
+                     {item
+                        ? item.toUpperCase()
+                        : formatMessage({
+                             id: 'page.body.marketsTable.filter.all',
+                          })}
                   </button>
                ))}
             </div>
             <div className="block w-full overflow-x-auto whitespace-nowrap">
-               <table className="table-auto w-full border-collapse">
+               <table className="w-full table-auto border-collapse">
                   <thead className="shadow-header dark:shadow-none">
                      <tr>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">#</th>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
-                           {formatMessage({ id: 'page.body.marketsTable.header.pair' })}
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
+                           #
                         </th>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
-                           {formatMessage({ id: 'page.body.marketsTable.header.lastPrice' })}
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
+                           {formatMessage({
+                              id: 'page.body.marketsTable.header.pair',
+                           })}
                         </th>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
-                           {formatMessage({ id: 'page.body.marketsTable.header.change' })}
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
+                           {formatMessage({
+                              id: 'page.body.marketsTable.header.lastPrice',
+                           })}
                         </th>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
-                           {formatMessage({ id: 'page.body.marketsTable.header.high' })}
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
+                           {formatMessage({
+                              id: 'page.body.marketsTable.header.change',
+                           })}
                         </th>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
-                           {formatMessage({ id: 'page.body.marketsTable.header.low' })}
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
+                           {formatMessage({
+                              id: 'page.body.marketsTable.header.high',
+                           })}
                         </th>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
-                           {formatMessage({ id: 'page.body.marketsTable.header.volume' })}
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
+                           {formatMessage({
+                              id: 'page.body.marketsTable.header.low',
+                           })}
                         </th>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
+                           {formatMessage({
+                              id: 'page.body.marketsTable.header.volume',
+                           })}
+                        </th>
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
                            Chart
                         </th>
-                        <th className="px-2 py-5 font-normal text-start text-neutral4 align-middle">
+                        <th className="px-2 py-5 text-start align-middle font-normal text-neutral4">
                            Trade
                         </th>
                      </tr>
                   </thead>
                   <tbody>
-                     {
-                        markets[0] ? (
-                           markets.map(renderBody)
-                        ) : (
-                           <tr>
-                              <td className="px-2 text-center text-neutral4 align-middle text-base font-medium" colSpan={12}>
-                                 <div>{formatMessage({ id: 'page.noDataToShow' })}</div>
-                              </td>
-                           </tr>
-                        )
-                     }
+                     {markets[0] ? (
+                        markets.map(renderBody)
+                     ) : (
+                        <tr>
+                           <td
+                              className="px-2 text-center align-middle text-base font-medium text-neutral4"
+                              colSpan={12}>
+                              <div>
+                                 {formatMessage({ id: 'page.noDataToShow' })}
+                              </div>
+                           </td>
+                        </tr>
+                     )}
                   </tbody>
                </table>
-               <Table columns={myColumns} data={markets} />
+               <Table
+                  columns={myColumns}
+                  data={markets}
+               />
                {/* <ReactPaginate
                      pageCount={Math.min(10, 5)}
                      className="flex justify-end space-x-3 mt-5"

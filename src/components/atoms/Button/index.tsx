@@ -1,4 +1,9 @@
-import React, { forwardRef, HTMLAttributes, MouseEvent, ReactNode } from 'react';
+import React, {
+   forwardRef,
+   HTMLAttributes,
+   MouseEvent,
+   ReactNode,
+} from 'react';
 import { classNames } from 'helpers';
 import { ButtonType, Rounded, Size, Variant, Width, Color } from '../types';
 
@@ -9,13 +14,16 @@ const classes = {
    size: {
       small: 'h-8 rounded-20 px-4',
       normal: 'h-10 rounded-20 px-4',
-      large: 'h-12 rounded-3xl px-6 text-base'
+      large: 'h-12 rounded-3xl px-6 text-base',
    },
    variant: {
-      primary: 'bg-primary1 text-neutral8 hover:bg-primary1/90 hover:shadow-xl disabled:hover:bg-primary1',
+      primary:
+         'bg-primary1 text-neutral8 hover:bg-primary1/90 hover:shadow-xl disabled:hover:bg-primary1',
       green: 'bg-primary5 dark:bg-chart1 text-neutral8 hover:bg-my-green-h hover:shadow-xl disabled:hover:bg-primary5',
-      orange: 'bg-primary4 text-neutral8 hover:bg-my-orange-h hover:shadow-xl disabled:hover:bg-primary4',
-      outline: 'bg-none shadow-border hover:text-neutral8 hover:shadow-input-dark hover:bg-neutral2 hover:-translate-y-0.5 dark:hover:bg-neutral3 dark:hover:border-none dark:shadow-border-dark disabled:translate-y-0'
+      orange:
+         'bg-primary4 text-neutral8 hover:bg-my-orange-h hover:shadow-xl disabled:hover:bg-primary4',
+      outline:
+         'bg-none shadow-border hover:text-neutral8 hover:shadow-input-dark hover:bg-neutral2 hover:-translate-y-0.5 dark:hover:bg-neutral3 dark:hover:border-none dark:shadow-border-dark disabled:translate-y-0',
    },
    color: {
       orange: 'text-primary4',
@@ -23,24 +31,24 @@ const classes = {
       primary: 'text-primary1',
    },
    rounded: {
-      sm: '!rounded-sm',
-      defualt: '!rounded',
-      md: '!rounded-md',
-      lg: '!rounded-lg',
-      xl: '!rounded-xl',
+      'sm': '!rounded-sm',
+      'defualt': '!rounded',
+      'md': '!rounded-md',
+      'lg': '!rounded-lg',
+      'xl': '!rounded-xl',
       '1xl': '!rounded-1xl',
       '2xl': '!rounded-2xl',
       '3xl': '!rounded-3xl',
       '4xl': '!rounded-4xl',
       '5xl': '!rounded-5xl',
-      full: '!rounded-full',
+      'full': '!rounded-full',
       20: '!rounded-20',
    },
    width: {
       full: 'w-full',
-      noFull: ''
-   }
-}
+      noFull: '',
+   },
+};
 
 interface ButtonProps extends HTMLAttributes<HTMLElement> {
    type?: ButtonType;
@@ -65,38 +73,41 @@ interface ButtonProps extends HTMLAttributes<HTMLElement> {
 
 type Ref = HTMLButtonElement;
 
-export const Button = forwardRef<Ref, ButtonProps>(({
-   type,
-   size,
-   variant,
-   width,
-   text,
-   className,
-   color,
-   disabled,
-   rounded,
-   fontDM,
-   onClick,
-   onMouseOver,
-   onMouseLeave,
-   onFocus,
-   children,
-   icLeft,
-   icRight,
-   tabIndex,
-   withLoading,
-}, ref) => (
-   <button
-      ref={ref}
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      onMouseOver={onMouseOver}
-      onMouseLeave={onMouseLeave}
-      tabIndex={tabIndex}
-      onFocus={onFocus}
-      className={
-         classNames(`
+export const Button = forwardRef<Ref, ButtonProps>(
+   (
+      {
+         type,
+         size,
+         variant,
+         width,
+         text,
+         className,
+         color,
+         disabled,
+         rounded,
+         fontDM,
+         onClick,
+         onMouseOver,
+         onMouseLeave,
+         onFocus,
+         children,
+         icLeft,
+         icRight,
+         tabIndex,
+         withLoading,
+      },
+      ref
+   ) => (
+      <button
+         ref={ref}
+         type={type}
+         onClick={onClick}
+         disabled={disabled}
+         onMouseOver={onMouseOver}
+         onMouseLeave={onMouseLeave}
+         tabIndex={tabIndex}
+         onFocus={onFocus}
+         className={classNames(`
                ${classes.base}
                ${classes.size[String(size)]}
                ${classes.variant[String(variant)]}
@@ -107,20 +118,32 @@ export const Button = forwardRef<Ref, ButtonProps>(({
                ${disabled ? classes.disabled : ''}
                ${withLoading ? `!cursor-progress ${classes.disabled}` : ''}
                ${className ? className : ''}
-           `)
-      }
-   >
-      {withLoading && (
-         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-neutral8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-         </svg>
-      )}
-      {icLeft}
-      <span>{text ?? children}</span>
-      {icRight}
-   </button>
-));
+           `)}>
+         {withLoading && (
+            <svg
+               className="-ml-1 mr-3 h-5 w-5 animate-spin text-neutral8"
+               xmlns="http://www.w3.org/2000/svg"
+               fill="none"
+               viewBox="0 0 24 24">
+               <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"></circle>
+               <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+         )}
+         {icLeft}
+         <span>{text ?? children}</span>
+         {icRight}
+      </button>
+   )
+);
 
 Button.defaultProps = {
    variant: 'primary',
@@ -129,4 +152,4 @@ Button.defaultProps = {
    width: 'full',
    withLoading: false,
    fontDM: true,
-}
+};

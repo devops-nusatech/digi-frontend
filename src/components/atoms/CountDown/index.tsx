@@ -37,8 +37,7 @@
 //    );
 // }
 
-
-import React from 'react'
+import React from 'react';
 import { useState, useEffect } from 'react';
 
 export const CountDown = (props: any) => {
@@ -52,13 +51,13 @@ export const CountDown = (props: any) => {
          }
          if (seconds === 0) {
             if (minutes === 0) {
-               clearInterval(myInterval)
+               clearInterval(myInterval);
             } else {
                setMinutes(minutes - 1);
                setSeconds(59);
             }
          }
-      }, 1000)
+      }, 1000);
       return () => {
          clearInterval(myInterval);
       };
@@ -66,10 +65,12 @@ export const CountDown = (props: any) => {
 
    return (
       <>
-         {seconds !== 0 && minutes === 0 && seconds === 0
-            ? null
-            : <h1> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
-         }
+         {seconds !== 0 && minutes === 0 && seconds === 0 ? null : (
+            <h1>
+               {' '}
+               {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+            </h1>
+         )}
       </>
-   )
-}
+   );
+};

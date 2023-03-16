@@ -2,13 +2,10 @@ import React, {
    useEffect,
    useState,
    FunctionComponent,
-   useLayoutEffect
+   useLayoutEffect,
 } from 'react';
 import { injectIntl } from 'react-intl';
-import {
-   connect,
-   MapDispatchToPropsFunction
-} from 'react-redux';
+import { connect, MapDispatchToPropsFunction } from 'react-redux';
 // import { ChevronRightIcon } from '@heroicons/react/solid';
 
 import {
@@ -68,9 +65,9 @@ interface ReduxProps {
    executeLoading: boolean;
    marketTickers: {
       [key: string]: {
-         last: string,
-      }
-   },
+         last: string;
+      };
+   };
    bids: string[][];
    asks: string[][];
    wallets: Wallet[];
@@ -78,7 +75,7 @@ interface ReduxProps {
    amountVolume: string;
    groupMember: GroupMember;
    tradingFees: TradingFee[];
-   memberLevel: MemberLevels
+   memberLevel: MemberLevels;
 }
 
 interface DispatchProps {
@@ -116,7 +113,7 @@ const TradingOrderLastFunc = (props: Props) => {
       asks,
       tradingFees,
       groupMember,
-      memberLevel
+      memberLevel,
    } = props;
 
    const name: string = String(currentMarket?.name);
@@ -131,8 +128,10 @@ const TradingOrderLastFunc = (props: Props) => {
    const from: string = String(name.toUpperCase().split('/').pop());
    const to: string = base_unit.toUpperCase();
    const marketId: string = String(currentMarket?.id);
-   const taker = Number(tradingFees.find(e => e.group === groupMember.group)?.taker) * 100;
-   const maker = Number(tradingFees.find(e => e.group === groupMember.group)?.maker) * 100;
+   const taker =
+      Number(tradingFees.find(e => e.group === groupMember.group)?.taker) * 100;
+   const maker =
+      Number(tradingFees.find(e => e.group === groupMember.group)?.maker) * 100;
 
    const [orderPrice, setOrderPrice] = useState<string>('');
    const [orderType, setOrderType] = useState<OrderType>('limit');
@@ -155,27 +154,29 @@ const TradingOrderLastFunc = (props: Props) => {
    useLayoutEffect(() => {
       return () => {
          handleListenState();
-      }
+      };
    }, [marketId]);
 
-   const translate = (id: string, value?: any) => formatMessage({ id }, { ...value });
+   const translate = (id: string, value?: any) =>
+      formatMessage({ id }, { ...value });
 
    const getWallet = (currency: string, wallets: Wallet[]) => {
       const currencyLower = currency.toLowerCase();
       return wallets.find(w => w.currency === currencyLower) as Wallet;
-   }
+   };
 
    const walletBase = getWallet(base_unit, wallets);
    const walletQuote = getWallet(quote_unit, wallets);
 
-   const getAvailableValue = (wallet: Wallet) => wallet && wallet?.balance ? Number(wallet?.balance) : 0;
+   const getAvailableValue = (wallet: Wallet) =>
+      wallet && wallet?.balance ? Number(wallet?.balance) : 0;
 
    const handleSetOrderType = (ord_type: OrderType) => setOrderType(ord_type);
 
    const handleListenState = () => {
       setCurrentAmount('');
       setCurrentPrice(0);
-   }
+   };
 
    const handleOrder = (order: IOrderProps) => {
       if (!currentMarket) {
@@ -189,60 +190,84 @@ const TradingOrderLastFunc = (props: Props) => {
          ord_type: orderType,
          market: String(currentMarket?.id),
          side,
-         volume
+         volume,
       };
 
-      const sendOrder = orderType === 'limit' ? { ...valueOrder, price: price.includes(',') ? price.split(',').join('').toString() : price.toString() } : valueOrder;
+      const sendOrder =
+         orderType === 'limit'
+            ? {
+                 ...valueOrder,
+                 price: price.includes(',')
+                    ? price.split(',').join('').toString()
+                    : price.toString(),
+              }
+            : valueOrder;
 
       let orderAllowed = true;
 
       if (+volume < +min_amount) {
          alertPush({
-            message: [translate('error.order.create.minAmount', {
-               amount: Decimal.format(min_amount, amount_precision, ','),
-               currency: base_unit.toUpperCase(),
-            })],
-            type: 'error'
-         })
+            message: [
+               translate('error.order.create.minAmount', {
+                  amount: Decimal.format(min_amount, amount_precision, ','),
+                  currency: base_unit.toUpperCase(),
+               }),
+            ],
+            type: 'error',
+         });
          orderAllowed = false;
          console.log(1);
       }
       if (+price < +min_price) {
          alertPush({
-            message: [translate('error.order.create.minPrice', {
-               price: Decimal.format(min_price, price_precision, ','),
-               currency: quote_unit.toUpperCase(),
-            })],
-            type: 'error'
-         })
+            message: [
+               translate('error.order.create.minPrice', {
+                  price: Decimal.format(min_price, price_precision, ','),
+                  currency: quote_unit.toUpperCase(),
+               }),
+            ],
+            type: 'error',
+         });
          orderAllowed = false;
          console.log(2);
       }
       if (+max_price && +price > +max_price) {
          alertPush({
-            message: [translate('error.order.create.maxPrice', {
-               price: Decimal.format(max_price, price_precision, ','),
-               currency: quote_unit.toUpperCase(),
-            })],
-            type: 'error'
-         })
+            message: [
+               translate('error.order.create.maxPrice', {
+                  price: Decimal.format(max_price, price_precision, ','),
+                  currency: quote_unit.toUpperCase(),
+               }),
+            ],
+            type: 'error',
+         });
          orderAllowed = false;
          console.log(3);
       }
-      if ((+getAvailableValue(walletQuote) < (+volume * +price) && side === 'buy') ||
+      if (
+         (+getAvailableValue(walletQuote) < +volume * +price &&
+            side === 'buy') ||
          (+getAvailableValue(walletBase) < +volume && side === 'sell')
       ) {
          alertPush({
-            message: [translate('error.order.create.available', {
-               available: formatWithSeparators(String(side === 'buy' ? getAvailableValue(walletQuote) : getAvailableValue(walletBase)), ','),
-               currency: side === 'buy' ? (
-                  quote_unit.toUpperCase()
-               ) : (
-                  base_unit.toUpperCase()
-               ),
-            })],
-            type: 'error'
-         })
+            message: [
+               translate('error.order.create.available', {
+                  available: formatWithSeparators(
+                     String(
+                        side === 'buy'
+                           ? getAvailableValue(walletQuote)
+                           : getAvailableValue(walletBase)
+                     ),
+                     ','
+                  ),
+                  currency:
+                     side === 'buy'
+                        ? quote_unit.toUpperCase()
+                        : base_unit.toUpperCase(),
+               }),
+            ],
+            type: 'error',
+         });
          orderAllowed = false;
          console.log(4);
       }
@@ -253,7 +278,7 @@ const TradingOrderLastFunc = (props: Props) => {
          setOrderPrice('');
          setOrderType('limit');
       }
-   }
+   };
 
    // const handleOrder = (e: FormEvent<HTMLFormElement>, order: IOrderProps) => {
    //    e.preventDefault();
@@ -331,11 +356,13 @@ const TradingOrderLastFunc = (props: Props) => {
    //    }
    // }
 
-
    return (
       <>
-         <div className="relative mt-1 rounded p-4 bg-neutral8 dark:bg-shade2">
-            <div className={`flex space-x-4 justify-center ${!isLoggedIn ? 'opacity-0' : 'opacity-100'}`}>
+         <div className="relative mt-1 rounded bg-neutral8 p-4 dark:bg-shade2">
+            <div
+               className={`flex justify-center space-x-4 ${
+                  !isLoggedIn ? 'opacity-0' : 'opacity-100'
+               }`}>
                <Nav
                   title="Transaction"
                   isActive={currentTab === 0}
@@ -349,28 +376,49 @@ const TradingOrderLastFunc = (props: Props) => {
                   theme="grey"
                />
             </div>
-            <div className={`${currentTab === 0 ? 'h-[369.99px] opacity-100 z-10 visible' : 'h-0 opacity-0 z-0 invisible'} transition-all duration-700`}>
-               <div className="flex items-center mb-6 justify-between">
+            <div
+               className={`${
+                  currentTab === 0
+                     ? 'visible z-10 h-[369.99px] opacity-100'
+                     : 'invisible z-0 h-0 opacity-0'
+               } transition-all duration-700`}>
+               <div className="mb-6 flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                      <div
                         onClick={() => handleSetOrderType('limit')}
-                        className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 ${orderType === 'limit' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} cursor-pointer transition ease-in-out duration-300`}
-                     >
-                        {translate('page.body.trade.header.newOrder.content.orderType.limit')}
+                        className={`flex rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                           orderType === 'limit'
+                              ? 'bg-neutral6 dark:bg-neutral3'
+                              : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
+                        } cursor-pointer transition duration-300 ease-in-out`}>
+                        {translate(
+                           'page.body.trade.header.newOrder.content.orderType.limit'
+                        )}
                      </div>
                      <div
                         onClick={() => handleSetOrderType('market')}
-                        className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 cursor-pointer ${orderType === 'market' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} transition ease-in-out duration-300`}
-                     >
-                        {translate('page.body.trade.header.newOrder.content.orderType.market')}
+                        className={`flex cursor-pointer rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                           orderType === 'market'
+                              ? 'bg-neutral6 dark:bg-neutral3'
+                              : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
+                        } transition duration-300 ease-in-out`}>
+                        {translate(
+                           'page.body.trade.header.newOrder.content.orderType.market'
+                        )}
                      </div>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-neutral4 font-medium leading-custom1">
+                  <div className="flex items-center gap-3 text-xs font-medium leading-custom1 text-neutral4">
                      <div className="">
-                        Maker: <span className="text-primary4 font-bold">{maker}%</span>
+                        Maker:{' '}
+                        <span className="font-bold text-primary4">
+                           {maker}%
+                        </span>
                      </div>
                      <div className="">
-                        Taker: <span className="text-primary4 font-bold">{taker}%</span>
+                        Taker:{' '}
+                        <span className="font-bold text-primary4">
+                           {taker}%
+                        </span>
                      </div>
                   </div>
                   {/* <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">
@@ -385,7 +433,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      </a>
                   </div> */}
                </div>
-               <div className="flex my-0 -mx-4">
+               <div className="my-0 -mx-4 flex">
                   {/* <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
                <div className="flex items-center justify-between mb-4">
                   <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
@@ -453,7 +501,10 @@ const TradingOrderLastFunc = (props: Props) => {
                      orderPrice={orderPrice}
                      orderType={orderType}
                      handleOrder={handleOrder}
-                     disabled={executeLoading || user?.level < memberLevel?.trading?.minimum_level}
+                     disabled={
+                        executeLoading ||
+                        user?.level < memberLevel?.trading?.minimum_level
+                     }
                      minAmount={min_amount}
                      minPrice={min_price}
                      maxPrice={max_price}
@@ -476,7 +527,10 @@ const TradingOrderLastFunc = (props: Props) => {
                      orderPrice={orderPrice}
                      orderType={orderType}
                      handleOrder={handleOrder}
-                     disabled={executeLoading || user?.level < memberLevel?.trading?.minimum_level}
+                     disabled={
+                        executeLoading ||
+                        user?.level < memberLevel?.trading?.minimum_level
+                     }
                      minAmount={min_amount}
                      minPrice={min_price}
                      maxPrice={max_price}
@@ -489,15 +543,18 @@ const TradingOrderLastFunc = (props: Props) => {
                   />
                </div>
             </div>
-            <div className={`${currentTab === 1 ? 'h-[369.99px] opacity-100 overflow-y-auto z-10 visible' : 'h-0 opacity-0 z-0 invisible'} transition-all duration-700`}>
+            <div
+               className={`${
+                  currentTab === 1
+                     ? 'visible z-10 h-[369.99px] overflow-y-auto opacity-100'
+                     : 'invisible z-0 h-0 opacity-0'
+               } transition-all duration-700`}>
                <TradingTrade />
             </div>
-            {!isLoggedIn && (
-               <TradingOrderBackToLogin />
-            )}
+            {!isLoggedIn && <TradingOrderBackToLogin />}
          </div>
       </>
-   )
+   );
 };
 
 const mapStateToProps = (state: RootState) => ({
@@ -514,10 +571,13 @@ const mapStateToProps = (state: RootState) => ({
    amountVolume: selectAmount(state),
    tradingFees: selectTradingFees(state),
    groupMember: selectGroupMember(state),
-   memberLevel: selectMemberLevels(state)
+   memberLevel: selectMemberLevels(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    walletsFetch: () => dispatch(walletsFetch()),
    orderExecuteFetch: payload => dispatch(orderExecuteFetch(payload)),
    alertPush: payload => dispatch(alertPush(payload)),

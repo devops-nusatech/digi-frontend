@@ -3,21 +3,13 @@ import React, {
    // useEffect,
    useState,
 } from 'react';
-import {
-   Beneficiaries,
-   Button,
-   Decimal,
-   InputGroup,
-} from 'components';
+import { Beneficiaries, Button, Decimal, InputGroup } from 'components';
 import { Beneficiary } from 'modules';
-import {
-   cleanPositiveFloatInput,
-   precisionRegExp,
-} from 'helpers';
+import { cleanPositiveFloatInput, precisionRegExp } from 'helpers';
 import { defaultBeneficiary } from 'screens/WalletDetails/types';
 
 interface ModalWithdrawProps {
-   type: 'coin' | 'fiat'
+   type: 'coin' | 'fiat';
    name: string;
    currency: string;
    balance?: string;
@@ -28,7 +20,12 @@ interface ModalWithdrawProps {
    fee: number;
    minimum?: string;
    limit?: string;
-   onClick: (amount: string, total: string, beneficiary: Beneficiary, otpCode: string) => void;
+   onClick: (
+      amount: string,
+      total: string,
+      beneficiary: Beneficiary,
+      otpCode: string
+   ) => void;
    twoFactorAuthRequired?: boolean;
    withdrawDone?: boolean;
 }
@@ -44,7 +41,7 @@ export const ModalWithdraw: FC<ModalWithdrawProps> = ({
    minimum,
    limit,
    onClick,
-   withdrawDone
+   withdrawDone,
 }) => {
    // const [selected, setSelected] = useState(beneficiaries[0]?.name || defaultBeneficiary?.name);
    // useEffect(() => {
@@ -67,35 +64,44 @@ export const ModalWithdraw: FC<ModalWithdrawProps> = ({
 
    const { amount, otpCode, total, beneficiary } = state;
 
-   const handleChangeBeneficiary = (value: Beneficiary) => setState({
-      ...state,
-      beneficiary: value,
-   });
+   const handleChangeBeneficiary = (value: Beneficiary) =>
+      setState({
+         ...state,
+         beneficiary: value,
+      });
 
    const handleChangeAmount = (value: string) => {
       const convertedValue = cleanPositiveFloatInput(value);
       if (convertedValue.match(precisionRegExp(fixed))) {
-         const amount = (convertedValue !== '') ? Number(parseFloat(convertedValue).toFixed(fixed)) : '';
-         const total = (amount !== '') ? (amount - Number(fee)).toFixed(fixed) : '';
+         const amount =
+            convertedValue !== ''
+               ? Number(parseFloat(convertedValue).toFixed(fixed))
+               : '';
+         const total =
+            amount !== '' ? (amount - Number(fee)).toFixed(fixed) : '';
          setState({
             ...state,
             total: Number(total) > 0 ? total : (0).toFixed(fixed),
-            amount: convertedValue
+            amount: convertedValue,
          });
       }
-   }
+   };
 
-   const handleChangeInputOtpCode = (otpCode: string) => setState({
-      ...state,
-      otpCode: otpCode.replace(/\D/g, '')
-   });
+   const handleChangeInputOtpCode = (otpCode: string) =>
+      setState({
+         ...state,
+         otpCode: otpCode.replace(/\D/g, ''),
+      });
 
-   const handleClick = () => onClick(
-      amount, total, beneficiary, otpCode
-   );
+   const handleClick = () => onClick(amount, total, beneficiary, otpCode);
 
-   const isDisabled = (total: string, beneficiary: Beneficiary, otpCode: string) => {
-      const isPending = beneficiary.state && beneficiary.state.toLowerCase() === 'pending';
+   const isDisabled = (
+      total: string,
+      beneficiary: Beneficiary,
+      otpCode: string
+   ) => {
+      const isPending =
+         beneficiary.state && beneficiary.state.toLowerCase() === 'pending';
       return Number(total) < 1 || isPending || otpCode.length < 6;
    };
 
@@ -106,7 +112,7 @@ export const ModalWithdraw: FC<ModalWithdrawProps> = ({
             currency={currency}
             onChangeValue={handleChangeBeneficiary}
          />
-         <div className="flex justify-between py-5 px-6 rounded bg-neutral7 dark:bg-neutral3">
+         <div className="flex justify-between rounded bg-neutral7 py-5 px-6 dark:bg-neutral3">
             <div className="font-medium text-neutral3 dark:text-neutral6">
                Available <br /> balance
             </div>
@@ -114,7 +120,9 @@ export const ModalWithdraw: FC<ModalWithdrawProps> = ({
                <div className="text-base font-medium">
                   {balance} {currency?.toUpperCase()}
                </div>
-               <div className="text-neutral4">{locked} {currency?.toUpperCase()}</div>
+               <div className="text-neutral4">
+                  {locked} {currency?.toUpperCase()}
+               </div>
             </div>
          </div>
          <InputGroup
@@ -132,12 +140,20 @@ export const ModalWithdraw: FC<ModalWithdrawProps> = ({
          />
          <InputGroup
             label="transaction fee"
-            placeholder={`${Decimal.format(fee, fixed, ',')} ${currency?.toUpperCase()}`}
+            placeholder={`${Decimal.format(
+               fee,
+               fixed,
+               ','
+            )} ${currency?.toUpperCase()}`}
             disabled
          />
          <InputGroup
             label="total"
-            placeholder={`${Decimal.format(total, fixed, ',')} ${currency?.toUpperCase()}`}
+            placeholder={`${Decimal.format(
+               total,
+               fixed,
+               ','
+            )} ${currency?.toUpperCase()}`}
             disabled
          />
          <Button

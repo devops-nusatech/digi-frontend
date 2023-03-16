@@ -1,16 +1,6 @@
-import React, {
-   useEffect,
-   useState,
-   FunctionComponent,
-} from 'react';
-import {
-   useHistory,
-   withRouter
-} from 'react-router-dom';
-import {
-   connect,
-   MapDispatchToPropsFunction
-} from 'react-redux';
+import React, { useEffect, useState, FunctionComponent } from 'react';
+import { useHistory, withRouter } from 'react-router-dom';
+import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { compose } from 'redux';
 import { injectIntl } from 'react-intl';
 import {
@@ -22,13 +12,9 @@ import {
    Portal,
    ProfileSidebar,
    Skeleton,
-   Switch
+   Switch,
 } from 'components';
-import {
-   copyToClipboard,
-   localeDate,
-   setDocumentTitle
-} from 'helpers';
+import { copyToClipboard, localeDate, setDocumentTitle } from 'helpers';
 import {
    alertPush,
    ApiKeyCreateFetch,
@@ -44,7 +30,7 @@ import {
    apiKeyUpdateFetch,
    RootState,
    selectUserInfo,
-   User
+   User,
 } from 'modules';
 import {
    selectApiKeys,
@@ -54,7 +40,7 @@ import {
    selectApiKeysLoading,
    selectApiKeysModal,
    selectApiKeysNextPageExists,
-   selectApiKeysPageIndex
+   selectApiKeysPageIndex,
 } from 'modules';
 import { IntlProps } from 'index';
 import { IcEmty, imgLock, imgLock2 } from 'assets';
@@ -98,7 +84,7 @@ const ApiKeysFC = ({
    createApiKey,
    deleteApiKey,
    fetchSuccess,
-   updateApiKey
+   updateApiKey,
 }: Props) => {
    const history = useHistory();
    const [otpCode, setOtpCode] = useState<string>('');
@@ -109,22 +95,32 @@ const ApiKeysFC = ({
 
    useEffect(() => {
       if (otpCode.length === 6) {
-         renderOnClick()
+         renderOnClick();
       }
    }, [otpCode]);
 
    const translate = (key: string) => intl.formatMessage({ id: key });
 
-   const onClickPrevPage = () => apiKeysFetch({ pageIndex: Number(pageIndex) - 1, limit: 4 });
-   const onClickNextPage = () => apiKeysFetch({ pageIndex: Number(pageIndex) + 1, limit: 4 });
+   const onClickPrevPage = () =>
+      apiKeysFetch({ pageIndex: Number(pageIndex) - 1, limit: 4 });
+   const onClickNextPage = () =>
+      apiKeysFetch({ pageIndex: Number(pageIndex) + 1, limit: 4 });
 
    const handleUpdateAPIKey = apiKey => {
-      const payload: ApiKeys2FAModal['payload'] = { active: true, action: 'updateKey', apiKey };
+      const payload: ApiKeys2FAModal['payload'] = {
+         active: true,
+         action: 'updateKey',
+         apiKey,
+      };
       toggleApiKeys2FAModal(payload);
    };
 
    const handleDestroyAPIKey = apiKey => {
-      const payload: ApiKeys2FAModal['payload'] = { active: true, action: 'deleteKey', apiKey };
+      const payload: ApiKeys2FAModal['payload'] = {
+         active: true,
+         action: 'deleteKey',
+         apiKey,
+      };
       toggleApiKeys2FAModal(payload);
    };
 
@@ -142,11 +138,17 @@ const ApiKeysFC = ({
 
    const handleCopy = (url: string, type: string) => {
       copyToClipboard(url);
-      fetchSuccess({ message: [`success.api_keys.copied.${type}`], type: 'success' });
-   }
+      fetchSuccess({
+         message: [`success.api_keys.copied.${type}`],
+         type: 'success',
+      });
+   };
 
    const handleAddCreateKey = () => {
-      const payload: ApiKeys2FAModal['payload'] = { active: true, action: 'createKey' };
+      const payload: ApiKeys2FAModal['payload'] = {
+         active: true,
+         action: 'createKey',
+      };
       toggleApiKeys2FAModal(payload);
       setOtpCode('');
    };
@@ -166,13 +168,19 @@ const ApiKeysFC = ({
    const handleUpdateKey = () => {
       const apiKey: ApiKeyDataInterface = { ...modal.apiKey } as any;
       apiKey.state = apiKey.state === 'active' ? 'disabled' : 'active';
-      const payload: ApiKeyUpdateFetch['payload'] = { totp_code: otpCode, apiKey: apiKey };
+      const payload: ApiKeyUpdateFetch['payload'] = {
+         totp_code: otpCode,
+         apiKey: apiKey,
+      };
       updateApiKey(payload);
       setOtpCode('');
    };
 
    const handleDeleteKey = () => {
-      const payload: ApiKeyDeleteFetch['payload'] = { kid: (modal.apiKey && modal.apiKey.kid) || '', totp_code: otpCode };
+      const payload: ApiKeyDeleteFetch['payload'] = {
+         kid: (modal.apiKey && modal.apiKey.kid) || '',
+         totp_code: otpCode,
+      };
       deleteApiKey(payload);
       setOtpCode('');
    };
@@ -206,57 +214,80 @@ const ApiKeysFC = ({
    };
 
    const renderModalBody = () => {
-      const secret = (modal && modal.apiKey) ? modal.apiKey.secret : '';
+      const secret = modal && modal.apiKey ? modal.apiKey.secret : '';
       let body;
       let button;
       const isDisabled = !otpCode.match(/.{6}/g);
       switch (modal.action) {
          case 'createKey':
-            button = <Button
-               text={translate('page.body.profile.apiKeys.modal.btn.create')}
-               disabled={isDisabled}
-               onClick={handleCreateKey}
-               withLoading={isLoading}
-            />;
+            button = (
+               <Button
+                  text={translate('page.body.profile.apiKeys.modal.btn.create')}
+                  disabled={isDisabled}
+                  onClick={handleCreateKey}
+                  withLoading={isLoading}
+               />
+            );
             break;
          case 'createSuccess':
-            button = <Button
-               text={translate('page.body.profile.apiKeys.modal.btn.create')}
-               onClick={handleCreateSuccess}
-               withLoading={isLoading}
-            />;
+            button = (
+               <Button
+                  text={translate('page.body.profile.apiKeys.modal.btn.create')}
+                  onClick={handleCreateSuccess}
+                  withLoading={isLoading}
+               />
+            );
             body = (
                <>
                   <InputGroup
-                     label={translate('page.body.profile.apiKeys.modal.access_key')}
+                     label={translate(
+                        'page.body.profile.apiKeys.modal.access_key'
+                     )}
                      parentClassName="w-full"
                      value={(modal.apiKey && modal.apiKey.kid) || ''}
                      icon={
                         <div
-                           onClick={() => handleCopy((modal.apiKey && modal.apiKey.kid) || '', 'access')}
-                           className="bg-primary1 rounded p-1 text-neutral8 text-x font-medium hover:p-1.5 transition-all duration-300 cursor-copy"
-                        >
+                           onClick={() =>
+                              handleCopy(
+                                 (modal.apiKey && modal.apiKey.kid) || '',
+                                 'access'
+                              )
+                           }
+                           className="cursor-copy rounded bg-primary1 p-1 text-x font-medium text-neutral8 transition-all duration-300 hover:p-1.5">
                            {translate('page.body.profile.content.copyLink')}
                         </div>
                      }
                   />
                   <div className="flex space-x-3">
-                     <span className="text-primary4 text-5xl font-bold">&#9888;</span>
+                     <span className="text-5xl font-bold text-primary4">
+                        &#9888;
+                     </span>
                      <div>
                         <div className="font-medium">
-                           {translate('page.body.profile.apiKeys.modal.secret_key')}
+                           {translate(
+                              'page.body.profile.apiKeys.modal.secret_key'
+                           )}
                         </div>
-                        <div className="text-neutral4 text-xs leading-custom4 tracking-wider">
-                           {translate('page.body.profile.apiKeys.modal.secret_key_info')} {translate('page.body.profile.apiKeys.modal.secret_key_store')}
+                        <div className="text-xs leading-custom4 tracking-wider text-neutral4">
+                           {translate(
+                              'page.body.profile.apiKeys.modal.secret_key_info'
+                           )}{' '}
+                           {translate(
+                              'page.body.profile.apiKeys.modal.secret_key_store'
+                           )}
                         </div>
                      </div>
                   </div>
                   <InputGroup
-                     label={translate('page.body.profile.apiKeys.modal.secret_key')}
+                     label={translate(
+                        'page.body.profile.apiKeys.modal.secret_key'
+                     )}
                      parentClassName="w-full"
                      value={secret || ''}
                      icon={
-                        <div onClick={() => handleCopy(secret || '', 'secret')} className="bg-primary1 rounded p-1 text-neutral8 text-x font-medium hover:p-1.5 transition-all duration-300">
+                        <div
+                           onClick={() => handleCopy(secret || '', 'secret')}
+                           className="rounded bg-primary1 p-1 text-x font-medium text-neutral8 transition-all duration-300 hover:p-1.5">
                            {translate('page.body.profile.content.copyLink')}
                         </div>
                      }
@@ -265,8 +296,10 @@ const ApiKeysFC = ({
                      <div className="font-medium">
                         {translate('page.body.profile.apiKeys.modal.note')} :
                      </div>
-                     <div className="text-neutral4 text-xs leading-custom4 tracking-wider">
-                        {translate('page.body.profile.apiKeys.modal.note_content')}
+                     <div className="text-xs leading-custom4 tracking-wider text-neutral4">
+                        {translate(
+                           'page.body.profile.apiKeys.modal.note_content'
+                        )}
                      </div>
                   </div>
                   {button}
@@ -274,51 +307,62 @@ const ApiKeysFC = ({
             );
             break;
          case 'updateKey':
-            button = <Button
-               text={modal.apiKey && modal.apiKey.state === 'active' ?
-                  translate('page.body.profile.apiKeys.modal.btn.disabled') :
-                  translate('page.body.profile.apiKeys.modal.btn.activate')}
-               disabled={isDisabled}
-               onClick={handleUpdateKey}
-               withLoading={isLoading}
-            />
+            button = (
+               <Button
+                  text={
+                     modal.apiKey && modal.apiKey.state === 'active'
+                        ? translate(
+                             'page.body.profile.apiKeys.modal.btn.disabled'
+                          )
+                        : translate(
+                             'page.body.profile.apiKeys.modal.btn.activate'
+                          )
+                  }
+                  disabled={isDisabled}
+                  onClick={handleUpdateKey}
+                  withLoading={isLoading}
+               />
+            );
             break;
          case 'deleteKey':
-            button = <Button
-               text={translate('page.body.profile.apiKeys.modal.btn.delete')}
-               disabled={isDisabled}
-               onClick={handleDeleteKey}
-               withLoading={isLoading}
-            />
+            button = (
+               <Button
+                  text={translate('page.body.profile.apiKeys.modal.btn.delete')}
+                  disabled={isDisabled}
+                  onClick={handleDeleteKey}
+                  withLoading={isLoading}
+               />
+            );
             break;
          default:
             break;
       }
       body = !body ? (
-         <div className={modal.action === 'createSuccess' ? '' : 'pt-10 space-y-8'}>
+         <div
+            className={
+               modal.action === 'createSuccess' ? '' : 'space-y-8 pt-10'
+            }>
             <div className="space-y-3">
-               <div className="font-dm text-2xl leading-9 text-center tracking-custom">
+               <div className="text-center font-dm text-2xl leading-9 tracking-custom">
                   {translate('page.auth.2fa.title')}
                </div>
-               <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
+               <div className="mx-auto max-w-82 text-center text-xs leading-5 text-neutral4">
                   Enter 6 digit google authentication code to continue
                </div>
             </div>
             <InputOtp
                length={6}
-               className="flex -mx-2"
+               className="-mx-2 flex"
                onChangeOTP={setOtpCode}
                onKeyPress={handleEnterPress as any}
             />
             {button}
          </div>
-      ) : body;
-
-      return (
-         <>
-            {body}
-         </>
+      ) : (
+         body
       );
+
+      return <>{body}</>;
    };
 
    return (
@@ -329,14 +373,13 @@ const ApiKeysFC = ({
                display: 'Home',
                href: '/',
                active: 'API keys',
-            }}
-         >
+            }}>
             <ProfileSidebar />
-            <div className="grow p-4 md:px-8 lg:px-10 lg:py-10 shadow-card2 rounded-2xl bg-neutral8 dark:bg-shade1">
+            <div className="grow rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 lg:px-10 lg:py-10">
                {otp ? (
                   <div>
                      <div className="flex items-center justify-between">
-                        <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+                        <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                            My API keys
                         </div>
                         <Button
@@ -345,35 +388,50 @@ const ApiKeysFC = ({
                            width="noFull"
                            variant="outline"
                            icLeft={
-                              <svg className="mr-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all duration-300">
+                              <svg className="mr-3 h-4 w-4 fill-neutral4 transition-all duration-300 group-hover:fill-neutral8">
                                  <use xlinkHref="#icon-plus" />
                               </svg>
                            }
                            onClick={handleAddCreateKey}
                         />
                      </div>
-                     <div className="mt-6 mb-8 text-neutral4 text-xs leading-custom4">
-                        Digiassets APIs are a way for traders to access their exchange account programmatically so they can trade without logging into the exchange. With APIs, traders can use 3rd party services to execute trades, manage their portfolio, collect data on their account, and implement complex strategies.
+                     <div className="mt-6 mb-8 text-xs leading-custom4 text-neutral4">
+                        Digiassets APIs are a way for traders to access their
+                        exchange account programmatically so they can trade
+                        without logging into the exchange. With APIs, traders
+                        can use 3rd party services to execute trades, manage
+                        their portfolio, collect data on their account, and
+                        implement complex strategies.
                      </div>
                      <div className="space-y-8">
                         <div className="overflow-x-auto">
                            <table className="w-full table-auto">
                               <thead>
                                  <tr className="border-b border-neutral7 dark:border-neutral2">
-                                    <th className="p-4 pl-0 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
-                                       {translate('page.body.profile.apiKeys.table.header.kid')}
+                                    <th className="p-4 pl-0 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                       {translate(
+                                          'page.body.profile.apiKeys.table.header.kid'
+                                       )}
                                     </th>
-                                    <th className="p-4 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
-                                       {translate('page.body.profile.apiKeys.table.header.algorithm')}
+                                    <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                       {translate(
+                                          'page.body.profile.apiKeys.table.header.algorithm'
+                                       )}
                                     </th>
-                                    <th className="p-4 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
-                                       {translate('page.body.profile.apiKeys.table.header.state')}
+                                    <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                       {translate(
+                                          'page.body.profile.apiKeys.table.header.state'
+                                       )}
                                     </th>
-                                    <th className="p-4 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
-                                       {translate('page.body.profile.apiKeys.table.header.created')}
+                                    <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                       {translate(
+                                          'page.body.profile.apiKeys.table.header.created'
+                                       )}
                                     </th>
-                                    <th className="p-4 text-xs font-semibold leading-custom4 text-left dark:text-neutral5">
-                                       {translate('page.body.profile.apiKeys.table.header.updated')}
+                                    <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                       {translate(
+                                          'page.body.profile.apiKeys.table.header.updated'
+                                       )}
                                     </th>
                                     <th className="p-4 text-xs font-semibold leading-custom4 dark:text-neutral5">
                                        {''}
@@ -387,63 +445,120 @@ const ApiKeysFC = ({
                                  {!!!dataLoaded ? (
                                     <>
                                        <tr>
-                                          <td colSpan={7} className="px-4 py-3 last:pb-0">
-                                             <Skeleton height={20} isWithFull rounded="md" />
+                                          <td
+                                             colSpan={7}
+                                             className="px-4 py-3 last:pb-0">
+                                             <Skeleton
+                                                height={20}
+                                                isWithFull
+                                                rounded="md"
+                                             />
                                           </td>
                                        </tr>
                                        <tr>
-                                          <td colSpan={7} className="px-4 py-3 last:pb-0">
-                                             <Skeleton height={20} isWithFull rounded="md" />
+                                          <td
+                                             colSpan={7}
+                                             className="px-4 py-3 last:pb-0">
+                                             <Skeleton
+                                                height={20}
+                                                isWithFull
+                                                rounded="md"
+                                             />
                                           </td>
                                        </tr>
                                        <tr>
-                                          <td colSpan={7} className="px-4 py-3 last:pb-0">
-                                             <Skeleton height={20} isWithFull rounded="md" />
+                                          <td
+                                             colSpan={7}
+                                             className="px-4 py-3 last:pb-0">
+                                             <Skeleton
+                                                height={20}
+                                                isWithFull
+                                                rounded="md"
+                                             />
                                           </td>
                                        </tr>
                                     </>
-                                 ) : apiKeys.length ? apiKeys.map(apiKey => {
-                                    const {
-                                       kid,
-                                       algorithm,
-                                       state,
-                                       created_at,
-                                       updated_at
-                                    } = apiKey;
-                                    return (
-                                       <tr key={kid} className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
-                                          <td className="p-4 pl-0">
-                                             <div className="font-medium">{kid}</div>
-                                          </td>
-                                          <td className="p-4">
-                                             <div className="font-medium">{algorithm}</div>
-                                          </td>
-                                          <td className="p-4">
-                                             <div className={`font-medium ${state === 'active' ? 'text-primary5' : state === 'disabled' ? 'text-primary4' : 'text-primary1'}`}>{state}</div>
-                                          </td>
-                                          <td className="p-4">
-                                             <div className="font-medium">{localeDate(created_at, 'shortDate').split(' ').shift()}</div>
-                                          </td>
-                                          <td className="p-4">
-                                             <div className="font-medium">{localeDate(updated_at, 'shortDate').split(' ').shift()}</div>
-                                          </td>
-                                          <td className="p-4 align-middle">
-                                             <Switch
-                                                onClick={() => handleUpdateAPIKey(apiKey)}
-                                                checked={state === 'active'}
-                                             />
-                                          </td>
-                                          <td className="p-4 pr-0">
-                                             <svg onClick={() => handleDestroyAPIKey(apiKey)} className={`cursor-pointer w-6 h-6 fill-neutral4 hover:fill-neutral2 dark:hover:fill-neutral8 transition-all duration-300`}>
-                                                <use xlinkHref="#icon-close-circle" />
-                                             </svg>
-                                          </td>
-                                       </tr>
-                                    )
-                                 }) : (
+                                 ) : apiKeys.length ? (
+                                    apiKeys.map(apiKey => {
+                                       const {
+                                          kid,
+                                          algorithm,
+                                          state,
+                                          created_at,
+                                          updated_at,
+                                       } = apiKey;
+                                       return (
+                                          <tr
+                                             key={kid}
+                                             className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
+                                             <td className="p-4 pl-0">
+                                                <div className="font-medium">
+                                                   {kid}
+                                                </div>
+                                             </td>
+                                             <td className="p-4">
+                                                <div className="font-medium">
+                                                   {algorithm}
+                                                </div>
+                                             </td>
+                                             <td className="p-4">
+                                                <div
+                                                   className={`font-medium ${
+                                                      state === 'active'
+                                                         ? 'text-primary5'
+                                                         : state === 'disabled'
+                                                         ? 'text-primary4'
+                                                         : 'text-primary1'
+                                                   }`}>
+                                                   {state}
+                                                </div>
+                                             </td>
+                                             <td className="p-4">
+                                                <div className="font-medium">
+                                                   {localeDate(
+                                                      created_at,
+                                                      'shortDate'
+                                                   )
+                                                      .split(' ')
+                                                      .shift()}
+                                                </div>
+                                             </td>
+                                             <td className="p-4">
+                                                <div className="font-medium">
+                                                   {localeDate(
+                                                      updated_at,
+                                                      'shortDate'
+                                                   )
+                                                      .split(' ')
+                                                      .shift()}
+                                                </div>
+                                             </td>
+                                             <td className="p-4 align-middle">
+                                                <Switch
+                                                   onClick={() =>
+                                                      handleUpdateAPIKey(apiKey)
+                                                   }
+                                                   checked={state === 'active'}
+                                                />
+                                             </td>
+                                             <td className="p-4 pr-0">
+                                                <svg
+                                                   onClick={() =>
+                                                      handleDestroyAPIKey(
+                                                         apiKey
+                                                      )
+                                                   }
+                                                   className={`h-6 w-6 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8`}>
+                                                   <use xlinkHref="#icon-close-circle" />
+                                                </svg>
+                                             </td>
+                                          </tr>
+                                       );
+                                    })
+                                 ) : (
                                     <tr>
                                        <td colSpan={7}>
-                                          <div className="min-h-96 flex flex-col items-center justify-center space-y-3">
+                                          <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
                                              <IcEmty />
                                              <div className="text-xs font-semibold text-neutral4">
                                                 {translate('noResultFound')}
@@ -474,8 +589,9 @@ const ApiKeysFC = ({
                         title="Images lock api keys"
                         className="mx-auto"
                      />
-                     <div className="font-medium text-neutral4 leading-custom4 text-center">
-                        Before you can access the api keys feature, you must enable 2FA
+                     <div className="text-center font-medium leading-custom4 text-neutral4">
+                        Before you can access the api keys feature, you must
+                        enable 2FA
                      </div>
                      <div className="text-center">
                         <Button
@@ -491,13 +607,16 @@ const ApiKeysFC = ({
          <Portal
             show={modal.active}
             close={handleCloseTFAModal}
-            title={modal.action === 'createSuccess' ? translate('page.body.profile.apiKeys.modal.created_header') : ''}
-         >
+            title={
+               modal.action === 'createSuccess'
+                  ? translate('page.body.profile.apiKeys.modal.created_header')
+                  : ''
+            }>
             {renderModalBody()}
          </Portal>
       </>
-   )
-}
+   );
+};
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    apiKeys: selectApiKeys(state),
@@ -511,15 +630,18 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    nextPageExists: selectApiKeysNextPageExists(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
-   dispatch => ({
-      toggleApiKeys2FAModal: (payload: ApiKeys2FAModal['payload']) => dispatch(apiKeys2FAModal(payload)),
-      apiKeysFetch: payload => dispatch(apiKeysFetch(payload)),
-      createApiKey: payload => dispatch(apiKeyCreateFetch(payload)),
-      updateApiKey: payload => dispatch(apiKeyUpdateFetch(payload)),
-      deleteApiKey: payload => dispatch(apiKeyDeleteFetch(payload)),
-      fetchSuccess: payload => dispatch(alertPush(payload)),
-   });
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   toggleApiKeys2FAModal: (payload: ApiKeys2FAModal['payload']) =>
+      dispatch(apiKeys2FAModal(payload)),
+   apiKeysFetch: payload => dispatch(apiKeysFetch(payload)),
+   createApiKey: payload => dispatch(apiKeyCreateFetch(payload)),
+   updateApiKey: payload => dispatch(apiKeyUpdateFetch(payload)),
+   deleteApiKey: payload => dispatch(apiKeyDeleteFetch(payload)),
+   fetchSuccess: payload => dispatch(alertPush(payload)),
+});
 
 export const ApiKeys = compose(
    injectIntl,

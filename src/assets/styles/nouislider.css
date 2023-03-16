@@ -13,21 +13,21 @@
 }
 
 .noUi-connect {
-   background: #58BD7D;
+   background: #58bd7d;
 }
 [data-mode="dark"] .noUi-connect {
-   background: #00C076;
+   background: #00c076;
 }
 
 .noUi-handle {
    border: none;
    box-shadow: none;
-   background: #58BD7D;
+   background: #58bd7d;
    border-radius: 50%;
    cursor: ew-resize;
 }
 [data-mode="dark"] .noUi-handle {
-   background: #00C076;
+   background: #00c076;
 }
 .noUi-handle:before,
 .noUi-handle:after {
@@ -61,7 +61,7 @@
    transition: all 0.2s;
 }
 .noUi-tooltip:before {
-   content: '';
+   content: "";
    position: absolute;
    top: 100%;
    left: 50%;
@@ -100,7 +100,7 @@
    top: -11px;
 }
 
-html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
+html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
    right: -12px;
    outline: none;
 }

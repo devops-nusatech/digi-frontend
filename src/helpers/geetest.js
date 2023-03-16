@@ -1,7 +1,7 @@
 /* eslint-disable */
 var document = window.document;
 var Math = window.Math;
-var head = document.getElementsByTagName("head")[0];
+var head = document.getElementsByTagName('head')[0];
 
 function _Object(obj) {
    this._obj = obj;
@@ -16,7 +16,7 @@ _Object.prototype = {
          }
       }
       return this;
-   }
+   },
 };
 
 function Config(config) {
@@ -32,15 +32,15 @@ Config.prototype = {
    typePath: '/gettype.php',
    fallback_config: {
       slide: {
-         static_servers: ["static.geetest.com", "dn-staticdown.qbox.me"],
+         static_servers: ['static.geetest.com', 'dn-staticdown.qbox.me'],
          type: 'slide',
-         slide: '/static/js/geetest.0.0.0.js'
+         slide: '/static/js/geetest.0.0.0.js',
       },
       fullpage: {
-         static_servers: ["static.geetest.com", "dn-staticdown.qbox.me"],
+         static_servers: ['static.geetest.com', 'dn-staticdown.qbox.me'],
          type: 'fullpage',
-         fullpage: '/static/js/fullpage.0.0.0.js'
-      }
+         fullpage: '/static/js/fullpage.0.0.0.js',
+      },
    },
    _get_fallback_config: function () {
       var self = this;
@@ -57,34 +57,34 @@ Config.prototype = {
       new _Object(obj)._each(function (key, value) {
          self[key] = value;
       });
-   }
+   },
 };
 var isNumber = function (value) {
-   return (typeof value === 'number');
+   return typeof value === 'number';
 };
 var isString = function (value) {
-   return (typeof value === 'string');
+   return typeof value === 'string';
 };
 var isBoolean = function (value) {
-   return (typeof value === 'boolean');
+   return typeof value === 'boolean';
 };
 var isObject = function (value) {
-   return (typeof value === 'object' && value !== null);
+   return typeof value === 'object' && value !== null;
 };
 var isFunction = function (value) {
-   return (typeof value === 'function');
+   return typeof value === 'function';
 };
 
 var callbacks = {};
 var status = {};
 
 var random = function () {
-   return parseInt(Math.random() * 10000) + (new Date()).valueOf();
+   return parseInt(Math.random() * 10000) + new Date().valueOf();
 };
 
 var loadScript = function (url, cb) {
-   var script = document.createElement("script");
-   script.charset = "UTF-8";
+   var script = document.createElement('script');
+   script.charset = 'UTF-8';
    script.async = true;
 
    script.onerror = function () {
@@ -92,11 +92,12 @@ var loadScript = function (url, cb) {
    };
    var loaded = false;
    script.onload = script.onreadystatechange = function () {
-      if (!loaded &&
+      if (
+         !loaded &&
          (!script.readyState ||
-            "loaded" === script.readyState ||
-            "complete" === script.readyState)) {
-
+            'loaded' === script.readyState ||
+            'complete' === script.readyState)
+      ) {
          loaded = true;
          setTimeout(function () {
             cb(false);
@@ -124,7 +125,8 @@ var normalizeQuery = function (query) {
    var q = '?';
    new _Object(query)._each(function (key, value) {
       if (isString(value) || isNumber(value) || isBoolean(value)) {
-         q = q + encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
+         q =
+            q + encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
       }
    });
    if (q === '?') {
@@ -145,7 +147,6 @@ var makeURL = function (protocol, domain, path, query) {
 
 var load = function (protocol, domains, path, query, cb) {
    var tryRequest = function (at) {
-
       var url = makeURL(protocol, domains[at], path, query);
       loadScript(url, function (err) {
          if (err) {
@@ -162,7 +163,6 @@ var load = function (protocol, domains, path, query, cb) {
    tryRequest(0);
 };
 
-
 var jsonp = function (domains, path, config, callback) {
    if (isObject(config.getLib)) {
       config._extend(config.getLib);
@@ -174,7 +174,7 @@ var jsonp = function (domains, path, config, callback) {
       return;
    }
 
-   var cb = "geetest_" + random();
+   var cb = 'geetest_' + random();
    window[cb] = function (data) {
       if (data.status == 'success') {
          callback(data.data);
@@ -186,23 +186,28 @@ var jsonp = function (domains, path, config, callback) {
       window[cb] = undefined;
       try {
          delete window[cb];
-      } catch (e) {
-      }
+      } catch (e) {}
    };
-   load(config.protocol, domains, path, {
-      gt: config.gt,
-      callback: cb
-   }, function (err) {
-      if (err) {
-         callback(config._get_fallback_config());
+   load(
+      config.protocol,
+      domains,
+      path,
+      {
+         gt: config.gt,
+         callback: cb,
+      },
+      function (err) {
+         if (err) {
+            callback(config._get_fallback_config());
+         }
       }
-   });
+   );
 };
 
 var throwError = function (errorType, config) {
    var errors = {
       networkError: '网络错误',
-      gtTypeError: 'gt字段不是字符串类型'
+      gtTypeError: 'gt字段不是字符串类型',
    };
    if (typeof config.onError === 'function') {
       config.onError(errors[errorType]);
@@ -212,15 +217,14 @@ var throwError = function (errorType, config) {
 };
 
 var detect = function () {
-   return window.Geetest || document.getElementById("gt_lib");
+   return window.Geetest || document.getElementById('gt_lib');
 };
 
 if (detect()) {
-   status.slide = "loaded";
+   status.slide = 'loaded';
 }
 
 export function initGeetest(userConfig, callback) {
-
    var config = new Config(userConfig);
 
    if (userConfig.https) {
@@ -230,8 +234,10 @@ export function initGeetest(userConfig, callback) {
    }
 
    // for KYC
-   if (userConfig.gt === '050cffef4ae57b5d5e529fea9540b0d1' ||
-      userConfig.gt === '3bd38408ae4af923ed36e13819b14d42') {
+   if (
+      userConfig.gt === '050cffef4ae57b5d5e529fea9540b0d1' ||
+      userConfig.gt === '3bd38408ae4af923ed36e13819b14d42'
+   ) {
       config.apiserver = 'yumchina.geetest.com/'; // for old js
       config.api_server = 'yumchina.geetest.com';
    }
@@ -239,43 +245,53 @@ export function initGeetest(userConfig, callback) {
    if (isObject(userConfig.getType)) {
       config._extend(userConfig.getType);
    }
-   jsonp([config.api_server || config.apiserver], config.typePath, config, function (newConfig) {
-      var type = newConfig.type;
-      var init = function () {
-         config._extend(newConfig);
-         callback(new window.Geetest(config));
-      };
+   jsonp(
+      [config.api_server || config.apiserver],
+      config.typePath,
+      config,
+      function (newConfig) {
+         var type = newConfig.type;
+         var init = function () {
+            config._extend(newConfig);
+            callback(new window.Geetest(config));
+         };
 
-      callbacks[type] = callbacks[type] || [];
-      var s = status[type] || 'init';
-      if (s === 'init') {
-         status[type] = 'loading';
+         callbacks[type] = callbacks[type] || [];
+         var s = status[type] || 'init';
+         if (s === 'init') {
+            status[type] = 'loading';
 
-         callbacks[type].push(init);
+            callbacks[type].push(init);
 
-         load(config.protocol, newConfig.static_servers || newConfig.domains, newConfig[type] || newConfig.path, null, function (err) {
-            if (err) {
-               status[type] = 'fail';
-               throwError('networkError', config);
-            } else {
-               status[type] = 'loaded';
-               var cbs = callbacks[type];
-               for (var i = 0, len = cbs.length; i < len; i = i + 1) {
-                  var cb = cbs[i];
-                  if (isFunction(cb)) {
-                     cb();
+            load(
+               config.protocol,
+               newConfig.static_servers || newConfig.domains,
+               newConfig[type] || newConfig.path,
+               null,
+               function (err) {
+                  if (err) {
+                     status[type] = 'fail';
+                     throwError('networkError', config);
+                  } else {
+                     status[type] = 'loaded';
+                     var cbs = callbacks[type];
+                     for (var i = 0, len = cbs.length; i < len; i = i + 1) {
+                        var cb = cbs[i];
+                        if (isFunction(cb)) {
+                           cb();
+                        }
+                     }
+                     callbacks[type] = [];
                   }
                }
-               callbacks[type] = [];
-            }
-         });
-      } else if (s === "loaded") {
-         init();
-      } else if (s === "fail") {
-         throwError('networkError', config);
-      } else if (s === "loading") {
-         callbacks[type].push(init);
+            );
+         } else if (s === 'loaded') {
+            init();
+         } else if (s === 'fail') {
+            throwError('networkError', config);
+         } else if (s === 'loading') {
+            callbacks[type].push(init);
+         }
       }
-   });
-
-};
+   );
+}

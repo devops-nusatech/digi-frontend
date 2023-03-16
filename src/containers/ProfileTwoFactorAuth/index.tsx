@@ -5,7 +5,8 @@ import { FormattedMessage } from 'react-intl';
 
 export const ProfileTwoFactorAuth = props => {
    const { is2faEnabled = false } = props;
-   const className = is2faEnabled ? 'pg-profile-page__label-value__enabled'
+   const className = is2faEnabled
+      ? 'pg-profile-page__label-value__enabled'
       : 'pg-profile-page__label-value__disabled';
 
    const handleToggle2fa = () => {
@@ -21,8 +22,11 @@ export const ProfileTwoFactorAuth = props => {
                <FormattedMessage id="page.body.profile.header.account.content.twoFactorAuthentication" />
             </div>
             <span className={className}>
-               {is2faEnabled ? <FormattedMessage id="page.body.profile.header.account.content.twoFactorAuthentication.message.enable" />
-                  : <FormattedMessage id="page.body.profile.header.account.content.twoFactorAuthentication.message.disable" />}
+               {is2faEnabled ? (
+                  <FormattedMessage id="page.body.profile.header.account.content.twoFactorAuthentication.message.enable" />
+               ) : (
+                  <FormattedMessage id="page.body.profile.header.account.content.twoFactorAuthentication.message.disable" />
+               )}
             </span>
          </label>
          <Form>

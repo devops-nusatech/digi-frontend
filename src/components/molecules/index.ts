@@ -11,7 +11,7 @@ export { FormLogin } from './FormLogin';
 export * from './FormRegister';
 export * from './FormRegisterKu';
 export { FormForgotPassword } from './FormForgotPassword';
-export { LayoutAuth } from './LayoutAuth'
+export { LayoutAuth } from './LayoutAuth';
 
 export { PasswordStrengthBar } from './PasswordStrengthBar';
 export { PasswordStrengthInfo } from './PasswordStrengthInfo';

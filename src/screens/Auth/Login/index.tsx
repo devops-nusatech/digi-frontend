@@ -1,12 +1,22 @@
 import React, { Component, ComponentClass } from 'react';
 import { compose } from 'redux';
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
+import {
+   connect,
+   MapDispatchToPropsFunction,
+   MapStateToProps,
+} from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { IntlProps } from '../../..';
 import { captchaLogin } from 'api';
-import { EMAIL_REGEX, ERROR_EMPTY_PASSWORD, ERROR_INVALID_EMAIL, PASSWORD_REGEX, setDocumentTitle } from 'helpers';
+import {
+   EMAIL_REGEX,
+   ERROR_EMPTY_PASSWORD,
+   ERROR_INVALID_EMAIL,
+   PASSWORD_REGEX,
+   setDocumentTitle,
+} from 'helpers';
 import {
    Configs,
    GeetestCaptchaResponse,
@@ -85,8 +95,11 @@ class LoginClass extends Component<Props, LoginState> {
    private geetestCaptchaRef;
 
    public state = {
-      email: (this.props.location.state && this.props.location.state.email) || '',
-      password: (this.props.location.state && this.props.location.state.password) || '',
+      email:
+         (this.props.location.state && this.props.location.state.email) || '',
+      password:
+         (this.props.location.state && this.props.location.state.password) ||
+         '',
       emailError: '',
       emailFocused: false,
       passwordError: '',
@@ -94,7 +107,7 @@ class LoginClass extends Component<Props, LoginState> {
       otpCode: '',
       error2fa: '',
       codeFocused: false,
-   }
+   };
 
    public componentDidMount() {
       setDocumentTitle('Login');
@@ -102,7 +115,11 @@ class LoginClass extends Component<Props, LoginState> {
       this.props.signUpRequireVerification({ requireVerification: false });
    }
 
-   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<LoginState>, snapshot?: any) {
+   public componentDidUpdate(
+      prevProps: Readonly<Props>,
+      prevState: Readonly<LoginState>,
+      snapshot?: any
+   ) {
       const { otpCode } = this.state;
       if (!prevState.otpCode && otpCode.length === 6) {
          this.handle2FASignIn();
@@ -123,8 +140,8 @@ class LoginClass extends Component<Props, LoginState> {
       }
 
       if (nextProps.requireEmailVerification) {
-         push('/email-verification', { email })
-      };
+         push('/email-verification', { email });
+      }
 
       // if (captcha_type !== 'none' && captchaLogin() && error && !require2FA) {
       //    resetCaptchaState();
@@ -135,7 +152,9 @@ class LoginClass extends Component<Props, LoginState> {
       this.props.resetCaptchaState();
    }
 
-   public renderCaptcha = () => <Captcha geetestCaptchaRef={this.geetestCaptchaRef} />;
+   public renderCaptcha = () => (
+      <Captcha geetestCaptchaRef={this.geetestCaptchaRef} />
+   );
 
    public render() {
       const { require2FA } = this.props;
@@ -147,24 +166,25 @@ class LoginClass extends Component<Props, LoginState> {
       const { otpCode, error2fa, codeFocused } = this.state;
       const translate = (id: string) => this.props.intl.formatMessage({ id });
 
-      return <TFA
-         isLoading={isLoading}
-         onSubmit={this.handle2FASignIn}
-         title={translate('page.auth.2fa.title')}
-         subTitle={translate('page.auth.2fa.subtitle')}
-         buttonLabel={translate('page.body.kyc.next')}
-         modalTitle={translate('page.auth.2fa.modal.title')}
-         modalButton={translate('page.auth.2fa.modal.button')}
-         // message={this.props.intl.formatMessage({ id: 'page.password2fa.message' })}
-         codeFocused={codeFocused}
-         otpCode={otpCode}
-         error={error2fa}
-         handleOtpCodeChange={this.handleChangeOtpCode}
-         handleChangeFocusField={this.handle2faFocus}
-         handleClose2fa={this.handleClose}
-      />
-
-   }
+      return (
+         <TFA
+            isLoading={isLoading}
+            onSubmit={this.handle2FASignIn}
+            title={translate('page.auth.2fa.title')}
+            subTitle={translate('page.auth.2fa.subtitle')}
+            buttonLabel={translate('page.body.kyc.next')}
+            modalTitle={translate('page.auth.2fa.modal.title')}
+            modalButton={translate('page.auth.2fa.modal.button')}
+            // message={this.props.intl.formatMessage({ id: 'page.password2fa.message' })}
+            codeFocused={codeFocused}
+            otpCode={otpCode}
+            error={error2fa}
+            handleOtpCodeChange={this.handleChangeOtpCode}
+            handleChangeFocusField={this.handle2faFocus}
+            handleClose2fa={this.handleClose}
+         />
+      );
+   };
 
    private renderSignInForm = () => {
       const {
@@ -176,9 +196,17 @@ class LoginClass extends Component<Props, LoginState> {
       } = this.props;
 
       const {
-         email, emailError, emailFocused, password, passwordError, passwordFocused
+         email,
+         emailError,
+         emailFocused,
+         password,
+         passwordError,
+         passwordFocused,
       } = this.state;
-      const { intl: { formatMessage }, captchaLoading } = this.props;
+      const {
+         intl: { formatMessage },
+         captchaLoading,
+      } = this.props;
 
       return (
          <FormLogin
@@ -192,13 +220,19 @@ class LoginClass extends Component<Props, LoginState> {
             password={password}
             passwordError={passwordError}
             passwordFocused={passwordFocused}
-            passwordPlaceholder={formatMessage({ id: 'page.header.signIn.password' })}
+            passwordPlaceholder={formatMessage({
+               id: 'page.header.signIn.password',
+            })}
             labelSignIn={formatMessage({ id: 'page.header.signIn' })}
             labelSignUp={formatMessage({ id: 'page.header.signUp' })}
             emailLabel={formatMessage({ id: 'page.header.signIn.email' })}
             passwordLabel={formatMessage({ id: 'page.header.signIn.password' })}
-            receiveConfirmationLabel={formatMessage({ id: 'page.header.signIn.receiveConfirmation' })}
-            forgotPasswordLabel={formatMessage({ id: 'page.header.signIn.forgotPassword' })}
+            receiveConfirmationLabel={formatMessage({
+               id: 'page.header.signIn.receiveConfirmation',
+            })}
+            forgotPasswordLabel={formatMessage({
+               id: 'page.header.signIn.forgotPassword',
+            })}
             isLoading={isLoading || captchaLoading}
             onForgotPassword={this.forgotPassword}
             onSignUp={this.handleSignUp}
@@ -215,13 +249,16 @@ class LoginClass extends Component<Props, LoginState> {
             geetestCaptchaSuccess={geetestCaptchaSuccess}
             captcha_response={captcha_response}
          />
-      )
-
-   }
+      );
+   };
 
    private handle2FASignIn = () => {
       const { email, password, otpCode } = this.state;
-      const { configs: { captcha_type }, captcha_response, signIn } = this.props;
+      const {
+         configs: { captcha_type },
+         captcha_response,
+         signIn,
+      } = this.props;
 
       if (!otpCode) {
          this.setState({
@@ -236,11 +273,14 @@ class LoginClass extends Component<Props, LoginState> {
       }
    };
 
-   private handleChangeOtpCode = (value: string) => this.setState({ error2fa: '', otpCode: value });
+   private handleChangeOtpCode = (value: string) =>
+      this.setState({ error2fa: '', otpCode: value });
 
-   private handle2faFocus = () => this.setState(prev => ({ codeFocused: !prev.codeFocused }));
+   private handle2faFocus = () =>
+      this.setState(prev => ({ codeFocused: !prev.codeFocused }));
 
-   private handleClose = () => this.props.signInRequire2FA({ require2fa: false });
+   private handleClose = () =>
+      this.props.signInRequire2FA({ require2fa: false });
 
    private forgotPassword = () => this.props.history.push('/forgot_password');
 
@@ -248,7 +288,10 @@ class LoginClass extends Component<Props, LoginState> {
 
    private handleSignIn = () => {
       const { email, password } = this.state;
-      const { configs: { captcha_type }, captcha_response } = this.props;
+      const {
+         configs: { captcha_type },
+         captcha_response,
+      } = this.props;
 
       if (captcha_type !== 'none' && captchaLogin()) {
          this.props.signIn({ email, password, captcha_response });
@@ -280,7 +323,9 @@ class LoginClass extends Component<Props, LoginState> {
 
       if (!isEmailValid) {
          this.setState({
-            emailError: this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL }),
+            emailError: this.props.intl.formatMessage({
+               id: ERROR_INVALID_EMAIL,
+            }),
             passwordError: '',
          });
          return;
@@ -288,21 +333,33 @@ class LoginClass extends Component<Props, LoginState> {
       if (!password) {
          this.setState({
             emailError: '',
-            passwordError: this.props.intl.formatMessage({ id: ERROR_EMPTY_PASSWORD }),
+            passwordError: this.props.intl.formatMessage({
+               id: ERROR_EMPTY_PASSWORD,
+            }),
          });
          return;
       }
    };
 
-   private refreshError = () => this.setState({ emailError: '', passwordError: '' });
+   private refreshError = () =>
+      this.setState({ emailError: '', passwordError: '' });
 
-   private resetEmail = () => this.setState({ email: '', emailFocused: true, emailError: 'Email must be filled' });
+   private resetEmail = () =>
+      this.setState({
+         email: '',
+         emailFocused: true,
+         emailError: 'Email must be filled',
+      });
 
    private handleChangeEmailValue = (email: string) => {
       const isEmailValid = email.match(EMAIL_REGEX);
       this.setState({
          email,
-         emailError: !email.length ? 'Email must be filled' : (email.length && !isEmailValid) ? this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL }) : ''
+         emailError: !email.length
+            ? 'Email must be filled'
+            : email.length && !isEmailValid
+            ? this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL })
+            : '',
       });
    };
 
@@ -310,10 +367,13 @@ class LoginClass extends Component<Props, LoginState> {
       const isPasswordValid = password.match(PASSWORD_REGEX);
       this.setState({
          password,
-         passwordError: !password.length ? 'Password must be filled' : !isPasswordValid ? this.props.intl.formatMessage({ id: ERROR_EMPTY_PASSWORD }) : ''
-      })
-   }
-
+         passwordError: !password.length
+            ? 'Password must be filled'
+            : !isPasswordValid
+            ? this.props.intl.formatMessage({ id: ERROR_EMPTY_PASSWORD })
+            : '',
+      });
+   };
 }
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
@@ -328,15 +388,18 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
-   captchaLoading: selectCaptchaDataObjectLoading(state)
+   captchaLoading: selectCaptchaDataObjectLoading(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    signIn: data => dispatch(signIn(data)),
    signInError: error => dispatch(signInError(error)),
    signInRequire2FA: payload => dispatch(signInRequire2FA(payload)),
    resetCaptchaState: () => dispatch(resetCaptchaState()),
-   signUpRequireVerification: data => dispatch(signUpRequireVerification(data))
+   signUpRequireVerification: data => dispatch(signUpRequireVerification(data)),
 });
 
 export const Login = compose(

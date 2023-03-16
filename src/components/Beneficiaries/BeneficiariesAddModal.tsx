@@ -19,7 +19,6 @@ interface Props {
    isOpenAddressModal: boolean;
 }
 
-
 const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
    const [coinAddress, setCoinAddress] = React.useState('');
    const [coinAddressValid, setCoinAddressValid] = React.useState(false);
@@ -27,24 +26,35 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
    const [coinDescription, setCoinDescription] = React.useState('');
    const [coinDestinationTag, setCoinDestinationTag] = React.useState('');
    const [coinAddressFocused, setCoinAddressFocused] = React.useState(false);
-   const [coinBeneficiaryNameFocused, setCoinBeneficiaryNameFocused] = React.useState(false);
-   const [coinDescriptionFocused, setCoinDescriptionFocused] = React.useState(false);
-   const [coinDestinationTagFocused, setCoinDestinationTagFocused] = React.useState(false);
+   const [coinBeneficiaryNameFocused, setCoinBeneficiaryNameFocused] =
+      React.useState(false);
+   const [coinDescriptionFocused, setCoinDescriptionFocused] =
+      React.useState(false);
+   const [coinDestinationTagFocused, setCoinDestinationTagFocused] =
+      React.useState(false);
 
    const [fiatName, setFiatName] = React.useState('');
    const [fiatFullName, setFiatFullName] = React.useState('');
    const [fiatAccountNumber, setFiatAccountNumber] = React.useState('');
    const [fiatBankName, setFiatBankName] = React.useState('');
    const [fiatBankSwiftCode, setFiatBankSwiftCode] = React.useState('');
-   const [fiatIntermediaryBankName, setFiatIntermediaryBankName] = React.useState('');
-   const [fiatIntermediaryBankSwiftCode, setFiatIntermediaryBankSwiftCode] = React.useState('');
+   const [fiatIntermediaryBankName, setFiatIntermediaryBankName] =
+      React.useState('');
+   const [fiatIntermediaryBankSwiftCode, setFiatIntermediaryBankSwiftCode] =
+      React.useState('');
    const [fiatNameFocused, setFiatNameFocused] = React.useState(false);
    const [fiatFullNameFocused, setFiatFullNameFocused] = React.useState(false);
-   const [fiatAccountNumberFocused, setFiatAccountNumberFocused] = React.useState(false);
+   const [fiatAccountNumberFocused, setFiatAccountNumberFocused] =
+      React.useState(false);
    const [fiatBankNameFocused, setFiatBankNameFocused] = React.useState(false);
-   const [fiatBankSwiftCodeFocused, setFiatBankSwiftCodeFocused] = React.useState(false);
-   const [fiatIntermediaryBankNameFocused, setFiatIntermediaryBankNameFocused] = React.useState(false);
-   const [fiatIntermediaryBankSwiftCodeFocused, setFiatIntermediaryBankSwiftCodeFocused] = React.useState(false);
+   const [fiatBankSwiftCodeFocused, setFiatBankSwiftCodeFocused] =
+      React.useState(false);
+   const [fiatIntermediaryBankNameFocused, setFiatIntermediaryBankNameFocused] =
+      React.useState(false);
+   const [
+      fiatIntermediaryBankSwiftCodeFocused,
+      setFiatIntermediaryBankSwiftCodeFocused,
+   ] = React.useState(false);
 
    const { type, handleToggleAddAddressModal, currency } = props;
    const { formatMessage } = useIntl();
@@ -81,21 +91,26 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
 
-   const handleClickToggleAddAddressModal = React.useCallback((clear?: boolean) => () => {
-      handleToggleAddAddressModal();
+   const handleClickToggleAddAddressModal = React.useCallback(
+      (clear?: boolean) => () => {
+         handleToggleAddAddressModal();
 
-      if (clear) {
-         handleClearModalsInputs();
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [handleToggleAddAddressModal]);
+         if (clear) {
+            handleClearModalsInputs();
+         }
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+      },
+      [handleToggleAddAddressModal]
+   );
 
    const renderAddAddressModalHeader = React.useMemo(() => {
       return (
          <div className="cr-email-form__options-group">
             <div className="cr-email-form__option">
                <div className="cr-email-form__option-inner">
-                  {formatMessage({ id: 'page.body.wallets.beneficiaries.addAddressModal.header' })}
+                  {formatMessage({
+                     id: 'page.body.wallets.beneficiaries.addAddressModal.header',
+                  })}
                   <span
                      className="pg-profile-page__close pg-profile-page__pull-right"
                      onClick={handleClickToggleAddAddressModal(true)}
@@ -107,7 +122,7 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [formatMessage]);
 
-   console.log('renderAddAddressModalHeader', renderAddAddressModalHeader)
+   console.log('renderAddAddressModalHeader', renderAddAddressModalHeader);
 
    const handleSubmitAddAddressCoinModal = React.useCallback(() => {
       const payload = {
@@ -115,7 +130,10 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
          blockchain_key: 'blockchain_key',
          name: coinBeneficiaryName,
          data: JSON.stringify({
-            address: (isRipple && coinDestinationTag ? `${coinAddress}?dt=${coinDestinationTag}` : coinAddress),
+            address:
+               isRipple && coinDestinationTag
+                  ? `${coinAddress}?dt=${coinDestinationTag}`
+                  : coinAddress,
          }),
          ...(coinDescription && { description: coinDescription }),
       };
@@ -125,127 +143,139 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [coinAddress, coinBeneficiaryName, coinDescription, currency]);
 
-   const getState = React.useCallback(key => {
-      switch (key) {
-         case 'coinAddress':
-            return coinAddress;
-         case 'coinBeneficiaryName':
-            return coinBeneficiaryName;
-         case 'coinDestinationTag':
-            return coinDestinationTag;
-         case 'coinDescription':
-            return coinDescription;
-         case 'coinAddressFocused':
-            return coinAddressFocused;
-         case 'coinBeneficiaryNameFocused':
-            return coinBeneficiaryNameFocused;
-         case 'coinDescriptionFocused':
-            return coinDescriptionFocused;
-         case 'coinDestinationTagFocused':
-            return coinDestinationTagFocused;
-         case 'fiatName':
-            return fiatName;
-         case 'fiatFullName':
-            return fiatFullName;
-         case 'fiatAccountNumber':
-            return fiatAccountNumber;
-         case 'fiatBankName':
-            return fiatBankName;
-         case 'fiatBankSwiftCode':
-            return fiatBankSwiftCode;
-         case 'fiatIntermediaryBankName':
-            return fiatIntermediaryBankName;
-         case 'fiatIntermediaryBankSwiftCode':
-            return fiatIntermediaryBankSwiftCode;
-         case 'fiatNameFocused':
-            return fiatNameFocused;
-         case 'fiatFullNameFocused':
-            return fiatFullNameFocused;
-         case 'fiatAccountNumberFocused':
-            return fiatAccountNumberFocused;
-         case 'fiatBankNameFocused':
-            return fiatBankNameFocused;
-         case 'fiatBankSwiftCodeFocused':
-            return fiatBankSwiftCodeFocused;
-         case 'fiatIntermediaryBankNameFocused':
-            return fiatIntermediaryBankNameFocused;
-         case 'fiatIntermediaryBankSwiftCodeFocused':
-            return fiatIntermediaryBankSwiftCodeFocused;
-         default:
-            return '';
-      }
-   }, [
-      coinAddress,
-      coinAddressFocused,
-      coinBeneficiaryName,
-      coinBeneficiaryNameFocused,
-      coinDescription,
-      coinDescriptionFocused,
-      coinDestinationTag,
-      coinDestinationTagFocused,
-      fiatAccountNumber,
-      fiatAccountNumberFocused,
-      fiatBankName,
-      fiatBankNameFocused,
-      fiatBankSwiftCode,
-      fiatBankSwiftCodeFocused,
-      fiatFullName,
-      fiatFullNameFocused,
-      fiatIntermediaryBankName,
-      fiatIntermediaryBankNameFocused,
-      fiatIntermediaryBankSwiftCode,
-      fiatIntermediaryBankSwiftCodeFocused,
-      fiatName,
-      fiatNameFocused,
-   ]);
+   const getState = React.useCallback(
+      key => {
+         switch (key) {
+            case 'coinAddress':
+               return coinAddress;
+            case 'coinBeneficiaryName':
+               return coinBeneficiaryName;
+            case 'coinDestinationTag':
+               return coinDestinationTag;
+            case 'coinDescription':
+               return coinDescription;
+            case 'coinAddressFocused':
+               return coinAddressFocused;
+            case 'coinBeneficiaryNameFocused':
+               return coinBeneficiaryNameFocused;
+            case 'coinDescriptionFocused':
+               return coinDescriptionFocused;
+            case 'coinDestinationTagFocused':
+               return coinDestinationTagFocused;
+            case 'fiatName':
+               return fiatName;
+            case 'fiatFullName':
+               return fiatFullName;
+            case 'fiatAccountNumber':
+               return fiatAccountNumber;
+            case 'fiatBankName':
+               return fiatBankName;
+            case 'fiatBankSwiftCode':
+               return fiatBankSwiftCode;
+            case 'fiatIntermediaryBankName':
+               return fiatIntermediaryBankName;
+            case 'fiatIntermediaryBankSwiftCode':
+               return fiatIntermediaryBankSwiftCode;
+            case 'fiatNameFocused':
+               return fiatNameFocused;
+            case 'fiatFullNameFocused':
+               return fiatFullNameFocused;
+            case 'fiatAccountNumberFocused':
+               return fiatAccountNumberFocused;
+            case 'fiatBankNameFocused':
+               return fiatBankNameFocused;
+            case 'fiatBankSwiftCodeFocused':
+               return fiatBankSwiftCodeFocused;
+            case 'fiatIntermediaryBankNameFocused':
+               return fiatIntermediaryBankNameFocused;
+            case 'fiatIntermediaryBankSwiftCodeFocused':
+               return fiatIntermediaryBankSwiftCodeFocused;
+            default:
+               return '';
+         }
+      },
+      [
+         coinAddress,
+         coinAddressFocused,
+         coinBeneficiaryName,
+         coinBeneficiaryNameFocused,
+         coinDescription,
+         coinDescriptionFocused,
+         coinDestinationTag,
+         coinDestinationTagFocused,
+         fiatAccountNumber,
+         fiatAccountNumberFocused,
+         fiatBankName,
+         fiatBankNameFocused,
+         fiatBankSwiftCode,
+         fiatBankSwiftCodeFocused,
+         fiatFullName,
+         fiatFullNameFocused,
+         fiatIntermediaryBankName,
+         fiatIntermediaryBankNameFocused,
+         fiatIntermediaryBankSwiftCode,
+         fiatIntermediaryBankSwiftCodeFocused,
+         fiatName,
+         fiatNameFocused,
+      ]
+   );
 
-   const validateCoinAddressFormat = React.useCallback((value: string) => {
-      const coinAddressValidator = validateBeneficiaryAddress.cryptocurrency(currency, true);
+   const validateCoinAddressFormat = React.useCallback(
+      (value: string) => {
+         const coinAddressValidator = validateBeneficiaryAddress.cryptocurrency(
+            currency,
+            true
+         );
 
-      setCoinAddressValid(coinAddressValidator.test(value.trim()));
-   }, [currency]);
+         setCoinAddressValid(coinAddressValidator.test(value.trim()));
+      },
+      [currency]
+   );
 
-   const handleChangeFieldValue = React.useCallback((key: string, value: string) => {
-      switch (key) {
-         case 'coinAddress':
-            setCoinAddress(value);
-            validateCoinAddressFormat(value);
-            break;
-         case 'coinBeneficiaryName':
-            setCoinBeneficiaryName(value);
-            break;
-         case 'coinDescription':
-            setCoinDescription(value);
-            break;
-         case 'coinDestinationTag':
-            setCoinDestinationTag(value);
-            break;
-         case 'fiatName':
-            setFiatName(value);
-            break;
-         case 'fiatFullName':
-            setFiatFullName(value);
-            break;
-         case 'fiatAccountNumber':
-            setFiatAccountNumber(value);
-            break;
-         case 'fiatBankName':
-            setFiatBankName(value);
-            break;
-         case 'fiatBankSwiftCode':
-            setFiatBankSwiftCode(value);
-            break;
-         case 'fiatIntermediaryBankName':
-            setFiatIntermediaryBankName(value);
-            break;
-         case 'fiatIntermediaryBankSwiftCode':
-            setFiatIntermediaryBankSwiftCode(value);
-            break;
-         default:
-            break;
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, []);
+   const handleChangeFieldValue = React.useCallback(
+      (key: string, value: string) => {
+         switch (key) {
+            case 'coinAddress':
+               setCoinAddress(value);
+               validateCoinAddressFormat(value);
+               break;
+            case 'coinBeneficiaryName':
+               setCoinBeneficiaryName(value);
+               break;
+            case 'coinDescription':
+               setCoinDescription(value);
+               break;
+            case 'coinDestinationTag':
+               setCoinDestinationTag(value);
+               break;
+            case 'fiatName':
+               setFiatName(value);
+               break;
+            case 'fiatFullName':
+               setFiatFullName(value);
+               break;
+            case 'fiatAccountNumber':
+               setFiatAccountNumber(value);
+               break;
+            case 'fiatBankName':
+               setFiatBankName(value);
+               break;
+            case 'fiatBankSwiftCode':
+               setFiatBankSwiftCode(value);
+               break;
+            case 'fiatIntermediaryBankName':
+               setFiatIntermediaryBankName(value);
+               break;
+            case 'fiatIntermediaryBankSwiftCode':
+               setFiatIntermediaryBankSwiftCode(value);
+               break;
+            default:
+               break;
+         }
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+      },
+      []
+   );
 
    const handleChangeFieldFocus = React.useCallback((key: string) => {
       switch (key) {
@@ -287,32 +317,49 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
       }
    }, []);
 
-   const renderAddAddressModalBodyItem = React.useCallback((field: string, optional?: boolean) => {
-      const focusedClass = classnames('cr-email-form__group', {
-         'cr-email-form__group--focused': getState(`${field}Focused`),
-         'cr-email-form__group--optional': optional,
-      });
+   const renderAddAddressModalBodyItem = React.useCallback(
+      (field: string, optional?: boolean) => {
+         const focusedClass = classnames('cr-email-form__group', {
+            'cr-email-form__group--focused': getState(`${field}Focused`),
+            'cr-email-form__group--optional': optional,
+         });
 
-      return (
-         <div key={field} className={focusedClass}>
-            <InputGroup
-               type="text"
-               label={formatMessage({ id: `page.body.wallets.beneficiaries.addAddressModal.body.${field}` })}
-               // placeholder={formatMessage({ id: `page.body.wallets.beneficiaries.addAddressModal.body.${field}` })}
-               value={String(getState(field))}
-               onChange={value => handleChangeFieldValue(field, value)}
-               onFocus={() => handleChangeFieldFocus(`${field}Focused`)}
-               autoFocus={field === 'coinAddress' || field === 'fiatName'}
-            />
+         return (
+            <div
+               key={field}
+               className={focusedClass}>
+               <InputGroup
+                  type="text"
+                  label={formatMessage({
+                     id: `page.body.wallets.beneficiaries.addAddressModal.body.${field}`,
+                  })}
+                  // placeholder={formatMessage({ id: `page.body.wallets.beneficiaries.addAddressModal.body.${field}` })}
+                  value={String(getState(field))}
+                  onChange={value => handleChangeFieldValue(field, value)}
+                  onFocus={() => handleChangeFieldFocus(`${field}Focused`)}
+                  autoFocus={field === 'coinAddress' || field === 'fiatName'}
+               />
+            </div>
+         );
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+      },
+      [formatMessage, getState]
+   );
+
+   const renderInvalidAddressMessage = React.useMemo(
+      () => (
+         <div className="!mt-3 text-x font-medium leading-relaxed text-primary4">
+            {formatMessage({
+               id: 'page.body.wallets.beneficiaries.addAddressModal.body.invalidAddress',
+            })}
          </div>
-      );
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [formatMessage, getState]);
-
-   const renderInvalidAddressMessage = React.useMemo(() => <div className="text-x leading-relaxed font-medium !mt-3 text-primary4">{formatMessage({ id: 'page.body.wallets.beneficiaries.addAddressModal.body.invalidAddress' })}</div>, [coinAddress]);
+      ),
+      [coinAddress]
+   );
 
    const renderAddAddressModalCryptoBody = React.useMemo(() => {
-      const isDisabled = !coinAddress || !coinBeneficiaryName || !coinAddressValid;
+      const isDisabled =
+         !coinAddress || !coinBeneficiaryName || !coinAddressValid;
 
       return (
          <div className="space-y-8">
@@ -320,9 +367,12 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
             {!coinAddressValid && coinAddress && renderInvalidAddressMessage}
             {renderAddAddressModalBodyItem('coinBeneficiaryName')}
             {renderAddAddressModalBodyItem('coinDescription', true)}
-            {isRipple && renderAddAddressModalBodyItem('coinDestinationTag', true)}
+            {isRipple &&
+               renderAddAddressModalBodyItem('coinDestinationTag', true)}
             <Button
-               text={formatMessage({ id: 'page.body.wallets.beneficiaries.addAddressModal.body.button' })}
+               text={formatMessage({
+                  id: 'page.body.wallets.beneficiaries.addAddressModal.body.button',
+               })}
                width="full"
                disabled={isDisabled}
                onClick={handleSubmitAddAddressCoinModal}
@@ -338,8 +388,12 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
          account_number: fiatAccountNumber,
          bank_name: fiatBankName,
          ...(fiatBankSwiftCode && { bank_swift_code: fiatBankSwiftCode }),
-         ...(fiatIntermediaryBankName && { intermediary_bank_name: fiatIntermediaryBankName }),
-         ...(fiatIntermediaryBankSwiftCode && { intermediary_bank_swift_code: fiatIntermediaryBankSwiftCode }),
+         ...(fiatIntermediaryBankName && {
+            intermediary_bank_name: fiatIntermediaryBankName,
+         }),
+         ...(fiatIntermediaryBankSwiftCode && {
+            intermediary_bank_swift_code: fiatIntermediaryBankSwiftCode,
+         }),
       };
 
       const payload = {
@@ -363,7 +417,8 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
    ]);
 
    const renderAddAddressModalFiatBody = React.useMemo(() => {
-      const isDisabled = !fiatName || !fiatFullName || !fiatAccountNumber || !fiatBankName;
+      const isDisabled =
+         !fiatName || !fiatFullName || !fiatAccountNumber || !fiatBankName;
 
       return (
          <div className="cr-email-form__form-content">
@@ -373,10 +428,15 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
             {renderAddAddressModalBodyItem('fiatBankName')}
             {renderAddAddressModalBodyItem('fiatBankSwiftCode', true)}
             {renderAddAddressModalBodyItem('fiatIntermediaryBankName', true)}
-            {renderAddAddressModalBodyItem('fiatIntermediaryBankSwiftCode', true)}
+            {renderAddAddressModalBodyItem(
+               'fiatIntermediaryBankSwiftCode',
+               true
+            )}
             <div className="cr-email-form__button-wrapper">
                <Button
-                  text={formatMessage({ id: 'page.body.wallets.beneficiaries.addAddressModal.body.button' })}
+                  text={formatMessage({
+                     id: 'page.body.wallets.beneficiaries.addAddressModal.body.button',
+                  })}
                   width="full"
                   disabled={isDisabled}
                   onClick={handleSubmitAddAddressFiatModal}
@@ -408,31 +468,32 @@ const BeneficiariesAddModalComponent: React.FC<Props> = (props: Props) => {
             close={handleToggleAddAddressModal}
             show={props.isOpenAddressModal}
             zIndexBackdrop={1045}
-            zIndexContent={1046}
-         >
+            zIndexContent={1046}>
             <div className={addModalClass}>
                {/* {renderAddAddressModalHeader} */}
-               {type === 'coin' ? renderAddAddressModalCryptoBody : renderAddAddressModalFiatBody}
+               {type === 'coin'
+                  ? renderAddAddressModalCryptoBody
+                  : renderAddAddressModalFiatBody}
             </div>
          </Portal>
       );
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [type, isMobileDevice, getState]);
 
-   return (
-      isMobileDevice ?
-         <Modal
-            title={formatMessage({ id: 'page.body.wallets.beneficiaries.addAddressModal.header' })}
-            onClose={props.handleToggleAddAddressModal}
-            isOpen
-         >
-            {renderContent()}
-         </Modal> : renderContent()
+   return isMobileDevice ? (
+      <Modal
+         title={formatMessage({
+            id: 'page.body.wallets.beneficiaries.addAddressModal.header',
+         })}
+         onClose={props.handleToggleAddAddressModal}
+         isOpen>
+         {renderContent()}
+      </Modal>
+   ) : (
+      renderContent()
    );
 };
 
 const BeneficiariesAddModal = React.memo(BeneficiariesAddModalComponent);
 
-export {
-   BeneficiariesAddModal,
-};
+export { BeneficiariesAddModal };

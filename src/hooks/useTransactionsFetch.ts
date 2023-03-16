@@ -1,14 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 import {
    selectTransactions,
    selectTransactionsError,
    selectTransactionsloading,
-   transactionsFetch
+   transactionsFetch,
 } from 'modules';
-import {
-   useDispatch,
-   useSelector
-} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const useTransactionsFetch = () => {
    const transactions = useSelector(selectTransactions);
@@ -21,14 +18,11 @@ export const useTransactionsFetch = () => {
       if (!transactions.length) {
          dispatch(transactionsFetch());
       }
-   }, [
-      dispatch,
-      transactions
-   ]);
+   }, [dispatch, transactions]);
 
    return {
       transactions,
       transactionsLoading,
-      transactionsError
-   }
-}
+      transactionsError,
+   };
+};

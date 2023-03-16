@@ -53,9 +53,7 @@ export interface CombinedOrderBookProps {
    lastPrice: React.ReactNode;
 }
 
-
 export class CombinedOrderBook extends React.PureComponent<CombinedOrderBookProps> {
-
    public componentDidMount() {
       const scroll = document.getElementsByClassName('cr-order-book')[0];
       if (!this.props.isLarge && scroll) {
@@ -71,12 +69,10 @@ export class CombinedOrderBook extends React.PureComponent<CombinedOrderBookProp
    }
 
    public render() {
-      const {
-         isLarge,
-      } = this.props;
+      const { isLarge } = this.props;
 
       return (
-         <div className="cr-combined-order-book" >
+         <div className="cr-combined-order-book">
             {isLarge ? this.orderBookLarge() : this.orderBookSmall()}
          </div>
       );
@@ -155,9 +151,7 @@ export class CombinedOrderBook extends React.PureComponent<CombinedOrderBookProp
                   orderBookEntry={orderBookEntryAsks.reverse()}
                   onSelect={onSelectAsks}
                />
-               <div className="cr-combined-order-book__market">
-                  {lastPrice}
-               </div>
+               <div className="cr-combined-order-book__market">{lastPrice}</div>
                <OrderBook
                   side={'left'}
                   data={dataBids}

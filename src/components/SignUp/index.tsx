@@ -13,7 +13,10 @@ import {
    PASSWORD_REGEX,
    USERNAME_REGEX,
 } from '../../helpers';
-import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from '../../modules';
+import {
+   GeetestCaptchaResponse,
+   GeetestCaptchaV4Response,
+} from '../../modules';
 import { selectMobileDeviceState } from '../../modules/public/globalSettings';
 
 export interface SignUpFormProps {
@@ -61,7 +64,10 @@ export interface SignUpFormProps {
    renderCaptcha: JSX.Element | null;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    currentPasswordEntropy: number;
    minPasswordEntropy: number;
    passwordErrorFirstSolved: boolean;
@@ -128,9 +134,14 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
    const { formatMessage } = useIntl();
 
    const disableButton = React.useMemo((): boolean => {
-      if (!hasConfirmed || isLoading || !email.match(EMAIL_REGEX) || !password || !confirmPassword ||
-         (isUsernameEnabled() && !username.match(USERNAME_REGEX))) {
-
+      if (
+         !hasConfirmed ||
+         isLoading ||
+         !email.match(EMAIL_REGEX) ||
+         !password ||
+         !confirmPassword ||
+         (isUsernameEnabled() && !username.match(USERNAME_REGEX))
+      ) {
          return true;
       }
       if (captchaType === 'recaptcha' && !reCaptchaSuccess) {
@@ -210,7 +221,14 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
       const isPasswordValid = password.match(PASSWORD_REGEX);
       const isConfirmPasswordValid = password === confirmPassword;
 
-      return email && isEmailValid && password && isPasswordValid && confirmPassword && isConfirmPasswordValid;
+      return (
+         email &&
+         isEmailValid &&
+         password &&
+         isPasswordValid &&
+         confirmPassword &&
+         isConfirmPasswordValid
+      );
    }, [confirmPassword, email, password]);
 
    const handleClick = React.useCallback(
@@ -240,7 +258,9 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
    );
 
    const renderUsernameError = (nick: string) => {
-      return nick.length < 4 ? translate(ERROR_SHORT_USERNAME) : translate(ERROR_LONG_USERNAME);
+      return nick.length < 4
+         ? translate(ERROR_SHORT_USERNAME)
+         : translate(ERROR_LONG_USERNAME);
    };
 
    const renderLogIn = React.useCallback(() => {
@@ -248,7 +268,9 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
          <div className="pg-sign-up-screen__login">
             <span>
                {formatMessage({ id: 'page.header.signUp.alreadyRegistered' })}
-               <span onClick={() => history.push('/signin')} className="pg-sign-up-screen__login-button">
+               <span
+                  onClick={() => history.push('/signin')}
+                  className="pg-sign-up-screen__login-button">
                   {formatMessage({ id: 'page.mobile.header.signIn' })}
                </span>
             </span>
@@ -258,7 +280,9 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
 
    return (
       <form>
-         <div className="cr-sign-up-form" onKeyPress={handleEnterPress}>
+         <div
+            className="cr-sign-up-form"
+            onKeyPress={handleEnterPress}>
             {!isMobileDevice && (
                <div className="cr-sign-up-form__options-group">
                   <div className="cr-sign-up-form__option">
@@ -269,22 +293,30 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      </div>
                   </div>
                   <div className="cr-sign-up-form__option">
-                     <div className="cr-sign-up-form__option-inner __selected">{labelSignUp || 'Sign Up'}</div>
+                     <div className="cr-sign-up-form__option-inner __selected">
+                        {labelSignUp || 'Sign Up'}
+                     </div>
                   </div>
                </div>
             )}
             <div className="cr-sign-up-form__form-content">
                {image ? (
                   <h1 className="cr-sign-up-form__title">
-                     <img className="cr-sign-up-form__image" src={image} alt="logo" />
+                     <img
+                        className="cr-sign-up-form__image"
+                        src={image}
+                        alt="logo"
+                     />
                   </h1>
                ) : null}
                {isUsernameEnabled() ? (
                   <div
                      className={cr('cr-sign-up-form__group', {
                         'cr-sign-up-form__group--focused': usernameFocused,
-                        'cr-sign-up-form__group--errored': username.length &&
-                           !usernameFocused && !username.match(USERNAME_REGEX),
+                        'cr-sign-up-form__group--errored':
+                           username.length &&
+                           !usernameFocused &&
+                           !username.match(USERNAME_REGEX),
                      })}>
                      <CustomInput
                         type="text"
@@ -298,7 +330,9 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                         classNameInput="cr-sign-up-form__input"
                         autoFocus={!isMobileDevice}
                      />
-                     {!username.match(USERNAME_REGEX) && !usernameFocused && username.length ? (
+                     {!username.match(USERNAME_REGEX) &&
+                     !usernameFocused &&
+                     username.length ? (
                         <div className="cr-sign-up-form__error">
                            {renderUsernameError(username)}
                         </div>
@@ -321,7 +355,9 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      classNameInput="cr-sign-up-form__input"
                      autoFocus={!isUsernameEnabled() && !isMobileDevice}
                   />
-                  {emailError && <div className="cr-sign-up-form__error">{emailError}</div>}
+                  {emailError && (
+                     <div className="cr-sign-up-form__error">{emailError}</div>
+                  )}
                </div>
                {renderPasswordInput()}
                <div
@@ -340,7 +376,11 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      classNameInput="cr-sign-up-form__input"
                      autoFocus={false}
                   />
-                  {confirmationError && <div className={'cr-sign-up-form__error'}>{confirmationError}</div>}
+                  {confirmationError && (
+                     <div className={'cr-sign-up-form__error'}>
+                        {confirmationError}
+                     </div>
+                  )}
                </div>
                <div
                   className={cr('cr-sign-up-form__group', {
@@ -359,13 +399,19 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      autoFocus={false}
                   />
                </div>
-               <Form className="cr-sign-up-form__group" onClick={clickCheckBox}>
+               <Form
+                  className="cr-sign-up-form__group"
+                  onClick={clickCheckBox}>
                   <Form.Check
                      type="checkbox"
                      custom
                      id="agreeWithTerms"
                      checked={hasConfirmed}
-                     label={termsMessage ? termsMessage : 'I  agree all statements in terms of service'}
+                     label={
+                        termsMessage
+                           ? termsMessage
+                           : 'I  agree all statements in terms of service'
+                     }
                   />
                </Form>
                {renderCaptcha}
@@ -374,10 +420,14 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      block={true}
                      type="button"
                      disabled={disableButton}
-                     onClick={(e) => handleClick(e as any)}
+                     onClick={e => handleClick(e as any)}
                      size="lg"
                      variant="primary">
-                     {isLoading ? 'Loading...' : labelSignUp ? labelSignUp : 'Sign up'}
+                     {isLoading
+                        ? 'Loading...'
+                        : labelSignUp
+                        ? labelSignUp
+                        : 'Sign up'}
                   </Button>
                </div>
                {isMobileDevice && renderLogIn()}

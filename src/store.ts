@@ -9,28 +9,21 @@ const sagaMiddleware = createSagaMiddleware();
 const rangerMiddleware = createSagaMiddleware();
 
 // tslint:disable-next-line:no-any
-const composeEnhancer: typeof compose = (window as any)
-    .__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancer: typeof compose =
+   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const sentryMiddleware = !sentryEnabled ? undefined : createSentryMiddleware(Sentry, {});
+const sentryMiddleware = !sentryEnabled
+   ? undefined
+   : createSentryMiddleware(Sentry, {});
 
 const store = createStore(
-    rootReducer,
-    composeEnhancer(
-        applyMiddleware(
-            sagaMiddleware,
-            rangerMiddleware,
-            sentryMiddleware,
-        ),
-    ),
+   rootReducer,
+   composeEnhancer(
+      applyMiddleware(sagaMiddleware, rangerMiddleware, sentryMiddleware)
+   )
 );
 
-
-export {
-    store,
-    sagaMiddleware,
-    rangerMiddleware,
-};
+export { store, sagaMiddleware, rangerMiddleware };
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -1,9 +1,4 @@
-import React, {
-   FC,
-   FunctionComponent,
-   useEffect,
-   useState
-} from 'react';
+import React, { FC, FunctionComponent, useEffect, useState } from 'react';
 import { FilterPrice } from 'filters';
 import { IntlProps } from 'index';
 import {
@@ -23,7 +18,7 @@ import {
    selectWallets,
    setCurrentPrice,
    Wallet,
-   walletsFetch
+   walletsFetch,
 } from 'modules';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -44,8 +39,8 @@ interface ReduxProps {
    marketTickers: {
       [key: string]: {
          last: string;
-      }
-   },
+      };
+   };
    bids: string[][];
    asks: string[][];
    wallets: Wallet[];
@@ -96,11 +91,10 @@ const TradingOrderV2FC: FC<TradingOrderV2Props> = ({
 
    const [state, setState] = useState<OrderState>({
       price: undefined,
-      ord_type: 'limit'
+      ord_type: 'limit',
    });
 
    const { price } = state;
-
 
    // const handleSubmit = (value: OrderPropsV2) => {
    //    if (!currentMarket) {
@@ -200,11 +194,7 @@ const TradingOrderV2FC: FC<TradingOrderV2Props> = ({
    //    }
    // };
 
-   return (
-      <div>
-
-      </div>
-   );
+   return <div></div>;
 };
 
 const mapStateToProps = (state: RootState) => ({
@@ -219,7 +209,10 @@ const mapStateToProps = (state: RootState) => ({
    currentPrice: selectCurrentPrice(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    alertPush: payload => dispatch(alertPush(payload)),
    orderExecute: payload => dispatch(orderExecuteFetch(payload)),
    setCurrentPrice: payload => dispatch(setCurrentPrice(payload)),

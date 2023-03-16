@@ -3,11 +3,11 @@ import { WalletSidebar } from '../WalletSidebar';
 
 export const LayoutWallet: FC = ({ children }) => {
    return (
-      <div className="block lg:flex p-4 pt-8 lg:p-1 bg-neutral7 dark:bg-neutral1">
+      <div className="block bg-neutral7 p-4 pt-8 dark:bg-neutral1 lg:flex lg:p-1">
          <WalletSidebar />
-         <div className="grow h-auto lg:h-[calc(100vh-88px)] pl-0 lg:pl-1 overflow-auto">
+         <div className="h-auto grow overflow-auto pl-0 lg:h-[calc(100vh-88px)] lg:pl-1">
             {children}
          </div>
       </div>
-   )
-}
+   );
+};

@@ -33,71 +33,74 @@ import {
 } from 'assets';
 // import { imageIsExists } from 'helpers';
 
-export const renderCurrencyIcon = (currency: string = '', iconUrl: string = ''): string => {
+export const renderCurrencyIcon = (
+   currency: string = '',
+   iconUrl: string = ''
+): string => {
    switch (currency) {
       case 'btc':
-         return icBitcoin
+         return icBitcoin;
       case 'eth':
-         return icEthereum
+         return icEthereum;
       case 'xrp':
-         return icRipple
+         return icRipple;
       case 'bnb':
-         return icBnb
+         return icBnb;
       case 'bch':
-         return icBitcoinCash
+         return icBitcoinCash;
       case 'usdt':
-         return icTether
+         return icTether;
       case 'ada':
-         return icCardano
+         return icCardano;
       case 'link':
-         return icChainlink
+         return icChainlink;
       case 'dash':
-         return icDash
+         return icDash;
       case 'doge':
-         return icDogecoin
+         return icDogecoin;
       case 'eos':
-         return icEos
+         return icEos;
       case 'maid':
-         return icMaid
+         return icMaid;
       case 'xmr':
       case 'xmc':
-         return icMonero
+         return icMonero;
       case 'ont':
-         return icOntology
+         return icOntology;
       case 'dot':
-         return icPolkadot
+         return icPolkadot;
       case 'trx':
-         return icTron
+         return icTron;
       case 'uni':
-         return icUniswap
+         return icUniswap;
       case 'usdc':
-         return icUSDCoin
+         return icUSDCoin;
       case 'matic':
-         return icPolygon
+         return icPolygon;
       case 'jst':
-         return icJust
+         return icJust;
       case 'idr':
-         return icIdr
+         return icIdr;
       case 'etc':
-         return icETC
+         return icETC;
       case 'sol':
-         return icSOL
+         return icSOL;
       case 'atom':
-         return icATOM
+         return icATOM;
       case 'xlm':
-         return icXLM
+         return icXLM;
       case 'cake':
-         return icCAKE
+         return icCAKE;
       case 'sushi':
-         return icSUSHI
+         return icSUSHI;
       case 'sand':
-         return icSAND
+         return icSAND;
       case 'axs':
-         return icAXS
+         return icAXS;
       case '1inch':
-         return ic1INCH
+         return ic1INCH;
 
       default:
          return iconUrl || icLogo;
    }
-}
+};

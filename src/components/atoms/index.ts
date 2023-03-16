@@ -2,7 +2,7 @@ import InputOtpNew from './InputOTPNew';
 export { InputOtpNew };
 export { Button } from './Button';
 export { Input } from './Input';
-export { CountDown } from './CountDown'
+export { CountDown } from './CountDown';
 export { LoadingTable } from './LoadingTable';
 export * from './Confirm';
 export * from './InputOrder';

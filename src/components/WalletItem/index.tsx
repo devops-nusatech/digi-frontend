@@ -3,7 +3,6 @@ import { Wallet } from '../../modules';
 import { CryptoIcon } from '../CryptoIcon';
 import { Decimal } from '../Decimal';
 
-
 const style: React.CSSProperties = {
    display: 'flex',
    justifyContent: 'space-between',
@@ -14,7 +13,12 @@ const style: React.CSSProperties = {
  */
 const LockIcon = () => {
    return (
-      <svg width="11" height="13" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+         width="11"
+         height="13"
+         viewBox="0 0 13 15"
+         fill="none"
+         xmlns="http://www.w3.org/2000/svg">
          <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -25,45 +29,54 @@ const LockIcon = () => {
    );
 };
 
-
 /**
  * Component for displaying information about wallet, including address and amount of currency.
  */
 export const WalletItem: React.FunctionComponent<Wallet> = (props: Wallet) => {
-   const {
-      currency,
-      name,
-      balance,
-      locked,
-      fixed,
-      iconUrl,
-   } = props;
+   const { currency, name, balance, locked, fixed, iconUrl } = props;
 
    return (
       <div style={style}>
          <div className="cr-wallet-item__info">
             {iconUrl ? (
                <span className="cr-crypto-icon cr-wallet-item__icon">
-                  <img alt={currency.toUpperCase()} src={iconUrl} />
+                  <img
+                     alt={currency.toUpperCase()}
+                     src={iconUrl}
+                  />
                </span>
-            ) : (<CryptoIcon className="cr-wallet-item__icon" code={currency.toUpperCase()} />)}
+            ) : (
+               <CryptoIcon
+                  className="cr-wallet-item__icon"
+                  code={currency.toUpperCase()}
+               />
+            )}
             <div className="cr-wallet-item__description">
                <span>{currency}</span>
                <span>{name}</span>
             </div>
          </div>
          <span className="cr-wallet-item__balance">
-            <Decimal fixed={fixed} thousSep=",">{balance ? balance.toString() : '0'}</Decimal>&nbsp;
-            <span className="cr-wallet-item__currency">
-               {currency}
-            </span>
+            <Decimal
+               fixed={fixed}
+               thousSep=",">
+               {balance ? balance.toString() : '0'}
+            </Decimal>
+            &nbsp;
+            <span className="cr-wallet-item__currency">{currency}</span>
             <span className="cr-wallet-item__balance-locked">
-               {
-                  locked ? (
-                     <div className="cr-wallet-item__amount-locked">
-                        <LockIcon /> <Decimal fixed={fixed} thousSep=",">{locked.toString()}</Decimal>
-                     </div>) : ''
-               }
+               {locked ? (
+                  <div className="cr-wallet-item__amount-locked">
+                     <LockIcon />{' '}
+                     <Decimal
+                        fixed={fixed}
+                        thousSep=",">
+                        {locked.toString()}
+                     </Decimal>
+                  </div>
+               ) : (
+                  ''
+               )}
             </span>
          </span>
       </div>

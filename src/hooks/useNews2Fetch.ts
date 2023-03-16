@@ -9,12 +9,12 @@ export const useNews2Fetch = (limit?: number, tag?: string) => {
 
    useEffect(() => {
       if (navigator.onLine) {
-         dispatch(news2Fetch({ limit, tag }))
+         dispatch(news2Fetch({ limit, tag }));
       }
    }, [dispatch, navigator, tag]);
 
    return {
       newsLoadig,
-      news
-   }
-}
+      news,
+   };
+};

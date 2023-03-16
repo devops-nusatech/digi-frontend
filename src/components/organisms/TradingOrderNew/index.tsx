@@ -42,7 +42,7 @@ interface ReduxProps {
    marketTickers: {
       [key: string]: {
          last: string;
-      },
+      };
    };
    bids: string[][];
    asks: string[][];
@@ -94,7 +94,10 @@ class TradingOrderNewContainer extends React.PureComponent<Props, StoreProps> {
    }
 
    public componentDidUpdate() {
-      if (this.orderRef.current && this.state.width !== this.orderRef.current.clientWidth) {
+      if (
+         this.orderRef.current &&
+         this.state.width !== this.orderRef.current.clientWidth
+      ) {
          this.setState({
             width: this.orderRef.current.clientWidth,
          });
@@ -149,8 +152,12 @@ class TradingOrderNewContainer extends React.PureComponent<Props, StoreProps> {
                availableBase={this.getAvailableValue(walletBase)}
                availableQuote={this.getAvailableValue(walletQuote)}
                onSubmit={this.handleSubmit}
-               priceMarketBuy={Number((currentTicker || defaultCurrentTicker).last)}
-               priceMarketSell={Number((currentTicker || defaultCurrentTicker).last)}
+               priceMarketBuy={Number(
+                  (currentTicker || defaultCurrentTicker).last
+               )}
+               priceMarketSell={Number(
+                  (currentTicker || defaultCurrentTicker).last
+               )}
                priceLimit={priceLimit}
                to={currentMarket.base_unit}
                handleSendType={this.getOrderType}
@@ -163,7 +170,14 @@ class TradingOrderNewContainer extends React.PureComponent<Props, StoreProps> {
                isMobileDevice={isMobileDevice}
                translate={this.translate}
             />
-            {executeLoading && <div className="pg-order--loading"><Spinner animation="border" variant="primary" /></div>}
+            {executeLoading && (
+               <div className="pg-order--loading">
+                  <Spinner
+                     animation="border"
+                     variant="primary"
+                  />
+               </div>
+            )}
          </div>
       );
    }
@@ -175,13 +189,7 @@ class TradingOrderNewContainer extends React.PureComponent<Props, StoreProps> {
          return;
       }
 
-      const {
-         amount,
-         available,
-         orderType,
-         price,
-         type,
-      } = value;
+      const { amount, available, orderType, price, type } = value;
 
       this.props.setCurrentPrice(0);
 
@@ -192,18 +200,24 @@ class TradingOrderNewContainer extends React.PureComponent<Props, StoreProps> {
          ord_type: (orderType as string).toLowerCase(),
       };
 
-      const order = orderType === 'Limit' ? { ...resultData, price: price.toString() } : resultData;
+      const order =
+         orderType === 'Limit'
+            ? { ...resultData, price: price.toString() }
+            : resultData;
       let orderAllowed = true;
 
       if (+resultData.volume < +currentMarket.min_amount) {
          this.props.pushAlert({
-            message: [this.translate(
-               'error.order.create.minAmount',
-               {
-                  amount: Decimal.format(currentMarket.min_amount, currentMarket.amount_precision, ','),
+            message: [
+               this.translate('error.order.create.minAmount', {
+                  amount: Decimal.format(
+                     currentMarket.min_amount,
+                     currentMarket.amount_precision,
+                     ','
+                  ),
                   currency: currentMarket.base_unit.toUpperCase(),
-               },
-            )],
+               }),
+            ],
             type: 'error',
          });
 
@@ -212,13 +226,16 @@ class TradingOrderNewContainer extends React.PureComponent<Props, StoreProps> {
 
       if (+price < +currentMarket.min_price) {
          this.props.pushAlert({
-            message: [this.translate(
-               'error.order.create.minPrice',
-               {
-                  price: Decimal.format(currentMarket.min_price, currentMarket.price_precision, ','),
+            message: [
+               this.translate('error.order.create.minPrice', {
+                  price: Decimal.format(
+                     currentMarket.min_price,
+                     currentMarket.price_precision,
+                     ','
+                  ),
                   currency: currentMarket.quote_unit.toUpperCase(),
-               },
-            )],
+               }),
+            ],
             type: 'error',
          });
 
@@ -227,33 +244,36 @@ class TradingOrderNewContainer extends React.PureComponent<Props, StoreProps> {
 
       if (+currentMarket.max_price && +price > +currentMarket.max_price) {
          this.props.pushAlert({
-            message: [this.translate(
-               'error.order.create.maxPrice',
-               {
-                  price: Decimal.format(currentMarket.max_price, currentMarket.price_precision, ','),
+            message: [
+               this.translate('error.order.create.maxPrice', {
+                  price: Decimal.format(
+                     currentMarket.max_price,
+                     currentMarket.price_precision,
+                     ','
+                  ),
                   currency: currentMarket.quote_unit.toUpperCase(),
-               },
-            )],
+               }),
+            ],
             type: 'error',
          });
 
          orderAllowed = false;
       }
 
-      if ((+available < (+amount * +price) && order.side === 'buy') ||
-         (+available < +amount && order.side === 'sell')) {
+      if (
+         (+available < +amount * +price && order.side === 'buy') ||
+         (+available < +amount && order.side === 'sell')
+      ) {
          this.props.pushAlert({
-            message: [this.translate(
-               'error.order.create.available',
-               {
+            message: [
+               this.translate('error.order.create.available', {
                   available: formatWithSeparators(String(available), ','),
-                  currency: order.side === 'buy' ? (
-                     currentMarket.quote_unit.toUpperCase()
-                  ) : (
-                     currentMarket.base_unit.toUpperCase()
-                  ),
-               },
-            )],
+                  currency:
+                     order.side === 'buy'
+                        ? currentMarket.quote_unit.toUpperCase()
+                        : currentMarket.base_unit.toUpperCase(),
+               }),
+            ],
             type: 'error',
          });
 
@@ -288,11 +308,14 @@ class TradingOrderNewContainer extends React.PureComponent<Props, StoreProps> {
       this.props.setCurrentPrice(0);
    };
 
-   private translate = (id: string, value?: any) => this.props.intl.formatMessage({ id }, { ...value });
+   private translate = (id: string, value?: any) =>
+      this.props.intl.formatMessage({ id }, { ...value });
 
    private getOrderTypes = [
       this.translate('page.body.trade.header.newOrder.content.orderType.limit'),
-      this.translate('page.body.trade.header.newOrder.content.orderType.market'),
+      this.translate(
+         'page.body.trade.header.newOrder.content.orderType.market'
+      ),
    ];
 }
 
@@ -317,8 +340,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 // tslint:disable-next-line no-any
-const TradingOrderNew = injectIntl(connect(mapStateToProps, mapDispatchToProps)(TradingOrderNewContainer as any)) as any;
+const TradingOrderNew = injectIntl(
+   connect(mapStateToProps, mapDispatchToProps)(TradingOrderNewContainer as any)
+) as any;
 
-export {
-   TradingOrderNew,
-};
+export { TradingOrderNew };

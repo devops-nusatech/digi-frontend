@@ -1,11 +1,5 @@
-import {
-   useCallback,
-   useEffect
-} from 'react';
-import {
-   useDispatch,
-   useSelector
-} from 'react-redux';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
    BeneficiariesActivate,
    BeneficiariesCreate,
@@ -33,7 +27,7 @@ import {
    selectBeneficiariesFetchSuccess,
    selectBeneficiariesResendPinError,
    selectBeneficiariesResendPinLoading,
-   selectBeneficiariesResendPinSuccess
+   selectBeneficiariesResendPinSuccess,
 } from 'modules';
 
 export const useBeneficiaries = (currency_id?: string) => {
@@ -62,48 +56,47 @@ export const useBeneficiaries = (currency_id?: string) => {
    const resendSuccess = useSelector(selectBeneficiariesResendPinSuccess);
    const resendError = useSelector(selectBeneficiariesResendPinError);
 
-   const createBeneficiary = useCallback(({
-      currency,
-      blockchain_key,
-      name,
-      data,
-      description,
-   }: BeneficiariesCreate['payload']) => {
-      dispatch(beneficiariesCreate({
+   const createBeneficiary = useCallback(
+      ({
          currency,
          blockchain_key,
          name,
          data,
          description,
-      }));
-   }, [
-      dispatch,
-      beneficiariesCreate
-   ]);
+      }: BeneficiariesCreate['payload']) => {
+         dispatch(
+            beneficiariesCreate({
+               currency,
+               blockchain_key,
+               name,
+               data,
+               description,
+            })
+         );
+      },
+      [dispatch, beneficiariesCreate]
+   );
 
-   const activateBeneficiary = useCallback(({
-      id,
-      pin
-   }: BeneficiariesActivate['payload']) => {
-      dispatch(beneficiariesActivate({ id, pin }));
-   }, [
-      dispatch,
-      beneficiariesActivate
-   ]);
+   const activateBeneficiary = useCallback(
+      ({ id, pin }: BeneficiariesActivate['payload']) => {
+         dispatch(beneficiariesActivate({ id, pin }));
+      },
+      [dispatch, beneficiariesActivate]
+   );
 
-   const resendBeneficiary = useCallback(({ id }: BeneficiariesResendPin['payload']) => {
-      dispatch(beneficiariesResendPin({ id }));
-   }, [
-      dispatch,
-      beneficiariesResendPin,
-   ]);
+   const resendBeneficiary = useCallback(
+      ({ id }: BeneficiariesResendPin['payload']) => {
+         dispatch(beneficiariesResendPin({ id }));
+      },
+      [dispatch, beneficiariesResendPin]
+   );
 
-   const deleteBeneficiary = useCallback(({ id }: BeneficiariesDelete['payload']) => {
-      dispatch(beneficiariesDelete({ id }));
-   }, [
-      dispatch,
-      beneficiariesDelete,
-   ]);
+   const deleteBeneficiary = useCallback(
+      ({ id }: BeneficiariesDelete['payload']) => {
+         dispatch(beneficiariesDelete({ id }));
+      },
+      [dispatch, beneficiariesDelete]
+   );
 
    const fetchBeneficiaries = useCallback(() => {
       dispatch(
@@ -111,29 +104,17 @@ export const useBeneficiaries = (currency_id?: string) => {
             ? beneficiariesFetch({ currency_id })
             : beneficiariesFetch()
       );
-   }, [
-      currency_id,
-      dispatch,
-      beneficiariesFetch
-   ]);
+   }, [currency_id, dispatch, beneficiariesFetch]);
 
    useEffect(() => {
       fetchBeneficiaries();
    }, [dispatch]);
 
    useEffect(() => {
-      if (
-         activateSuccess ||
-         deleteSuccess
-      ) {
+      if (activateSuccess || deleteSuccess) {
          fetchBeneficiaries();
       }
-   }, [
-      dispatch,
-      activateSuccess,
-      deleteSuccess
-   ]);
-
+   }, [dispatch, activateSuccess, deleteSuccess]);
 
    return {
       beneficiaries,

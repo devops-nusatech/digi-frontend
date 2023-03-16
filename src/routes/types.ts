@@ -12,10 +12,13 @@ import {
    toggleChartRebuild,
    User,
    userFetch,
-   walletsReset
+   walletsReset,
 } from 'modules';
 import { rangerConnectFetch, RangerState } from 'modules/public/ranger';
-import { CustomizationDataInterface, customizationFetch } from 'modules/public/customization';
+import {
+   CustomizationDataInterface,
+   customizationFetch,
+} from 'modules/public/customization';
 
 export interface RouteProps extends RProps {
    component: ComponentType<any>;
@@ -63,4 +66,8 @@ export interface OwnProps {
    toggleChartRebuild: typeof toggleChartRebuild;
 }
 
-export type LayoutProps = ReduxProps & DispatchProps & LocationProps & IntlProps & OwnProps;
+export type LayoutProps = ReduxProps &
+   DispatchProps &
+   LocationProps &
+   IntlProps &
+   OwnProps;

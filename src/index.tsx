@@ -15,7 +15,6 @@ import { rootSaga } from './modules';
 import { rangerSagas } from './modules/public/ranger';
 import { rangerMiddleware, sagaMiddleware, store } from './store';
 
-
 if (!Intl.PluralRules) {
    require('@formatjs/intl-pluralrules/polyfill');
    require('@formatjs/intl-pluralrules/locale-data/en');
@@ -38,16 +37,27 @@ if (sentryEnabled()) {
    const organization = process.env.REACT_APP_SENTRY_ORGANIZATION;
    const project = process.env.REACT_APP_SENTRY_PROJECT;
 
-   if (key && key.length && organization && organization.length && project && project.length) {
-      Sentry.init({ dsn: `https://${key}@${organization}.ingest.sentry.io/${project}` });
+   if (
+      key &&
+      key.length &&
+      organization &&
+      organization.length &&
+      project &&
+      project.length
+   ) {
+      Sentry.init({
+         dsn: `https://${key}@${organization}.ingest.sentry.io/${project}`,
+      });
    }
 }
 
-const render = () => ReactDOM.render(
-   <Provider store={store}>
-      <App />
-   </Provider>,
-   document.getElementById('root') as HTMLElement,
-);
+const render = () =>
+   // eslint-disable-next-line react/no-render-return-value
+   ReactDOM.render(
+      <Provider store={store}>
+         <App />
+      </Provider>,
+      document.getElementById('root') as HTMLElement
+   );
 
 render();

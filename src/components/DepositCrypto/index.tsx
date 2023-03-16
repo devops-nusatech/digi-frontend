@@ -50,7 +50,6 @@
 //     buttonLabel?: string;
 // }
 
-
 // /**
 //  *  Component that displays wallet details that can be used to deposit cryptocurrency.
 //  */
@@ -193,11 +192,12 @@ export interface DepositCryptoProps {
    minDepositAmount?: string;
 }
 
-
 /**
  *  Component that displays wallet details that can be used to deposit cryptocurrency.
  */
-const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (props: DepositCryptoProps) => {
+const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (
+   props: DepositCryptoProps
+) => {
    const { formatMessage } = useIntl();
 
    const QR_SIZE = 118;
@@ -215,13 +215,18 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (props: Depos
       minDepositAmount,
    } = props;
 
-   const depositAddress = wallet.deposit_addresses?.find(address => address.blockchain_key?.toLowerCase() === network?.toLowerCase());
+   const depositAddress = wallet.deposit_addresses?.find(
+      address =>
+         address.blockchain_key?.toLowerCase() === network?.toLowerCase()
+   );
 
    const isMobileDevice = useSelector(selectMobileDeviceState);
    const size = dimensions || QR_SIZE;
    const disabled = !depositAddress?.address;
    const onCopy = !disabled ? handleOnCopy : undefined;
-   const className = classnames('cr-deposit-crypto', { 'cr-copyable-text-field__disabled': disabled });
+   const className = classnames('cr-deposit-crypto', {
+      'cr-copyable-text-field__disabled': disabled,
+   });
 
    const getDepositAddress = (addressData, currency) => {
       const address = addressData?.address?.split('?')[0];
@@ -229,7 +234,8 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (props: Depos
       return address ? formatCCYAddress(currency, address) : '';
    };
 
-   const getDepositTag = (addressData) => addressData?.address?.split('?')[1]?.split('=')[1];
+   const getDepositTag = addressData =>
+      addressData?.address?.split('?')[1]?.split('=')[1];
 
    const walletAddress = getDepositAddress(depositAddress, wallet.currency);
    const walletTag = getDepositTag(depositAddress);
@@ -239,21 +245,29 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (props: Depos
          <React.Fragment>
             <div className="cr-deposit-crypto__block">
                <form className="cr-deposit-crypto__copyable">
-                  <fieldset className="cr-copyable-text-field" onClick={onCopy}>
+                  <fieldset
+                     className="cr-copyable-text-field"
+                     onClick={onCopy}>
                      <CopyableTextField
                         className="cr-deposit-crypto__copyable-area"
                         value={walletTag || ''}
                         fieldId={walletTag ? 'copy_memo_1' : 'copy_memo_2'}
                         copyButtonText={copyButtonText}
                         disabled={disabled}
-                        label={formatMessage({ id: 'page.body.wallets.tabs.deposit.ccy.memo' })}
+                        label={formatMessage({
+                           id: 'page.body.wallets.tabs.deposit.ccy.memo',
+                        })}
                      />
                   </fieldset>
                </form>
             </div>
             <div className="cr-deposit-crypto__warning">
                <Warning />
-               <p>{formatMessage({ id: 'page.body.wallets.tabs.deposit.ccy.memo.warning' })}</p>
+               <p>
+                  {formatMessage({
+                     id: 'page.body.wallets.tabs.deposit.ccy.memo.warning',
+                  })}
+               </p>
             </div>
          </React.Fragment>
       );
@@ -269,8 +283,7 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (props: Depos
                      type="button"
                      onClick={handleGenerateAddress}
                      size="lg"
-                     variant="primary"
-                  >
+                     variant="primary">
                      {buttonLabel ? buttonLabel : 'Generate deposit address'}
                   </Button>
                </div>
@@ -283,7 +296,10 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (props: Depos
       return (
          <div className="cr-deposit-crypto__disabled">
             <div className="cr-deposit-crypto__disabled-wrapper">
-               {formatMessage({ id: 'page.body.wallets.tabs.deposit.ccy.disabled' }, { currency: wallet?.currency.toUpperCase() })}
+               {formatMessage(
+                  { id: 'page.body.wallets.tabs.deposit.ccy.disabled' },
+                  { currency: wallet?.currency.toUpperCase() }
+               )}
             </div>
          </div>
       );
@@ -297,53 +313,86 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (props: Depos
             <OverlayTrigger
                placement="right"
                delay={{ show: 250, hide: 300 }}
-               overlay={<Tooltip title="page.body.wallets.tabs.deposit.min.amount.tip" />}>
+               overlay={
+                  <Tooltip title="page.body.wallets.tabs.deposit.min.amount.tip" />
+               }>
                <div className="cr-withdraw__group__warning-tip">
                   <TipIcon />
                </div>
             </OverlayTrigger>
             <span>
-               {formatMessage({ id: 'page.body.wallets.tabs.deposit.min.deposit' })}&nbsp;
+               {formatMessage({
+                  id: 'page.body.wallets.tabs.deposit.min.deposit',
+               })}
+               &nbsp;
                <span className="cr-withdraw__group__warning-currency">
-                  <Decimal fixed={wallet.fixed} thousSep=",">{minDepositAmount?.toString()}</Decimal>&nbsp;{wallet.currency?.toUpperCase()}
+                  <Decimal
+                     fixed={wallet.fixed}
+                     thousSep=",">
+                     {minDepositAmount?.toString()}
+                  </Decimal>
+                  &nbsp;{wallet.currency?.toUpperCase()}
                </span>
             </span>
          </div>
-         <h5 className="cr-deposit-crypto__currency">{`${wallet?.name} (${wallet?.currency.toUpperCase()})`}</h5>
+         <h5 className="cr-deposit-crypto__currency">{`${
+            wallet?.name
+         } (${wallet?.currency.toUpperCase()})`}</h5>
          <div className={className}>
             <div>
                <p className="cr-deposit-info">{text}</p>
                {walletAddress ? (
                   <div className="d-none d-md-block qr-code-wrapper">
-                     <QRCode dimensions={size} data={walletAddress} />
+                     <QRCode
+                        dimensions={size}
+                        data={walletAddress}
+                     />
                   </div>
                ) : null}
             </div>
             <div className="cr-deposit-crypto__block">
-               {wallet.currency === 'eth' && !isMobileDevice && walletAddress ? (
+               {wallet.currency === 'eth' &&
+               !isMobileDevice &&
+               walletAddress ? (
                   <MetaMaskButton depositAddress={walletAddress} />
                ) : null}
                <form className="cr-deposit-crypto__copyable">
-                  <fieldset className="cr-copyable-text-field" onClick={onCopy}>
+                  <fieldset
+                     className="cr-copyable-text-field"
+                     onClick={onCopy}>
                      <CopyableTextField
                         className="cr-deposit-crypto__copyable-area"
                         value={walletAddress || error}
-                        fieldId={walletAddress ? 'copy_deposit_1' : 'copy_deposit_2'}
+                        fieldId={
+                           walletAddress ? 'copy_deposit_1' : 'copy_deposit_2'
+                        }
                         copyButtonText={copyButtonText}
                         disabled={disabled}
-                        label={copiableTextFieldText ? copiableTextFieldText : 'Deposit by Wallet Address'}
+                        label={
+                           copiableTextFieldText
+                              ? copiableTextFieldText
+                              : 'Deposit by Wallet Address'
+                        }
                      />
                   </fieldset>
                </form>
             </div>
             {walletTag && renderMemo}
          </div>
-         <h5 className="cr-deposit-crypto__hint-title">{formatMessage({ id: 'page.body.wallets.tabs.deposit.ccy.hint.title' }, { currency: wallet?.currency.toUpperCase() })}</h5>
-         <p className="cr-deposit-crypto__hint">{formatMessage({ id: 'page.body.wallets.tabs.deposit.ccy.hint' }, { currency: wallet?.currency.toUpperCase() })}</p>
+         <h5 className="cr-deposit-crypto__hint-title">
+            {formatMessage(
+               { id: 'page.body.wallets.tabs.deposit.ccy.hint.title' },
+               { currency: wallet?.currency.toUpperCase() }
+            )}
+         </h5>
+         <p className="cr-deposit-crypto__hint">
+            {formatMessage(
+               { id: 'page.body.wallets.tabs.deposit.ccy.hint' },
+               { currency: wallet?.currency.toUpperCase() }
+            )}
+         </p>
       </React.Fragment>
    );
 };
 
-export {
-   DepositCrypto,
-};
+export { DepositCrypto };

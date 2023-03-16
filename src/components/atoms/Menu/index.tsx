@@ -9,7 +9,7 @@ type MenuProps = {
    className?: string;
    iconClassName?: string;
    isLink?: boolean;
-}
+};
 
 export const Menu: FC<MenuProps> = ({
    pathname,

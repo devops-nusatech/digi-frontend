@@ -10,13 +10,13 @@ export const useCountdown = (initialSeconds: number) => {
          }
          if (seconds === 0) {
             if (minutes === 0) {
-               clearInterval(myInterval)
+               clearInterval(myInterval);
             } else {
                setMinutes(minutes - 1);
                setSeconds(59);
             }
          }
-      }, 1000)
+      }, 1000);
       return () => {
          clearInterval(myInterval);
       };
@@ -24,6 +24,6 @@ export const useCountdown = (initialSeconds: number) => {
 
    return {
       minutes,
-      seconds
-   }
-}
+      seconds,
+   };
+};

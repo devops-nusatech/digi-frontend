@@ -6,7 +6,7 @@ import { IcMessage } from 'assets';
 import {
    GeetestCaptchaResponse,
    GeetestCaptchaV4Response,
-   selectMobileDeviceState
+   selectMobileDeviceState,
 } from 'modules';
 
 interface FormForgotPasswordProps {
@@ -24,76 +24,85 @@ interface FormForgotPasswordProps {
    renderCaptcha?: JSX.Element | null;
    reCaptchaSuccess?: boolean;
    geetestCaptchaSuccess?: boolean;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    handleRenderInputNewPass: () => void;
 }
 
-export const FormForgotPassword: FC<FormForgotPasswordProps> = memo(({
-   geetestCaptchaRef,
-   buttonLabel,
-   isLoading,
-   onSubmit,
-   emailLabel,
-   email,
-   emailError,
-   placeholder,
-   validateForm,
-   handleChangeEmail,
-   captchaType,
-   renderCaptcha,
-   reCaptchaSuccess,
-   geetestCaptchaSuccess,
-   handleRenderInputNewPass
-}) => {
-   const isMobileDevice = useSelector(selectMobileDeviceState);
+export const FormForgotPassword: FC<FormForgotPasswordProps> = memo(
+   ({
+      geetestCaptchaRef,
+      buttonLabel,
+      isLoading,
+      onSubmit,
+      emailLabel,
+      email,
+      emailError,
+      placeholder,
+      validateForm,
+      handleChangeEmail,
+      captchaType,
+      renderCaptcha,
+      reCaptchaSuccess,
+      geetestCaptchaSuccess,
+      handleRenderInputNewPass,
+   }) => {
+      const isMobileDevice = useSelector(selectMobileDeviceState);
 
-   useEffect(() => {
-      if (captchaType !== 'none') {
-         if (reCaptchaSuccess || geetestCaptchaSuccess) {
-            handleClick()
-            handleRenderInputNewPass();
+      useEffect(() => {
+         if (captchaType !== 'none') {
+            if (reCaptchaSuccess || geetestCaptchaSuccess) {
+               handleClick();
+               handleRenderInputNewPass();
+            }
          }
-      }
-   }, [reCaptchaSuccess, geetestCaptchaSuccess]);
+      }, [reCaptchaSuccess, geetestCaptchaSuccess]);
 
-   const isValidForm = () => {
-      const isEmailValid = email.match(EMAIL_REGEX);
-      return email && isEmailValid;
-   };
+      const isValidForm = () => {
+         const isEmailValid = email.match(EMAIL_REGEX);
+         return email && isEmailValid;
+      };
 
-   const isButtonDisabled = (): boolean => {
-      if (isLoading || !email.match(EMAIL_REGEX)) {
-         return true;
-      }
+      const isButtonDisabled = (): boolean => {
+         if (isLoading || !email.match(EMAIL_REGEX)) {
+            return true;
+         }
 
-      return false;
-   };
+         return false;
+      };
 
-   const handleClick = () => !isValidForm() ? validateForm() : onSubmit();
+      const handleClick = () => (!isValidForm() ? validateForm() : onSubmit());
 
-   return (
-      <form className="space-y-8">
-         <InputGroup
-            id="email"
-            name="email"
-            type="email"
-            label={emailLabel}
-            placeholder={placeholder}
-            value={email}
-            onChange={handleChangeEmail}
-            autoFocus={!isMobileDevice}
-            icon={<IcMessage className="w-6 h-6 inline-block cursor-pointer" />}
-            withError={!!emailError}
-            info={emailError}
-         />
-         {renderCaptcha}
-         <Button
-            ref={geetestCaptchaRef}
-            text={isLoading ? 'Loading...' : buttonLabel ? buttonLabel : 'Send'}
-            onClick={() => captchaType === 'none' && handleClick()}
-            disabled={isButtonDisabled()}
-            withLoading={isLoading}
-         />
-      </form>
-   );
-});
+      return (
+         <form className="space-y-8">
+            <InputGroup
+               id="email"
+               name="email"
+               type="email"
+               label={emailLabel}
+               placeholder={placeholder}
+               value={email}
+               onChange={handleChangeEmail}
+               autoFocus={!isMobileDevice}
+               icon={
+                  <IcMessage className="inline-block h-6 w-6 cursor-pointer" />
+               }
+               withError={!!emailError}
+               info={emailError}
+            />
+            {renderCaptcha}
+            <Button
+               ref={geetestCaptchaRef}
+               text={
+                  isLoading ? 'Loading...' : buttonLabel ? buttonLabel : 'Send'
+               }
+               onClick={() => captchaType === 'none' && handleClick()}
+               disabled={isButtonDisabled()}
+               withLoading={isLoading}
+            />
+         </form>
+      );
+   }
+);

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Nav } from 'components';
 import {
@@ -16,13 +16,13 @@ export const LearnCrypto = memo(() => {
 
    return (
       <>
-         <div className="relative pt-16 md:pt-20 mb-16 md:mb-28 lg2:mb-34">
-            <div className="w-full max-w-7xl mx-auto px-8 md:px-10 lg:px-20">
-               <div className="max-w-2.5xl mx-auto mb-20 text-center">
-                  <div className="mb-4 text-5xl md:text-64 leading-custom1 md:leading-none tracking-custom font-dm font-bold">
+         <div className="relative mb-16 pt-16 md:mb-28 md:pt-20 lg2:mb-34">
+            <div className="mx-auto w-full max-w-7xl px-8 md:px-10 lg:px-20">
+               <div className="mx-auto mb-20 max-w-2.5xl text-center">
+                  <div className="mb-4 font-dm text-5xl font-bold leading-custom1 tracking-custom md:text-64 md:leading-none">
                      Blockchain & Crypto
                   </div>
-                  <div className="mb-8 text-base md:text-2xl tracking-custom1 leading-custom2 text-neutral4">
+                  <div className="mb-8 text-base leading-custom2 tracking-custom1 text-neutral4 md:text-2xl">
                      A Beginner’s Guide to TradingView
                   </div>
                   <div className="flex justify-center space-x-4">
@@ -37,29 +37,37 @@ export const LearnCrypto = memo(() => {
                      />
                   </div>
                </div>
-               <div className="relative rounded-2xl overflow-hidden">
-                  <img className="w-full" src={illusDiscover} alt="Video" />
-                  <button className="group flex justify-center items-center w-20 h-20 absolute top-1/2 left-1/2 z-3 rounded-full bg-neutral8 shadow-play -translate-x-1/2 -translate-y-1/2">
-                     <svg className="w-6 h-6 fill-neutral4 group-hover:fill-primary1 group-hover:scale-125 transition-all duration-300">
+               <div className="relative overflow-hidden rounded-2xl">
+                  <img
+                     className="w-full"
+                     src={illusDiscover}
+                     alt="Video"
+                  />
+                  <button className="group absolute top-1/2 left-1/2 z-3 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-neutral8 shadow-play">
+                     <svg className="h-6 w-6 fill-neutral4 transition-all duration-300 group-hover:scale-125 group-hover:fill-primary1">
                         <use xlinkHref="#icon-play" />
                      </svg>
                   </button>
                </div>
             </div>
          </div>
-         <div className="relative py-16 md:py-28 lg2:py-34 bg-neutral7 dark:bg-shade1">
-            <div id="releases" className="absolute top-12 inset-x-0" />
-            <div className="w-full max-w-7xl mx-auto px-8 md:px-10 lg:px-20">
-               <div className="block lg:flex mb-12 lg:mb-20">
-                  <div className="w-full lg:w-82 text-xs leading-none mb-5 lg:mb-4 font-bold uppercase text-neutral4">
+         <div className="relative bg-neutral7 py-16 dark:bg-shade1 md:py-28 lg2:py-34">
+            <div
+               id="releases"
+               className="absolute inset-x-0 top-12"
+            />
+            <div className="mx-auto w-full max-w-7xl px-8 md:px-10 lg:px-20">
+               <div className="mb-12 block lg:mb-20 lg:flex">
+                  <div className="mb-5 w-full text-xs font-bold uppercase leading-none text-neutral4 lg:mb-4 lg:w-82">
                      Our Blog
                   </div>
-                  <div className="shrink-0 w-full lg:w-500 lg2:w-640 ml-auto">
-                     <div className="mb-5 text-4.5xl md:text-5xl leading-1.2 md:leading-custom1 tracking-custom1 md:tracking-custom font-dm font-bold">
+                  <div className="ml-auto w-full shrink-0 lg:w-500 lg2:w-640">
+                     <div className="mb-5 font-dm text-4.5xl font-bold leading-1.2 tracking-custom1 md:text-5xl md:leading-custom1 md:tracking-custom">
                         Latest Releases
                      </div>
-                     <div className="max-w-md-2 mb-16 text-base leading-normal text-neutral3 dark:text-neutral6">
-                        Stacks is a production-ready library of stackable content blocks built in React Native.
+                     <div className="mb-16 max-w-md-2 text-base leading-normal text-neutral3 dark:text-neutral6">
+                        Stacks is a production-ready library of stackable
+                        content blocks built in React Native.
                      </div>
                      <div className="flex space-x-3">
                         <Nav
@@ -82,94 +90,109 @@ export const LearnCrypto = memo(() => {
                   </div>
                </div>
                <div className="space-y-20">
-                  {
-                     learnCategory === 0 && (
-                        <>
-                           <Link to="/learn-crypto" className="relative group block lg:flex flex-row-reverse transition-colors duration-200">
-                              <div className="shrink-0 w-full lg:w-500 lg2:w-640 mb-8 lg:mb-0 ml-auto">
-                                 <img className="w-full object-cover lg:object-none min-h-[240px] lg:min-h-auto rounded-2xl" srcSet={`${illusReleases2} 2x`} src={illusReleases} alt="" />
+                  {learnCategory === 0 && (
+                     <>
+                        <Link
+                           to="/learn-crypto"
+                           className="group relative block flex-row-reverse transition-colors duration-200 lg:flex">
+                           <div className="mb-8 ml-auto w-full shrink-0 lg:mb-0 lg:w-500 lg2:w-640">
+                              <img
+                                 className="min-h-[240px] w-full rounded-2xl object-cover lg:min-h-auto lg:object-none"
+                                 srcSet={`${illusReleases2} 2x`}
+                                 src={illusReleases}
+                                 alt=""
+                              />
+                           </div>
+                           <div className="flex w-auto flex-col items-start pr-0 lg:pr-32 lg2:w-82 lg2:pr-0">
+                              <div className="mb-auto inline-block rounded bg-primary4 px-2 pt-2 pb-1.5 text-xs font-bold uppercase leading-none text-neutral8">
+                                 New
                               </div>
-                              <div className="flex flex-col items-start w-auto lg2:w-82 pr-0 lg:pr-32 lg2:pr-0">
-                                 <div className="mb-auto bg-primary4 inline-block pt-2 pb-1.5 px-2 rounded text-xs leading-none font-bold uppercase text-neutral8">
-                                    New
-                                 </div>
-                                 <div className="mt-4 lg:mt-6 mb-2 text-3.5xl leading-tight tracking-custom1 font-dm font-bold group-hover:text-primary1 transition-all duration-300">
-                                    A Beginner's Guide to TradingView
-                                 </div>
-                                 <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
-                                    Ethereum
-                                 </div>
-                                 <div className="mb-auto text-neutral4">
-                                    A fully-featured landing page kit, including design files, and beautiful 3D illustrations editable.
-                                 </div>
+                              <div className="mt-4 mb-2 font-dm text-3.5xl font-bold leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
+                                 A Beginner's Guide to TradingView
                               </div>
-                              <div className="static lg:absolute top-[calc(100%+14px)] left-0 w-6 h-6 mt-4 lg:mt-0 transition-transform duration-300">
-                                 <svg className="w-3.5 h-3.5 fill-neutral4 group-hover:translate-x-4 transition-all duration-1000">
-                                    <use xlinkHref="#icon-arrow-next" />
-                                 </svg>
+                              <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
+                                 Ethereum
                               </div>
-                           </Link>
-                           <Link to="/learn-crypto" className="relative group block lg:flex flex-row-reverse transition-colors duration-200">
-                              <div className="shrink-0 w-full lg:w-500 lg2:w-640 mb-8 lg:mb-0 ml-auto">
-                                 <img
-                                    className="w-full object-cover lg:object-none min-h-[240px] lg:min-h-auto rounded-2xl"
-                                    srcSet={`${illusReleases22} 2x`}
-                                    src={illusReleases21}
-                                    alt=""
-                                 />
+                              <div className="mb-auto text-neutral4">
+                                 A fully-featured landing page kit, including
+                                 design files, and beautiful 3D illustrations
+                                 editable.
                               </div>
-                              <div className="flex flex-col items-start w-auto lg2:w-82 pr-0 lg:pr-32 lg2:pr-0">
-                                 <div className="mb-auto bg-primary5 inline-block pt-2 pb-1.5 px-2 rounded text-xs leading-none font-bold uppercase text-neutral8">
-                                    Beginner
-                                 </div>
-                                 <div className="mt-4 lg:mt-6 mb-2 text-3.5xl leading-tight tracking-custom1 font-dm font-bold group-hover:text-primary1 transition-all duration-300">
-                                    What Is Crypto Market Sentiment?
-                                 </div>
-                                 <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
-                                    Ethereum
-                                 </div>
-                                 <div className="mb-auto text-neutral4">
-                                    A fully-featured landing page kit, including design files, and beautiful 3D illustrations editable.
-                                 </div>
+                           </div>
+                           <div className="static top-[calc(100%+14px)] left-0 mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
+                              <svg className="h-3.5 w-3.5 fill-neutral4 transition-all duration-1000 group-hover:translate-x-4">
+                                 <use xlinkHref="#icon-arrow-next" />
+                              </svg>
+                           </div>
+                        </Link>
+                        <Link
+                           to="/learn-crypto"
+                           className="group relative block flex-row-reverse transition-colors duration-200 lg:flex">
+                           <div className="mb-8 ml-auto w-full shrink-0 lg:mb-0 lg:w-500 lg2:w-640">
+                              <img
+                                 className="min-h-[240px] w-full rounded-2xl object-cover lg:min-h-auto lg:object-none"
+                                 srcSet={`${illusReleases22} 2x`}
+                                 src={illusReleases21}
+                                 alt=""
+                              />
+                           </div>
+                           <div className="flex w-auto flex-col items-start pr-0 lg:pr-32 lg2:w-82 lg2:pr-0">
+                              <div className="mb-auto inline-block rounded bg-primary5 px-2 pt-2 pb-1.5 text-xs font-bold uppercase leading-none text-neutral8">
+                                 Beginner
                               </div>
-                              <div className="static lg:absolute top-[calc(100%+14px)] left-0 w-6 h-6 mt-4 lg:mt-0 transition-transform duration-300">
-                                 <svg className="w-3.5 h-3.5 fill-neutral4 group-hover:translate-x-4 transition-all duration-1000">
-                                    <use xlinkHref="#icon-arrow-next" />
-                                 </svg>
+                              <div className="mt-4 mb-2 font-dm text-3.5xl font-bold leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
+                                 What Is Crypto Market Sentiment?
                               </div>
-                           </Link>
-                           <Link to="/learn-crypto" className="relative group block lg:flex flex-row-reverse transition-colors duration-200">
-                              <div className="shrink-0 w-full lg:w-500 lg2:w-640 mb-8 lg:mb-0 ml-auto">
-                                 <img
-                                    className="w-full object-cover lg:object-none min-h-[240px] lg:min-h-auto rounded-2xl"
-                                    srcSet={`${illusReleases32} 2x`}
-                                    src={illusReleases31}
-                                    alt=""
-                                 />
+                              <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
+                                 Ethereum
                               </div>
-                              <div className="flex flex-col items-start w-auto lg2:w-82 pr-0 lg:pr-32 lg2:pr-0">
-                                 <div className="mb-auto bg-primary4 inline-block pt-2 pb-1.5 px-2 rounded text-xs leading-none font-bold uppercase text-neutral8">
-                                    New
-                                 </div>
-                                 <div className="mt-4 lg:mt-6 mb-2 text-3.5xl leading-tight tracking-custom1 font-dm font-bold group-hover:text-primary1 transition-all duration-300">
-                                    What Is the Ethereum Hard Fork?
-                                 </div>
-                                 <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
-                                    Ethereum
-                                 </div>
-                                 <div className="mb-auto text-neutral4">
-                                    A fully-featured landing page kit, including design files, and beautiful 3D illustrations editable.
-                                 </div>
+                              <div className="mb-auto text-neutral4">
+                                 A fully-featured landing page kit, including
+                                 design files, and beautiful 3D illustrations
+                                 editable.
                               </div>
-                              <div className="static lg:absolute top-[calc(100%+14px)] left-0 w-6 h-6 mt-4 lg:mt-0 transition-transform duration-300">
-                                 <svg className="w-3.5 h-3.5 fill-neutral4 group-hover:translate-x-4 transition-all duration-1000">
-                                    <use xlinkHref="#icon-arrow-next" />
-                                 </svg>
+                           </div>
+                           <div className="static top-[calc(100%+14px)] left-0 mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
+                              <svg className="h-3.5 w-3.5 fill-neutral4 transition-all duration-1000 group-hover:translate-x-4">
+                                 <use xlinkHref="#icon-arrow-next" />
+                              </svg>
+                           </div>
+                        </Link>
+                        <Link
+                           to="/learn-crypto"
+                           className="group relative block flex-row-reverse transition-colors duration-200 lg:flex">
+                           <div className="mb-8 ml-auto w-full shrink-0 lg:mb-0 lg:w-500 lg2:w-640">
+                              <img
+                                 className="min-h-[240px] w-full rounded-2xl object-cover lg:min-h-auto lg:object-none"
+                                 srcSet={`${illusReleases32} 2x`}
+                                 src={illusReleases31}
+                                 alt=""
+                              />
+                           </div>
+                           <div className="flex w-auto flex-col items-start pr-0 lg:pr-32 lg2:w-82 lg2:pr-0">
+                              <div className="mb-auto inline-block rounded bg-primary4 px-2 pt-2 pb-1.5 text-xs font-bold uppercase leading-none text-neutral8">
+                                 New
                               </div>
-                           </Link>
-                        </>
-                     )
-                  }
+                              <div className="mt-4 mb-2 font-dm text-3.5xl font-bold leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
+                                 What Is the Ethereum Hard Fork?
+                              </div>
+                              <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
+                                 Ethereum
+                              </div>
+                              <div className="mb-auto text-neutral4">
+                                 A fully-featured landing page kit, including
+                                 design files, and beautiful 3D illustrations
+                                 editable.
+                              </div>
+                           </div>
+                           <div className="static top-[calc(100%+14px)] left-0 mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
+                              <svg className="h-3.5 w-3.5 fill-neutral4 transition-all duration-1000 group-hover:translate-x-4">
+                                 <use xlinkHref="#icon-arrow-next" />
+                              </svg>
+                           </div>
+                        </Link>
+                     </>
+                  )}
                </div>
             </div>
          </div>

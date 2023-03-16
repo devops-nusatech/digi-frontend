@@ -1,14 +1,23 @@
 import cx from 'classnames';
 import * as React from 'react';
 import { injectIntl } from 'react-intl';
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
+import {
+   connect,
+   MapDispatchToPropsFunction,
+   MapStateToProps,
+} from 'react-redux';
 import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { IntlProps } from '../../';
 import { captchaLogin } from '../../api';
 import { Captcha, SignInComponent, TwoFactorAuth } from '../../components';
-import { EMAIL_REGEX, ERROR_EMPTY_PASSWORD, ERROR_INVALID_EMAIL, setDocumentTitle } from '../../helpers';
+import {
+   EMAIL_REGEX,
+   ERROR_EMPTY_PASSWORD,
+   ERROR_INVALID_EMAIL,
+   setDocumentTitle,
+} from '../../helpers';
 import {
    Configs,
    GeetestCaptchaResponse,
@@ -39,7 +48,10 @@ interface ReduxProps {
    require2FA?: boolean;
    requireEmailVerification?: boolean;
    configs: Configs;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
 }
@@ -105,9 +117,7 @@ class SignIn extends React.Component<Props, SignInState> {
    public renderCaptcha = () => {
       const { error } = this.props;
 
-      return (
-         <Captcha error={error} />
-      );
+      return <Captcha error={error} />;
    };
 
    public render() {
@@ -117,7 +127,9 @@ class SignIn extends React.Component<Props, SignInState> {
 
       return (
          <div className="pg-sign-in-screen">
-            <div className={className}>{require2FA ? this.render2FA() : this.renderSignInForm()}</div>
+            <div className={className}>
+               {require2FA ? this.render2FA() : this.renderSignInForm()}
+            </div>
          </div>
       );
    }
@@ -130,24 +142,47 @@ class SignIn extends React.Component<Props, SignInState> {
          reCaptchaSuccess,
          geetestCaptchaSuccess,
       } = this.props;
-      const { email, emailError, emailFocused, password, passwordError, passwordFocused } = this.state;
+      const {
+         email,
+         emailError,
+         emailFocused,
+         password,
+         passwordError,
+         passwordFocused,
+      } = this.state;
 
       return (
          <SignInComponent
             email={email}
             emailError={emailError}
             emailFocused={emailFocused}
-            emailPlaceholder={this.props.intl.formatMessage({ id: 'page.header.signIn.email' })}
+            emailPlaceholder={this.props.intl.formatMessage({
+               id: 'page.header.signIn.email',
+            })}
             password={password}
             passwordError={passwordError}
             passwordFocused={passwordFocused}
-            passwordPlaceholder={this.props.intl.formatMessage({ id: 'page.header.signIn.password' })}
-            labelSignIn={this.props.intl.formatMessage({ id: 'page.header.signIn' })}
-            labelSignUp={this.props.intl.formatMessage({ id: 'page.header.signUp' })}
-            emailLabel={this.props.intl.formatMessage({ id: 'page.header.signIn.email' })}
-            passwordLabel={this.props.intl.formatMessage({ id: 'page.header.signIn.password' })}
-            receiveConfirmationLabel={this.props.intl.formatMessage({ id: 'page.header.signIn.receiveConfirmation' })}
-            forgotPasswordLabel={this.props.intl.formatMessage({ id: 'page.header.signIn.forgotPassword' })}
+            passwordPlaceholder={this.props.intl.formatMessage({
+               id: 'page.header.signIn.password',
+            })}
+            labelSignIn={this.props.intl.formatMessage({
+               id: 'page.header.signIn',
+            })}
+            labelSignUp={this.props.intl.formatMessage({
+               id: 'page.header.signUp',
+            })}
+            emailLabel={this.props.intl.formatMessage({
+               id: 'page.header.signIn.email',
+            })}
+            passwordLabel={this.props.intl.formatMessage({
+               id: 'page.header.signIn.password',
+            })}
+            receiveConfirmationLabel={this.props.intl.formatMessage({
+               id: 'page.header.signIn.receiveConfirmation',
+            })}
+            forgotPasswordLabel={this.props.intl.formatMessage({
+               id: 'page.header.signIn.forgotPassword',
+            })}
             isLoading={loading}
             onForgotPassword={this.forgotPassword}
             onSignUp={this.handleSignUp}
@@ -175,9 +210,15 @@ class SignIn extends React.Component<Props, SignInState> {
             isLoading={loading}
             onSubmit={this.handle2FASignIn}
             title={this.props.intl.formatMessage({ id: 'page.password2fa' })}
-            label={this.props.intl.formatMessage({ id: 'page.body.wallets.tabs.withdraw.content.code2fa' })}
-            buttonLabel={this.props.intl.formatMessage({ id: 'page.header.signIn' })}
-            message={this.props.intl.formatMessage({ id: 'page.password2fa.message' })}
+            label={this.props.intl.formatMessage({
+               id: 'page.body.wallets.tabs.withdraw.content.code2fa',
+            })}
+            buttonLabel={this.props.intl.formatMessage({
+               id: 'page.header.signIn',
+            })}
+            message={this.props.intl.formatMessage({
+               id: 'page.password2fa.message',
+            })}
             codeFocused={codeFocused}
             otpCode={otpCode}
             error={error2fa}
@@ -204,7 +245,10 @@ class SignIn extends React.Component<Props, SignInState> {
 
    private handleSignIn = () => {
       const { email, password } = this.state;
-      const { configs: { captcha_type }, captcha_response } = this.props;
+      const {
+         configs: { captcha_type },
+         captcha_response,
+      } = this.props;
 
       if (captcha_type !== 'none' && captchaLogin()) {
          this.props.signIn({ email, password, captcha_response });
@@ -215,7 +259,10 @@ class SignIn extends React.Component<Props, SignInState> {
 
    private handle2FASignIn = () => {
       const { email, password, otpCode } = this.state;
-      const { configs: { captcha_type }, captcha_response } = this.props;
+      const {
+         configs: { captcha_type },
+         captcha_response,
+      } = this.props;
 
       if (!otpCode) {
          this.setState({
@@ -223,7 +270,12 @@ class SignIn extends React.Component<Props, SignInState> {
          });
       } else {
          if (captcha_type !== 'none' && captchaLogin()) {
-            this.props.signIn({ email, password, captcha_response, otp_code: otpCode });
+            this.props.signIn({
+               email,
+               password,
+               captcha_response,
+               otp_code: otpCode,
+            });
          } else {
             this.props.signIn({ email, password, otp_code: otpCode });
          }
@@ -267,7 +319,9 @@ class SignIn extends React.Component<Props, SignInState> {
 
       if (!isEmailValid) {
          this.setState({
-            emailError: this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL }),
+            emailError: this.props.intl.formatMessage({
+               id: ERROR_INVALID_EMAIL,
+            }),
             passwordError: '',
          });
 
@@ -276,7 +330,9 @@ class SignIn extends React.Component<Props, SignInState> {
       if (!password) {
          this.setState({
             emailError: '',
-            passwordError: this.props.intl.formatMessage({ id: ERROR_EMPTY_PASSWORD }),
+            passwordError: this.props.intl.formatMessage({
+               id: ERROR_EMPTY_PASSWORD,
+            }),
          });
 
          return;
@@ -313,7 +369,10 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    signIn: data => dispatch(signIn(data)),
    signInError: error => dispatch(signInError(error)),
    signInRequire2FA: payload => dispatch(signInRequire2FA(payload)),
@@ -324,5 +383,5 @@ const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispat
 export const SignInScreen = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(SignIn) as React.ComponentClass;

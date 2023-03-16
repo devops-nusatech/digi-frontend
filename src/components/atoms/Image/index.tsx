@@ -1,8 +1,4 @@
-import React, {
-   useCallback,
-   useRef,
-   useState
-} from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useIntersection } from 'hooks';
 import { Skeleton } from 'components';
 
@@ -15,7 +11,7 @@ type ImageProps = {
    className?: string;
    height?: number;
    width?: number;
-}
+};
 
 export const Image = ({
    src,
@@ -25,7 +21,7 @@ export const Image = ({
    classNameParent,
    className,
    height,
-   width
+   width,
 }: ImageProps) => {
    const [isInView, setIsInView] = useState(false);
    const ref = useRef<HTMLDivElement>(null);
@@ -37,9 +33,14 @@ export const Image = ({
    useIntersection(ref, callback);
 
    return (
-      <div ref={ref} className={classNameParent}>
+      <div
+         ref={ref}
+         className={classNameParent}>
          {!isInView ? (
-            <Skeleton height={height} width={width} />
+            <Skeleton
+               height={height}
+               width={width}
+            />
          ) : (
             <img
                src={src}

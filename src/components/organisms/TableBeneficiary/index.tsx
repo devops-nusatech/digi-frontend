@@ -3,7 +3,22 @@ import { IcEmty, IcShorting } from 'assets';
 import { Button, InputGroup, InputOtp, Portal, Skeleton } from 'components';
 import { arrayFilter, truncateMiddle } from 'helpers';
 import { useBeneficiariesFetch, useMemberLevelFetch } from 'hooks';
-import { CommonError, RootState, beneficiariesActivate, beneficiariesDelete, beneficiariesResendPin, selectBeneficiaries, selectBeneficiariesActivateError, selectBeneficiariesActivateLoading, selectBeneficiariesActivateSuccess, selectBeneficiariesDeleteLoading, selectBeneficiariesDeleteSuccess, selectBeneficiariesFetchLoading, selectBeneficiariesResendPinLoading, selectMemberLevelsLoading } from 'modules';
+import {
+   CommonError,
+   RootState,
+   beneficiariesActivate,
+   beneficiariesDelete,
+   beneficiariesResendPin,
+   selectBeneficiaries,
+   selectBeneficiariesActivateError,
+   selectBeneficiariesActivateLoading,
+   selectBeneficiariesActivateSuccess,
+   selectBeneficiariesDeleteLoading,
+   selectBeneficiariesDeleteSuccess,
+   selectBeneficiariesFetchLoading,
+   selectBeneficiariesResendPinLoading,
+   selectMemberLevelsLoading,
+} from 'modules';
 import { FormattedMessage } from 'react-intl';
 import { MapDispatchToPropsFunction, connect, useSelector } from 'react-redux';
 
@@ -18,13 +33,13 @@ type ReduxProps = {
    beneficiariesActivateSuccess: boolean;
    beneficiariesResendLoading: boolean;
    beneficiariesActivateError?: CommonError;
-}
+};
 
 type DispatchProps = {
    resendBeneficiary: typeof beneficiariesResendPin;
    activateBeneficiary: typeof beneficiariesActivate;
    deleteBeneficiary: typeof beneficiariesDelete;
-}
+};
 
 type TableBeneficiaryProps = OwnProps & ReduxProps & DispatchProps;
 
@@ -58,7 +73,9 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
    let beneficiariesList = beneficiaries || [];
 
    if (searchBeneciciary) {
-      beneficiariesList = beneficiariesList.length ? arrayFilter(beneficiariesList, searchBeneciciary) : [];
+      beneficiariesList = beneficiariesList.length
+         ? arrayFilter(beneficiariesList, searchBeneciciary)
+         : [];
    }
 
    // console.log('beneficiariesList', beneficiariesList)
@@ -68,11 +85,11 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
          setOpenActivate(!openActivate);
       }
       setId(id);
-   }
+   };
    const handleShowModalDelete = (id: number) => {
       setOpenDelete(!openDelete);
       setId(id);
-   }
+   };
 
    const handleActivate = () => activateBeneficiary({ id, pin });
 
@@ -83,13 +100,16 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
    }, [pin]);
 
    const renderContentDeleted = () => (
-      <div className="pt-10 space-y-8">
+      <div className="space-y-8 pt-10">
          <div className="space-y-3">
-            <div className="font-dm text-2xl leading-9 text-center tracking-custom">
+            <div className="text-center font-dm text-2xl leading-9 tracking-custom">
                Sure delete?
             </div>
-            <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
-               you will remove the beneficiary by name <span className="font-semibold text-primary4">{beneficiaries.find(e => e.id === id)?.name}</span>
+            <div className="mx-auto max-w-82 text-center text-xs leading-5 text-neutral4">
+               you will remove the beneficiary by name{' '}
+               <span className="font-semibold text-primary4">
+                  {beneficiaries.find(e => e.id === id)?.name}
+               </span>
             </div>
          </div>
          <Button
@@ -100,18 +120,19 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
       </div>
    );
    const renderContentActivate = () => (
-      <div className="pt-10 space-y-8">
+      <div className="space-y-8 pt-10">
          <div className="space-y-3">
-            <div className="font-dm text-2xl leading-9 text-center tracking-custom">
+            <div className="text-center font-dm text-2xl leading-9 tracking-custom">
                Beneficiaries Activation
             </div>
-            <div className="max-w-82 mx-auto text-center text-xs text-neutral4 leading-5">
-               Save the new address, Please enter the code that we sent to your email.
+            <div className="mx-auto max-w-82 text-center text-xs leading-5 text-neutral4">
+               Save the new address, Please enter the code that we sent to your
+               email.
             </div>
          </div>
          <InputOtp
             length={6}
-            className="flex -mx-2"
+            className="-mx-2 flex"
             onChangeOTP={setPin}
          />
          <div className="space-y-3 text-center">
@@ -122,12 +143,20 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
                withLoading={beneficiariesActivateLoading}
             />
             <button
-               className={beneficiariesResendLoading ? '' : 'text-primary1 font-medium hover:underline hover:underline-offset-4'}
+               className={
+                  beneficiariesResendLoading
+                     ? ''
+                     : 'font-medium text-primary1 hover:underline hover:underline-offset-4'
+               }
                disabled={beneficiariesResendLoading}
-               onClick={() => resendBeneficiary({ id })}
-            >
-               {!beneficiariesResendLoading ? 'Resend code' : (
-                  <Skeleton width={100} height={20} />
+               onClick={() => resendBeneficiary({ id })}>
+               {!beneficiariesResendLoading ? (
+                  'Resend code'
+               ) : (
+                  <Skeleton
+                     width={100}
+                     height={20}
+                  />
                )}
             </button>
          </div>
@@ -151,145 +180,186 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
       if (beneficiariesActivateError?.message) {
          setPin('');
       }
-   }, [beneficiariesDeleteSuccess, beneficiariesActivateSuccess, beneficiariesActivateError, pin]);
+   }, [
+      beneficiariesDeleteSuccess,
+      beneficiariesActivateSuccess,
+      beneficiariesActivateError,
+      pin,
+   ]);
 
-   const renderBeneficiaries = useMemo(() => (
-      <table className="w-full table-auto">
-         <thead>
-            <tr>
-               <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4">
-                  <div className="flex items-center space-x-1 cursor-pointer">
-                     <div>#</div>
-                     <IcShorting className="fill-neutral4" />
-                  </div>
-               </th>
-               <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4">
-                  <div className="flex items-center space-x-1 cursor-pointer">
-                     <div>Label</div>
-                     <IcShorting className="fill-neutral4" />
-                  </div>
-               </th>
-               <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4">
-                  <div className="flex items-center space-x-1 cursor-pointer">
-                     <div>Address</div>
-                     <IcShorting className="fill-neutral4" />
-                  </div>
-               </th>
-               <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4">
-                  <div className="flex items-center space-x-1 cursor-pointer">
-                     <div>Status</div>
-                     <IcShorting className="fill-neutral4" />
-                  </div>
-               </th>
-               <th className="px-4 pb-8 border-b border-neutral6 dark:border-neutral2 text-xs leading-custom4 font-semibold text-neutral4 text-right">
-                  <div className="flex items-center space-x-1 cursor-pointer justify-end">
-                     <div>Action</div>
-                     <IcShorting className="fill-neutral4" />
-                  </div>
-               </th>
-            </tr>
-         </thead>
-         <tbody>
-            {beneficiariesLoading ? (
-               <>
-                  <tr>
-                     <td colSpan={5} className="px-4 py-3 last:pb-0">
-                        <Skeleton height={20} isWithFull rounded="md" />
-                     </td>
-                  </tr>
-                  <tr>
-                     <td colSpan={5} className="px-4 py-3 last:pb-0">
-                        <Skeleton height={20} isWithFull rounded="md" />
-                     </td>
-                  </tr>
-                  <tr>
-                     <td colSpan={5} className="px-4 py-3 last:pb-0">
-                        <Skeleton height={20} isWithFull rounded="md" />
-                     </td>
-                  </tr>
-               </>
-            ) : beneficiariesList.length ? beneficiariesList.map(({ id, name, data: { address }, state, blockchain_key }, index) => (
-               <tr
-                  key={blockchain_key}
-                  style={{ transition: 'background .2s' }}
-                  className="group"
-               >
-                  <td onClick={() => handleShowModalActivate(id, state)} className="rounded-l-xl text-neutral4 align-middle font-semibold text-xs p-4 leading-custom4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{index + 1} .</div>
-                  </td>
-                  <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{name}</div>
-                  </td>
-                  <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div>{truncateMiddle(String(address), 20)}</div>
-                  </td>
-                  <td onClick={() => handleShowModalActivate(id, state)} className="p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className={state === 'active' ? 'text-primary5 dark:text-chart1' : 'text-primary4'}>{state}</div>
-                  </td>
-                  <td className="rounded-r-xl p-4 align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2 transition-all duration-300">
-                     <div className="flex justify-end items-center">
-                        <svg
-                           onClick={e => {
-                              e.stopPropagation();
-                              handleShowModalDelete(id);
-                           }}
-                           className="cursor-pointer w-6 h-6 fill-primary4 transition-colors duration-300"
-                        >
-                           <use xlinkHref="#icon-close-circle" />
-                        </svg>
-                     </div>
-                  </td>
-               </tr>
-            )) : (
+   const renderBeneficiaries = useMemo(
+      () => (
+         <table className="w-full table-auto">
+            <thead>
                <tr>
-                  <td colSpan={5}>
-                     <div className="min-h-96 flex flex-col items-center justify-center space-y-3">
-                        <IcEmty />
-                        <div className="text-xs font-semibold text-neutral4">
-                           <FormattedMessage id="noResultFound" />
-                        </div>
+                  <th className="border-b border-neutral6 px-4 pb-8 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral2">
+                     <div className="flex cursor-pointer items-center space-x-1">
+                        <div>#</div>
+                        <IcShorting className="fill-neutral4" />
                      </div>
-                  </td>
+                  </th>
+                  <th className="border-b border-neutral6 px-4 pb-8 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral2">
+                     <div className="flex cursor-pointer items-center space-x-1">
+                        <div>Label</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="border-b border-neutral6 px-4 pb-8 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral2">
+                     <div className="flex cursor-pointer items-center space-x-1">
+                        <div>Address</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="border-b border-neutral6 px-4 pb-8 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral2">
+                     <div className="flex cursor-pointer items-center space-x-1">
+                        <div>Status</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
+                  <th className="border-b border-neutral6 px-4 pb-8 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral2">
+                     <div className="flex cursor-pointer items-center justify-end space-x-1">
+                        <div>Action</div>
+                        <IcShorting className="fill-neutral4" />
+                     </div>
+                  </th>
                </tr>
-            )}
-         </tbody>
-      </table>
-   ), [beneficiaries]);
+            </thead>
+            <tbody>
+               {beneficiariesLoading ? (
+                  <>
+                     <tr>
+                        <td
+                           colSpan={5}
+                           className="px-4 py-3 last:pb-0">
+                           <Skeleton
+                              height={20}
+                              isWithFull
+                              rounded="md"
+                           />
+                        </td>
+                     </tr>
+                     <tr>
+                        <td
+                           colSpan={5}
+                           className="px-4 py-3 last:pb-0">
+                           <Skeleton
+                              height={20}
+                              isWithFull
+                              rounded="md"
+                           />
+                        </td>
+                     </tr>
+                     <tr>
+                        <td
+                           colSpan={5}
+                           className="px-4 py-3 last:pb-0">
+                           <Skeleton
+                              height={20}
+                              isWithFull
+                              rounded="md"
+                           />
+                        </td>
+                     </tr>
+                  </>
+               ) : beneficiariesList.length ? (
+                  beneficiariesList.map(
+                     (
+                        { id, name, data: { address }, state, blockchain_key },
+                        index
+                     ) => (
+                        <tr
+                           key={blockchain_key}
+                           style={{ transition: 'background .2s' }}
+                           className="group">
+                           <td
+                              onClick={() => handleShowModalActivate(id, state)}
+                              className="rounded-l-xl p-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                              <div>{index + 1} .</div>
+                           </td>
+                           <td
+                              onClick={() => handleShowModalActivate(id, state)}
+                              className="p-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                              <div>{name}</div>
+                           </td>
+                           <td
+                              onClick={() => handleShowModalActivate(id, state)}
+                              className="p-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                              <div>{truncateMiddle(String(address), 20)}</div>
+                           </td>
+                           <td
+                              onClick={() => handleShowModalActivate(id, state)}
+                              className="p-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                              <div
+                                 className={
+                                    state === 'active'
+                                       ? 'text-primary5 dark:text-chart1'
+                                       : 'text-primary4'
+                                 }>
+                                 {state}
+                              </div>
+                           </td>
+                           <td className="rounded-r-xl p-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                              <div className="flex items-center justify-end">
+                                 <svg
+                                    onClick={e => {
+                                       e.stopPropagation();
+                                       handleShowModalDelete(id);
+                                    }}
+                                    className="h-6 w-6 cursor-pointer fill-primary4 transition-colors duration-300">
+                                    <use xlinkHref="#icon-close-circle" />
+                                 </svg>
+                              </div>
+                           </td>
+                        </tr>
+                     )
+                  )
+               ) : (
+                  <tr>
+                     <td colSpan={5}>
+                        <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
+                           <IcEmty />
+                           <div className="text-xs font-semibold text-neutral4">
+                              <FormattedMessage id="noResultFound" />
+                           </div>
+                        </div>
+                     </td>
+                  </tr>
+               )}
+            </tbody>
+         </table>
+      ),
+      [beneficiaries]
+   );
 
    return (
       <>
          <div className="space-y-10">
-            {(withSearch && beneficiaries.length) ? (
+            {withSearch && beneficiaries.length ? (
                <InputGroup
                   value={searchBeneciciary}
                   onChange={setSearchBeneciciary}
                   autoFocus
                   icon={
-                     <svg className="w-5 h-5 fill-neutral4 transition-colors duration-200">
+                     <svg className="h-5 w-5 fill-neutral4 transition-colors duration-200">
                         <use xlinkHref="#icon-search" />
                      </svg>
                   }
                />
             ) : null}
-            <div className="overflow-x-auto">
-               {renderBeneficiaries}
-            </div>
+            <div className="overflow-x-auto">{renderBeneficiaries}</div>
          </div>
          <Portal
             show={openDelete}
-            close={() => setOpenDelete(!openDelete)}
-         >
+            close={() => setOpenDelete(!openDelete)}>
             {renderContentDeleted()}
          </Portal>
          <Portal
             show={openActivate}
-            close={() => setOpenActivate(!openActivate)}
-         >
+            close={() => setOpenActivate(!openActivate)}>
             {renderContentActivate()}
          </Portal>
       </>
    );
-
 };
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
@@ -299,16 +369,22 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    beneficiariesActivateSuccess: selectBeneficiariesActivateSuccess(state),
    beneficiariesActivateError: selectBeneficiariesActivateError(state),
    beneficiariesResendLoading: selectBeneficiariesResendPinLoading(state),
-})
+});
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    resendBeneficiary: payload => dispatch(beneficiariesResendPin(payload)),
    activateBeneficiary: payload => dispatch(beneficiariesActivate(payload)),
    deleteBeneficiary: ({ id }) => dispatch(beneficiariesDelete({ id })),
 });
 
-export const TableBeneficiary = connect(mapStateToProps, mapDispatchToProps)(TableBeneficiaryFC) as any;
+export const TableBeneficiary = connect(
+   mapStateToProps,
+   mapDispatchToProps
+)(TableBeneficiaryFC) as any;
 
 TableBeneficiaryFC.defaultProps = {
    withSearch: false,
-}
+};

@@ -4,7 +4,7 @@ QRCode example:
 const address = 'kjsnvjkrv3434jnv';
 
 <QRCode
-  data={address}
-  dimensions={118}
-/>
+   data={address}
+   dimensions={118}
+/>;
 ```

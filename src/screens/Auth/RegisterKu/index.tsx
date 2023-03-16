@@ -1,15 +1,11 @@
-import React, {
-   FunctionComponent,
-   useEffect,
-   useState
-} from 'react';
-import { History } from 'history'
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { History } from 'history';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import {
    MapDispatchToPropsFunction,
    MapStateToProps,
-   connect
+   connect,
 } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
@@ -25,7 +21,7 @@ import {
    selectRecaptchaSuccess,
    selectSignUpLoading,
    selectSignUpRequireVerification,
-   signUp
+   signUp,
 } from 'modules';
 import { IntlProps } from 'index';
 import {
@@ -35,7 +31,7 @@ import {
    ERROR_PASSWORD_CONFIRMATION,
    PASSWORD_REGEX,
    USERNAME_REGEX,
-   setDocumentTitle
+   setDocumentTitle,
 } from 'helpers';
 import { Captcha, FormRegisterKu, LayoutAuth } from 'components';
 import { isUsernameEnabled } from 'api';
@@ -57,12 +53,12 @@ type RegisterState = {
    passwordFocused: boolean;
    confirmPasswordFocused: boolean;
    refIdFocused: boolean;
-}
+};
 
 type OwnProps = {
    signUpError: boolean;
    i18n: LanguageState['lang'];
-}
+};
 
 type ReduxProps = {
    configs: Configs;
@@ -71,7 +67,7 @@ type ReduxProps = {
    captcha_response?: string | GeetestCaptchaResponse;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
-}
+};
 
 interface RouterProps {
    location: {
@@ -83,7 +79,7 @@ interface RouterProps {
 type DispatchProps = {
    register: typeof signUp;
    resetCaptchaState: typeof resetCaptchaState;
-}
+};
 
 type Props = ReduxProps & RouterProps & DispatchProps & IntlProps & OwnProps;
 
@@ -100,7 +96,7 @@ const RegisterKuFC = ({
    history: { push },
    register,
    resetCaptchaState,
-   intl
+   intl,
 }: Props) => {
    const [state, setState] = useState<RegisterState>({
       username: '',
@@ -162,42 +158,53 @@ const RegisterKuFC = ({
 
    const handleResetEmail = () => setState({ ...state, email: '' });
 
-   const handleChangeUsername = (username: string) => setState({
-      ...state,
-      username: username.replace(/[^A-Za-z0-9]+/g, '').toLowerCase()
-   });
+   const handleChangeUsername = (username: string) =>
+      setState({
+         ...state,
+         username: username.replace(/[^A-Za-z0-9]+/g, '').toLowerCase(),
+      });
    const handleChangeEmail = (email: string) => setState({ ...state, email });
-   const handleChangePassword = (password: string) => setState({
-      ...state,
-      password,
-   });
-   const handleChangeConfirmPassword = (confirmPassword: string) => setState({
-      ...state,
-      confirmPassword,
-      confirmationError: password !== confirmPassword ? translate(ERROR_PASSWORD_CONFIRMATION) : ''
-   });
+   const handleChangePassword = (password: string) =>
+      setState({
+         ...state,
+         password,
+      });
+   const handleChangeConfirmPassword = (confirmPassword: string) =>
+      setState({
+         ...state,
+         confirmPassword,
+         confirmationError:
+            password !== confirmPassword
+               ? translate(ERROR_PASSWORD_CONFIRMATION)
+               : '',
+      });
    const handleChangeRefId = (refId: string) => setState({ ...state, refId });
 
-   const handleFocusUsername = () => setState({
-      ...state,
-      usernameFocused: !usernameFocused
-   });
-   const handleFocusEmail = () => setState({
-      ...state,
-      emailFocused: !emailFocused
-   });
-   const handleFocusPassword = () => setState({
-      ...state,
-      passwordFocused: !passwordFocused,
-   });
-   const handleFocusConfirmPassword = () => setState({
-      ...state,
-      confirmPasswordFocused: !confirmPasswordFocused,
-   });
-   const handleFocusRefId = () => setState({
-      ...state,
-      refIdFocused: !refIdFocused,
-   });
+   const handleFocusUsername = () =>
+      setState({
+         ...state,
+         usernameFocused: !usernameFocused,
+      });
+   const handleFocusEmail = () =>
+      setState({
+         ...state,
+         emailFocused: !emailFocused,
+      });
+   const handleFocusPassword = () =>
+      setState({
+         ...state,
+         passwordFocused: !passwordFocused,
+      });
+   const handleFocusConfirmPassword = () =>
+      setState({
+         ...state,
+         confirmPasswordFocused: !confirmPasswordFocused,
+      });
+   const handleFocusRefId = () =>
+      setState({
+         ...state,
+         refIdFocused: !refIdFocused,
+      });
 
    const handleLogin = () => push('/login');
    const handleRegister = () => {
@@ -210,10 +217,10 @@ const RegisterKuFC = ({
          ...(isUsernameEnabled() && { username }),
          ...(refId && { refid: refId }),
          ...(configs.captcha_type !== 'none' && { captcha_response }),
-      }
+      };
       register(payload);
       resetCaptchaState();
-   }
+   };
 
    const handleValidateForm = () => {
       const isEmailValid = email.match(EMAIL_REGEX);
@@ -252,22 +259,23 @@ const RegisterKuFC = ({
          });
          return;
       }
-   }
+   };
 
-   const handleCheckboxClick = () => setState({
-      ...state,
-      hasConfirmed: !hasConfirmed,
-      confirmationError: '',
-      emailError: '',
-      passwordError: '',
-   });
+   const handleCheckboxClick = () =>
+      setState({
+         ...state,
+         hasConfirmed: !hasConfirmed,
+         confirmationError: '',
+         emailError: '',
+         passwordError: '',
+      });
 
    const translate = (id: string) => intl.formatMessage({ id });
 
    const renderCaptcha = () => {
       const error = signUpError || confirmationError || emailError;
       return <Captcha error={error} />;
-   }
+   };
 
    return (
       <LayoutAuth
@@ -275,8 +283,7 @@ const RegisterKuFC = ({
          linkTo="/login"
          linkToTxt="Login"
          title="Register"
-         subTitle="Please fill in the data below with honest and accurate information."
-      >
+         subTitle="Please fill in the data below with honest and accurate information.">
          <FormRegisterKu
             captchaType={configs.captcha_type}
             renderCaptcha={renderCaptcha()}
@@ -289,51 +296,43 @@ const RegisterKuFC = ({
             onLogin={handleLogin}
             validateForm={handleValidateForm}
             clickCheckBox={handleCheckboxClick}
-
             username={username}
             email={email}
             password={password}
             confirmPassword={confirmPassword}
             refid={refId}
-
             handleChangeUsername={handleChangeUsername}
             handleChangeEmail={handleChangeEmail}
             handleChangePassword={handleChangePassword}
             handleChangeConfirmPassword={handleChangeConfirmPassword}
             handleChangeRefId={handleChangeRefId}
-
             focusUsername={usernameFocused}
-
             handleFocusUsername={handleFocusUsername}
             handleFocusEmail={handleFocusEmail}
             handleFocusPassword={handleFocusPassword}
             handleFocusConfirmPassword={handleFocusConfirmPassword}
             handleFocusRefId={handleFocusRefId}
-
             handleResetEmail={handleResetEmail}
-
             usernameLabel={'username'}
             emailLabel={translate('page.header.signUp.email')}
             passwordLabel={translate('page.header.signUp.password')}
-            confirmPasswordLabel={translate('page.header.signUp.confirmPassword')}
+            confirmPasswordLabel={translate(
+               'page.header.signUp.confirmPassword'
+            )}
             refIdLabel={translate('page.header.signUp.referalCode')}
-
             emailError={emailError}
             passwordError={passwordError}
             confirmPasswordError={confirmationError}
-
             USERNAME_REGEXP={USERNAME_REGEX}
             EMAIL_REGEXP={EMAIL_REGEX}
             PASSWORD_REGEXP={PASSWORD_REGEX}
-
             termsMessage={translate('page.header.signUp.terms')}
-
             translate={translate}
             isUsernameEnabled={isUsernameEnabled()}
          />
       </LayoutAuth>
-   )
-}
+   );
+};
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    configs: selectConfigs(state),
@@ -344,9 +343,12 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    register: credentials => dispatch(signUp(credentials)),
-   resetCaptchaState: () => dispatch(resetCaptchaState())
+   resetCaptchaState: () => dispatch(resetCaptchaState()),
 });
 
 export const RegisterKu = compose(

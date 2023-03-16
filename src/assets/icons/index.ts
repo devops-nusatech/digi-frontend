@@ -34,7 +34,6 @@ import icEye from './eye.svg';
 import icEyeClose from './eye-close.svg';
 // import icArrowRight from './arrow-right.png';
 
-
 export * from './currency';
 export * from './ICChevronRight';
 export {
@@ -49,19 +48,16 @@ export {
    icApple,
    icGp,
    icCollapse,
-
    icUser,
    icCirup,
    icLock,
    icSetting,
    icSoon,
    icLogout,
-
    icArrowDown,
    icEye,
    icEyeClose,
    IcMessage,
-
    IcEye,
    IcEyeClose,
    IcArrowRight,

@@ -1,12 +1,6 @@
-import React, {
-   FunctionComponent,
-   useState
-} from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { compose } from 'redux';
-import {
-   MapDispatchToPropsFunction,
-   connect
-} from 'react-redux';
+import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
 
@@ -22,7 +16,7 @@ import {
    LayoutWallet,
    Nav,
    Portal,
-   TableOrderHistory
+   TableOrderHistory,
 } from 'components';
 import {
    OrderBy,
@@ -36,7 +30,7 @@ import {
    resetOrdersHistory,
    selectCancelAllFetching,
    selectCancelFetching,
-   selectOrdersHistory
+   selectOrdersHistory,
 } from 'modules';
 import { useDebounced } from 'hooks';
 
@@ -49,20 +43,20 @@ type FilterState = {
    type: OrderType | '';
    advanceFilter: boolean;
    isApply: boolean;
-}
+};
 
 type ReduxProps = {
-   list: OrderCommon[]
+   list: OrderCommon[];
    cancelAllLoading: boolean;
    cancelLoading: boolean;
-}
+};
 
 type DispatchProps = {
    marketsFetch: typeof marketsFetch;
    ordersCancelAll: typeof ordersCancelAllFetch;
    ordersCancelById: typeof ordersHistoryCancelFetch;
    resetOrdersHistory: typeof resetOrdersHistory;
-}
+};
 
 type Props = ReduxProps & DispatchProps & IntlProps;
 
@@ -74,7 +68,7 @@ const Orders = ({
    ordersCancelById,
    cancelAllLoading,
    cancelLoading,
-   intl
+   intl,
 }: Props) => {
    const [currentTab, setCurrentTab] = useState<'open' | 'close'>('close');
    const [q, setQ] = useState('');
@@ -82,7 +76,7 @@ const Orders = ({
    const [showCancelAll, setShowCancelAll] = useState(false);
    const [showFilter, setShowFilter] = useState(false);
    const [filter, setFilter] = useState<FilterState>({
-      startDate: new Date((new Date).getFullYear(), (new Date).getMonth(), 1),
+      startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       endDate: new Date(),
       market: '',
       order_by: '',
@@ -91,68 +85,84 @@ const Orders = ({
       advanceFilter: false,
       isApply: false,
    });
-   const { startDate, endDate, market, isApply, advanceFilter, side, type, order_by } = filter;
+   const {
+      startDate,
+      endDate,
+      market,
+      isApply,
+      advanceFilter,
+      side,
+      type,
+      order_by,
+   } = filter;
 
-   const time_from = Math.floor(new Date(startDate).getTime() / 1000).toString()
-   const time_to = Math.floor(new Date(endDate).getTime() / 1000).toString()
+   const time_from = Math.floor(
+      new Date(startDate).getTime() / 1000
+   ).toString();
+   const time_to = Math.floor(new Date(endDate).getTime() / 1000).toString();
 
    const handleChangeStartDate = (startDate: Date) => {
       setFilter({ ...filter, startDate });
-   }
+   };
    const handleChangeEndDate = (endDate: Date) => {
-      setFilter({ ...filter, endDate })
-   }
+      setFilter({ ...filter, endDate });
+   };
    const handleChangeMarket = (market: string) => {
-      setFilter({ ...filter, market })
-   }
+      setFilter({ ...filter, market });
+   };
    const handleChangeOrderBy = (order_by: OrderBy) => {
-      setFilter({ ...filter, order_by })
-   }
+      setFilter({ ...filter, order_by });
+   };
    const handleChangeSide = (side: OrderSide | '') => {
-      setFilter({ ...filter, side })
-   }
+      setFilter({ ...filter, side });
+   };
    const handleChangeType = (type: OrderType | '') => {
-      setFilter({ ...filter, type })
-   }
+      setFilter({ ...filter, type });
+   };
    const handleApply = () => {
       setFilter({ ...filter, isApply: !isApply });
       setShowFilter(false);
-   }
-   const handleShowAdvanceFilter = () => setFilter({ ...filter, advanceFilter: !advanceFilter });
+   };
+   const handleShowAdvanceFilter = () =>
+      setFilter({ ...filter, advanceFilter: !advanceFilter });
 
    const handleShowCancelAll = () => setShowCancelAll(!showCancelAll);
    const handleCancelAll = () => {
       ordersCancelAll();
       handleShowCancelAll();
-   }
+   };
 
    const renderTable = () => {
       if (currentTab === 'close') {
-         return <TableOrderHistory
-            core="all"
-            q={qDebounce}
-         />
+         return (
+            <TableOrderHistory
+               core="all"
+               q={qDebounce}
+            />
+         );
       } else {
-         return <TableOrderHistory
-            core="open"
-            q={qDebounce}
-            advanceFilter={advanceFilter}
-            isApply={isApply}
-            handleApply={handleApply}
-            market={market}
-            order_by={order_by}
-            ord_type={type}
-            type={side}
-            time_from={time_from}
-            time_to={time_to}
-         />
+         return (
+            <TableOrderHistory
+               core="open"
+               q={qDebounce}
+               advanceFilter={advanceFilter}
+               isApply={isApply}
+               handleApply={handleApply}
+               market={market}
+               order_by={order_by}
+               ord_type={type}
+               type={side}
+               time_from={time_from}
+               time_to={time_to}
+            />
+         );
       }
-   }
+   };
 
    return (
       <LayoutWallet>
-         <div className="min-h-full p-8 rounded bg-neutral8 dark:bg-shade2">
-            <div className="block md:flex items-center justify-between mb-8 p-0 md:pb-8 border-b-0 md:border-b border-neutral6 dark:border-neutral3">
+         <div className="min-h-full rounded bg-neutral8 p-8 dark:bg-shade2">
+            <div className="mb-8 block items-center justify-between border-b-0 border-neutral6 p-0 dark:border-neutral3 md:flex md:border-b md:pb-8">
                <div className="flex space-x-4">
                   <Nav
                      title="All"
@@ -182,12 +192,12 @@ const Orders = ({
                   </div>
                   {currentTab === 'open' && (
                      <Button
-                        text='All time'
+                        text="All time"
                         variant="outline"
                         size="normal"
                         width="noFull"
                         icRight={
-                           <svg className="ml-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all">
+                           <svg className="ml-3 h-4 w-4 fill-neutral4 transition-all group-hover:fill-neutral8">
                               <use xlinkHref="#icon-calendar"></use>
                            </svg>
                         }
@@ -200,8 +210,8 @@ const Orders = ({
                   )}
                </div>
             </div>
-            <div className="flex items-center justify-between mb-10.5">
-               <div className="text-3.5xl leading-tight tracking-custom1 font-dm font-bold">
+            <div className="mb-10.5 flex items-center justify-between">
+               <div className="font-dm text-3.5xl font-bold leading-tight tracking-custom1">
                   Order History
                </div>
                {list.filter(e => e.state === 'wait').length > 0 && (
@@ -216,17 +226,14 @@ const Orders = ({
                )}
             </div>
             <div className="overflow-x-auto">
-               <div className="space-y-8">
-                  {renderTable()}
-               </div>
+               <div className="space-y-8">{renderTable()}</div>
             </div>
          </div>
          <Portal
             title="Cancel all orders"
             show={showCancelAll}
-            close={handleShowCancelAll}
-         >
-            <div className="text-center text-base leading-normal font-medium">
+            close={handleShowCancelAll}>
+            <div className="text-center text-base font-medium leading-normal">
                Are you sure cancel all pending order?
             </div>
             <Button
@@ -241,8 +248,7 @@ const Orders = ({
                setShowFilter(false);
                setFilter({ ...filter, advanceFilter: false, type: '' });
             }}
-            title="Filter"
-         >
+            title="Filter">
             <div className="grid grid-cols-2 gap-4">
                <div className="space-y-2.5">
                   <Label label="start date" />
@@ -257,7 +263,7 @@ const Orders = ({
                         scrollableMonthYearDropdown
                      />
                      <button className="absolute top-3 right-3.5 -z-2">
-                        <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
+                        <svg className="h-6 w-6 fill-neutral4 transition-all duration-300">
                            <use xlinkHref="#icon-calendar" />
                         </svg>
                      </button>
@@ -276,28 +282,35 @@ const Orders = ({
                         scrollableMonthYearDropdown
                      />
                      <button className="absolute top-3 right-3.5 -z-2">
-                        <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
+                        <svg className="h-6 w-6 fill-neutral4 transition-all duration-300">
                            <use xlinkHref="#icon-calendar" />
                         </svg>
                      </button>
                   </div>
                </div>
             </div>
-            <div className="flex justify-between items-center space-x-2">
-               <div className="w-full h-px bg-neutral6 dark:bg-neutral3 rounded" />
+            <div className="flex items-center justify-between space-x-2">
+               <div className="h-px w-full rounded bg-neutral6 dark:bg-neutral3" />
                <div
-                  className="flex justify-between items-center space-x-2 cursor-pointer"
-                  onClick={handleShowAdvanceFilter}
-               >
-                  <div className="text-xs font-medium whitespace-nowrap leading-5">
+                  className="flex cursor-pointer items-center justify-between space-x-2"
+                  onClick={handleShowAdvanceFilter}>
+                  <div className="whitespace-nowrap text-xs font-medium leading-5">
                      ADVANCE FILTER
                   </div>
-                  <svg className={`${advanceFilter ? '' : 'rotate-180'} w-6 h-6 fill-neutral4 transition-all duration-300`}>
+                  <svg
+                     className={`${
+                        advanceFilter ? '' : 'rotate-180'
+                     } h-6 w-6 fill-neutral4 transition-all duration-300`}>
                      <use xlinkHref="#icon-arrow-down" />
                   </svg>
                </div>
             </div>
-            <div className={`space-y-8 ${advanceFilter ? 'h-80 opacity-100 visible' : 'h-0 opacity-0 -translate-y-4 !mt-0 invisible'} transition-all duration-300`}>
+            <div
+               className={`space-y-8 ${
+                  advanceFilter
+                     ? 'visible h-80 opacity-100'
+                     : 'invisible !mt-0 h-0 -translate-y-4 opacity-0'
+               } transition-all duration-300`}>
                <ComboboxMarket onChange={handleChangeMarket} />
                <div className="relative space-y-2.5">
                   <Label label="Order side" />
@@ -366,7 +379,10 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    cancelLoading: selectCancelFetching(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    marketsFetch: () => dispatch(marketsFetch()),
    ordersCancelAll: () => dispatch(ordersCancelAllFetch()),
    ordersCancelById: payload => dispatch(ordersHistoryCancelFetch(payload)),
@@ -375,5 +391,5 @@ const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispat
 
 export const WalletOrder = compose(
    injectIntl,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(Orders) as FunctionComponent;

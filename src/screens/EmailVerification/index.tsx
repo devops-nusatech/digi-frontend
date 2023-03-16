@@ -49,7 +49,10 @@ interface ReduxProps {
    emailVerificationLoading: boolean;
    isMobileDevice: boolean;
    configs: Configs;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
    user: User;
@@ -58,7 +61,8 @@ interface ReduxProps {
 type Props = DispatchProps & ReduxProps & OwnProps & IntlProps;
 
 const EmailVerificationComponentOld = (props: Props) => {
-   const initialMinute = 0, initialSeconds = 3;
+   const initialMinute = 0,
+      initialSeconds = 3;
    const [minutes, setMinutes] = useState(initialMinute);
    const [seconds, setSeconds] = useState(initialSeconds);
    useEffect(() => {
@@ -68,13 +72,13 @@ const EmailVerificationComponentOld = (props: Props) => {
          }
          if (seconds === 0) {
             if (minutes === 0) {
-               clearInterval(myInterval)
+               clearInterval(myInterval);
             } else {
                setMinutes(minutes - 1);
                setSeconds(59);
             }
          }
-      }, 1000)
+      }, 1000);
       return () => {
          clearInterval(myInterval);
       };
@@ -121,13 +125,13 @@ const EmailVerificationComponentOld = (props: Props) => {
    };
 
    const disableButton = (): boolean => {
-      const {
-         configs,
-         location,
-         geetestCaptchaSuccess,
-         reCaptchaSuccess,
-      } = props;
-      if (location.state && location.state.email && !location.state.email.match(EMAIL_REGEX)) {
+      const { configs, location, geetestCaptchaSuccess, reCaptchaSuccess } =
+         props;
+      if (
+         location.state &&
+         location.state.email &&
+         !location.state.email.match(EMAIL_REGEX)
+      ) {
          return true;
       }
       if (configs.captcha_type === 'recaptcha' && !reCaptchaSuccess) {
@@ -144,8 +148,12 @@ const EmailVerificationComponentOld = (props: Props) => {
       // isMobileDevice
    } = props;
 
-   const title = props.intl.formatMessage({ id: 'page.header.signUp.modal.header' });
-   const text = props.intl.formatMessage({ id: 'page.header.signUp.modal.body' });
+   const title = props.intl.formatMessage({
+      id: 'page.header.signUp.modal.header',
+   });
+   const text = props.intl.formatMessage({
+      id: 'page.header.signUp.modal.body',
+   });
    const button = props.intl.formatMessage({ id: 'page.resendConfirmation' });
 
    return (
@@ -155,22 +163,29 @@ const EmailVerificationComponentOld = (props: Props) => {
             linkTo="/login"
             linkToTxt="Login"
             title={title}
-            subTitle={text}
-         >
+            subTitle={text}>
             <InputOtp
                length={6}
-               className="flex mb-8 -mx-2 bg-neutral8"
+               className="-mx-2 mb-8 flex bg-neutral8"
                onChangeOTP={otp => console.log(`OTP => : ${otp}`)}
             />
             <div className="login__btns">
-               {
-                  minutes === 0 && seconds === 0
-                     ? (
-                        <button onClick={handleClick} className="button-stroke button-small login__button" disabled={disableButton()}>{button || 'Resend Code'}</button>
-                     )
-                     : (<div> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</div>)
-               }
-               <button className="button button-small login__button">Continue</button>
+               {minutes === 0 && seconds === 0 ? (
+                  <button
+                     onClick={handleClick}
+                     className="button-stroke button-small login__button"
+                     disabled={disableButton()}>
+                     {button || 'Resend Code'}
+                  </button>
+               ) : (
+                  <div>
+                     {' '}
+                     {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                  </div>
+               )}
+               <button className="button button-small login__button">
+                  Continue
+               </button>
             </div>
          </LayoutAuth>
          <>
@@ -203,9 +218,8 @@ const EmailVerificationComponentOld = (props: Props) => {
                      </div> */}
          </>
       </>
-   )
-
-}
+   );
+};
 
 // class EmailVerificationComponentOld extends Component<Props> {
 //    public componentDidMount() {
@@ -221,7 +235,6 @@ const EmailVerificationComponentOld = (props: Props) => {
 //       const { error, success } = this.props;
 //       return <Captcha error={error} success={success} />;
 //    };
-
 
 //    public render() {
 //       const {
@@ -352,5 +365,5 @@ const mapDispatchToProps = {
 export const EmailVerificationScreen = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(EmailVerificationComponentOld) as FunctionComponent;

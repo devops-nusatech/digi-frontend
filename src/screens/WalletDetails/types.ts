@@ -18,7 +18,6 @@ export const defaultBeneficiary: Beneficiary = {
    },
 };
 
-
 export const defaultTicker: Ticker = {
    amount: '0',
    avg_price: '0',
@@ -27,5 +26,5 @@ export const defaultTicker: Ticker = {
    low: '0',
    open: '0',
    price_change_percent: '+0.00%',
-   volume: '0'
+   volume: '0',
 };

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-   injectIntl,
-} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { compose } from 'redux';
 import { IntlProps } from '../../';
@@ -15,7 +13,10 @@ import {
    selectCurrentPrice,
    setCurrentPrice,
 } from '../../modules';
-import { recentTradesFetch, selectRecentTradesOfCurrentMarket } from '../../modules/public/recentTrades';
+import {
+   recentTradesFetch,
+   selectRecentTradesOfCurrentMarket,
+} from '../../modules/public/recentTrades';
 
 interface ReduxProps {
    recentTrades: PublicTrade[];
@@ -49,7 +50,6 @@ const handleHighlightValue = (prevValue: string, curValue: string) => {
    );
 };
 
-
 class RecentTradesMarketContainer extends React.Component<Props> {
    public componentDidMount() {
       if (this.props.currentMarket) {
@@ -58,13 +58,19 @@ class RecentTradesMarketContainer extends React.Component<Props> {
    }
 
    public componentWillReceiveProps(next: Props) {
-      if (next.currentMarket && this.props.currentMarket !== next.currentMarket) {
+      if (
+         next.currentMarket &&
+         this.props.currentMarket !== next.currentMarket
+      ) {
          this.props.tradesFetch(next.currentMarket);
       }
    }
 
    public shouldComponentUpdate(nextProps: Props) {
-      return JSON.stringify(nextProps.recentTrades) !== JSON.stringify(this.props.recentTrades);
+      return (
+         JSON.stringify(nextProps.recentTrades) !==
+         JSON.stringify(this.props.recentTrades)
+      );
    }
 
    public render() {
@@ -81,39 +87,79 @@ class RecentTradesMarketContainer extends React.Component<Props> {
 
    private getHeaders = () => {
       return [
-         this.props.intl.formatMessage({ id: 'page.body.trade.header.recentTrades.content.time' }),
-         this.props.intl.formatMessage({ id: 'page.body.trade.header.recentTrades.content.amount' }),
-         this.props.intl.formatMessage({ id: 'page.body.trade.header.recentTrades.content.price' }),
+         this.props.intl.formatMessage({
+            id: 'page.body.trade.header.recentTrades.content.time',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.trade.header.recentTrades.content.amount',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.trade.header.recentTrades.content.price',
+         }),
       ];
    };
 
    private getTrades(trades: PublicTrade[]) {
-      const priceFixed = this.props.currentMarket ? this.props.currentMarket.price_precision : 0;
-      const amountFixed = this.props.currentMarket ? this.props.currentMarket.amount_precision : 0;
+      const priceFixed = this.props.currentMarket
+         ? this.props.currentMarket.price_precision
+         : 0;
+      const amountFixed = this.props.currentMarket
+         ? this.props.currentMarket.amount_precision
+         : 0;
 
       const renderRow = (item, i) => {
          const { created_at, taker_type, price, amount } = item;
-         const higlightedDate = handleHighlightValue(String(localeDate(trades[i - 1] ? trades[i - 1].created_at : '', 'time')), String(localeDate(created_at, 'time')));
+         const higlightedDate = handleHighlightValue(
+            String(
+               localeDate(trades[i - 1] ? trades[i - 1].created_at : '', 'time')
+            ),
+            String(localeDate(created_at, 'time'))
+         );
 
          return [
-            <span style={{ color: setTradeColor(taker_type).color }} key={i}>{higlightedDate}</span>,
-            <span style={{ color: setTradeColor(taker_type).color }} key={i}>
-               <Decimal fixed={amountFixed} thousSep=",">{amount}</Decimal>
+            <span
+               style={{ color: setTradeColor(taker_type).color }}
+               key={i}>
+               {higlightedDate}
             </span>,
-            <span style={{ color: setTradeColor(taker_type).color }} key={i}>
-               <Decimal fixed={priceFixed} thousSep="," prevValue={trades[i - 1] ? trades[i - 1].price : 0}>{price}</Decimal>
+            <span
+               style={{ color: setTradeColor(taker_type).color }}
+               key={i}>
+               <Decimal
+                  fixed={amountFixed}
+                  thousSep=",">
+                  {amount}
+               </Decimal>
+            </span>,
+            <span
+               style={{ color: setTradeColor(taker_type).color }}
+               key={i}>
+               <Decimal
+                  fixed={priceFixed}
+                  thousSep=","
+                  prevValue={trades[i - 1] ? trades[i - 1].price : 0}>
+                  {price}
+               </Decimal>
             </span>,
          ];
       };
 
-      return (trades.length > 0)
+      return trades.length > 0
          ? trades.map(renderRow)
-         : [[[''], this.props.intl.formatMessage({ id: 'page.noDataToShow' }), ['']]];
+         : [
+              [
+                 [''],
+                 this.props.intl.formatMessage({ id: 'page.noDataToShow' }),
+                 [''],
+              ],
+           ];
    }
 
    private handleOnSelect = (index: string) => {
       const { recentTrades, currentPrice } = this.props;
-      const priceToSet = recentTrades[Number(index)] ? Number(recentTrades[Number(index)].price) : 0;
+      const priceToSet = recentTrades[Number(index)]
+         ? Number(recentTrades[Number(index)].price)
+         : 0;
 
       if (currentPrice !== priceToSet) {
          this.props.setCurrentPrice(priceToSet);
@@ -127,17 +173,17 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    currentPrice: selectCurrentPrice(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    tradesFetch: market => dispatch(recentTradesFetch(market)),
    setCurrentPrice: payload => dispatch(setCurrentPrice(payload)),
 });
 
 const RecentTradesMarket = compose(
    injectIntl,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(RecentTradesMarketContainer) as any; // tslint:disable-line
 
-export {
-   handleHighlightValue,
-   RecentTradesMarket,
-};
+export { handleHighlightValue, RecentTradesMarket };

@@ -1,7 +1,13 @@
 import React, { FC } from 'react';
 import { Tab } from '@headlessui/react';
 import { MyTab } from '../../../components';
-import { icBitcoin, icBitcoinCash, icChainlink, icEthereum, icRipple } from '../../../assets';
+import {
+   icBitcoin,
+   icBitcoinCash,
+   icChainlink,
+   icEthereum,
+   icRipple,
+} from '../../../assets';
 
 export const Trend: FC = () => {
    return (
@@ -9,9 +15,22 @@ export const Trend: FC = () => {
          <div className="trend__center center">
             <div className="trend__line">
                <h2 className="trend__title h2">Market trend</h2>
-               <a className="button-stroke trend__button" href="market.html">View more</a>
+               <a
+                  className="button-stroke trend__button"
+                  href="market.html">
+                  View more
+               </a>
             </div>
-            <MyTab titles={['All', 'Defi', 'Innovation', 'POS', 'NFT', 'POW', 'Storage']}>
+            <MyTab
+               titles={[
+                  'All',
+                  'Defi',
+                  'Innovation',
+                  'POS',
+                  'NFT',
+                  'POW',
+                  'Storage',
+               ]}>
                <>
                   <Tab.Panel>
                      <div className="trend__table">
@@ -23,15 +42,22 @@ export const Trend: FC = () => {
                            <div className="trend__col">Chart</div>
                            <div className="trend__col">Trade</div>
                         </div>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">1</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icBitcoin} alt="Bitcoin" />
+                                    <img
+                                       src={icBitcoin}
+                                       alt="Bitcoin"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Bitcoin</span>
+                                    <span className="trend__subtitle">
+                                       Bitcoin
+                                    </span>
                                     <span className="trend__currency">BTC</span>
                                  </div>
                               </div>
@@ -46,18 +72,27 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">2</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icEthereum} alt="Ethereum" />
+                                    <img
+                                       src={icEthereum}
+                                       alt="Ethereum"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Ethereum</span>
+                                    <span className="trend__subtitle">
+                                       Ethereum
+                                    </span>
                                     <span className="trend__currency">ETH</span>
                                  </div>
                               </div>
@@ -72,18 +107,27 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">3</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icBitcoinCash} alt="Bitcoin Cash" />
+                                    <img
+                                       src={icBitcoinCash}
+                                       alt="Bitcoin Cash"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Bitcoin Cash</span>
+                                    <span className="trend__subtitle">
+                                       Bitcoin Cash
+                                    </span>
                                     <span className="trend__currency">BCH</span>
                                  </div>
                               </div>
@@ -98,19 +142,30 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">4</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icRipple} alt="Ripple" />
+                                    <img
+                                       src={icRipple}
+                                       alt="Ripple"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Ripple</span>
-                                    <span className="trend__currency">XRP </span>
+                                    <span className="trend__subtitle">
+                                       Ripple
+                                    </span>
+                                    <span className="trend__currency">
+                                       XRP{' '}
+                                    </span>
                                  </div>
                               </div>
                            </div>
@@ -124,19 +179,30 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">5</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icChainlink} alt="Chainlink" />
+                                    <img
+                                       src={icChainlink}
+                                       alt="Chainlink"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Chainlink</span>
-                                    <span className="trend__currency">LINK</span>
+                                    <span className="trend__subtitle">
+                                       Chainlink
+                                    </span>
+                                    <span className="trend__currency">
+                                       LINK
+                                    </span>
                                  </div>
                               </div>
                            </div>
@@ -150,7 +216,9 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
                      </div>
@@ -165,15 +233,22 @@ export const Trend: FC = () => {
                            <div className="trend__col">Chart</div>
                            <div className="trend__col">Trade</div>
                         </div>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">1</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icBitcoin} alt="Bitcoin" />
+                                    <img
+                                       src={icBitcoin}
+                                       alt="Bitcoin"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Bitcoin</span>
+                                    <span className="trend__subtitle">
+                                       Bitcoin
+                                    </span>
                                     <span className="trend__currency">BTC</span>
                                  </div>
                               </div>
@@ -188,18 +263,27 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">2</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icEthereum} alt="Ethereum" />
+                                    <img
+                                       src={icEthereum}
+                                       alt="Ethereum"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Ethereum</span>
+                                    <span className="trend__subtitle">
+                                       Ethereum
+                                    </span>
                                     <span className="trend__currency">ETH</span>
                                  </div>
                               </div>
@@ -214,18 +298,27 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">3</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icBitcoinCash} alt="Bitcoin Cash" />
+                                    <img
+                                       src={icBitcoinCash}
+                                       alt="Bitcoin Cash"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Bitcoin Cash</span>
+                                    <span className="trend__subtitle">
+                                       Bitcoin Cash
+                                    </span>
                                     <span className="trend__currency">BCH</span>
                                  </div>
                               </div>
@@ -240,19 +333,30 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">4</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icRipple} alt="Ripple" />
+                                    <img
+                                       src={icRipple}
+                                       alt="Ripple"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Ripple</span>
-                                    <span className="trend__currency">XRP </span>
+                                    <span className="trend__subtitle">
+                                       Ripple
+                                    </span>
+                                    <span className="trend__currency">
+                                       XRP{' '}
+                                    </span>
                                  </div>
                               </div>
                            </div>
@@ -266,19 +370,30 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
-                        <a className="trend__row" href="exchange.html">
+                        <a
+                           className="trend__row"
+                           href="exchange.html">
                            <div className="trend__col">5</div>
                            <div className="trend__col">
                               <div className="trend__item">
                                  <div className="trend__icon">
-                                    <img src={icChainlink} alt="Chainlink" />
+                                    <img
+                                       src={icChainlink}
+                                       alt="Chainlink"
+                                    />
                                  </div>
                                  <div className="trend__details">
-                                    <span className="trend__subtitle">Chainlink</span>
-                                    <span className="trend__currency">LINK</span>
+                                    <span className="trend__subtitle">
+                                       Chainlink
+                                    </span>
+                                    <span className="trend__currency">
+                                       LINK
+                                    </span>
                                  </div>
                               </div>
                            </div>
@@ -292,7 +407,9 @@ export const Trend: FC = () => {
                               </div>
                            </div>
                            <div className="trend__col">
-                              <button className="button-stroke button-small trend__button">Trade</button>
+                              <button className="button-stroke button-small trend__button">
+                                 Trade
+                              </button>
                            </div>
                         </a>
                      </div>

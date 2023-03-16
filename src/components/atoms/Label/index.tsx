@@ -1,18 +1,15 @@
-import React, { FC } from 'react'
+import React, { FC } from 'react';
 
 type LabelProps = {
    label: string;
    className?: string;
-}
+};
 
-export const Label: FC<LabelProps> = ({
-   label,
-   className,
-   children,
-}) => (
+export const Label: FC<LabelProps> = ({ label, className, children }) => (
    <div className="leading-none">
-      <label className={`text-xs text-neutral5 ${className} leading-none font-bold uppercase`}>
+      <label
+         className={`text-xs text-neutral5 ${className} font-bold uppercase leading-none`}>
          {label} {children}
       </label>
    </div>
-)
+);

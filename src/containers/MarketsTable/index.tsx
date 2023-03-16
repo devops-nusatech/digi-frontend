@@ -2,10 +2,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Decimal, TickerTable } from '../../components';
-import {
-   useMarketsFetch,
-   useMarketsTickersFetch,
-} from '../../hooks';
+import { useMarketsFetch, useMarketsTickersFetch } from '../../hooks';
 import {
    Market,
    selectMarkets,
@@ -33,10 +30,13 @@ const MarketsTableComponent = props => {
    const [currentBidUnit, setCurrentBidUnit] = React.useState('');
 
    const handleRedirectToTrading = (id: string) => {
-      const currentMarket: Market | undefined = markets.find(item => item.id === id);
+      const currentMarket: Market | undefined = markets.find(
+         item => item.id === id
+      );
 
       if (currentMarket) {
-         props.handleChangeCurrentMarket && props.handleChangeCurrentMarket(currentMarket);
+         props.handleChangeCurrentMarket &&
+            props.handleChangeCurrentMarket(currentMarket);
          dispatch(setCurrentMarket(currentMarket));
          history.push(`/trading/${currentMarket.id}`);
       }
@@ -53,32 +53,59 @@ const MarketsTableComponent = props => {
    let currentBidUnitsList: string[] = [''];
 
    if (markets.length > 0) {
-      currentBidUnitsList = markets.reduce(formatFilteredMarkets, currentBidUnitsList);
+      currentBidUnitsList = markets.reduce(
+         formatFilteredMarkets,
+         currentBidUnitsList
+      );
    }
 
    let currentBidUnitMarkets = props.markets || markets;
 
    if (currentBidUnit) {
-      currentBidUnitMarkets = currentBidUnitMarkets.length ? currentBidUnitMarkets.filter(market => market.quote_unit === currentBidUnit) : [];
+      currentBidUnitMarkets = currentBidUnitMarkets.length
+         ? currentBidUnitMarkets.filter(
+              market => market.quote_unit === currentBidUnit
+           )
+         : [];
    }
 
-   const formattedMarkets = currentBidUnitMarkets.length ? currentBidUnitMarkets.map(market =>
-   ({
-      ...market,
-      last: Decimal.format(Number((marketTickers[market.id] || defaultTicker).last), market.amount_precision),
-      open: Decimal.format(Number((marketTickers[market.id] || defaultTicker).open), market.price_precision),
-      price_change_percent: String((marketTickers[market.id] || defaultTicker).price_change_percent),
-      high: Decimal.format(Number((marketTickers[market.id] || defaultTicker).high), market.amount_precision),
-      low: Decimal.format(Number((marketTickers[market.id] || defaultTicker).low), market.amount_precision),
-      volume: Decimal.format(Number((marketTickers[market.id] || defaultTicker).volume), market.amount_precision),
-   }),
-   ).map(market =>
-   ({
-      ...market,
-      change: Decimal.format((+market.last - +market.open)
-         .toFixed(market.price_precision), market.price_precision),
-   }),
-   ) : [];
+   const formattedMarkets = currentBidUnitMarkets.length
+      ? currentBidUnitMarkets
+           .map(market => ({
+              ...market,
+              last: Decimal.format(
+                 Number((marketTickers[market.id] || defaultTicker).last),
+                 market.amount_precision
+              ),
+              open: Decimal.format(
+                 Number((marketTickers[market.id] || defaultTicker).open),
+                 market.price_precision
+              ),
+              price_change_percent: String(
+                 (marketTickers[market.id] || defaultTicker)
+                    .price_change_percent
+              ),
+              high: Decimal.format(
+                 Number((marketTickers[market.id] || defaultTicker).high),
+                 market.amount_precision
+              ),
+              low: Decimal.format(
+                 Number((marketTickers[market.id] || defaultTicker).low),
+                 market.amount_precision
+              ),
+              volume: Decimal.format(
+                 Number((marketTickers[market.id] || defaultTicker).volume),
+                 market.amount_precision
+              ),
+           }))
+           .map(market => ({
+              ...market,
+              change: Decimal.format(
+                 (+market.last - +market.open).toFixed(market.price_precision),
+                 market.price_precision
+              ),
+           }))
+      : [];
 
    return (
       <TickerTable

@@ -13,15 +13,22 @@ import { Market } from 'modules/public/markets';
 import { periodMinutesToString } from 'modules/public/ranger/helpers';
 import { store } from 'store';
 
-export const print = (...x) => window.console.log.apply(null, ['>>>> TC', ...x]);
+export const print = (...x) =>
+   window.console.log.apply(null, ['>>>> TC', ...x]);
 export interface CurrentKlineSubscription {
    marketId?: string;
    periodString?: string;
 }
 
-const getHistoryApi = (): string => isFinexEnabled() ? finexUrl() : tradeUrl();
+const getHistoryApi = (): string =>
+   isFinexEnabled() ? finexUrl() : tradeUrl();
 
-const makeHistoryUrl = (market: string, resolution: number, from: number, to: number) => {
+const makeHistoryUrl = (
+   market: string,
+   resolution: number,
+   from: number,
+   to: number
+) => {
    const payload = {
       period: resolution,
       time_from: getTimestampPeriod(from, resolution),
@@ -52,15 +59,35 @@ const resolutionToSeconds = (r: string): number => {
 const config = {
    supports_timescale_marks: true,
    supports_time: false,
-   supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '360', '720', 'd', '3d'],
+   supported_resolutions: [
+      '1',
+      '5',
+      '15',
+      '30',
+      '60',
+      '120',
+      '240',
+      '360',
+      '720',
+      'd',
+      '3d',
+   ],
 };
 
-export const dataFeedObject = (tradingChart: TradingChartComponent, markets: Market[]) => {
+export const dataFeedObject = (
+   tradingChart: TradingChartComponent,
+   markets: Market[]
+) => {
    const dataFeed = {
       onReady: cb => {
          setTimeout(() => cb(config), 0);
       },
-      searchSymbols: (userInput, exchange, symbolType, onResultReadyCallback) => {
+      searchSymbols: (
+         userInput,
+         exchange,
+         symbolType,
+         onResultReadyCallback
+      ) => {
          const symbols = markets.map(m => ({
             symbol: m.id,
             full_name: m.name,
@@ -72,11 +99,20 @@ export const dataFeedObject = (tradingChart: TradingChartComponent, markets: Mar
          }));
          setTimeout(() => onResultReadyCallback(symbols), 0);
       },
-      resolveSymbol: (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) => {
-         const symbol = markets.find(m => m.id === symbolName || m.name === symbolName);
+      resolveSymbol: (
+         symbolName,
+         onSymbolResolvedCallback,
+         onResolveErrorCallback
+      ) => {
+         const symbol = markets.find(
+            m => m.id === symbolName || m.name === symbolName
+         );
 
          if (!symbol) {
-            return setTimeout(() => onResolveErrorCallback('Symbol not found'), 0);
+            return setTimeout(
+               () => onResolveErrorCallback('Symbol not found'),
+               0
+            );
          }
 
          const symbolStub = {
@@ -90,8 +126,32 @@ export const dataFeedObject = (tradingChart: TradingChartComponent, markets: Mar
             minmov: 1,
             pricescale: Math.pow(10, symbol.price_precision),
             has_intraday: true,
-            intraday_multipliers: ['1', '5', '15', '30', '60', '120', '240', '360', '720', 'd', '3d'],
-            supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '360', '720', 'd', '3d'],
+            intraday_multipliers: [
+               '1',
+               '5',
+               '15',
+               '30',
+               '60',
+               '120',
+               '240',
+               '360',
+               '720',
+               'd',
+               '3d',
+            ],
+            supported_resolutions: [
+               '1',
+               '5',
+               '15',
+               '30',
+               '60',
+               '120',
+               '240',
+               '360',
+               '720',
+               'd',
+               '3d',
+            ],
             volume_precision: 8,
             data_status: 'streaming',
          };
@@ -103,7 +163,7 @@ export const dataFeedObject = (tradingChart: TradingChartComponent, markets: Mar
          from,
          to,
          onDataCallback,
-         resolution,
+         resolution
       ) => {
          const range = tradingChart.tvWidget!.activeChart().getVisibleRange();
          const period = tradingChart.tvWidget!.activeChart().resolution();
@@ -117,13 +177,13 @@ export const dataFeedObject = (tradingChart: TradingChartComponent, markets: Mar
          to,
          onHistoryCallback,
          onErrorCallback,
-         firstDataRequest,
+         firstDataRequest
       ) => {
          const url = makeHistoryUrl(
             symbolInfo.ticker || symbolInfo.name.toLowerCase(),
             resolutionToSeconds(resolution),
             from,
-            to,
+            to
          );
 
          return axios
@@ -145,19 +205,23 @@ export const dataFeedObject = (tradingChart: TradingChartComponent, markets: Mar
          resolution,
          onRealtimeCallback,
          subscribeUID: string,
-         onResetCacheNeededCallback,
+         onResetCacheNeededCallback
       ) => {
          dataFeed.onRealtimeCallback = (kline: KlineState) => {
             if (
                kline.last &&
-               kline.marketId === tradingChart.currentKlineSubscription.marketId &&
-               kline.period === tradingChart.currentKlineSubscription.periodString
+               kline.marketId ===
+                  tradingChart.currentKlineSubscription.marketId &&
+               kline.period ===
+                  tradingChart.currentKlineSubscription.periodString
             ) {
                onRealtimeCallback(kline.last);
             }
          };
          const marketId: string = symbolInfo.ticker!;
-         const periodString = periodMinutesToString(resolutionToSeconds(resolution));
+         const periodString = periodMinutesToString(
+            resolutionToSeconds(resolution)
+         );
 
          tradingChart.props.subscribeKline(marketId, periodString);
          tradingChart.currentKlineSubscription = {
@@ -166,7 +230,8 @@ export const dataFeedObject = (tradingChart: TradingChartComponent, markets: Mar
          };
       },
       unsubscribeBars: (subscribeUID: string) => {
-         const { marketId, periodString } = tradingChart.currentKlineSubscription;
+         const { marketId, periodString } =
+            tradingChart.currentKlineSubscription;
          if (marketId && periodString) {
             tradingChart.props.unSubscribeKline(marketId, periodString);
          }

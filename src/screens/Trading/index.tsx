@@ -1,5 +1,9 @@
 import React, { FC, FunctionComponent, useState } from 'react';
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
+import {
+   connect,
+   MapDispatchToPropsFunction,
+   MapStateToProps,
+} from 'react-redux';
 import {
    TradingHeader,
    TradingOrderList,
@@ -8,7 +12,16 @@ import {
    TradingMarketList,
    Nav,
 } from 'components';
-import { Market, RootState, selectCurrentColorTheme, selectCurrentMarket, selectMarkets, selectMarketTickers, selectUserLoggedIn, Ticker } from 'modules';
+import {
+   Market,
+   RootState,
+   selectCurrentColorTheme,
+   selectCurrentMarket,
+   selectMarkets,
+   selectMarketTickers,
+   selectUserLoggedIn,
+   Ticker,
+} from 'modules';
 import { compose } from 'redux';
 import { injectIntl } from 'react-intl';
 import { RouterProps, withRouter } from 'react-router';
@@ -19,14 +32,12 @@ type ReduxProps = {
    currentMarket?: Market;
    markets: Market[];
    marketTickers: {
-      [key: string]: Ticker
+      [key: string]: Ticker;
    };
    theme: string;
-}
+};
 
-interface DispatchProps {
-
-}
+interface DispatchProps {}
 
 type TradingProps = RouterProps & IntlProps & ReduxProps & DispatchProps;
 
@@ -42,13 +53,13 @@ const TradingFC: FC<TradingProps> = ({
    const translate = (id: string) => intl.formatMessage({ id });
 
    return (
-      <div className="bg-shade4 dark:bg-neutral1 min-h-[calc(100vh-114px)] lg:min-h-[calc(100vh-88px)] p-4 pb-33 lg:p-1">
+      <div className="min-h-[calc(100vh-114px)] bg-shade4 p-4 pb-33 dark:bg-neutral1 lg:min-h-[calc(100vh-88px)] lg:p-1">
          <TradingHeader
             currentMarket={currentMarket}
             marketTickers={marketTickers}
             translate={translate}
          />
-         <div className="flex lg:hidden space-x-0 md:space-x-2 lg:space-x-0 my-4 lg:mb-0 justify-between md:justify-start">
+         <div className="my-4 flex justify-between space-x-0 md:justify-start md:space-x-2 lg:mb-0 lg:hidden lg:space-x-0">
             <Nav
                title="Chart"
                theme={theme === 'dark' ? 'black' : 'grey'}
@@ -68,7 +79,7 @@ const TradingFC: FC<TradingProps> = ({
                onClick={() => setTab(2)}
             />
          </div>
-         <div className="block lg2:flex mt-1">
+         <div className="mt-1 block lg2:flex">
             <TradingOrderList />
             <TradingCenter />
             <TradingMarketList translate={translate} />
@@ -76,7 +87,7 @@ const TradingFC: FC<TradingProps> = ({
          {/* <TradingTrade isLoggedIn={isLoggedIn} /> */}
       </div>
    );
-}
+};
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    isLoggedIn: selectUserLoggedIn(state),
@@ -86,9 +97,10 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    theme: selectCurrentColorTheme(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
-
-});
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({});
 
 export const Trading = compose(
    injectIntl,

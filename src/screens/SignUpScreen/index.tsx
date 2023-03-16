@@ -2,9 +2,7 @@ import cx from 'classnames';
 import { History } from 'history';
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
-import {
-   injectIntl,
-} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import {
    connect,
    MapDispatchToPropsFunction,
@@ -28,7 +26,8 @@ import {
 } from '../../helpers';
 import {
    Configs,
-   entropyPasswordFetch, GeetestCaptchaResponse,
+   entropyPasswordFetch,
+   GeetestCaptchaResponse,
    GeetestCaptchaV4Response,
    LanguageState,
    resetCaptchaState,
@@ -49,7 +48,10 @@ interface ReduxProps {
    requireVerification?: boolean;
    loading?: boolean;
    currentPasswordEntropy: number;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
 }
@@ -176,13 +178,27 @@ class SignUp extends React.Component<Props> {
          <div>
             <div className={className}>
                <SignUpForm
-                  labelSignIn={this.props.intl.formatMessage({ id: 'page.header.signIn' })}
-                  labelSignUp={this.props.intl.formatMessage({ id: 'page.header.signUp' })}
-                  emailLabel={this.props.intl.formatMessage({ id: 'page.header.signUp.email' })}
-                  passwordLabel={this.props.intl.formatMessage({ id: 'page.header.signUp.password' })}
-                  confirmPasswordLabel={this.props.intl.formatMessage({ id: 'page.header.signUp.confirmPassword' })}
-                  referalCodeLabel={this.props.intl.formatMessage({ id: 'page.header.signUp.referalCode' })}
-                  termsMessage={this.props.intl.formatMessage({ id: 'page.header.signUp.terms' })}
+                  labelSignIn={this.props.intl.formatMessage({
+                     id: 'page.header.signIn',
+                  })}
+                  labelSignUp={this.props.intl.formatMessage({
+                     id: 'page.header.signUp',
+                  })}
+                  emailLabel={this.props.intl.formatMessage({
+                     id: 'page.header.signUp.email',
+                  })}
+                  passwordLabel={this.props.intl.formatMessage({
+                     id: 'page.header.signUp.password',
+                  })}
+                  confirmPasswordLabel={this.props.intl.formatMessage({
+                     id: 'page.header.signUp.confirmPassword',
+                  })}
+                  referalCodeLabel={this.props.intl.formatMessage({
+                     id: 'page.header.signUp.referalCode',
+                  })}
+                  termsMessage={this.props.intl.formatMessage({
+                     id: 'page.header.signUp.terms',
+                  })}
                   refId={refId}
                   handleChangeRefId={this.handleChangeRefId}
                   isLoading={loading}
@@ -238,7 +254,8 @@ class SignUp extends React.Component<Props> {
       );
    }
 
-   private translate = (key: string) => this.props.intl.formatMessage({ id: key });
+   private translate = (key: string) =>
+      this.props.intl.formatMessage({ id: key });
 
    private handleOutsideClick = event => {
       const wrapperElement = this.passwordWrapper.current;
@@ -273,13 +290,20 @@ class SignUp extends React.Component<Props> {
    };
 
    private handleChangePassword = (value: string) => {
-      const { passwordErrorFirstSolved, passwordErrorSecondSolved, passwordErrorThirdSolved } = this.state;
+      const {
+         passwordErrorFirstSolved,
+         passwordErrorSecondSolved,
+         passwordErrorThirdSolved,
+      } = this.state;
 
       if (passwordErrorFirstSolution(value) && !passwordErrorFirstSolved) {
          this.setState({
             passwordErrorFirstSolved: true,
          });
-      } else if (!passwordErrorFirstSolution(value) && passwordErrorFirstSolved) {
+      } else if (
+         !passwordErrorFirstSolution(value) &&
+         passwordErrorFirstSolved
+      ) {
          this.setState({
             passwordErrorFirstSolved: false,
          });
@@ -289,7 +313,10 @@ class SignUp extends React.Component<Props> {
          this.setState({
             passwordErrorSecondSolved: true,
          });
-      } else if (!passwordErrorSecondSolution(value) && passwordErrorSecondSolved) {
+      } else if (
+         !passwordErrorSecondSolution(value) &&
+         passwordErrorSecondSolved
+      ) {
          this.setState({
             passwordErrorSecondSolved: false,
          });
@@ -299,7 +326,10 @@ class SignUp extends React.Component<Props> {
          this.setState({
             passwordErrorThirdSolved: true,
          });
-      } else if (!passwordErrorThirdSolution(value) && passwordErrorThirdSolved) {
+      } else if (
+         !passwordErrorThirdSolution(value) &&
+         passwordErrorThirdSolved
+      ) {
          this.setState({
             passwordErrorThirdSolved: false,
          });
@@ -366,12 +396,7 @@ class SignUp extends React.Component<Props> {
 
    private handleSignUp = () => {
       const { configs, i18n, captcha_response } = this.props;
-      const {
-         username,
-         email,
-         password,
-         refId,
-      } = this.state;
+      const { username, email, password, refId } = this.state;
       let payload: any = {
          email,
          password,
@@ -406,7 +431,9 @@ class SignUp extends React.Component<Props> {
    private renderModalHeader = () => {
       return (
          <div className="pg-exchange-modal-submit-header">
-            {this.props.intl.formatMessage({ id: 'page.header.signUp.modal.header' })}
+            {this.props.intl.formatMessage({
+               id: 'page.header.signUp.modal.header',
+            })}
          </div>
       );
    };
@@ -415,7 +442,9 @@ class SignUp extends React.Component<Props> {
       return (
          <div className="pg-exchange-modal-submit-body">
             <h2>
-               {this.props.intl.formatMessage({ id: 'page.header.signUp.modal.body' })}
+               {this.props.intl.formatMessage({
+                  id: 'page.header.signUp.modal.body',
+               })}
             </h2>
          </div>
       );
@@ -428,9 +457,10 @@ class SignUp extends React.Component<Props> {
                block={true}
                onClick={this.closeModal}
                size="lg"
-               variant="primary"
-            >
-               {this.props.intl.formatMessage({ id: 'page.header.signUp.modal.footer' })}
+               variant="primary">
+               {this.props.intl.formatMessage({
+                  id: 'page.header.signUp.modal.footer',
+               })}
             </Button>
          </div>
       );
@@ -441,7 +471,8 @@ class SignUp extends React.Component<Props> {
       this.props.history.push('/login');
    };
 
-   private extractRefID = (url: string) => new URLSearchParams(url).get('refid');
+   private extractRefID = (url: string) =>
+      new URLSearchParams(url).get('refid');
 
    private handleValidateForm = () => {
       const { email, password, confirmPassword } = this.state;
@@ -452,8 +483,12 @@ class SignUp extends React.Component<Props> {
       if (!isEmailValid && !isPasswordValid) {
          this.setState({
             confirmationError: '',
-            emailError: this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL }),
-            passwordError: this.props.intl.formatMessage({ id: ERROR_INVALID_PASSWORD }),
+            emailError: this.props.intl.formatMessage({
+               id: ERROR_INVALID_EMAIL,
+            }),
+            passwordError: this.props.intl.formatMessage({
+               id: ERROR_INVALID_PASSWORD,
+            }),
             hasConfirmed: false,
          });
 
@@ -463,7 +498,9 @@ class SignUp extends React.Component<Props> {
       if (!isEmailValid) {
          this.setState({
             confirmationError: '',
-            emailError: this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL }),
+            emailError: this.props.intl.formatMessage({
+               id: ERROR_INVALID_EMAIL,
+            }),
             passwordError: '',
             hasConfirmed: false,
          });
@@ -475,7 +512,9 @@ class SignUp extends React.Component<Props> {
          this.setState({
             confirmationError: '',
             emailError: '',
-            passwordError: this.props.intl.formatMessage({ id: ERROR_INVALID_PASSWORD }),
+            passwordError: this.props.intl.formatMessage({
+               id: ERROR_INVALID_PASSWORD,
+            }),
             hasConfirmed: false,
          });
 
@@ -484,7 +523,9 @@ class SignUp extends React.Component<Props> {
 
       if (!isConfirmPasswordValid) {
          this.setState({
-            confirmationError: this.props.intl.formatMessage({ id: ERROR_PASSWORD_CONFIRMATION }),
+            confirmationError: this.props.intl.formatMessage({
+               id: ERROR_PASSWORD_CONFIRMATION,
+            }),
             emailError: '',
             passwordError: '',
             hasConfirmed: false,
@@ -506,15 +547,18 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
-   dispatch => ({
-      signUp: credentials => dispatch(signUp(credentials)),
-      fetchCurrentPasswordEntropy: payload => dispatch(entropyPasswordFetch(payload)),
-      resetCaptchaState: () => dispatch(resetCaptchaState()),
-   });
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   signUp: credentials => dispatch(signUp(credentials)),
+   fetchCurrentPasswordEntropy: payload =>
+      dispatch(entropyPasswordFetch(payload)),
+   resetCaptchaState: () => dispatch(resetCaptchaState()),
+});
 
 export const SignUpScreen = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(SignUp) as React.ComponentClass;

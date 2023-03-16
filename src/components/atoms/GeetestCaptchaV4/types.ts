@@ -6,7 +6,7 @@ export interface GeetestCaptchaV4Props {
 
 type Products = 'float' | 'bind' | 'popup';
 type Languages =
-   'zho' // Chinese (Simplified)
+   | 'zho' // Chinese (Simplified)
    | 'eng' // English
    | 'zho-tw' // Chinese (Taiwan)
    | 'zho-hk' // Chinese (Hong Kong)
@@ -26,7 +26,7 @@ type Mask = {
    outSide?: boolean;
    bgColor?: string;
    color?: string;
-}
+};
 
 export type GeetestCaptchaV4State = {
    config: {
@@ -48,6 +48,6 @@ export type GeetestCaptchaV4State = {
       onError?: () => void;
       hideSuccess?: boolean; // default: false
       userInfo?: string;
-   },
+   };
    handler: (e: any) => void;
-}
+};

@@ -24,9 +24,8 @@ export const ModalTransferConfirm: FC<ModalTransferConfirmProps> = ({
          show={show}
          zIndexBackdrop={1045}
          zIndexContent={1046}
-         title="Confirmation"
-      >
-         <div className="flex justify-between py-5 px-6 rounded bg-neutral7 dark:bg-neutral3">
+         title="Confirmation">
+         <div className="flex justify-between rounded bg-neutral7 py-5 px-6 dark:bg-neutral3">
             <div className="font-medium text-neutral3 dark:text-neutral6">
                Currrency <br /> Total
             </div>
@@ -41,9 +40,7 @@ export const ModalTransferConfirm: FC<ModalTransferConfirmProps> = ({
             <div className="font-medium text-neutral3 dark:text-neutral6">
                Receiver
             </div>
-            <div className="truncate">
-               {receiver}
-            </div>
+            <div className="truncate">{receiver}</div>
          </div>
          <Button
             text="Withdraw"
@@ -51,5 +48,5 @@ export const ModalTransferConfirm: FC<ModalTransferConfirmProps> = ({
             onClick={onSubmit}
          />
       </Portal>
-   )
-}
+   );
+};

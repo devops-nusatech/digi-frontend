@@ -7,7 +7,10 @@ import { useHistory } from 'react-router';
 import { CustomInput } from '../';
 import { captchaLogin } from '../../api';
 import { EMAIL_REGEX } from '../../helpers';
-import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from '../../modules';
+import {
+   GeetestCaptchaResponse,
+   GeetestCaptchaV4Response,
+} from '../../modules';
 import { selectMobileDeviceState } from '../../modules/public/globalSettings';
 
 export interface SignInProps {
@@ -42,7 +45,10 @@ export interface SignInProps {
    renderCaptcha?: JSX.Element | null;
    reCaptchaSuccess?: boolean;
    geetestCaptchaSuccess?: boolean;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
 }
 
 const SignIn: React.FC<SignInProps> = ({
@@ -106,7 +112,12 @@ const SignIn: React.FC<SignInProps> = ({
    );
 
    const isButtonDisabled = (): boolean => {
-      return ((captchaLogin() && captchaType !== 'none' && !reCaptchaSuccess && !geetestCaptchaSuccess)) ? true : false;
+      return captchaLogin() &&
+         captchaType !== 'none' &&
+         !reCaptchaSuccess &&
+         !geetestCaptchaSuccess
+         ? true
+         : false;
    };
 
    const handleSubmitForm = React.useCallback(() => {
@@ -146,7 +157,9 @@ const SignIn: React.FC<SignInProps> = ({
    const renderForgotButton = React.useMemo(
       () => (
          <div className="cr-sign-in-form__bottom-section">
-            <div className="cr-sign-in-form__bottom-section-password" onClick={() => onForgotPassword(email)}>
+            <div
+               className="cr-sign-in-form__bottom-section-password"
+               onClick={() => onForgotPassword(email)}>
                {forgotPasswordLabel || 'Forgot your password?'}
             </div>
          </div>
@@ -159,7 +172,9 @@ const SignIn: React.FC<SignInProps> = ({
          <div className="pg-sign-in-screen__register">
             <span>
                {formatMessage({ id: 'page.header.signIN.noAccountYet' })}
-               <span onClick={() => history.push('/signup')} className="pg-sign-in-screen__register-button">
+               <span
+                  onClick={() => history.push('/signup')}
+                  className="pg-sign-in-screen__register-button">
                   {formatMessage({ id: 'page.body.landing.header.button3' })}
                </span>
             </span>
@@ -170,7 +185,9 @@ const SignIn: React.FC<SignInProps> = ({
 
    return (
       <form>
-         <div className="cr-sign-in-form" onKeyPress={handleEnterPress}>
+         <div
+            className="cr-sign-in-form"
+            onKeyPress={handleEnterPress}>
             {!isMobileDevice && (
                <div className="cr-sign-in-form__options-group">
                   <div className="cr-sign-in-form__option">
@@ -190,7 +207,11 @@ const SignIn: React.FC<SignInProps> = ({
             <div className="cr-sign-in-form__form-content">
                {image ? (
                   <h1 className="cr-sign-in-form__title">
-                     <img className="cr-sign-in-form__image" src={image} alt="logo" />
+                     <img
+                        className="cr-sign-in-form__image"
+                        src={image}
+                        alt="logo"
+                     />
                   </h1>
                ) : null}
                <div
@@ -208,7 +229,11 @@ const SignIn: React.FC<SignInProps> = ({
                      classNameLabel="cr-sign-in-form__label"
                      autoFocus={!isMobileDevice}
                   />
-                  {emailError && <div className={'cr-sign-in-form__error'}>{emailError}</div>}
+                  {emailError && (
+                     <div className={'cr-sign-in-form__error'}>
+                        {emailError}
+                     </div>
+                  )}
                </div>
                <div
                   className={cr('cr-sign-in-form__group', {
@@ -225,7 +250,11 @@ const SignIn: React.FC<SignInProps> = ({
                      classNameLabel="cr-sign-in-form__label"
                      autoFocus={false}
                   />
-                  {passwordError && <div className={'cr-sign-in-form__error'}>{passwordError}</div>}
+                  {passwordError && (
+                     <div className={'cr-sign-in-form__error'}>
+                        {passwordError}
+                     </div>
+                  )}
                </div>
                {captchaLogin() && renderCaptcha}
                {isMobileDevice && renderForgotButton}
@@ -233,11 +262,20 @@ const SignIn: React.FC<SignInProps> = ({
                   <Button
                      block={true}
                      type="button"
-                     disabled={isLoading || !email.match(EMAIL_REGEX) || !password || isButtonDisabled()}
+                     disabled={
+                        isLoading ||
+                        !email.match(EMAIL_REGEX) ||
+                        !password ||
+                        isButtonDisabled()
+                     }
                      onClick={handleClick as any}
                      size="lg"
                      variant="primary">
-                     {isLoading ? 'Loading...' : labelSignIn ? labelSignIn : 'Sign in'}
+                     {isLoading
+                        ? 'Loading...'
+                        : labelSignIn
+                        ? labelSignIn
+                        : 'Sign in'}
                   </Button>
                </div>
                {!isMobileDevice && renderForgotButton}

@@ -89,17 +89,16 @@ export const AdibDropDown: FC<AdibDropDownProps> = ({
 
    return (
       <>
-         <ul className="z-2 absolute mt-1 max-h-60 w-full overflow-auto rounded-xl bg-neutral8 dark:bg-neutral2 border-2 border-primary1 py-1 shadow-lg ring-1 ring-primary1 ring-opacity-5 focus:outline-none">
-            {values && values.map((value, index) => (
-               <li
-                  className="relative cursor-default select-none py-2 pl-10 pr-4 "
-                  key={index}
-                  onClick={() => onClickHandler(value)}
-               >
-                  <span className="block truncate font-normal">{value}</span>
-               </li>
-            )
-            )}
+         <ul className="absolute z-2 mt-1 max-h-60 w-full overflow-auto rounded-xl border-2 border-primary1 bg-neutral8 py-1 shadow-lg ring-1 ring-primary1 ring-opacity-5 focus:outline-none dark:bg-neutral2">
+            {values &&
+               values.map((value, index) => (
+                  <li
+                     className="relative cursor-default select-none py-2 pl-10 pr-4 "
+                     key={index}
+                     onClick={() => onClickHandler(value)}>
+                     <span className="block truncate font-normal">{value}</span>
+                  </li>
+               ))}
          </ul>
       </>
    );

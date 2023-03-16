@@ -8,8 +8,8 @@ export const Geetest = () => {
    const dispatch = useDispatch();
 
    const handleGeetestResponse = (captcha_response: GeetestCaptchaResponse) => {
-      dispatch(setGeetestCaptchaSuccess({ captcha_response }))
-   }
+      dispatch(setGeetestCaptchaSuccess({ captcha_response }));
+   };
 
    const buttonRef = useRef<HTMLButtonElement>(null);
    const gt3Ref = useRef<HTMLButtonElement>(null);
@@ -20,7 +20,7 @@ export const Geetest = () => {
    }, [response]);
    return (
       <>
-         <div className="flex items-center justify-between h-screen">
+         <div className="flex h-screen items-center justify-between">
             {/* <div className="overflow-x-auto w-1/3 space-y-5">
                <div className="text-2xl font-bold">Geetest V4 Response</div>
                <table className="table-auto w-full lg2:w-69 divide-y divide-primary5 dark:divide-chart1">
@@ -55,13 +55,15 @@ export const Geetest = () => {
                buttonRef={gt3Ref}
                onSuccess={handleGeetestResponse}
             />
-            <Button text="GT 3" ref={gt3Ref} />
-
+            <Button
+               text="GT 3"
+               ref={gt3Ref}
+            />
          </div>
          <ComboboxCurrency
             onChange={currency => console.log('currency', currency)}
             filterNetwork={false}
          />
       </>
-   )
-}
+   );
+};
