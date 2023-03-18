@@ -4,15 +4,16 @@ interface LetterIconProps {
    className?: string;
 }
 
-export const LetterIcon: React.FC<LetterIconProps> = (props: LetterIconProps) => (
+export const LetterIcon: React.FC<LetterIconProps> = (
+   props: LetterIconProps
+) => (
    <svg
       width="44"
       height="46"
       viewBox="0 0 44 46"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={props.className}
-   >
+      className={props.className}>
       <path
          d="M20.3285 19.7122C20.5909 20.0216 21.0505 20.0634 21.3639 19.8067L25.2141 16.6523C25.4237 16.4842 25.5275 16.2158 25.486 15.9495C25.4445 15.6832 25.2643 15.4595 25.0135 15.3646C24.7632 15.2693 24.4809 15.3174 24.2754 15.4901L20.9886 18.1829L19.8071 16.7894C19.6352 16.5829 19.3666 16.4855 19.1034 16.5336C18.8406 16.5821 18.623 16.7685 18.5346 17.0227C18.4462 17.2769 18.4997 17.5591 18.6753 17.7623L20.3285 19.7122Z"
          fill="var(--primary-cta-color)"

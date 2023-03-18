@@ -12,8 +12,7 @@ export const LogoAlt = ({ className, onClick }: Props) => {
          onClick={onClick}
          xmlns="http://www.w3.org/2000/svg"
          xmlnsXlink="http://www.w3.org/1999/xlink"
-         viewBox="0 0 32 32"
-      >
+         viewBox="0 0 32 32">
          <rect
             width="32"
             height="32"
@@ -24,8 +23,7 @@ export const LogoAlt = ({ className, onClick }: Props) => {
                id="pattern0"
                patternContentUnits="objectBoundingBox"
                width="1"
-               height="1"
-            >
+               height="1">
                <use
                   xlinkHref="#image0_4136_77764"
                   transform="scale(0.00389105)"

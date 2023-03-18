@@ -13,8 +13,7 @@ export const IcVisa = ({ className, onClick }: Props) => (
       height="16"
       viewBox="0 0 64 16"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-   >
+      xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0)">
          <path
             d="M29.896 13.072H27.2109L28.8904 2.6875H31.5754L29.896 13.072Z"

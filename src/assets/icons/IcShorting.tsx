@@ -13,8 +13,7 @@ export const IcShorting: FC<Props> = ({ className, onClick }) => {
          width="17"
          height="16"
          viewBox="0 0 17 16"
-         xmlns="http://www.w3.org/2000/svg"
-      >
+         xmlns="http://www.w3.org/2000/svg">
          <path
             fillRule="evenodd"
             clipRule="evenodd"

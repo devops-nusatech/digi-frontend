@@ -18,8 +18,6 @@ import {
    alertPush,
    selectUserInfo,
    selectWalletsLoading,
-   Sonic,
-   selectSonic,
    MemberLevels,
    selectMemberLevels,
 } from 'modules';
@@ -43,6 +41,9 @@ import {
    AccordionData,
    RowDetail,
    IRowItem,
+   Image,
+   Scan,
+   Col2,
 } from 'components';
 import { DEFAULT_WALLET } from '../../constants';
 
@@ -52,7 +53,6 @@ type DepositState = {
 };
 
 type ReduxProps = {
-   sonic: Sonic;
    user: User;
    wallets: Wallet[];
    generateAddressLoading?: boolean;
@@ -82,7 +82,6 @@ type DepositProps = ReduxProps &
 
 const DepositFC = memo(
    ({
-      sonic,
       user,
       wallets,
       generateAddressLoading,
@@ -219,22 +218,20 @@ const DepositFC = memo(
                      />
                   )}
                </div>
-               <div className="flex rounded-2xl bg-neutral7 dark:bg-neutral2">
-                  <div className="mx-auto mt-16 max-w-64 rounded-t-5xl bg-neutral8 py-8 px-12 dark:bg-neutral3">
-                     <div className="rounded-lg border-2 border-dashed border-primary1 p-5">
-                        <QRCode
-                           data={depositAddress?.address || ''}
-                           dimensions={116}
-                        />
-                     </div>
+               <Scan
+                  childrenButton={
                      <Button
                         text="Scan address"
                         className="pointer-events-none mt-12"
                         variant="outline"
                         width="noFull"
                      />
-                  </div>
-               </div>
+                  }>
+                  <QRCode
+                     data={depositAddress?.address || ''}
+                     dimensions={116}
+                  />
+               </Scan>
             </>
          ),
          [depositAddress, handleCopy]
@@ -242,26 +239,53 @@ const DepositFC = memo(
 
       const renderAddressSkeleton = useMemo(
          () => (
-            <div className="flex items-center space-x-12">
-               <div>
-                  <div className="h-40 w-40 grow rounded-lg border-2 border-dashed border-primary1 p-4">
+            <>
+               <Col2>
+                  <div
+                     className={`space-y-2.5 ${
+                        isRipple || isStellar ? '' : 'col-span-2'
+                     }`}>
                      <Skeleton
-                        rounded="lg"
-                        isHeightFull
+                        height={16.5}
+                        width={120}
+                     />
+                     <Skeleton
+                        rounded="xl"
+                        height={48}
                         isWithFull
                      />
                   </div>
-               </div>
-               <div className="w-full">
+                  {(isRipple || isStellar) && (
+                     <div className="space-y-2.5">
+                        <Skeleton
+                           height={16.5}
+                           width={120}
+                        />
+                        <Skeleton
+                           rounded="xl"
+                           height={48}
+                           isWithFull
+                        />
+                     </div>
+                  )}
+               </Col2>
+               <Scan
+                  childrenButton={
+                     <Skeleton
+                        rounded="20"
+                        height={48}
+                        isWithFull
+                     />
+                  }>
                   <Skeleton
                      rounded="lg"
-                     height={48}
-                     isWithFull
+                     height={118}
+                     width={118}
                   />
-               </div>
-            </div>
+               </Scan>
+            </>
          ),
-         []
+         [isRipple, isStellar]
       );
 
       const renderButtonGenerate = useMemo(
@@ -385,7 +409,6 @@ const DepositFC = memo(
                href: '/wallets',
                active: 'Deposit',
             }}>
-            <div className="flex h-2 w-1"></div>
             <div className="flex w-full gap-10 lg-max:flex-wrap">
                <div className="w-full lg:w-3/5 lg2:w-2/3">
                   <div className="space-y-8 rounded-2xl bg-neutral8 p-10 shadow-card dark:bg-shade1">
@@ -481,10 +504,9 @@ const DepositFC = memo(
                      <div className="space-y-3">
                         <TextBase
                            text={translate('deposit.content.right.title')}
-                           className="font-medium"
                         />
                         <div className="pointer-events-none mx-auto h-20 w-20 overflow-hidden">
-                           <img
+                           <Image
                               className={`w-full ${
                                  renderCurrencyIcon(
                                     filteredWallet?.currency,
@@ -497,6 +519,8 @@ const DepositFC = memo(
                                  filteredWallet?.currency,
                                  filteredWallet?.iconUrl
                               )}
+                              height={80}
+                              width={80}
                               alt={filteredWallet?.name || ''}
                               title={filteredWallet?.name || ''}
                            />
@@ -512,7 +536,6 @@ const DepositFC = memo(
 );
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
-   sonic: selectSonic(state),
    user: selectUserInfo(state),
    wallets: selectWallets(state),
    generateAddressLoading: selectGenerateAddressLoading(state),

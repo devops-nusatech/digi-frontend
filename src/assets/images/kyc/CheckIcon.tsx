@@ -7,8 +7,7 @@ export const CheckIcon = () => {
          height="10"
          viewBox="0 0 11 10"
          fill="none"
-         xmlns="http://www.w3.org/2000/svg"
-      >
+         xmlns="http://www.w3.org/2000/svg">
          <path
             d="M1 4.33721L4.14516 8L10 1"
             stroke="var(--primary-text-color)"

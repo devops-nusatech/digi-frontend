@@ -11,8 +11,7 @@ export const ClockIcon: React.FC<ClockIconProps> = (props: ClockIconProps) => (
       viewBox="0 0 18 18"
       className={props.className}
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-   >
+      xmlns="http://www.w3.org/2000/svg">
       <path
          fillRule="evenodd"
          clipRule="evenodd"

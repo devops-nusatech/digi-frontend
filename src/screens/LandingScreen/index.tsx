@@ -163,7 +163,7 @@ class Landing extends React.Component<Props> {
                      {this.translate('page.body.landing.register.item.text')}
                   </h2>
                   <Link
-                     to="/signup"
+                     to="/register"
                      className="landing-button">
                      {this.translate('page.body.landing.register.item.button')}
                   </Link>
@@ -345,7 +345,7 @@ class Landing extends React.Component<Props> {
                <h1>{this.translate('page.body.landing.startTrading.title')}</h1>
                <div className="pg-landing-screen__start-trading__wrap__content">
                   <Link
-                     to="/signup"
+                     to="/register"
                      className="landing-button">
                      {this.translate('page.body.landing.startTrading.button1')}
                   </Link>

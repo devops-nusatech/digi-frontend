@@ -117,7 +117,7 @@ const ProfileMobileScreenComponent: React.FC = () => {
                <input
                   type="text"
                   id="referral-link"
-                  value={`${window.document.location.origin}/signup?refid=${user.uid}`}
+                  value={`${window.document.location.origin}/register?refid=${user.uid}`}
                   readOnly={true}
                />
                <span>

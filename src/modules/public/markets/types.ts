@@ -18,19 +18,23 @@ export interface MarketFilterSignificantDigit {
 export type MarketFilter = MarketFilterSignificantDigit | MarketFilterCustomStep;
 
 export interface Market {
-    id: MarketId;
-    name: string;
-    base_unit: string;
-    quote_unit: string;
-    min_price: string;
-    max_price: string;
-    min_amount: string;
-    amount_precision: number;
-    price_precision: number;
-    state?: string;
-    filters?: MarketFilter[];
-    kline?: number[][];
-    type?: string;
+   id: string;
+   symbol: string;
+   name: string;
+   fullname: string;
+   logo_url: string;
+   type: string;
+   base_unit: string;
+   quote_unit: string;
+   min_price: string;
+   max_price: string;
+   min_amount: string;
+   amount_precision: number;
+   price_precision: number;
+   total_precision: number;
+   state?: string;
+   filters?: MarketFilter[];
+   kline?: number[][];
 }
 
 export interface Ticker {

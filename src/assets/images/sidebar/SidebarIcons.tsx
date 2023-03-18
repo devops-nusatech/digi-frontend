@@ -5,7 +5,9 @@ interface SidebarIconsProps {
    className?: string;
 }
 
-export const SidebarIcons: React.FC<SidebarIconsProps> = (props: SidebarIconsProps) => {
+export const SidebarIcons: React.FC<SidebarIconsProps> = (
+   props: SidebarIconsProps
+) => {
    switch (props.name) {
       case 'history':
          return (
@@ -14,8 +16,7 @@ export const SidebarIcons: React.FC<SidebarIconsProps> = (props: SidebarIconsPro
                height="20"
                className={props.className}
                viewBox="0 0 20 20"
-               fill="none"
-            >
+               fill="none">
                <path
                   d="M10 0C9.67613 0 9.41406 0.26207 9.41406 0.585938C9.41406 0.909805 9.67613 1.17188 10 1.17188C14.8466 1.17188 18.8281 5.15344 18.8281 10C18.8281 14.8466 14.8466 18.8281 10 18.8281C5.15344 18.8281 1.17188 14.8466 1.17188 10C1.17188 7.64387 2.20316 5.38668 3.86719 3.7441V4.72656C3.86719 5.05043 4.12926 5.3125 4.45312 5.3125C4.77699 5.3125 5.03906 5.05043 5.03906 4.72656V2.38281C5.03906 2.05895 4.75746 1.79688 4.43359 1.79688H2.08984C1.76598 1.79688 1.50391 2.05895 1.50391 2.38281C1.50391 2.70668 1.76598 2.96484 2.08984 2.96484H2.97117C1.12082 4.82109 0 7.35664 0 10C0 15.4926 4.50742 20 10 20C15.4926 20 20 15.4926 20 10C20 4.50742 15.4926 0 10 0Z"
                   fill="var(--icons)"
@@ -33,8 +34,7 @@ export const SidebarIcons: React.FC<SidebarIconsProps> = (props: SidebarIconsPro
                height="19"
                className={props.className}
                viewBox="0 0 21 19"
-               fill="none"
-            >
+               fill="none">
                <path
                   d="M6.84 17.355H13.32V18.075H6.84V17.355Z"
                   fill="var(--icons)"
@@ -68,8 +68,7 @@ export const SidebarIcons: React.FC<SidebarIconsProps> = (props: SidebarIconsPro
                height="18"
                viewBox="0 0 19 18"
                className={props.className}
-               fill="none"
-            >
+               fill="none">
                <path
                   d="M12.2041 1.24644C12.2543 1.20963 12.3053 1.20182 12.3395 1.20182C12.3749 1.20182 12.4637 1.21136 12.526 1.29633L14.262 3.6643H15.771L13.5077 0.576756C13.0537 -0.0422565 12.1057 -0.189769 11.4842 0.26539L10.6653 0.865545L11.3849 1.8472L12.2041 1.24644Z"
                   fill="var(--icons)"
@@ -95,8 +94,7 @@ export const SidebarIcons: React.FC<SidebarIconsProps> = (props: SidebarIconsPro
                height="18"
                viewBox="0 0 18 18"
                className={props.className}
-               fill="none"
-            >
+               fill="none">
                <path
                   d="M18 16.9453H0V18H18V16.9453Z"
                   fill="var(--icons)"
@@ -126,8 +124,7 @@ export const SidebarIcons: React.FC<SidebarIconsProps> = (props: SidebarIconsPro
                height="24"
                viewBox="0 0 24 24"
                className={props.className}
-               fill="none"
-            >
+               fill="none">
                <path
                   d="M11.9668 20.3057H4.49168C4.0332 20.3057 3.66113 19.9336 3.66113 19.4751V4.52492C3.66113 4.06645 4.03324 3.69438 4.49168 3.69438H11.9668C12.4261 3.69438 12.7973 3.32313 12.7973 2.86383C12.7973 2.40453 12.4261 2.0332 11.9668 2.0332H4.49168C3.11793 2.0332 2 3.15117 2 4.52492V19.4751C2 20.8488 3.11793 21.9668 4.49168 21.9668H11.9668C12.4261 21.9668 12.7973 21.5955 12.7973 21.1362C12.7973 20.6769 12.4261 20.3057 11.9668 20.3057Z"
                   fill="var(--icons)"
@@ -138,30 +135,28 @@ export const SidebarIcons: React.FC<SidebarIconsProps> = (props: SidebarIconsPro
                />
             </svg>
          );
-      case 'signin':
+      case 'login':
          return (
             <svg
                width="24"
                height="24"
                viewBox="0 0 24 24"
                className={props.className}
-               fill="none"
-            >
+               fill="none">
                <path
                   d="M12.1909 20.4697C9.31592 20.4697 6.77442 18.9977 5.29092 16.7897C5.32542 14.4897 9.89092 13.2247 12.1909 13.2247C14.4909 13.2247 19.0564 14.4897 19.0909 16.7897C17.6074 18.9977 15.0659 20.4697 12.1909 20.4697ZM12.1909 4.1397C13.1059 4.1397 13.9834 4.50318 14.6304 5.15018C15.2774 5.79718 15.6409 6.6747 15.6409 7.5897C15.6409 8.50469 15.2774 9.38222 14.6304 10.0292C13.9834 10.6762 13.1059 11.0397 12.1909 11.0397C11.2759 11.0397 10.3984 10.6762 9.7514 10.0292C9.1044 9.38222 8.74092 8.50469 8.74092 7.5897C8.74092 6.6747 9.1044 5.79718 9.7514 5.15018C10.3984 4.50318 11.2759 4.1397 12.1909 4.1397ZM12.1909 0.689697C10.6807 0.689697 9.1853 0.987154 7.79006 1.56508C6.39481 2.14301 5.12706 2.9901 4.05919 4.05797C1.90252 6.21464 0.690918 9.13971 0.690918 12.1897C0.690918 15.2397 1.90252 18.1648 4.05919 20.3214C5.12706 21.3893 6.39481 22.2364 7.79006 22.8143C9.1853 23.3922 10.6807 23.6897 12.1909 23.6897C15.2409 23.6897 18.166 22.4781 20.3226 20.3214C22.4793 18.1648 23.6909 15.2397 23.6909 12.1897C23.6909 5.8302 18.5159 0.689697 12.1909 0.689697Z"
                   fill="var(--icons)"
                />
             </svg>
          );
-      case 'signup':
+      case 'register':
          return (
             <svg
                width="24"
                height="21"
                viewBox="0 0 24 21"
                className={props.className}
-               fill="none"
-            >
+               fill="none">
                <path
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -184,8 +179,7 @@ export const SidebarIcons: React.FC<SidebarIconsProps> = (props: SidebarIconsPro
                viewBox="0 0 75 75"
                className="fill-stroke"
                fill="none"
-               xmlns="http://www.w3.org/2000/svg"
-            >
+               xmlns="http://www.w3.org/2000/svg">
                <path
                   d="M21.875 51.5625L6.25 37.5L21.875 23.4375"
                   stroke="var(--icons)"

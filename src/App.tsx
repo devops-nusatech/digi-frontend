@@ -4,7 +4,7 @@ import * as ReactGA from 'react-ga';
 import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { Router } from 'react-router';
-import { peatioPlatformCurrency, gaTrackerKey } from './api';
+import { gaTrackerKey } from './api';
 import { ErrorWrapper } from './containers';
 import { useSetMobileDevice } from './hooks';
 import * as mobileTranslations from './mobile/translations';
@@ -89,13 +89,10 @@ const RenderDeviceContainers = () => {
    );
 };
 
-export const App = () => {
+export default () => {
    useSetMobileDevice();
    const lang = useSelector(selectCurrentLanguage);
    const isMobileDevice = useSelector(selectMobileDeviceState);
-
-   console.log('window.env :>> ', window.env.peatio_platform_currency!);
-   console.log('peatioPlatformCurrency :>> ', peatioPlatformCurrency());
 
    return (
       <IntlProvider

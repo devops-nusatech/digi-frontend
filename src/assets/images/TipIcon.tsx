@@ -6,7 +6,12 @@ interface TipIconProps {
    onMouseOut?: (e?: any) => void;
 }
 
-export const TipIcon: FC<TipIconProps> = ({ className, onClick, onMouseOver, onMouseOut }) => (
+export const TipIcon: FC<TipIconProps> = ({
+   className,
+   onClick,
+   onMouseOver,
+   onMouseOut,
+}) => (
    <svg
       onClick={onClick}
       onMouseOver={onMouseOver}
@@ -14,8 +19,7 @@ export const TipIcon: FC<TipIconProps> = ({ className, onClick, onMouseOver, onM
       className={className}
       viewBox="0 0 14 14"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-   >
+      xmlns="http://www.w3.org/2000/svg">
       <path
          d="M7 1C3.6916 1 1 3.69164 1 7.00004C1 10.3084 3.6916 13 7 13C10.3084 13 13 10.3084 13 7.00004C13 3.69164 10.3084 1 7 1ZM7 11.9091C4.29309 11.9091 2.09091 9.70691 2.09091 7.00004C2.09091 4.29316 4.29309 2.09091 7 2.09091C9.70691 2.09091 11.9091 4.29316 11.9091 7.00004C11.9091 9.70691 9.70687 11.9091 7 11.9091Z"
          strokeWidth="0.4"

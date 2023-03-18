@@ -13,8 +13,7 @@ export const IcMasterCard = ({ className, onClick }: Props) => (
       height="16"
       viewBox="0 0 64 16"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-   >
+      xmlns="http://www.w3.org/2000/svg">
       <path
          d="M28.4453 1.71094H35.4453V14.2887H28.4453V1.71094Z"
          fill="#FF5F00"

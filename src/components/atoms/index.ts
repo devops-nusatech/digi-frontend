@@ -53,3 +53,7 @@ export * from './TextXs';
 export * from './Menu';
 export * from './IconCopy';
 export * from './RowDetail';
+export * from './Col2';
+export * from './Td';
+export * from './Th';
+export * from './Scan';

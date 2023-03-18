@@ -15,12 +15,20 @@ import {
 import { injectIntl } from 'react-intl';
 import { Combobox, Transition } from '@headlessui/react';
 import {
+   Accordion,
+   AccordionData,
    Badge,
    Button,
+   Col2,
    Decimal,
+   IRowItem,
+   Image,
    InputGroup,
+   Label,
    LayoutProfile,
    Portal,
+   RowDetail,
+   TextBase,
 } from 'components';
 import {
    alertPush,
@@ -176,7 +184,7 @@ export const TransferFC = ({
       detailUserData?.uid?.toUpperCase() !== uid &&
       getDetailUser({
          token: 'a5144000-3271-11ed-a261-0242ac120002',
-         uid: uid,
+         uid,
       });
 
    const translate = (id: string) => intl.formatMessage({ id });
@@ -195,9 +203,7 @@ export const TransferFC = ({
             amount: convertedValue,
             insufficientBalance: !convertedValue.length
                ? false
-               : Number(myWallet?.balance) <= 0
-               ? true
-               : false,
+               : Number(myWallet?.balance) <= 0,
          });
       }
    };
@@ -270,6 +276,67 @@ export const TransferFC = ({
       [myWallet]
    );
 
+   const accordionItems = useMemo<AccordionData[]>(
+      () => [
+         {
+            title: translate('transfer.intruction.title'),
+            content: (
+               <ul className="list-outside list-decimal text-neutral4">
+                  <li>{translate('transfer.intruction.list_1')}</li>
+                  <li>{translate('transfer.intruction.list_2')}</li>
+                  <li>{translate('transfer.intruction.list_3')}</li>
+               </ul>
+            ),
+         },
+      ],
+      [translate]
+   );
+
+   const receiverDetails = useMemo<Array<IRowItem>>(
+      () => [
+         {
+            left: 'UID',
+            right: `${
+               detailUserData?.uid ? detailUserData?.uid?.toUpperCase() : '---'
+            }`,
+         },
+         {
+            left: 'Username',
+            right: `${
+               detailUserData?.username ? detailUserData?.username : '---'
+            }`,
+         },
+         {
+            left: 'Email',
+            right: `${
+               detailUserData?.email
+                  ? truncateMiddle(detailUserData?.email || '', 12, '***')
+                  : '---'
+            }`,
+         },
+      ],
+      [detailUserData?.email, detailUserData?.uid, detailUserData?.username]
+   );
+   const transferAmount = useMemo<Array<IRowItem>>(
+      () => [
+         {
+            left: 'Available asset',
+            right: `${
+               Decimal.format(
+                  myWallet?.balance,
+                  Number(myWallet?.fixed),
+                  ','
+               ) || 0
+            } ${
+               typeof myWallet?.currency !== 'undefined'
+                  ? myWallet?.currency?.toUpperCase()
+                  : ''
+            }`,
+         },
+      ],
+      [myWallet?.balance, myWallet?.currency, myWallet?.fixed]
+   );
+
    return (
       <>
          <LayoutProfile
@@ -285,185 +352,168 @@ export const TransferFC = ({
                      <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                         {translate('transfer.title')}
                      </div>
-                     <InputGroup
-                        autoFocus
-                        id="uid"
-                        label="Enter UID"
-                        placeholder="ID1234567890"
-                        value={username_or_uid}
-                        onChange={handleChangeReceiver}
-                        iconClassName={
-                           detailUserData?.uid?.toUpperCase() !==
-                              username_or_uid && username_or_uid
-                              ? '!w-16'
-                              : ''
-                        }
-                        icon={
-                           detailUserData?.uid?.toUpperCase() !==
-                              username_or_uid && username_or_uid ? (
-                              <Badge
-                                 text="Cek"
-                                 rounded="3xl"
-                                 variant="outline"
-                                 onClick={() =>
-                                    handleGetDetailUser(username_or_uid)
-                                 }
-                              />
-                           ) : (
-                              <></>
-                           )
-                        }
-                     />
-                     <div className="-mx-2 flex">
-                        <div className="mx-2 w-c-1/3-4 shrink-0 grow-0 basis-c-1/3-4">
-                           <Combobox
-                              value={selected}
-                              onChange={setSelected}>
-                              <div className="relative">
-                                 <div className="mb-2.5 leading-none">
-                                    <Combobox.Label className="text-xs font-bold uppercase leading-none text-neutral5">
-                                       Currency
-                                    </Combobox.Label>
-                                 </div>
-                                 <div className="relative">
-                                    <Combobox.Input
-                                       className={({ open }) =>
-                                          `${
-                                             open ? 'text-primary1' : ''
-                                          } h-12 w-full rounded-xl border-2 border-neutral6 bg-transparent bg-none px-3.5 pr-12 font-medium leading-12 outline-none transition duration-300 ease-in-out focus:border-neutral4 dark:border-neutral3 dark:focus:border-neutral4`
-                                       }
-                                       displayValue={(currency: {
-                                          name: string;
-                                       }) =>
-                                          typeof currency?.name === 'undefined'
-                                             ? '~ Select currency ~'
-                                             : currency.name
-                                       }
-                                       onChange={e => setQuery(e.target.value)}
-                                    />
-                                    <Combobox.Button
-                                       className="group absolute inset-y-0 right-0 flex items-center pr-2"
-                                       onClick={() =>
-                                          !asset.length && setAsset(currencies)
-                                       }>
-                                       <svg className="h-5 w-5 fill-neutral4 transition-colors duration-300 group-hover:fill-neutral2 dark:group-hover:fill-neutral6">
-                                          <use xlinkHref="#icon-search" />
-                                       </svg>
-                                    </Combobox.Button>
-                                 </div>
-                                 <Transition
-                                    as={Fragment}
-                                    leave="transition ease-in duration-100"
-                                    leaveFrom="opacity-100"
-                                    leaveTo="opacity-0"
-                                    afterLeave={() => setQuery('')}>
-                                    <Combobox.Options className="absolute z-[9] mt-0.5 max-h-60 w-full overflow-auto rounded-xl border-2 border-neutral6 bg-neutral8 shadow-dropdown-2 outline-none dark:border-neutral3 dark:bg-neutral1 dark:shadow-dropdown-3">
-                                       {filteredCurrencies.length === 0 &&
-                                       query !== '' ? (
-                                          <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
-                                             Nothing found.
-                                          </div>
-                                       ) : (
-                                          filteredCurrencies.map(currency => (
-                                             <Combobox.Option
-                                                key={currency.id}
-                                                className={({ active }) =>
-                                                   `relative ${
-                                                      active
-                                                         ? 'bg-neutral7 dark:bg-neutral2'
-                                                         : ''
-                                                   } px-3.5 py-2.5 font-medium leading-[1.4] transition-all duration-200`
-                                                }
-                                                value={currency}>
-                                                {({ selected }) => (
-                                                   <div className="group flex items-center space-x-3">
-                                                      <div className="h-8 w-8 overflow-hidden">
-                                                         <img
-                                                            src={renderCurrencyIcon(
-                                                               currency.id,
-                                                               currency?.icon_url
-                                                            )}
-                                                            className="bg-neutral8 object-cover"
-                                                            alt={currency?.name}
-                                                            title={
-                                                               currency?.name
-                                                            }
-                                                            style={{
-                                                               clipPath:
-                                                                  'polygon(50% 0, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%)',
-                                                            }}
-                                                         />
-                                                      </div>
-                                                      <div
-                                                         className={`block truncate ${
-                                                            selected
-                                                               ? 'font-medium text-primary1'
-                                                               : 'font-normal'
-                                                         } group-hover:font-medium`}>
-                                                         {currency?.name}{' '}
-                                                         <span
-                                                            className={`font-normal text-neutral4`}>
-                                                            {currency?.id.toUpperCase()}
-                                                         </span>
-                                                      </div>
-                                                   </div>
-                                                )}
-                                             </Combobox.Option>
-                                          ))
-                                       )}
-                                    </Combobox.Options>
-                                 </Transition>
+                     <Col2>
+                        <InputGroup
+                           autoFocus
+                           id="uid"
+                           label="UID"
+                           placeholder="ID1234567890"
+                           value={username_or_uid}
+                           onChange={handleChangeReceiver}
+                           iconClassName={
+                              detailUserData?.uid?.toUpperCase() !==
+                                 username_or_uid && username_or_uid
+                                 ? '!w-16'
+                                 : ''
+                           }
+                           icon={
+                              detailUserData?.uid?.toUpperCase() !==
+                                 username_or_uid && username_or_uid ? (
+                                 <Badge
+                                    text="Cek"
+                                    rounded="3xl"
+                                    variant="outline"
+                                    onClick={() =>
+                                       handleGetDetailUser(username_or_uid)
+                                    }
+                                 />
+                              ) : (
+                                 <></>
+                              )
+                           }
+                        />
+                        <Combobox
+                           value={selected}
+                           onChange={setSelected}>
+                           <div className="relative">
+                              <div className="mb-2.5">
+                                 <Label label="Currency" />
                               </div>
-                           </Combobox>
-                        </div>
-                        <div className="mx-2 w-c-4/6-4 shrink-0 grow-0 basis-c-4/6-4">
-                           <InputGroup
-                              id="amount"
-                              name="amount"
-                              label="Enter transfer amount"
-                              placeholder="0.12345678"
-                              value={amount}
-                              onChange={handleChangeAmount}
-                              withError={insufficientBalance}
-                              info={
-                                 insufficientBalance
-                                    ? 'Insufficient balance'
-                                    : ''
-                              }
-                              className="!px-3.5"
-                           />
-                        </div>
-                     </div>
-                     <InputGroup
-                        id="otpCode"
-                        name="otpCode"
-                        label="Enter 2FA code"
-                        placeholder="123456"
-                        value={otp}
-                        onChange={handleChangeOtp}
-                        maxLength={6}
+                              <div className="relative">
+                                 <Combobox.Input
+                                    className={({ open }) =>
+                                       `${
+                                          open ? 'text-primary1' : ''
+                                       } h-12 w-full rounded-xl border-2 border-neutral6 bg-transparent bg-none px-3.5 pr-12 font-medium leading-12 outline-none transition duration-300 ease-in-out focus:border-neutral4 dark:border-neutral3 dark:focus:border-neutral4`
+                                    }
+                                    displayValue={(currency: {
+                                       name: string;
+                                    }) =>
+                                       typeof currency?.name === 'undefined'
+                                          ? '~ Select currency ~'
+                                          : currency.name
+                                    }
+                                    onChange={e => setQuery(e.target.value)}
+                                 />
+                                 <Combobox.Button
+                                    className="group absolute inset-y-0 right-0 flex items-center pr-2"
+                                    onClick={() =>
+                                       !asset.length && setAsset(currencies)
+                                    }>
+                                    <svg className="h-5 w-5 fill-neutral4 transition-colors duration-300 group-hover:fill-neutral2 dark:group-hover:fill-neutral6">
+                                       <use xlinkHref="#icon-search" />
+                                    </svg>
+                                 </Combobox.Button>
+                              </div>
+                              <Transition
+                                 as={Fragment}
+                                 leave="transition ease-in duration-100"
+                                 leaveFrom="opacity-100"
+                                 leaveTo="opacity-0"
+                                 afterLeave={() => setQuery('')}>
+                                 <Combobox.Options className="absolute z-[9] mt-0.5 max-h-60 w-full overflow-auto rounded-xl border-2 border-neutral6 bg-neutral8 shadow-dropdown-2 outline-none dark:border-neutral3 dark:bg-neutral1 dark:shadow-dropdown-3">
+                                    {filteredCurrencies.length === 0 &&
+                                    query !== '' ? (
+                                       <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
+                                          Nothing found.
+                                       </div>
+                                    ) : (
+                                       filteredCurrencies.map(currency => (
+                                          <Combobox.Option
+                                             key={currency.id}
+                                             className={({ active }) =>
+                                                `relative ${
+                                                   active
+                                                      ? 'bg-neutral7 dark:bg-neutral2'
+                                                      : ''
+                                                } px-3.5 py-2.5 font-medium leading-[1.4] transition-all duration-200`
+                                             }
+                                             value={currency}>
+                                             {({ selected }) => (
+                                                <div className="group flex items-center space-x-3">
+                                                   <div className="h-8 w-8 overflow-hidden">
+                                                      <img
+                                                         src={renderCurrencyIcon(
+                                                            currency.id,
+                                                            currency?.icon_url
+                                                         )}
+                                                         className="bg-neutral8 object-cover"
+                                                         alt={currency?.name}
+                                                         title={currency?.name}
+                                                         style={{
+                                                            clipPath:
+                                                               'polygon(50% 0, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%)',
+                                                         }}
+                                                      />
+                                                   </div>
+                                                   <div
+                                                      className={`block truncate ${
+                                                         selected
+                                                            ? 'font-medium text-primary1'
+                                                            : 'font-normal'
+                                                      } group-hover:font-medium`}>
+                                                      {currency?.name}{' '}
+                                                      <span className="font-normal text-neutral4">
+                                                         {currency?.id.toUpperCase()}
+                                                      </span>
+                                                   </div>
+                                                </div>
+                                             )}
+                                          </Combobox.Option>
+                                       ))
+                                    )}
+                                 </Combobox.Options>
+                              </Transition>
+                           </div>
+                        </Combobox>
+                        <InputGroup
+                           id="amount"
+                           name="amount"
+                           label="Transfer amount"
+                           placeholder="0.12345678"
+                           value={amount}
+                           onChange={handleChangeAmount}
+                           withError={insufficientBalance}
+                           info={
+                              insufficientBalance ? 'Insufficient balance' : ''
+                           }
+                           className="!px-3.5"
+                        />
+                        <InputGroup
+                           id="otpCode"
+                           name="otpCode"
+                           label="2FA code"
+                           placeholder="123456"
+                           value={otp}
+                           onChange={handleChangeOtp}
+                           maxLength={6}
+                        />
+                     </Col2>
+                     <Accordion
+                        items={accordionItems}
+                        withNumber={false}
                      />
-                     <div className="flex flex-col rounded-2xl bg-neutral7 px-6 py-4 dark:bg-neutral2">
-                        <div className="font-medium leading-6">
-                           {translate('transfer.intruction.title')}
-                        </div>
-                        <ul className="list-outside list-decimal pl-3 text-xs leading-normal">
-                           <li>{translate('transfer.intruction.list_1')}</li>
-                           <li>{translate('transfer.intruction.list_2')}</li>
-                           <li>{translate('transfer.intruction.list_3')}</li>
-                        </ul>
-                     </div>
                   </div>
                </div>
                <div className="mx-5 w-c-1/3-5 basis-c-1/3-5">
                   <div className="flex flex-col space-y-10">
-                     <div className="rounded-2xl bg-neutral8 py-10 px-6 shadow-card dark:bg-shade1">
+                     <div className="rounded-2xl bg-neutral8 p-10 shadow-card dark:bg-shade1">
                         <div className="space-y-3">
-                           <div className="text-base font-medium leading-normal">
-                              {translate('transfer.receiver.detail')}
-                           </div>
+                           <TextBase
+                              text={translate('transfer.receiver.detail')}
+                           />
                            <div className="mx-auto h-20 w-20 overflow-hidden rounded-full">
-                              <img
+                              <Image
                                  src={
                                     typeof detailUserData?.email ===
                                        'undefined' ||
@@ -472,53 +522,18 @@ export const TransferFC = ({
                                        : `https://api.dicebear.com/5.x/fun-emoji/svg?seed=${detailUserData?.email}`
                                  }
                                  className="object-cover"
+                                 height={80}
+                                 width={80}
                                  alt="Avatar receiver"
                                  title="Avatar receiver"
                               />
                            </div>
-                           <div className="flex items-center justify-between space-x-3">
-                              <div>UID</div>
-                              <div
-                                 className={`truncate text-right font-medium ${
-                                    detailUserData?.uid ? '' : 'text-neutral4 '
-                                 }`}>
-                                 {detailUserData?.uid
-                                    ? detailUserData?.uid?.toUpperCase()
-                                    : 'ID123123123'}
-                              </div>
-                           </div>
-                           <div className="flex items-center justify-between space-x-3">
-                              <div>Username</div>
-                              <div
-                                 className={`truncate text-right font-medium ${
-                                    detailUserData?.username
-                                       ? ''
-                                       : 'text-neutral4 '
-                                 }`}>
-                                 {detailUserData?.username
-                                    ? detailUserData?.username
-                                    : 'digiusername'}
-                              </div>
-                           </div>
-                           <div className="flex items-center justify-between space-x-3">
-                              <div>Email</div>
-                              <div className="truncate text-right font-medium text-neutral4">
-                                 {detailUserData?.email
-                                    ? truncateMiddle(
-                                         detailUserData?.email || '',
-                                         12,
-                                         '***'
-                                      )
-                                    : 'digiasset@mail.com'}
-                              </div>
-                           </div>
+                           <RowDetail items={receiverDetails} />
                         </div>
                      </div>
-                     <div className="rounded-2xl bg-neutral8 py-10 px-6 shadow-card dark:bg-shade1">
+                     <div className="rounded-2xl bg-neutral8 p-10 shadow-card dark:bg-shade1">
                         <div className="mb-8 space-y-3">
-                           <div className="text-base font-medium leading-normal">
-                              Transfer amount
-                           </div>
+                           <TextBase text="Transfer amount" />
                            <div
                               className={`${
                                  amount ? '' : 'text-neutral5'
@@ -530,20 +545,7 @@ export const TransferFC = ({
                               ) || 0}{' '}
                               {amount ? myWallet?.currency?.toUpperCase() : ''}
                            </div>
-                           <div className="flex items-center">
-                              <div>Available asset</div>
-                              <div
-                                 className={`ml-auto text-right font-medium ${
-                                    selected ? '' : 'text-neutral4'
-                                 }`}>
-                                 {Decimal.format(
-                                    myWallet?.balance,
-                                    Number(myWallet?.fixed),
-                                    ','
-                                 ) || 0}{' '}
-                                 {myWallet?.currency?.toUpperCase()}
-                              </div>
-                           </div>
+                           <RowDetail items={transferAmount} />
                         </div>
                         <Button
                            text="Transfer"
@@ -663,7 +665,7 @@ type ListProps = {
 const List = ({ left, right, rightAlt }: ListProps) => (
    <div className="flex items-center">
       <div className="text-neutral4">{left}</div>
-      <div className={`ml-auto text-right font-medium`}>
+      <div className="ml-auto text-right font-medium">
          {right} <span className="text-neutral4">{rightAlt}</span>
       </div>
    </div>

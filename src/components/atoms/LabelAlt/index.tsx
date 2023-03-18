@@ -5,5 +5,5 @@ type LabelAltProps = {
 };
 
 export const LabelAlt: FC<LabelAltProps> = ({ label, children }) => (
-   <div className="text-base font-medium leading-6">{label || children}</div>
+   <div className="font-medium">{label || children}</div>
 );

@@ -4,6 +4,7 @@ import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
 import {
+   Market,
    OrderBy,
    OrderCommon,
    OrderSide,
@@ -92,7 +93,7 @@ const TableOrder = ({
    intl,
 }: Props) => {
    const { isShow, toggle } = useModal();
-   const { marketsData } = useMarket();
+   const marketsData = useMarket().markets;
    const [detailId, setDetailId] = useState<any>();
    useEffect(() => {
       userOrdersHistoryFetch({ core, pageIndex: 0, limit: 10 });
@@ -166,16 +167,18 @@ const TableOrder = ({
          updated_at,
          created_at,
       } = item;
-      const currentMarket = marketsData.find(m => m.id === market) || {
-         name: '',
-         price_precision: 0,
-         amount_precision: 0,
-      };
+      const currentMarket =
+         marketsData.find(m => m.id === market) ||
+         ({
+            name: '',
+            price_precision: 0,
+            amount_precision: 0,
+         } as Market);
 
       const marketName =
          currentMarket.name !== '' ? currentMarket.name : market;
       const costRemaining = +remaining_volume * +price;
-      const date = localeDate(updated_at ? updated_at : created_at, 'fullDate');
+      const date = localeDate(updated_at || created_at, 'fullDate');
       const status = setOrderStatus(state);
       const actualPrice =
          ord_type === 'market' || status === 'done' ? avg_price : price;
@@ -205,14 +208,14 @@ const TableOrder = ({
                         className={`w-full ${
                            renderCurrencyIcon(
                               currentMarket?.base_unit,
-                              currentMarket?.iconUrl
+                              currentMarket?.logo_url
                            )?.includes('http')
                               ? 'polygon'
                               : ''
                         }`}
                         src={renderCurrencyIcon(
                            currentMarket?.base_unit,
-                           currentMarket?.iconUrl
+                           currentMarket?.logo_url
                         )}
                         alt={marketName}
                         title={marketName}
@@ -431,7 +434,7 @@ const TableOrder = ({
                         <IcShorting className="fill-neutral4" />
                      </div>
                   </th>
-                  <th className="border-b border-neutral6 pl-4 pb-6 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3"></th>
+                  <th className="border-b border-neutral6 pl-4 pb-6 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3" />
                </tr>
             </thead>
             <tbody>

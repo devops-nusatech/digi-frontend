@@ -181,8 +181,8 @@ const EmailVerificationComponent: FC<Props> = ({
 
    const isReady = useMemo(() => counter < 1, [counter]);
 
-   const title = translate('page.header.signUp.modal.header');
-   const text = translate('page.header.signUp.modal.body');
+   const title = translate('page.header.register.modal.header');
+   const text = translate('page.header.register.modal.body');
    const button = translate('page.resendConfirmation');
 
    return (

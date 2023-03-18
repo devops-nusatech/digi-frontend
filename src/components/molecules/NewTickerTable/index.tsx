@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useIntl } from 'react-intl';
@@ -16,19 +16,15 @@ interface Props {
    setCurrentBidUnit: (key: string) => void;
 }
 
-export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
+export const NewTickerTable = memo(({ redirectToTrading }: Props) => {
    useCurrenciesFetch();
    const { formatMessage } = useIntl();
    const { push } = useHistory();
 
-   const {
-      otherMarkets,
-      setCurrentBidUnit,
-      currentBidUnit,
-      currentBidUnitsList,
-   } = useMarket();
+   const { markets, setCurrentBidUnit, currentBidUnit, currentBidUnitsList } =
+      useMarket();
 
-   const optionsPositive = (data?: []) => {
+   const optionsPositive = (data?: [][]) => {
       return {
          chart: {
             renderTo: null,
@@ -180,18 +176,18 @@ export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
          },
          {
             Header: formatMessage({ id: 'page.body.marketsTable.header.pair' }),
-            accessor: ({ base_unit, curency_data, name, icon_url }) => (
+            accessor: ({ base_unit, curency_data, name }) => (
                <div className="flex items-center space-x-4 md:space-x-5">
                   <div className="w-10 shrink-0">
                      <Image
                         src={renderCurrencyIcon(
                            base_unit,
-                           curency_data?.icon_url
+                           curency_data?.logo_url
                         )}
                         className={`w-full ${
                            renderCurrencyIcon(
                               base_unit,
-                              curency_data?.icon_url
+                              curency_data?.logo_url
                            )?.includes('http')
                               ? 'polygon bg-neutral8'
                               : ''
@@ -202,13 +198,13 @@ export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
                         height={40}
                      />
                   </div>
-                  {/* <ImagePaletteProvider defaults image={icon_url ? icon_url : icRipple}>
+                  {/* <ImagePaletteProvider defaults image={logo_url ? logo_url : icRipple}>
                   {({ backgroundColor, color, alternativeColor }) => (
                      <div style={{ backgroundColor, color }}>
                      This div has been themed based on
                      <span style={{ color: alternativeColor }}>
-                        {icon_url ? icon_url : icRipple}
-                        <img className="max-w-full" src={icon_url ? icon_url : icRipple} alt={name.split('/').shift()} />
+                        {logo_url ? logo_url : icRipple}
+                        <img className="max-w-full" src={logo_url ? logo_url : icRipple} alt={name.split('/').shift()} />
                      </span>
                      </div>
                   )}
@@ -232,7 +228,7 @@ export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
             Header: formatMessage({
                id: 'page.body.marketsTable.header.change',
             }),
-            accessor: ({ change, price_change_percent }) => (
+            accessor: ({ price_change_percent }) => (
                <span
                   className={`${
                      price_change_percent.includes('+')
@@ -259,7 +255,7 @@ export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
          },
          {
             Header: 'Chart',
-            accessor: ({ change, price_change_percent, kline, base_unit }) => {
+            accessor: ({ price_change_percent, kline, base_unit }) => {
                const klinesData: number[] = kline;
                let labels: number[], data: number[];
                labels = klinesData.map(e => e[0]);
@@ -377,18 +373,17 @@ export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
                      </tr>
                   </thead>
                   <tbody>
-                     {otherMarkets?.length > 0 ? (
-                        otherMarkets.map(
+                     {markets?.length > 0 ? (
+                        markets.map(
                            (
                               {
                                  id,
                                  name,
-                                 icon_url,
+                                 logo_url,
                                  last,
                                  high,
                                  low,
                                  volume,
-                                 price_precision,
                                  change,
                                  price_change_percent,
                                  kline,
@@ -407,12 +402,12 @@ export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
                                              <img
                                                 src={renderCurrencyIcon(
                                                    base_unit,
-                                                   icon_url
+                                                   logo_url
                                                 )}
                                                 className={`w-full ${
                                                    renderCurrencyIcon(
                                                       base_unit,
-                                                      icon_url
+                                                      logo_url
                                                    )?.includes('http')
                                                       ? 'polygon bg-neutral8'
                                                       : ''
@@ -460,8 +455,12 @@ export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
                                              // options={+(change || 0) < 0 ? optionsNegative() : optionsPositive()}
                                              options={
                                                 +(change || 0) < 0
-                                                   ? optionsNegative(kline)
-                                                   : optionsPositive(kline)
+                                                   ? optionsNegative(
+                                                        kline as any
+                                                     )
+                                                   : optionsPositive(
+                                                        kline as any
+                                                     )
                                              }
                                           />
                                        </div>
@@ -499,7 +498,7 @@ export const NewTickerTable: FC<Props> = memo(({ redirectToTrading }) => {
                /> */}
                <Cuk
                   columns={columns}
-                  data={otherMarkets}
+                  data={markets}
                />
             </div>
          </div>

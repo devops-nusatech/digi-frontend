@@ -15,8 +15,8 @@ const MarketFC = ({ intl }: Props) => {
    useScrollUp();
    const {
       isLoading,
-      marketsData,
-      otherMarkets,
+      filterMarkets,
+      markets,
       currentBidUnitsList,
       currentBidUnit,
       setCurrentBidUnit,
@@ -77,10 +77,11 @@ const MarketFC = ({ intl }: Props) => {
                               rounded="2xl"
                            />
                         </>
-                     ) : otherMarkets?.length ? (
-                        otherMarkets?.slice(0, 3)?.map(market => {
-                           const klinesData: number[] = market?.kline;
-                           let labels: number[], data: number[];
+                     ) : markets?.length ? (
+                        markets?.slice(0, 3)?.map(market => {
+                           const klinesData: number[][] = market?.kline!;
+                           let labels: number[];
+                           let data: number[];
                            labels = klinesData?.map(e => e[0]);
                            data = klinesData?.map(e => e[2]);
                            return (
@@ -199,7 +200,7 @@ const MarketFC = ({ intl }: Props) => {
                         size="normal"
                         width="noFull"
                         onClick={() =>
-                           handleRedirectToTrading(marketsData[0]?.id)
+                           handleRedirectToTrading(filterMarkets[0]?.id)
                         }
                      />
                   </div>
@@ -411,10 +412,11 @@ const MarketFC = ({ intl }: Props) => {
                                  </td>
                               </tr>
                            </>
-                        ) : marketsData?.length ? (
-                           marketsData?.map(market => {
-                              const klinesData: number[] = market?.kline;
-                              let labels: number[], data: number[];
+                        ) : filterMarkets?.length ? (
+                           filterMarkets?.map(market => {
+                              const klinesData: number[][] = market?.kline!;
+                              let labels: number[];
+                              let data: number[];
                               labels = klinesData?.map(e => e[0]);
                               data = klinesData?.map(e => e[2]);
                               return (
@@ -422,15 +424,15 @@ const MarketFC = ({ intl }: Props) => {
                                     key={market?.id}
                                     style={{ transition: 'background .2s' }}
                                     className="group relative">
-                                    <td
-                                       onClick={() =>
-                                          handleToSetFavorites(
-                                             String(market?.id)
-                                          )
-                                       }
-                                       className="rounded-l-xl p-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                                    <td className="rounded-l-xl p-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                                        <div className="flex items-center space-x-2">
                                           <svg
+                                             onClick={e =>
+                                                handleToSetFavorites(
+                                                   e,
+                                                   String(market?.id)
+                                                )
+                                             }
                                              className={`h-4 w-4 ${
                                                 market?.isFav
                                                    ? 'fill-secondary3'
@@ -441,7 +443,8 @@ const MarketFC = ({ intl }: Props) => {
                                                    market?.isFav
                                                       ? ''
                                                       : '-outline'
-                                                }`}></use>
+                                                }`}
+                                             />
                                           </svg>
                                           <div>{market?.no}</div>
                                        </div>
@@ -451,15 +454,13 @@ const MarketFC = ({ intl }: Props) => {
                                           <div className="w-8 shrink-0">
                                              <img
                                                 src={renderCurrencyIcon(
-                                                   market?.curency_data?.id,
-                                                   market?.curency_data
-                                                      ?.icon_url
+                                                   market?.base_unit,
+                                                   market?.logo_url
                                                 )}
                                                 className={`w-full ${
                                                    renderCurrencyIcon(
-                                                      market?.curency_data?.id,
-                                                      market?.curency_data
-                                                         ?.icon_url
+                                                      market?.base_unit,
+                                                      market?.logo_url
                                                    )?.includes('http')
                                                       ? 'polygon bg-neutral8 object-cover'
                                                       : ''
@@ -468,9 +469,7 @@ const MarketFC = ({ intl }: Props) => {
                                              />
                                           </div>
                                           <div className="flex items-center space-x-1">
-                                             <div>
-                                                {market?.curency_data?.name}
-                                             </div>
+                                             <div>{market?.fullname}</div>
                                              <div className="font-normal uppercase text-neutral4">
                                                 {market?.quote_unit}
                                              </div>
@@ -574,11 +573,11 @@ const MarketFC = ({ intl }: Props) => {
                            <Skeleton
                               height={26}
                               className="mb-4"
-                              width={'50%'}
+                              width="50%"
                            />
                            <Skeleton
                               height={30}
-                              width={'80%'}
+                              width="80%"
                            />
                         </div>
                         <div className="flex w-full flex-col items-start p-4 transition-colors duration-300 md:w-1/2 lg:w-1/3">
@@ -591,11 +590,11 @@ const MarketFC = ({ intl }: Props) => {
                            <Skeleton
                               height={26}
                               className="mb-4"
-                              width={'50%'}
+                              width="50%"
                            />
                            <Skeleton
                               height={30}
-                              width={'80%'}
+                              width="80%"
                            />
                         </div>
                         <div className="flex w-full flex-col items-start p-4 transition-colors duration-300 md:w-1/2 lg:w-1/3">
@@ -608,11 +607,11 @@ const MarketFC = ({ intl }: Props) => {
                            <Skeleton
                               height={26}
                               className="mb-4"
-                              width={'50%'}
+                              width="50%"
                            />
                            <Skeleton
                               height={30}
-                              width={'80%'}
+                              width="80%"
                            />
                         </div>
                      </>

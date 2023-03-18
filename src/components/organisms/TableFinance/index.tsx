@@ -1,4 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+   FC,
+   memo,
+   useCallback,
+   useEffect,
+   useMemo,
+   useState,
+} from 'react';
 import { compose } from 'redux';
 import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -24,11 +31,9 @@ import {
    Currency,
    OrderSide,
    RootState,
-   Sonic,
    User,
    Wallet,
    WalletHistoryList,
-   currenciesFetch,
    fetchHistory,
    marketsFetch,
    resetHistory,
@@ -39,14 +44,13 @@ import {
    selectHistoryLoading,
    selectLastElemIndex,
    selectNextPageExists,
-   selectSonic,
    selectUserInfo,
    selectWallets,
    walletsFetch,
 } from 'modules';
-import { DEFAULT_WALLET } from '../../../constants';
 import { useDebounced } from 'hooks';
-import { peatioPlatformCurrency } from 'api';
+import { platformCurrency } from 'api';
+import { DEFAULT_WALLET } from '../../../constants';
 
 export type Direction = 'IN' | 'OUT' | '';
 export type State = 'succeed' | 'pending' | 'failed' | 'refund';
@@ -65,7 +69,6 @@ type FilterState = {
 
 interface ReduxProps {
    user: User;
-   sonic: Sonic;
    currencies: Currency[];
    wallets: Wallet[];
    list: WalletHistoryList;
@@ -79,7 +82,6 @@ interface DispatchProps {
    resetHistory: typeof resetHistory;
    fetchWallets: typeof walletsFetch;
    fetchHistory: typeof fetchHistory;
-   fetchCurrencies: typeof currenciesFetch;
 }
 
 type OwnProps = {
@@ -97,7 +99,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    currencyId,
    withAdvancadFilter,
    user,
-   sonic,
    currencies,
    wallets,
    list,
@@ -109,17 +110,17 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    resetHistory,
    fetchWallets,
    fetchHistory,
-   fetchCurrencies,
    intl,
 }) => {
-   const defaultWallet: Wallet =
-      wallets.find(
-         wallet =>
-            wallet.currency === sonic.peatio_platform_currency ||
-            peatioPlatformCurrency()?.toLowerCase()
-      ) ||
-      wallets[0] ||
-      DEFAULT_WALLET;
+   const defaultWallet = useMemo<Wallet>(
+      () =>
+         wallets.find(
+            wallet => wallet.currency === platformCurrency()?.toLowerCase()
+         ) ||
+         wallets[0] ||
+         DEFAULT_WALLET,
+      [wallets]
+   );
 
    const [activeTab, setActiveTab] = useState(
       hiddenCategory && hiddenCategory?.includes(4)
@@ -129,7 +130,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
          : 0
    );
    const [q, setQ] = useState('');
-   const [qDebounce] = useDebounced(q, 1000);
+   const [qDebounce] = useDebounced(q, 500);
 
    const [showFilter, setShowFilter] = useState(false);
    const [showExport, setShowExport] = useState(false);
@@ -157,10 +158,14 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
       type,
    } = filter;
 
-   const time_from = Math.floor(
-      new Date(startDate).getTime() / 1000
-   ).toString();
-   const time_to = Math.floor(new Date(endDate).getTime() / 1000).toString();
+   const time_from = useMemo(
+      () => Math.floor(new Date(startDate).getTime() / 1000).toString(),
+      [startDate]
+   );
+   const time_to = useMemo(
+      () => Math.floor(new Date(endDate).getTime() / 1000).toString(),
+      [endDate]
+   );
 
    useEffect(() => {
       if (!wallets.length) {
@@ -174,47 +179,66 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
       };
    }, [activeTab]);
 
-   const handleShowExport = () => setShowExport(!showExport);
+   const handleShowExport = useCallback(
+      () => setShowExport(!showExport),
+      [showExport]
+   );
 
-   const handleShowAdvanceFilter = () =>
-      setFilter({ ...filter, advanceFilter: !advanceFilter });
+   const handleShowAdvanceFilter = useCallback(
+      () => setFilter({ ...filter, advanceFilter: !advanceFilter }),
+      [advanceFilter, filter]
+   );
 
-   const translate = (id: string) => intl.formatMessage({ id });
+   const translate = useCallback(
+      (id: string) => intl.formatMessage({ id }),
+      [intl]
+   );
 
-   const handleChangeStartDate = (startDate: Date) => {
-      setFilter({ ...filter, startDate });
-   };
-   const handleChangeEndDate = (endDate: Date) => {
-      setFilter({ ...filter, endDate });
-   };
-   const handleChangeAsset = (currency: string) => {
-      setFilter({ ...filter, currency });
-   };
-   const handleChangeMarket = (market: string) => {
-      setFilter({ ...filter, market });
-   };
-   const handleChangeState = (state: State) => {
-      setFilter({ ...filter, state, advanceFilter: true });
-   };
-   const handleChangeType = (type: OrderSide | '') => {
-      setFilter({ ...filter, type });
-   };
-   const handleApply = () => {
+   const handleChangeStartDate = useCallback(
+      (startDate: Date) => {
+         setFilter({ ...filter, startDate });
+      },
+      [filter]
+   );
+   const handleChangeEndDate = useCallback(
+      (endDate: Date) => {
+         setFilter({ ...filter, endDate });
+      },
+      [filter]
+   );
+   const handleChangeAsset = useCallback(
+      (currency: string) => {
+         setFilter({ ...filter, currency });
+      },
+      [filter]
+   );
+   const handleChangeMarket = useCallback(
+      (market: string) => {
+         setFilter({ ...filter, market });
+      },
+      [filter]
+   );
+   const handleChangeState = useCallback(
+      (state: State) => {
+         setFilter({ ...filter, state, advanceFilter: true });
+      },
+      [filter]
+   );
+   const handleChangeType = useCallback(
+      (type: OrderSide | '') => {
+         setFilter({ ...filter, type });
+      },
+      [filter]
+   );
+   const handleApply = useCallback(() => {
       setFilter({ ...filter, isApply: !isApply });
       setShowFilter(false);
-   };
+   }, [filter, isApply]);
 
-   const renderStateType = (): Array<string> => {
+   const renderStateType = useMemo<Array<string>>(() => {
       switch (activeTab) {
          case 0:
-            return [
-               'Wade Cooper',
-               'Arlene Mccoy',
-               'Devon Webb',
-               'Tom Cook',
-               'Tanya Fox',
-               'Hellen Schmidt',
-            ];
+            return [''];
          case 1:
             return ['succeed', 'pending', 'failed', 'refund'];
          case 2:
@@ -223,9 +247,9 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
          default:
             return [''];
       }
-   };
+   }, [activeTab]);
 
-   const renderActivity = () => {
+   const renderActivity = useMemo(() => {
       switch (activeTab) {
          case 1:
             return (
@@ -241,7 +265,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                   firstElemIndex={firstElemIndex}
                   lastElemIndex={lastElemIndex}
                   nextPageExists={nextPageExists}
-                  fetchCurrencies={fetchCurrencies}
                   fetchHistory={fetchHistory}
                   advanceFilter={advanceFilter}
                   time_from={time_from}
@@ -269,7 +292,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                   firstElemIndex={firstElemIndex}
                   lastElemIndex={lastElemIndex}
                   nextPageExists={nextPageExists}
-                  fetchCurrencies={fetchCurrencies}
                   fetchHistory={fetchHistory}
                   advanceFilter={advanceFilter}
                   time_from={time_from}
@@ -297,7 +319,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                   firstElemIndex={firstElemIndex}
                   lastElemIndex={lastElemIndex}
                   nextPageExists={nextPageExists}
-                  fetchCurrencies={fetchCurrencies}
                   fetchHistory={fetchHistory}
                   advanceFilter={advanceFilter}
                   time_from={time_from}
@@ -325,7 +346,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                   firstElemIndex={firstElemIndex}
                   lastElemIndex={lastElemIndex}
                   nextPageExists={nextPageExists}
-                  fetchCurrencies={fetchCurrencies}
                   fetchHistory={fetchHistory}
                   advanceFilter={advanceFilter}
                   time_from={time_from}
@@ -355,7 +375,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                   firstElemIndex={firstElemIndex}
                   lastElemIndex={lastElemIndex}
                   nextPageExists={nextPageExists}
-                  fetchCurrencies={fetchCurrencies}
                   fetchHistory={fetchHistory}
                   advanceFilter={advanceFilter}
                   time_from={time_from}
@@ -370,18 +389,46 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                />
             );
       }
-   };
+   }, [
+      activeTab,
+      advanceFilter,
+      currencies,
+      currency,
+      currencyId,
+      direction,
+      fetchHistory,
+      fetching,
+      firstElemIndex,
+      handleApply,
+      isApply,
+      lastElemIndex,
+      list,
+      market,
+      nextPageExists,
+      page,
+      qDebounce,
+      state,
+      time_from,
+      time_to,
+      translate,
+      type,
+      user,
+      wallets,
+   ]);
 
-   const typeName =
-      activeTab === 0
-         ? 'transactions'
-         : activeTab === 1
-         ? 'deposit'
-         : activeTab === 2
-         ? 'withdrawls'
-         : activeTab === 3
-         ? 'internal transfer'
-         : 'my trades';
+   const typeName = useMemo(
+      () =>
+         activeTab === 0
+            ? 'transactions'
+            : activeTab === 1
+            ? 'deposit'
+            : activeTab === 2
+            ? 'withdrawls'
+            : activeTab === 3
+            ? 'internal transfer'
+            : 'my trades',
+      [activeTab]
+   );
 
    return (
       <>
@@ -403,7 +450,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                )}
                {!hiddenCategory?.includes(2) && (
                   <Nav
-                     title="Withdraw"
+                     title="Withdrawals"
                      isActive={activeTab === 2}
                      onClick={() => setActiveTab(2)}
                   />
@@ -433,7 +480,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                      onChange={setQ}
                      icon={
                         <svg className="h-5 w-5 fill-neutral4">
-                           <use xlinkHref="#icon-search"></use>
+                           <use xlinkHref="#icon-search" />
                         </svg>
                      }
                   />
@@ -449,12 +496,12 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                         setShowFilter(true);
                         setFilter({
                            ...filter,
-                           advanceFilter: activeTab !== 3 ? false : true,
+                           advanceFilter: activeTab === 3,
                         });
                      }}
                      icRight={
                         <svg className="ml-3 h-4 w-4 fill-neutral4 transition-all group-hover:fill-neutral8">
-                           <use xlinkHref="#icon-calendar"></use>
+                           <use xlinkHref="#icon-calendar" />
                         </svg>
                      }
                   />
@@ -478,7 +525,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                width="noFull"
             />
          </div>
-         <div className="overflow-x-auto">{renderActivity()}</div>
+         <div className="overflow-x-auto">{renderActivity}</div>
          <Dialog
             isOpen={showFilter}
             setIsOpen={() => {
@@ -513,7 +560,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                      </div>
                   </div>
                   <div className="space-y-2.5">
-                     <Label label="start date" />
+                     <Label label="end date" />
                      <div className="relative">
                         <DatePicker
                            selected={endDate}
@@ -570,7 +617,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                      {(activeTab === 1 || activeTab === 2) && (
                         <AdibDropdown
                            label="State type"
-                           data={renderStateType()}
+                           data={renderStateType}
                            onChange={handleChangeState}
                         />
                      )}{' '}
@@ -609,7 +656,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                <div className="mt-16.5 space-y-8">
                   <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary3">
                      <svg className="h-10 w-10 fill-neutral8 transition-colors duration-300">
-                        <use xlinkHref="#icon-arrow-bottom"></use>
+                        <use xlinkHref="#icon-arrow-bottom" />
                      </svg>
                   </div>
                   <div className="text-center text-base font-medium leading-normal">
@@ -634,7 +681,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
-   sonic: selectSonic(state),
    currencies: selectCurrencies(state),
    wallets: selectWallets(state),
    list: selectHistory(state),
@@ -653,13 +699,12 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    fetchWallets: () => dispatch(walletsFetch()),
    fetchHistory: payload => dispatch(fetchHistory(payload)),
    resetHistory: () => dispatch(resetHistory()),
-   fetchCurrencies: () => dispatch(currenciesFetch()),
 });
 
 export const TableFinance = compose(
    injectIntl,
    connect(mapStateToProps, mapDispatchToProps)
-)(TableFinanceFC) as FC<OwnProps>;
+)(memo(TableFinanceFC)) as FC<OwnProps>;
 
 TableFinance.defaultProps = {
    withAdvancadFilter: true,

@@ -149,10 +149,10 @@ const EmailVerificationComponentOld = (props: Props) => {
    } = props;
 
    const title = props.intl.formatMessage({
-      id: 'page.header.signUp.modal.header',
+      id: 'page.header.register.modal.header',
    });
    const text = props.intl.formatMessage({
-      id: 'page.header.signUp.modal.body',
+      id: 'page.header.register.modal.body',
    });
    const button = props.intl.formatMessage({ id: 'page.resendConfirmation' });
 
@@ -242,8 +242,8 @@ const EmailVerificationComponentOld = (props: Props) => {
 //          // isMobileDevice
 //       } = this.props;
 
-//       const title = this.props.intl.formatMessage({ id: 'page.header.signUp.modal.header' });
-//       const text = this.props.intl.formatMessage({ id: 'page.header.signUp.modal.body' });
+//       const title = this.props.intl.formatMessage({ id: 'page.header.register.modal.header' });
+//       const text = this.props.intl.formatMessage({ id: 'page.header.register.modal.body' });
 //       const button = this.props.intl.formatMessage({ id: 'page.resendConfirmation' });
 
 //       return (

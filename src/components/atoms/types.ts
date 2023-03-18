@@ -54,6 +54,8 @@ export type Rounded =
    | 'full'
    | '20';
 
+export type Weight = 'normal' | 'medium' | 'semibold';
+
 export type AccordionData = {
    title: string;
    content: ReactNode;

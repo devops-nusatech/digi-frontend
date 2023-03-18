@@ -6,9 +6,9 @@ import { mockNetworkError, setupMockAxios, setupMockStore } from '../../../../he
 import { changeLanguage } from '../../../public/i18n';
 import { CommonError } from '../../../types';
 import { userData } from '../../profile';
-import { signIn, signInError, signInRequire2FA } from '../actions';
+import { login, loginError, loginRequire2FA } from '../actions';
 
-describe('SignIn saga', () => {
+describe('Login saga', () => {
     let store: MockStoreEnhanced;
     let sagaMiddleware: SagaMiddleware;
     let mockAxios: MockAdapter;
@@ -43,7 +43,7 @@ describe('SignIn saga', () => {
         updated_at: '',
     };
 
-    const mockSignIn = () => {
+    const mockLogin = () => {
         mockAxios.onPost('/identity/sessions').reply(200, fakeUser);
     };
 
@@ -53,25 +53,25 @@ describe('SignIn saga', () => {
     };
 
     const expectedActionsFetch = [
-        signIn(fakeCredentials),
+        login(fakeCredentials),
         changeLanguage('en'),
         userData({user: fakeUser}),
-        signInRequire2FA({ require2fa: false }),
+        loginRequire2FA({ require2fa: false }),
     ];
 
     const expectedActionsNetworkError = [
-        signIn(fakeCredentials),
+        login(fakeCredentials),
         sendError({
             error,
             processingType: 'alert',
             extraOptions: {
-                actionError: signInError,
+                actionError: loginError,
             },
         }),
     ];
 
-    it('should signin user in success flow', async () => {
-        mockSignIn();
+    it('should login user in success flow', async () => {
+        mockLogin();
         const promise = new Promise(resolve => {
             store.subscribe(() => {
                 const actions = store.getActions();
@@ -82,7 +82,7 @@ describe('SignIn saga', () => {
             });
         });
 
-        store.dispatch(signIn(fakeCredentials));
+        store.dispatch(login(fakeCredentials));
 
         return promise;
     });
@@ -98,7 +98,7 @@ describe('SignIn saga', () => {
                 }
             });
         });
-        store.dispatch(signIn(fakeCredentials));
+        store.dispatch(login(fakeCredentials));
 
         return promise;
     });

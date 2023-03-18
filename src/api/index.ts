@@ -4,14 +4,7 @@ import { JsonBody, makeRequest } from './requestBuilder';
 export * from './config';
 
 export interface RequestOptions {
-   apiVersion:
-      | 'applogic'
-      | 'peatio'
-      | 'barong'
-      | 'finex'
-      | 'sonic'
-      | 'p2p'
-      | 'news';
+   apiVersion: 'applogic' | 'peatio' | 'barong' | 'finex' | 'p2p' | 'news';
    withHeaders?: boolean;
    headers?: Object;
 }

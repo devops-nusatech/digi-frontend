@@ -8,31 +8,8 @@ import { minutesUntilAutoLogout, sessionCheckInterval, showLanding } from 'api';
 import { ModalExpiredSession, Loader, ScreenMobile } from 'components';
 import { WalletsFetch } from 'containers';
 import { toggleColorTheme } from 'helpers';
-import // ChangeForgottenPasswordMobileScreen,
-// ConfirmMobileScreen,
-// EmailVerificationMobileScreen,
-// ForgotPasswordMobileScreen,
-// LandingScreenMobile,
-// OrdersMobileScreen,
-// ProfileAccountActivityMobileScreen,
-// ProfileApiKeysMobileScreen,
-// ProfileAuthMobileScreen,
-// ProfileChangePasswordMobileScreen,
-// ProfileLanguageMobileScreen,
-// ProfileMobileScreen,
-// ProfileThemeMobileScreen,
-// ProfileVerificationMobileScreen,
-// SelectedWalletMobileScreen,
-// SignInMobileScreen,
-// SignUpMobileScreen,
-// TradingScreenMobile,
-// WalletDeposit,
-// WalletsMobileScreen,
-// WalletWithdraw,
-'mobile/screens';
 import {
    configsFetch,
-   sonicFetch,
    logoutFetch,
    RootState,
    selectConfigsLoading,
@@ -73,8 +50,8 @@ import {
    // ProfileScreen,
    ProfileTwoFactorAuthScreen,
    RestrictedScreen,
-   SignInScreen,
-   SignUpScreen,
+   // LoginScreen,
+   // RegisterScreen,
    VerificationScreen,
    // WalletsScreen,
    ChangeForgotPassword,
@@ -106,14 +83,14 @@ import {
    WalletFinance,
    Exchange,
    WalletOrder,
-   RegisterKu,
+   // RegisterKu,
    Geetest,
    Notifications,
 } from 'screens';
+import { ApiDocs } from 'screens/ApiDocs';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
 import { DispatchProps, LayoutProps, LayoutState, ReduxProps } from '../types';
-import { ApiDocs } from 'screens/ApiDocs';
 
 const STORE_KEY = 'lastAction';
 
@@ -129,6 +106,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
    ];
 
    public timer;
+
    public walletsFetchInterval;
 
    constructor(props: LayoutProps) {
@@ -150,8 +128,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
       } = this.props;
 
       this.props.fetchConfigs();
-      this.props.fetchSonic();
-      this.props.fetchMemberLevel();
       if (
          !(
             location.pathname.includes('/magic-link') ||
@@ -172,6 +148,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                if (token) {
                   this.props.userFetch();
                   this.props.groupFetch();
+                  this.props.fetchMemberLevel();
                   this.initInterval();
                   this.checkSession();
                }
@@ -206,6 +183,8 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 
       if (!this.props.user?.email && nextProps.user?.email) {
          this.props.userFetch();
+         this.props.groupFetch();
+         this.props.fetchMemberLevel();
       }
    }
 
@@ -265,10 +244,10 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 
       if (isMobileDevice) {
          return (
-            <main className={'flex grow flex-col'}>
+            <main className="flex grow flex-col">
                <Switch>
-                  {/* <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/signin" component={SignInMobileScreen} />
-                  <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/signup" component={SignUpMobileScreen} />
+                  {/* <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/login" component={LoginMobileScreen} />
+                  <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/register" component={registerMobileScreen} />
                   <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/forgot_password" component={ForgotPasswordMobileScreen} />
                   <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/accounts/password_reset" component={ChangeForgottenPasswordMobileScreen} />
                   <PublicRoute loading={userLoading} isLogged={isLoggedIn} path="/accounts/confirmation" component={VerificationScreen} />
@@ -290,7 +269,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   <Route exact={true} path="/trading/:market?" component={TradingScreenMobile} /> */}
                   {showLanding() && (
                      <Route
-                        exact={true}
+                        exact
                         path="/"
                         component={ScreenMobile}
                      />
@@ -312,16 +291,16 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
          <>
             <Switch>
                <Route
-                  exact={true}
+                  exact
                   path="/magic-link"
                   component={MagicLink}
                />
-               <PublicRoute
+               {/* <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
-                  path="/signin"
-                  component={SignInScreen}
-               />
+                  path="/login"
+                  component={LoginScreen}
+               /> */}
                <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
@@ -334,24 +313,24 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   path="/register"
                   component={Register}
                />
-               <PublicRoute
+               {/* <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
                   path="/registerku"
                   component={RegisterKu}
-               />
+               /> */}
                <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
                   path="/accounts/confirmation"
                   component={VerificationScreen}
                />
-               <PublicRoute
+               {/* <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
-                  path="/signup"
-                  component={SignUpScreen}
-               />
+                  path="/register"
+                  component={RegisterScreen}
+               /> */}
                <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
@@ -383,7 +362,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   component={MaintenanceScreen}
                />
                <Route
-                  exact={true}
+                  exact
                   path="/trading/:market?"
                   component={Trading}
                />
@@ -505,7 +484,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                      <PrivateRoute
                         loading={userLoading}
                         isLogged={isLoggedIn}
-                        exact={true}
+                        exact
                         path="/wallets"
                         component={WalletOverview}
                      />
@@ -710,7 +689,6 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    fetchConfigs: () => dispatch(configsFetch()),
-   fetchSonic: () => dispatch(sonicFetch()),
    userFetch: () => dispatch(userFetch()),
    fetchMemberLevel: () => dispatch(memberLevelsFetch()),
    fetchCustomization: () => dispatch(customizationFetch()),

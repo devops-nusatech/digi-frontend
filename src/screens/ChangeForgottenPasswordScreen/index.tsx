@@ -100,7 +100,7 @@ class ChangeForgottenPasswordComponent extends React.Component<
                   title={
                      !isMobileDevice &&
                      this.props.intl.formatMessage({
-                        id: 'page.header.signIn.resetPassword.title',
+                        id: 'page.header.login.resetPassword.title',
                      })
                   }
                   configs={configs}

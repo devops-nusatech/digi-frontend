@@ -4,8 +4,7 @@ export const SortAsc = () => {
    return (
       <svg
          fill="none"
-         xmlns="http://www.w3.org/2000/svg"
-      >
+         xmlns="http://www.w3.org/2000/svg">
          <path
             opacity="0.5"
             fillRule="evenodd"
@@ -28,8 +27,7 @@ export const SortDefault = () => {
    return (
       <svg
          fill="none"
-         xmlns="http://www.w3.org/2000/svg"
-      >
+         xmlns="http://www.w3.org/2000/svg">
          <path
             opacity="0.5"
             fillRule="evenodd"
@@ -52,8 +50,7 @@ export const SortDesc = () => {
    return (
       <svg
          fill="none"
-         xmlns="http://www.w3.org/2000/svg"
-      >
+         xmlns="http://www.w3.org/2000/svg">
          <path
             opacity="1"
             fillRule="evenodd"

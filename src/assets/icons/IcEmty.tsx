@@ -9,8 +9,7 @@ export const IcEmty = ({ className, onClick }: ImageProps) => (
       width="66"
       height="86"
       viewBox="0 0 66 86"
-      fill="none"
-   >
+      fill="none">
       <path
          d="M4 40.5V36C4 34.3431 5.34315 33 7 33H32C33.6569 33 35 31.6569 35 30V30C35 28.3431 36.3431 27 38 27H58.5C60.1569 27 61.5 28.3431 61.5 30V40"
          stroke="#B6DFD9"

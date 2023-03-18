@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
-import { SignUpForm, SignUpFormProps } from './';
+import { registerForm, registerFormProps } from '.';
 
 import { shallow } from 'enzyme';
 
-const defaults: SignUpFormProps = {
-   onSignUp: jest.fn(),
+const defaults: registerFormProps = {
+   onregister: jest.fn(),
    captchaType: 'none',
    refId: '',
    password: '',
@@ -48,10 +48,10 @@ const defaults: SignUpFormProps = {
    translate: jest.fn(),
 };
 
-const setup = (props: Partial<SignUpFormProps> = {}) =>
-   shallow(<SignUpForm {...{ ...defaults, ...props }} />);
+const setup = (props: Partial<registerFormProps> = {}) =>
+   shallow(<registerForm {...{ ...defaults, ...props }} />);
 
-describe.skip('SignUp component', () => {
+describe.skip('register component', () => {
    it('should render', () => {
       const wrapper = setup();
       expect(wrapper).toMatchSnapshot();
@@ -65,12 +65,12 @@ describe.skip('SignUp component', () => {
    it('should render logo block', () => {
       let wrapper = setup();
       const firstState = wrapper
-         .find('.cr-sign-up-form__form-content')
+         .find('.cr-register-form__form-content')
          .children();
       expect(firstState).toHaveLength(6);
       wrapper = setup({ image: 'image' });
       const secondState = wrapper
-         .find('.cr-sign-up-form__form-content')
+         .find('.cr-register-form__form-content')
          .children();
       expect(secondState).toHaveLength(7);
    });
@@ -80,19 +80,19 @@ describe.skip('SignUp component', () => {
          hasConfirmed: true,
          captchaType: 'recaptcha',
          renderCaptcha: (
-            <div className="cr-sign-up-form__recaptcha">Content</div>
+            <div className="cr-register-form__recaptcha">Content</div>
          ),
       });
-      expect(wrapper.find('.cr-sign-up-form__recaptcha').exists()).toBe(true);
+      expect(wrapper.find('.cr-register-form__recaptcha').exists()).toBe(true);
    });
 
    it('should have correct labels', () => {
       const wrapper = setup({
-         labelSignIn: 'label sign in',
-         labelSignUp: 'label sign up',
+         labelLogin: 'label sign in',
+         labelregister: 'label sign up',
       });
       expect(
-         wrapper.find('.cr-sign-up-form__option-inner').first().text()
+         wrapper.find('.cr-register-form__option-inner').first().text()
       ).toBe('label sign in');
       expect(wrapper.find('.__selected').text()).toBe('label sign up');
    });
@@ -103,59 +103,59 @@ describe.skip('SignUp component', () => {
          passwordError: 'error password',
          confirmationError: 'error refid',
       });
-      expect(wrapper.find('.cr-sign-up-form__error').first().text()).toBe(
+      expect(wrapper.find('.cr-register-form__error').first().text()).toBe(
          'error email'
       );
-      expect(wrapper.find('.cr-sign-up-form__error').last().text()).toBe(
+      expect(wrapper.find('.cr-register-form__error').last().text()).toBe(
          'error refid'
       );
    });
 
    it('should send request', () => {
       const spyOnValidateForm = jest.fn();
-      const spyOnSignUp = jest.fn();
+      const spyOnregister = jest.fn();
       const wrapper = setup({
          email: 'email@email.com',
          password: 'Qwerty123',
          confirmPassword: 'Qwerty123',
          validateForm: spyOnValidateForm,
-         onSignUp: spyOnSignUp,
+         onregister: spyOnregister,
       });
       const button = wrapper.find(Button);
       button.simulate('click');
       expect(spyOnValidateForm).toHaveBeenCalledTimes(0);
-      expect(spyOnSignUp).toHaveBeenCalled();
-      expect(spyOnSignUp).toHaveBeenCalledTimes(1);
+      expect(spyOnregister).toHaveBeenCalled();
+      expect(spyOnregister).toHaveBeenCalledTimes(1);
    });
 
    it('should validate form', () => {
       const spyOnValidateForm = jest.fn();
-      const spyOnSignUp = jest.fn();
+      const spyOnregister = jest.fn();
       let wrapper = setup({
          email: 'email',
          password: 'Qwerty123',
          confirmPassword: 'Qwerty123',
          validateForm: spyOnValidateForm,
-         onSignUp: spyOnSignUp,
+         onregister: spyOnregister,
       });
       const button = wrapper.find(Button);
       button.simulate('click');
       expect(spyOnValidateForm).toHaveBeenCalled();
       expect(spyOnValidateForm).toHaveBeenCalledTimes(1);
-      expect(spyOnSignUp).toHaveBeenCalledTimes(0);
+      expect(spyOnregister).toHaveBeenCalledTimes(0);
       spyOnValidateForm.mockClear();
-      spyOnSignUp.mockClear();
+      spyOnregister.mockClear();
 
       wrapper = setup({
          email: 'email@email.com',
          password: 'Qwerty123',
          confirmPassword: 'Qwerty',
          validateForm: spyOnValidateForm,
-         onSignUp: spyOnSignUp,
+         onregister: spyOnregister,
       });
       button.simulate('click');
       expect(spyOnValidateForm).toHaveBeenCalled();
       expect(spyOnValidateForm).toHaveBeenCalledTimes(1);
-      expect(spyOnSignUp).toHaveBeenCalledTimes(0);
+      expect(spyOnregister).toHaveBeenCalledTimes(0);
    });
 });

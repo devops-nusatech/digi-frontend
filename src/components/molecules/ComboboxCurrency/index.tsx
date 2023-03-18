@@ -8,9 +8,10 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Combobox, Transition } from '@headlessui/react';
-import { Wallet, selectSonic, selectWallets, walletsFetch } from 'modules';
+import { Wallet, selectWallets, walletsFetch } from 'modules';
 import { Label, Image, Decimal } from 'components';
 import { renderCurrencyIcon } from 'helpers';
+import { platformCurrency } from 'api';
 
 type ComboboxCurrencyState = {
    currency: string;
@@ -60,7 +61,6 @@ export const ComboboxCurrency: FC<ComboboxCurrencyProps> = ({
    withBalance,
 }) => {
    const dispatch = useDispatch();
-   const sonic = useSelector(selectSonic);
    const wallets = useSelector(selectWallets);
 
    const [state, setState] = useState<ComboboxCurrencyState>({
@@ -74,9 +74,8 @@ export const ComboboxCurrency: FC<ComboboxCurrencyProps> = ({
       handleChangeCurrency(
          defaultValue?.length
             ? defaultValue
-            : wallets.find(
-                 wallet => wallet.currency === sonic.peatio_platform_currency
-              )?.currency || wallets[0]?.currency
+            : wallets.find(wallet => wallet.currency === platformCurrency())
+                 ?.currency || wallets[0]?.currency
       );
    }, []);
 
@@ -86,9 +85,8 @@ export const ComboboxCurrency: FC<ComboboxCurrencyProps> = ({
       }
       if (walletsData.length < 1) {
          handleChangeCurrency(
-            wallets.find(
-               wallet => wallet.currency === sonic.peatio_platform_currency
-            )?.currency || wallets[0]?.currency
+            wallets.find(wallet => wallet.currency === platformCurrency())
+               ?.currency || wallets[0]?.currency
          );
       }
    }, [wallets, dispatch]);

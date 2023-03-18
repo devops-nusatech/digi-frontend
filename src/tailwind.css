@@ -1,11 +1,11 @@
 /* Copyright (c) www.digiassetindo.com */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @supports not (color-scheme: dark) {
-   [data-mode='dark'] {
+   [data-mode="dark"] {
       @apply bg-neutral1;
    }
 }
@@ -15,106 +15,106 @@
    src: url('./assets/fonts/cryptofont-webfont.ttf');
  } */
 @font-face {
-   font-family: 'crypto';
-   src: url('./assets/fonts/cryptofont-webfont.woff');
- }
+   font-family: "crypto";
+   src: url("./assets/fonts/cryptofont-webfont.woff");
+}
 @font-face {
-   font-family: 'urw-din-400';
-   src: url('./assets/fonts/URWDIN-Regular.ttf');
- }
+   font-family: "urw-din-400";
+   src: url("./assets/fonts/URWDIN-Regular.ttf");
+}
 @font-face {
-   font-family: 'urw-din-500';
-   src: url('./assets/fonts/URWDIN-Medium.ttf');
- }
+   font-family: "urw-din-500";
+   src: url("./assets/fonts/URWDIN-Medium.ttf");
+}
 
 .react-multiple-carousel__arrow {
-    @apply bg-neutral1 opacity-30 hover:opacity-60 transition-all duration-300;
+   @apply bg-neutral1 opacity-30 transition-all duration-300 hover:opacity-60;
 }
 
 .react-multiple-carousel__arrow--right {
-    @apply hover:translate-x-2 transition ease-in-out duration-300;
+   @apply transition duration-300 ease-in-out hover:translate-x-2;
 }
 
 .react-multiple-carousel__arrow--left {
-    @apply hover:-translate-x-2 transition ease-in-out duration-300;
+   @apply transition duration-300 ease-in-out hover:-translate-x-2;
 }
 
 .download__icon::after {
-    @apply content-[''] absolute top-0 left-0 w-full h-full rounded-full bg-no-repeat invisible opacity-0 transition-all duration-300;
-    background: #3772ff
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' fill='none' viewBox='0 0 14 9'%3E%3Cpath fill-rule='evenodd' d='M9.091.265a1 1 0 0 1 1.413.057l3.231 3.5a1 1 0 0 1 0 1.357l-3.231 3.5a1 1 0 0 1-1.47-1.357L10.716 5.5H1a1 1 0 1 1 0-2h9.716L9.034 1.678A1 1 0 0 1 9.091.265z' fill='%23fcfcfd'/%3E%3C/svg%3E")
-        no-repeat 50% 50%/14px auto;
+   @apply invisible absolute top-0 left-0 h-full w-full rounded-full bg-no-repeat opacity-0 transition-all duration-300 content-[''];
+   background: #3772ff
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' fill='none' viewBox='0 0 14 9'%3E%3Cpath fill-rule='evenodd' d='M9.091.265a1 1 0 0 1 1.413.057l3.231 3.5a1 1 0 0 1 0 1.357l-3.231 3.5a1 1 0 0 1-1.47-1.357L10.716 5.5H1a1 1 0 1 1 0-2h9.716L9.034 1.678A1 1 0 0 1 9.091.265z' fill='%23fcfcfd'/%3E%3C/svg%3E")
+      no-repeat 50% 50%/14px auto;
 }
 
 .step-dot-before:before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -24px;
-    width: 12px;
-    height: 12px;
-    transform: translateY(-50%);
-    border-radius: 50%;
-    border: 2px solid #b1b5c3;
+   content: "";
+   position: absolute;
+   top: 50%;
+   left: -24px;
+   width: 12px;
+   height: 12px;
+   transform: translateY(-50%);
+   border-radius: 50%;
+   border: 2px solid #b1b5c3;
 }
 .step-dot-after::after {
-    content: '';
-    position: absolute;
-    top: 47px;
-    right: -84px;
-    width: 130px;
-    height: 2px;
-    background-image: linear-gradient(
-        90deg,
-        #b1b5c3 0,
-        #b1b5c3 6px,
-        #0000 6px,
-        #0000 14px
-    );
-    background-repeat: repeat-x;
-    background-size: 12px auto;
+   content: "";
+   position: absolute;
+   top: 47px;
+   right: -84px;
+   width: 130px;
+   height: 2px;
+   background-image: linear-gradient(
+      90deg,
+      #b1b5c3 0,
+      #b1b5c3 6px,
+      #0000 6px,
+      #0000 14px
+   );
+   background-repeat: repeat-x;
+   background-size: 12px auto;
 }
 
 @layer components {
    .bar .too-weak {
-      @apply bg-red-500 w-1/5 rounded-2xl;
+      @apply w-1/5 rounded-2xl bg-red-500;
    }
    .bar .weak {
-      @apply bg-yellow-500 w-2/5 rounded-2xl;
+      @apply w-2/5 rounded-2xl bg-yellow-500;
    }
    .bar .good {
-      @apply bg-cyan-500 w-3/5 rounded-2xl;
+      @apply w-3/5 rounded-2xl bg-cyan-500;
    }
    .bar .strong {
-      @apply bg-teal-500 w-4/5 rounded-2xl;
+      @apply w-4/5 rounded-2xl bg-teal-500;
    }
    .bar .very-strong {
-      @apply bg-green-500 w-full rounded-2xl;
+      @apply w-full rounded-2xl bg-green-500;
    }
    .too-weak {
-      @apply text-red-500 font-bold;
+      @apply font-bold text-red-500;
    }
    .weak {
-      @apply text-yellow-500 font-bold;
+      @apply font-bold text-yellow-500;
    }
    .good {
-      @apply text-cyan-500 font-bold;
+      @apply font-bold text-cyan-500;
    }
    .strong {
-      @apply text-teal-500 font-bold;
+      @apply font-bold text-teal-500;
    }
    .very-strong {
-      @apply text-green-500 font-bold;
+      @apply font-bold text-green-500;
    }
 
    .p-initial {
-      @apply h-9 w-9 inline-flex items-center justify-center text-neutral1 border border-solid border-primary1 rounded-2xl;
+      @apply inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-solid border-primary1 text-neutral1;
    }
    .p-active {
-      @apply h-9 w-9 inline-flex items-center justify-center text-white border border-solid border-primary1 hover:border-primary2 bg-primary1 hover:bg-primary2 rounded-2xl;
+      @apply inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-solid border-primary1 bg-primary1 text-white hover:border-primary2 hover:bg-primary2;
    }
    .p-disabled {
-      @apply text-white border border-solid border-neutral5 hover:border-neutral6 bg-neutral5 hover:bg-neutral6;
+      @apply border border-solid border-neutral5 bg-neutral5 text-white hover:border-neutral6 hover:bg-neutral6;
    }
 
    #order-book::-webkit-scrollbar {
@@ -122,7 +122,11 @@
       background-color: transparent;
    }
    #list-pair-market {
-      background: linear-gradient(270deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0) 10%);
+      background: linear-gradient(
+         270deg,
+         rgba(0, 0, 0, 0.1),
+         rgba(0, 0, 0, 0) 10%
+      );
       /* background: linear-gradient(90deg, #FFFFFF 85.71%, rgba(255, 255, 255, 0) 100%); */
    }
    #list-pair-market::-webkit-scrollbar {
@@ -133,18 +137,27 @@
    }
 
    .icon-dropdown {
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='9' fill='none' viewBox='0 0 24 9'%3E%3Cpath d='M6.343 2.657L0 9h24l-6.343-6.343a8 8 0 0 0-11.314 0z' fill='%23fcfcfd'/%3E%3C/svg%3E") no-repeat 50% 100%/100% auto;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='9' fill='none' viewBox='0 0 24 9'%3E%3Cpath d='M6.343 2.657L0 9h24l-6.343-6.343a8 8 0 0 0-11.314 0z' fill='%23fcfcfd'/%3E%3C/svg%3E")
+         no-repeat 50% 100%/100% auto;
    }
    .icon-dropdown-dark {
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='9' fill='none' viewBox='0 0 24 9'%3E%3Cpath d='M6.343 2.657L0 9h24l-6.343-6.343a8 8 0 0 0-11.314 0z' fill='%2323262F'/%3E%3C/svg%3E") no-repeat 50% 100%/100% auto;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='9' fill='none' viewBox='0 0 24 9'%3E%3Cpath d='M6.343 2.657L0 9h24l-6.343-6.343a8 8 0 0 0-11.314 0z' fill='%2323262F'/%3E%3C/svg%3E")
+         no-repeat 50% 100%/100% auto;
    }
 
    .icon-arrow {
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M16.207 9.793a1 1 0 0 0-1.414 0L12 12.586 9.207 9.793a1 1 0 0 0-1.414 1.414l3.5 3.5a1 1 0 0 0 1.414 0l3.5-3.5a1 1 0 0 0 0-1.414z' fill='%23777e91'/%3E%3C/svg%3E")
-            no-repeat 50% 50%/100% auto;
+         no-repeat 50% 50%/100% auto;
    }
    .polygon {
-      -webkit-clip-path: polygon(50% 0px, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%);
+      -webkit-clip-path: polygon(
+         50% 0px,
+         5% 25%,
+         5% 75%,
+         50% 100%,
+         95% 75%,
+         95% 25%
+      );
       clip-path: polygon(50% 0px, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%);
    }
 }
@@ -153,12 +166,12 @@
    *::selection {
       background-color: rgb(10 147 127 / 0.3);
    }
-   input[type='number']::-webkit-inner-spin-button,
-   input[type='number']::-webkit-outer-spin-button {
+   input[type="number"]::-webkit-inner-spin-button,
+   input[type="number"]::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
    }
-   input[type='number'] {
+   input[type="number"] {
       -moz-appearance: textfield;
       margin: 0;
    }
@@ -166,10 +179,10 @@
    th {
       @apply px-0;
    }
- }
+}
 
- .checkbox_icon::before {
-   content: '';
+.checkbox_icon::before {
+   content: "";
    position: absolute;
    top: 50%;
    left: 50%;
@@ -177,7 +190,7 @@
    width: 14px;
    height: 10px;
    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' fill='none' viewBox='0 0 14 10'%3E%3Cpath fill-rule='evenodd' d='M13.707.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L5 7.586 12.293.293a1 1 0 0 1 1.414 0z' fill='%23fcfcfd'/%3E%3C/svg%3E")
-       no-repeat 50% 50%/100% auto;
+      no-repeat 50% 50%/100% auto;
    opacity: 0;
    transition: opacity 0.2s;
 }
@@ -185,13 +198,13 @@
    left: 50%;
    transform: translateX(-50%);
    content: "";
-    position: absolute;
-    bottom: 100%;
-    width: 24px;
-    height: 12px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='9' fill='none' viewBox='0 0 24 9'%3E%3Cpath d='M6.343 2.657L0 9h24l-6.343-6.343a8 8 0 0 0-11.314 0z' fill='%23fcfcfd'/%3E%3C/svg%3E") no-repeat 50% 100%/100% auto;
+   position: absolute;
+   bottom: 100%;
+   width: 24px;
+   height: 12px;
+   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='9' fill='none' viewBox='0 0 24 9'%3E%3Cpath d='M6.343 2.657L0 9h24l-6.343-6.343a8 8 0 0 0-11.314 0z' fill='%23fcfcfd'/%3E%3C/svg%3E")
+      no-repeat 50% 100%/100% auto;
 }
-
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -199,84 +212,89 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
-[data-mode=dark] input:-webkit-autofill,
-[data-mode=dark] input:-webkit-autofill:hover,
-[data-mode=dark] input:-webkit-autofill:focus,
-[data-mode=dark] input:-webkit-autofill:active {
-   -webkit-box-shadow: 0 0 0 30px #23262F inset !important;
-   -webkit-text-fill-color: #FCFCFD !important;
+[data-mode="dark"] input:-webkit-autofill,
+[data-mode="dark"] input:-webkit-autofill:hover,
+[data-mode="dark"] input:-webkit-autofill:focus,
+[data-mode="dark"] input:-webkit-autofill:active {
+   -webkit-box-shadow: 0 0 0 30px #23262f inset !important;
+   -webkit-text-fill-color: #fcfcfd !important;
 }
-
 
 /* css transition group */
 .overlay {
    @apply transition-all duration-500;
 }
- .overlay-enter {
+.overlay-enter {
    @apply opacity-0;
- }
- .overlay-enter-active {
+}
+.overlay-enter-active {
    @apply opacity-50;
- }
- .overlay-enter-done {
+}
+.overlay-enter-done {
    @apply opacity-100;
- }
- .overlay-exit {
+}
+.overlay-exit {
    @apply opacity-100;
- }
- .overlay-exit-active {
+}
+.overlay-exit-active {
    @apply opacity-50;
- }
- .overlay-exit-done {
+}
+.overlay-exit-done {
    @apply opacity-0;
- }
+}
 
- .alert-enter {
+.alert-enter {
    opacity: 0;
    transform: scale(0.9);
- }
- .alert-enter-active {
+}
+.alert-enter-active {
    opacity: 1;
    transform: translateX(0);
    transition: opacity 300ms, transform 300ms;
- }
- .alert-exit {
+}
+.alert-exit {
    opacity: 1;
- }
- .alert-exit-active {
+}
+.alert-exit-active {
    opacity: 0;
    transform: scale(0.9);
    transition: opacity 300ms, transform 300ms;
- }
- /* End css transition group */
+}
+/* End css transition group */
 
-
- .switch:checked ~ span:last-child {
+.switch:checked ~ span:last-child {
    --tw-translate-x: 1.25rem; /* translate-x-7 */
    --tw-bg-opacity: 1;
    background-color: rgb(230 232 236 / var(--tw-bg-opacity));
+}
 
- }
-
-input[type="text"], input[type="email"], input[type="tel"], input[type="password"], textarea {
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+textarea {
    -webkit-appearance: none;
    box-shadow: none;
 }
 
- /* Step */
- .bidding__number::after {
+/* Step */
+.bidding__number::after {
    /* @apply bg-primary5 dark:bg-chart1'; */
-   background: #58bd7d url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.667 2.667L12 5.333' stroke='%23fcfcfd' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat 50% 50%/16px auto;
+   background: #58bd7d
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.667 2.667L12 5.333' stroke='%23fcfcfd' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      no-repeat 50% 50%/16px auto;
 }
 [data-mode="dark"] .bidding__number_dark::after {
    /* @apply bg-primary5 dark:bg-chart1'; */
-   background: #00C076 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.667 2.667L12 5.333' stroke='%23fcfcfd' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat 50% 50%/16px auto;
+   background: #00c076
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.667 2.667L12 5.333' stroke='%23fcfcfd' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      no-repeat 50% 50%/16px auto;
 }
- /* End Step */
+/* End Step */
 
 /* Phone input */
 .react-tel-input {
-   @apply font-medium !font-pop;
+   @apply !font-pop font-medium;
 }
 
 .react-tel-input .flag-dropdown.open .selected-flag {
@@ -290,18 +308,20 @@ input[type="text"], input[type="email"], input[type="tel"], input[type="password
 .react-tel-input .selected-flag:hover {
    @apply !bg-none;
 }
-.react-tel-input .selected-flag:hover, .react-tel-input .selected-flag:focus, .react-tel-input .selected-flag.open {
+.react-tel-input .selected-flag:hover,
+.react-tel-input .selected-flag:focus,
+.react-tel-input .selected-flag.open {
    background-color: transparent !important;
 }
 /* End Phone input */
 
 /* Depth */
 .recharts-surface tspan {
-   @apply !text-xs !fill-neutral4 !font-urw-din-500 ;
+   @apply !fill-neutral4 !font-urw-din-500 !text-xs;
 }
 
 /* Input Passoword */
-input[type=password]:not(:placeholder-shown) {
+input[type="password"]:not(:placeholder-shown) {
    @apply !text-4xl !tracking-[-0.3rem];
 }
 /* End Input Passoword */
@@ -376,66 +396,66 @@ input[type=password]:not(:placeholder-shown) {
 .geetest_captcha.geetest_load .geetest_header .geetest_status_bar,
 .geetest_popup_wrap.geetest_compute .geetest_header .geetest_status_bar,
 .geetest_popup_wrap.geetest_load .geetest_header .geetest_status_bar {
-  -webkit-animation: statusmove 1s linear 0.3s infinite !important;
-  animation: statusmove 1s linear 0.3s infinite !important;
+   -webkit-animation: statusmove 1s linear 0.3s infinite !important;
+   animation: statusmove 1s linear 0.3s infinite !important;
 }
 @-webkit-keyframes statusmove {
    0% {
       background: linear-gradient(
-         178.36deg,
-         #feac5e -0.23%,
-         #c779d0 49.92%,
-         #4bc0c8 100.07%
+            178.36deg,
+            #feac5e -0.23%,
+            #c779d0 49.92%,
+            #4bc0c8 100.07%
          )
-         0 0/150% 150%  !important;
-      background-position: 0 0  !important;
+         0 0/150% 150% !important;
+      background-position: 0 0 !important;
    }
    to {
       background: linear-gradient(
-         178.36deg,
-         #feac5e -0.23%,
-         #c779d0 49.92%,
-         #4bc0c8 100.07%
+            178.36deg,
+            #feac5e -0.23%,
+            #c779d0 49.92%,
+            #4bc0c8 100.07%
          )
          0 0/150% 150% !important;
       background-position: 100% 0 !important;
    }
 }
 @keyframes statusmove {
-0% {
-   background: -o-linear-gradient(
-      271.64deg,
-      #feac5e -0.23%,
-      #c779d0 49.92%,
-      #4bc0c8 100.07%
-      )
-      0 0/150% 150% !important;
-   background: linear-gradient(
-      178.36deg,
-      #feac5e -0.23%,
-      #c779d0 49.92%,
-      #4bc0c8 100.07%
-      )
-      0 0/150% 150% !important;
-   background-position: 0 0 !important;
-}
-to {
-   background: -o-linear-gradient(
-      271.64deg,
-      #feac5e -0.23%,
-      #c779d0 49.92%,
-      #4bc0c8 100.07%
-      )
-      0 0/150% 150% !important;
-   background: linear-gradient(
-      178.36deg,
-      #feac5e -0.23%,
-      #c779d0 49.92%,
-      #4bc0c8 100.07%
-      )
-      0 0/150% 150% !important;
-   background-position: 100% 0 !important;
-}
+   0% {
+      background: -o-linear-gradient(
+            271.64deg,
+            #feac5e -0.23%,
+            #c779d0 49.92%,
+            #4bc0c8 100.07%
+         )
+         0 0/150% 150% !important;
+      background: linear-gradient(
+            178.36deg,
+            #feac5e -0.23%,
+            #c779d0 49.92%,
+            #4bc0c8 100.07%
+         )
+         0 0/150% 150% !important;
+      background-position: 0 0 !important;
+   }
+   to {
+      background: -o-linear-gradient(
+            271.64deg,
+            #feac5e -0.23%,
+            #c779d0 49.92%,
+            #4bc0c8 100.07%
+         )
+         0 0/150% 150% !important;
+      background: linear-gradient(
+            178.36deg,
+            #feac5e -0.23%,
+            #c779d0 49.92%,
+            #4bc0c8 100.07%
+         )
+         0 0/150% 150% !important;
+      background-position: 100% 0 !important;
+   }
 }
 
 .geetest_captcha .geetest_bind_status_bar,
@@ -454,18 +474,17 @@ to {
 .geetest_popup_wrap .geetest_svg_default {
    @apply !stroke-primary1;
 }
-   /* End Geetest */
-
+/* End Geetest */
 
 /* Loader */
 .loader-106 {
-   @apply relative w-8 h-23 mb-5 rounded-t-[50%] border-b-10 border-[#ff3d00] bg-neutral6;
+   @apply relative mb-5 h-23 w-8 rounded-t-[50%] border-b-10 border-[#ff3d00] bg-neutral6;
    background-image: radial-gradient(
          ellipse at center,
-         #E6E8EC 34%,
+         #e6e8ec 34%,
          #ff3d00 35%,
          #ff3d00 54%,
-         #E6E8EC 55%
+         #e6e8ec 55%
       ),
       linear-gradient(#ff3d00 10px, transparent 0);
    background-size: 28px 28px;
@@ -475,13 +494,13 @@ to {
    animation: animloader106back 1s linear infinite alternate;
 }
 .loader-106-dark {
-   @apply relative w-8 h-23 mb-5 rounded-t-[50%] border-b-10 border-[#ff3d00] bg-neutral8;
+   @apply relative mb-5 h-23 w-8 rounded-t-[50%] border-b-10 border-[#ff3d00] bg-neutral8;
    background-image: radial-gradient(
          ellipse at center,
-         #FCFCFD 34%,
+         #fcfcfd 34%,
          #ff3d00 35%,
          #ff3d00 54%,
-         #FCFCFD 55%
+         #fcfcfd 55%
       ),
       linear-gradient(#ff3d00 10px, transparent 0);
    background-size: 28px 28px;
@@ -492,109 +511,111 @@ to {
 }
 
 .loader-106::before {
-content: '';
-position: absolute;
-left: 50%;
-transform: translateX(-50%);
-width: 64px;
-height: 44px;
-border-radius: 50%;
-box-shadow: 0px 15px #ff3d00 inset;
-top: 67px;
+   content: "";
+   position: absolute;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 64px;
+   height: 44px;
+   border-radius: 50%;
+   box-shadow: 0px 15px #ff3d00 inset;
+   top: 67px;
 }
 
 .loader-106::after {
-content: '';
-position: absolute;
-left: 50%;
-transform: translateX(-50%) rotate(45deg);
-width: 34px;
-height: 34px;
-top: 112%;
-background: radial-gradient(
-   ellipse at center,
-   #ffdf00 8%,
-   rgba(249, 62, 0, 0.6) 24%,
-   rgba(0, 0, 0, 0) 100%
-);
-border-radius: 50% 50% 0;
-background-repeat: no-repeat;
-background-position: -44px -44px;
-background-size: 100px 100px;
-box-shadow: 4px 4px 12px 0px rgba(255, 61, 0, 0.5);
--webkit-animation: animloader106 1s linear infinite alternate;
-animation: animloader106 1s linear infinite alternate;
+   content: "";
+   position: absolute;
+   left: 50%;
+   transform: translateX(-50%) rotate(45deg);
+   width: 34px;
+   height: 34px;
+   top: 112%;
+   background: radial-gradient(
+      ellipse at center,
+      #ffdf00 8%,
+      rgba(249, 62, 0, 0.6) 24%,
+      rgba(0, 0, 0, 0) 100%
+   );
+   border-radius: 50% 50% 0;
+   background-repeat: no-repeat;
+   background-position: -44px -44px;
+   background-size: 100px 100px;
+   box-shadow: 4px 4px 12px 0px rgba(255, 61, 0, 0.5);
+   -webkit-animation: animloader106 1s linear infinite alternate;
+   animation: animloader106 1s linear infinite alternate;
 }
 
 @-webkit-keyframes animloader106back {
-0%,
-30%,
-70% {
-   transform: translateY(0px);
-}
-20%,
-40%,
-100% {
-   transform: translateY(-5px);
-}
+   0%,
+   30%,
+   70% {
+      transform: translateY(0px);
+   }
+   20%,
+   40%,
+   100% {
+      transform: translateY(-5px);
+   }
 }
 @keyframes animloader106back {
-0%,
-30%,
-70% {
-   transform: translateY(0px);
-}
-20%,
-40%,
-100% {
-   transform: translateY(-5px);
-}
+   0%,
+   30%,
+   70% {
+      transform: translateY(0px);
+   }
+   20%,
+   40%,
+   100% {
+      transform: translateY(-5px);
+   }
 }
 @-webkit-keyframes animloader106 {
-0% {
-   box-shadow: 4px 4px 12px 2px rgba(255, 61, 0, 0.75);
-   width: 34px;
-   height: 34px;
-   background-position: -44px -44px;
-   background-size: 100px 100px;
-}
-100% {
-   box-shadow: 2px 2px 8px 0px rgba(255, 61, 0, 0.5);
-   width: 30px;
-   height: 28px;
-   background-position: -36px -36px;
-   background-size: 80px 80px;
-}
+   0% {
+      box-shadow: 4px 4px 12px 2px rgba(255, 61, 0, 0.75);
+      width: 34px;
+      height: 34px;
+      background-position: -44px -44px;
+      background-size: 100px 100px;
+   }
+   100% {
+      box-shadow: 2px 2px 8px 0px rgba(255, 61, 0, 0.5);
+      width: 30px;
+      height: 28px;
+      background-position: -36px -36px;
+      background-size: 80px 80px;
+   }
 }
 @keyframes animloader106 {
-0% {
-   box-shadow: 4px 4px 12px 2px rgba(255, 61, 0, 0.75);
-   width: 34px;
-   height: 34px;
-   background-position: -44px -44px;
-   background-size: 100px 100px;
-}
-100% {
-   box-shadow: 2px 2px 8px 0px rgba(255, 61, 0, 0.5);
-   width: 30px;
-   height: 28px;
-   background-position: -36px -36px;
-   background-size: 80px 80px;
-}
+   0% {
+      box-shadow: 4px 4px 12px 2px rgba(255, 61, 0, 0.75);
+      width: 34px;
+      height: 34px;
+      background-position: -44px -44px;
+      background-size: 100px 100px;
+   }
+   100% {
+      box-shadow: 2px 2px 8px 0px rgba(255, 61, 0, 0.5);
+      width: 30px;
+      height: 28px;
+      background-position: -36px -36px;
+      background-size: 80px 80px;
+   }
 }
 /* End Loader */
 
 .react-datepicker {
-   @apply bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 rounded-xl font-pop shadow-2xl shadow-neutral4;
+   @apply rounded-xl border-2 border-neutral6 bg-neutral8 font-pop shadow-2xl shadow-neutral4 dark:border-neutral3 dark:bg-neutral1;
 }
 
-.react-datepicker__header  {
-   @apply border-none bg-neutral8 dark:bg-neutral1 text-left select-none;
+.react-datepicker__header {
+   @apply select-none border-none bg-neutral8 text-left dark:bg-neutral1;
 }
-.react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header {
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
    @apply ml-2;
 }
-.react-datepicker__navigation  {
+.react-datepicker__navigation {
    @apply top-3;
 }
 
@@ -602,10 +623,14 @@ animation: animloader106 1s linear infinite alternate;
    @apply translate-x-44;
 }
 
-.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before, .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::after  {
+.react-datepicker-popper[data-placement^="bottom"]
+   .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^="bottom"]
+   .react-datepicker__triangle::after {
    @apply border-b-neutral8 dark:border-b-neutral1;
 }
-.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
+.react-datepicker-popper[data-placement^="bottom"]
+   .react-datepicker__triangle::before {
    @apply border-b-neutral6 dark:border-b-neutral3;
 }
 
@@ -615,24 +640,59 @@ animation: animloader106 1s linear infinite alternate;
 .react-datepicker__month {
    @apply text-sm;
 }
-.react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header  {
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
    @apply text-neutral2 dark:text-neutral8;
 }
-.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name  {
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
    @apply text-neutral4;
 }
-.react-datepicker__day, .react-datepicker__month-text, .react-datepicker__quarter-text, .react-datepicker__year-text {
+.react-datepicker__day,
+.react-datepicker__month-text,
+.react-datepicker__quarter-text,
+.react-datepicker__year-text {
    @apply rounded-full text-neutral2 dark:text-neutral8;
 }
 .react-datepicker__input-container input {
-   @apply px-3.5 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 dark:border-neutral3 bg-none bg-transparent shadow-none transition ease-in-out duration-300 h-12 focus:border-neutral4 dark:focus:border-neutral4 w-full;
+   @apply h-12 w-full rounded-xl border-2 border-neutral6 bg-transparent bg-none px-3.5 font-medium leading-12 shadow-none outline-none transition duration-300 ease-in-out focus:border-neutral4 dark:border-neutral3 dark:focus:border-neutral4;
 }
-.react-datepicker__day:hover, .react-datepicker__month-text:hover, .react-datepicker__quarter-text:hover, .react-datepicker__year-text:hover {
-   @apply rounded-full bg-neutral6 dark:bg-neutral3 text-neutral2 dark:text-neutral8;
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover,
+.react-datepicker__year-text:hover {
+   @apply rounded-full bg-neutral6 text-neutral2 dark:bg-neutral3 dark:text-neutral8;
 }
-.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--selected, .react-datepicker__year-text--in-selecting-range, .react-datepicker__year-text--in-range,
-.react-datepicker__day--selected:hover, .react-datepicker__day--in-selecting-range:hover, .react-datepicker__day--in-range:hover, .react-datepicker__month-text--selected:hover, .react-datepicker__month-text--in-selecting-range:hover, .react-datepicker__month-text--in-range:hover, .react-datepicker__quarter-text--selected:hover, .react-datepicker__quarter-text--in-selecting-range:hover, .react-datepicker__quarter-text--in-range:hover, .react-datepicker__year-text--selected:hover, .react-datepicker__year-text--in-selecting-range:hover, .react-datepicker__year-text--in-range:hover,
-.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected {
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range,
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--in-selecting-range:hover,
+.react-datepicker__day--in-range:hover,
+.react-datepicker__month-text--selected:hover,
+.react-datepicker__month-text--in-selecting-range:hover,
+.react-datepicker__month-text--in-range:hover,
+.react-datepicker__quarter-text--selected:hover,
+.react-datepicker__quarter-text--in-selecting-range:hover,
+.react-datepicker__quarter-text--in-range:hover,
+.react-datepicker__year-text--selected:hover,
+.react-datepicker__year-text--in-selecting-range:hover,
+.react-datepicker__year-text--in-range:hover,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
    @apply rounded-full bg-primary1 text-neutral8;
 }
 
@@ -653,23 +713,31 @@ animation: animloader106 1s linear infinite alternate;
 .react-datepicker__year-read-view {
    @apply !visible;
 }
-.react-datepicker__month-read-view .react-datepicker__month-read-view--down-arrow,
-.react-datepicker__year-read-view .react-datepicker__year-read-view--down-arrow {
+.react-datepicker__month-read-view
+   .react-datepicker__month-read-view--down-arrow,
+.react-datepicker__year-read-view
+   .react-datepicker__year-read-view--down-arrow {
    @apply -right-2.5 top-2.5;
 }
 .react-datepicker__month-read-view--down-arrow,
 .react-datepicker__year-read-view--down-arrow {
-   @apply border-t-2 border-r-2 h-1.5 w-1.5;
+   @apply h-1.5 w-1.5 border-t-2 border-r-2;
 }
 
-.react-datepicker__year-dropdown, .react-datepicker__month-dropdown, .react-datepicker__month-year-dropdown {
-   @apply absolute max-h-52 w-1/2 overflow-auto z-10 mt-0.5 rounded-xl text-left bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral3 shadow-dropdown-2 dark:shadow-dropdown-3 transition-all duration-200
+.react-datepicker__year-dropdown,
+.react-datepicker__month-dropdown,
+.react-datepicker__month-year-dropdown {
+   @apply absolute z-10 mt-0.5 max-h-52 w-1/2 overflow-auto rounded-xl border-2 border-neutral6 bg-neutral8 text-left shadow-dropdown-2 transition-all duration-200 dark:border-neutral3 dark:bg-neutral1 dark:shadow-dropdown-3;
 }
-.react-datepicker__year-option, .react-datepicker__month-option, .react-datepicker__month-year-option {
-   @apply pl-7 pr-3.5 py-2.5 leading-[1.4] dark:text-neutral8 truncate font-medium hover:bg-neutral7 hover:dark:bg-neutral2 transition-all duration-200;
+.react-datepicker__year-option,
+.react-datepicker__month-option,
+.react-datepicker__month-year-option {
+   @apply truncate py-2.5 pl-7 pr-3.5 font-medium leading-[1.4] transition-all duration-200 hover:bg-neutral7 dark:text-neutral8 hover:dark:bg-neutral2;
 }
 
-.react-datepicker__year-option--selected, .react-datepicker__month-option--selected, .react-datepicker__month-year-option--selected {
+.react-datepicker__year-option--selected,
+.react-datepicker__month-option--selected,
+.react-datepicker__month-year-option--selected {
    @apply left-2.5;
 }
 .react-datepicker__month-option.react-datepicker__month-option--selected_month,

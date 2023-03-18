@@ -30,12 +30,12 @@ export const pgRoutes = (
       ['page.header.navbar.api', '/docs', `api${isLight ? 'Light' : ''}`],
    ];
    const routesUnloggedIn = [
+      ['page.header.navbar.login', '/login', `login${isLight ? 'Light' : ''}`],
       [
-         'page.header.navbar.signIn',
-         '/signin',
-         `signin${isLight ? 'Light' : ''}`,
+         'page.header.register',
+         '/register',
+         `register${isLight ? 'Light' : ''}`,
       ],
-      ['page.header.signUp', '/signup', `signup${isLight ? 'Light' : ''}`],
       [
          'page.header.navbar.trade',
          '/trading/',

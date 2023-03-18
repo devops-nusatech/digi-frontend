@@ -13,8 +13,7 @@ export const CloseIcon: React.FC<CloseIconProps> = (props: CloseIconProps) => {
          viewBox="0 0 14 14"
          className={props.className}
          onClick={props.onClick}
-         fill="none"
-      >
+         fill="none">
          <path
             fillRule="evenodd"
             clipRule="evenodd"

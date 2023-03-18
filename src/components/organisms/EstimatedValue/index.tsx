@@ -21,17 +21,14 @@ import {
    Wallet,
    Market,
    Ticker,
-   selectSonic,
-   Sonic,
 } from 'modules';
-import { peatioPlatformCurrency } from 'api';
+import { platformCurrency } from 'api';
 
 interface EstimatedValueProps {
    wallets: Wallet[];
 }
 
 interface ReduxProps {
-   sonic: Sonic;
    currencies: Currency[];
    markets: Market[];
    tickers: {
@@ -96,23 +93,23 @@ class EstimatedValueContainer extends React.Component<Props> {
    }
 
    public render(): React.ReactNode {
-      const { currencies, markets, tickers, wallets, sonic } = this.props;
+      const { currencies, markets, tickers, wallets } = this.props;
       const estimatedValue = estimateValue(
-         sonic.peatio_platform_currency || peatioPlatformCurrency(),
+         platformCurrency(),
          currencies,
          wallets,
          markets,
          tickers
       );
       const estimatedValueLocked = estimateValueLocked(
-         sonic.peatio_platform_currency || peatioPlatformCurrency(),
+         platformCurrency(),
          currencies,
          wallets,
          markets,
          tickers
       );
       const estimatedValueAvailable = estimateValueAvailable(
-         sonic.peatio_platform_currency || peatioPlatformCurrency(),
+         platformCurrency(),
          currencies,
          wallets,
          markets,
@@ -120,10 +117,7 @@ class EstimatedValueContainer extends React.Component<Props> {
       );
 
       const wallet = wallets.find(
-         e =>
-            e.currency ===
-            (sonic.peatio_platform_currency?.toLowerCase() ||
-               peatioPlatformCurrency()?.toLowerCase())
+         e => e.currency === platformCurrency()?.toLowerCase()
       );
 
       return (
@@ -140,16 +134,12 @@ class EstimatedValueContainer extends React.Component<Props> {
                   </div>
                   <Badge
                      variant="green"
-                     text={
-                        sonic.peatio_platform_currency?.toUpperCase() ||
-                        peatioPlatformCurrency()?.toUpperCase()
-                     }
+                     text={platformCurrency()?.toUpperCase()}
                   />
                </div>
                <div className="text-base text-neutral4">
                   &asymp; {formatWithSeparators(estimatedValue, ',')}{' '}
-                  {sonic.peatio_platform_currency?.toUpperCase() ||
-                     peatioPlatformCurrency()?.toUpperCase()}
+                  {platformCurrency()?.toUpperCase()}
                </div>
             </div>
             <div>
@@ -164,16 +154,12 @@ class EstimatedValueContainer extends React.Component<Props> {
                   </div>
                   <Badge
                      variant="green"
-                     text={
-                        sonic.peatio_platform_currency?.toUpperCase() ||
-                        peatioPlatformCurrency()?.toUpperCase()
-                     }
+                     text={platformCurrency()?.toUpperCase()}
                   />
                </div>
                <div className="text-base text-neutral4">
                   &asymp; {formatWithSeparators(estimatedValueLocked, ',')}{' '}
-                  {sonic.peatio_platform_currency?.toUpperCase() ||
-                     peatioPlatformCurrency()?.toUpperCase()}
+                  {platformCurrency()?.toUpperCase()}
                </div>
             </div>
             <div>
@@ -188,28 +174,20 @@ class EstimatedValueContainer extends React.Component<Props> {
                   </div>
                   <Badge
                      variant="green"
-                     text={
-                        sonic.peatio_platform_currency?.toUpperCase() ||
-                        peatioPlatformCurrency()?.toUpperCase()
-                     }
+                     text={platformCurrency()?.toUpperCase()}
                   />
                </div>
                <div className="text-base text-neutral4">
                   &asymp; {formatWithSeparators(estimatedValueAvailable, ',')}{' '}
-                  {sonic.peatio_platform_currency?.toUpperCase() ||
-                     peatioPlatformCurrency()?.toUpperCase()}
+                  {platformCurrency()?.toUpperCase()}
                </div>
             </div>
          </div>
       );
    }
-
-   public translate = (key: string) =>
-      this.props.intl.formatMessage({ id: key });
 }
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
-   sonic: selectSonic(state),
    currencies: selectCurrencies(state),
    markets: selectMarkets(state),
    tickers: selectMarketTickers(state),

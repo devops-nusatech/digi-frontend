@@ -11,13 +11,11 @@ export const LogoIcon: React.FC<LogoIconProps> = (props: LogoIconProps) => (
       viewBox="0 0 118 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={props.className}
-   >
+      className={props.className}>
       <g
          transform="translate(0.000000,576.000000) scale(0.100000,-0.100000)"
          fill="none"
-         stroke="none"
-      >
+         stroke="none">
          <path
             d="M1880 4979 l0 -384 72 -55 c94 -72 258 -234 338 -335 519 -656 616 -1545 248 -2279 -137 -272 -357 -546 -578 -718 l-80 -61 0 -384 0 -383 73 0 c92 0 302 24 427 50 378 77 754 254 1055 497 128 104 340 321 431 443 469 628 618 1416 410 2170 -158 576 -524 1077 -1031 1415 -118 78 -379 209 -519 260 -221 81 -474 132 -708 142 l-138 6 0 -384z"
             fill="var(--icons)"

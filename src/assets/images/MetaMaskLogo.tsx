@@ -9,15 +9,13 @@ export const MetaMaskLogo: React.FC<Props> = (props: Props) => {
    return (
       <div
          className={props.className}
-         onClick={props.onClick}
-      >
+         onClick={props.onClick}>
          <svg
             width="35"
             height="33"
             viewBox="0 0 35 33"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-         >
+            xmlns="http://www.w3.org/2000/svg">
             <path
                d="M32.9583 1L19.8242 10.7183L22.2666 4.99099L32.9583 1Z"
                fill="#E17726"

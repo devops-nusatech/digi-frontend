@@ -1,4 +1,4 @@
-import React, { FC, memo, useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import { useMarket } from 'hooks';
 import { Nav, TableMarketTrades } from 'components';
 // import { truncateMiddle } from 'helpers';
@@ -7,13 +7,13 @@ interface TradingMarketListProps {
    translate: (id: string) => string;
 }
 
-export const TradingMarketList: FC<TradingMarketListProps> = memo(
-   ({ translate }) => {
+export const TradingMarketList = memo(
+   ({ translate }: TradingMarketListProps) => {
       const {
          currentBidUnit,
          setCurrentBidUnit,
          currentBidUnitsList,
-         marketsData,
+         filterMarkets,
          handleRedirectToTrading,
          handleSearchMarket,
          isLoading,
@@ -33,10 +33,10 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(
          id: string
       ) => {
          e.stopPropagation();
-         handleToSetFavorites(id);
+         handleToSetFavorites(e, id);
       };
 
-      // type Data = typeof marketsData;
+      // type Data = typeof filterMarkets;
 
       // type SortKeys = keyof Data[0];
 
@@ -53,7 +53,7 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(
       // }) {
       //    if (!sortKey) return tableData;
 
-      //    const sortedData = marketsData.sort((a, b) => {
+      //    const sortedData = filterMarkets.sort((a, b) => {
       //       return a[sortKey] > b[sortKey] ? 1 : -1;
       //    });
 
@@ -98,11 +98,11 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(
       // ];
 
       // const sortedData = useCallback(() => sortData({
-      //    tableData: marketsData,
+      //    tableData: filterMarkets,
       //    sortKey,
       //    reverse: sortOrder === 'desc'
       // }), [
-      //    marketsData,
+      //    filterMarkets,
       //    sortKey,
       //    sortOrder
       // ]);
@@ -226,8 +226,8 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(
                                     </td>
                                  </tr>
                               </>
-                           ) : marketsData && marketsData.length ? (
-                              marketsData.map(
+                           ) : filterMarkets && filterMarkets.length ? (
+                              filterMarkets.map(
                                  ({
                                     id,
                                     name,
@@ -438,7 +438,7 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(
 //       currentBidUnit,
 //       setCurrentBidUnit,
 //       currentBidUnitsList,
-//       marketsData,
+//       filterMarkets,
 //       handleRedirectToTrading,
 //       handleSearchMarket,
 //       isLoading,
@@ -573,8 +573,8 @@ export const TradingMarketList: FC<TradingMarketListProps> = memo(
 //                               </td>
 //                            </tr>
 //                         </>
-//                      ) : marketsData && marketsData.length ? (
-//                         marketsData.map(
+//                      ) : filterMarkets && filterMarkets.length ? (
+//                         filterMarkets.map(
 //                            ({ id, name, last, price_change_percent, isFav }) => (
 //                               <tr
 //                                  key={id}

@@ -293,7 +293,7 @@ export const FormRegisterKu = memo(
                      termsMessage
                   ) : (
                      <>
-                        By signing up I agree that I’m 18 years of age or older,
+                        By loging up I agree that I’m 18 years of age or older,
                         to the{' '}
                         <a
                            className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8"

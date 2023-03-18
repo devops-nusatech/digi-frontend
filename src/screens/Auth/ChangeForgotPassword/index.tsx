@@ -14,7 +14,7 @@ import {
 import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { IntlProps } from '../../..';
+import { IntlProps } from 'index';
 import { Captcha, FormChangeNewPassword, LayoutAuth } from 'components';
 import { truncateMiddle } from 'helpers';
 import {
@@ -202,7 +202,7 @@ const ChangeForgotPasswordFC = ({
          title={`${
             isRendered === 0
                ? 'PIN forgot password'
-               : translate('page.header.signIn.resetPassword.newPassword')
+               : translate('page.header.login.resetPassword.newPassword')
          }`}
          subTitle={`${
             isRendered === 0

@@ -13,7 +13,6 @@ import {
    newsUrl,
    p2pUrl,
 } from './config';
-import { API_URL } from 'config';
 
 export type HTTPMethod = 'get' | 'post' | 'delete' | 'put' | 'patch';
 
@@ -23,14 +22,7 @@ export interface JsonBody {
 }
 
 export interface RequestOptions {
-   apiVersion:
-      | 'applogic'
-      | 'peatio'
-      | 'barong'
-      | 'finex'
-      | 'sonic'
-      | 'p2p'
-      | 'news';
+   apiVersion: 'applogic' | 'peatio' | 'barong' | 'finex' | 'p2p' | 'news';
    withHeaders?: boolean;
    headers?: Object;
 }
@@ -47,20 +39,14 @@ export interface ApiVariety {
    peatio: string;
 }
 
-const getAPI = () => {
-   // const hostUrl = window.location.hostname === 'localhost' ? 'http://localhost:9002' : '';
-   const hostUrl = API_URL;
-
-   return {
-      barong: authUrl(),
-      applogic: applogicUrl(),
-      peatio: tradeUrl(),
-      finex: finexUrl(),
-      sonic: `${hostUrl}/api/v2/sonic`,
-      p2p: p2pUrl(),
-      news: newsUrl(),
-   };
-};
+const getAPI = () => ({
+   barong: authUrl(),
+   applogic: applogicUrl(),
+   peatio: tradeUrl(),
+   finex: finexUrl(),
+   p2p: p2pUrl(),
+   news: newsUrl(),
+});
 
 const buildRequest = (request: Request, configData: RequestOptions) => {
    const { body, method, url } = request;

@@ -2,7 +2,7 @@ import { call, delay, put, select } from 'redux-saga/effects';
 import {
     resetHistory,
     setBlocklistStatus,
-    signInRequire2FA,
+    loginRequire2FA,
     userOpenOrdersReset,
     userReset,
 } from '../../../';
@@ -23,7 +23,7 @@ export function* handleAlertSaga(action: AlertPush) {
                     yield put(userReset());
                     localStorage.removeItem('csrfToken');
                     yield put(userOpenOrdersReset());
-                    yield put(signInRequire2FA({ require2fa: false }));
+                    yield put(loginRequire2FA({ require2fa: false }));
                     yield put(resetHistory());
                 }
 

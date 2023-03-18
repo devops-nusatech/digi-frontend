@@ -1,7 +1,7 @@
 import { nationalitiesNames } from './nationalities';
 
 export const en = {
-   'page.header.navbar.signIn': 'Sign In',
+   'page.header.navbar.login': 'Sign In',
    'page.header.navbar.trade': 'Trade',
    'page.header.navbar.wallets': 'Wallets',
    'page.header.navbar.openOrders': 'Orders',
@@ -641,50 +641,51 @@ export const en = {
    'page.footer.legalDocuments': 'Legal documents',
    'page.footer.faq': 'FAQ',
 
-   'page.header.signIn': 'Login',
-   'page.header.signIn.email': 'Email Address',
-   'page.header.signIn.password': 'Password',
-   'page.header.signIn.password.message.error': 'Password is invalid',
-   'page.header.signIn.receiveConfirmation':
+   'page.header.login': 'Login',
+   'page.header.login.email': 'Email Address',
+   'page.header.login.password': 'Password',
+   'page.header.login.password.message.error': 'Password is invalid',
+   'page.header.login.receiveConfirmation':
       "Didn't receive your confirmation email?",
-   'page.header.signIn.forgotPassword': 'Forgot your password?',
-   'page.header.signIn.resetPassword.title': 'Reset password',
-   'page.header.signIn.resetPassword.newPassword': 'New password',
-   'page.header.signIn.resetPassword.repeatPassword': 'Repeat password',
-   'page.header.signIn.resetPassword.button': 'Change',
-   'page.header.signIn.resetPassword.error':
-      'Fields are empty or don`t matches',
+   'page.header.login.forgotPassword': 'Forgot your password?',
+   'page.header.login.resetPassword.title': 'Reset password',
+   'page.header.login.resetPassword.newPassword': 'New password',
+   'page.header.login.resetPassword.repeatPassword': 'Repeat password',
+   'page.header.login.resetPassword.button': 'Change',
+   'page.header.login.resetPassword.error': 'Fields are empty or don`t matches',
 
-   'page.header.signUp': 'Sign Up',
-   'page.header.signUp.username.minLength.error':
+   'page.header.register': 'Sign Up',
+   'page.header.register.username.minLength.error':
       'Please, enter more characters. Min number of characters is 4',
-   'page.header.signUp.username.maxLength.error':
+   'page.header.register.username.maxLength.error':
       'Please, enter fewer characters. Maximum number of characters is 12',
-   'page.header.signUp.username.uniqueness.error':
+   'page.header.register.username.uniqueness.error':
       'This username is already taken',
-   'page.header.signUp.email': 'Email',
-   'page.header.signUp.email.message.error':
+   'page.header.register.email': 'Email',
+   'page.header.register.email.message.error':
       'Not valid email address, must be example@mail.com',
-   'page.header.signUp.password': 'Password',
-   'page.header.signUp.password.message.error':
+   'page.header.register.password': 'Password',
+   'page.header.register.password.message.error':
       'Password must contain at least 8 characters, at least one capital letter and one digit',
-   'page.header.signUp.confirmPassword': 'Confirm Password',
-   'page.header.signUp.confirmPassword.message.error': "Passwords don't match",
-   'page.header.signUp.referalCode': 'Referral Code',
-   'page.header.signUp.terms': 'I have read and agree to the Terms of Service',
-   'page.header.signUp.modal.header': 'VERIFY YOUR ACCOUNT',
-   'page.header.signUp.modal.body':
+   'page.header.register.confirmPassword': 'Confirm Password',
+   'page.header.register.confirmPassword.message.error':
+      "Passwords don't match",
+   'page.header.register.referalCode': 'Referral Code',
+   'page.header.register.terms':
+      'I have read and agree to the Terms of Service',
+   'page.header.register.modal.header': 'VERIFY YOUR ACCOUNT',
+   'page.header.register.modal.body':
       'To complete registration, check for an ' +
       'email in your inbox with further ' +
       'instruction. If you cannot find the email, ' +
       'please check your spam folder',
-   'page.header.signUp.modal.footer': 'OK',
-   'page.header.signUp.strength.password': 'Password Strength',
-   'page.header.signUp.password.too.weak': 'TOO WEAK',
-   'page.header.signUp.password.weak': 'WEAK',
-   'page.header.signUp.password.good': 'GOOD',
-   'page.header.signUp.password.strong': 'STRONG',
-   'page.header.signUp.password.very.strong': 'VERY STRONG',
+   'page.header.register.modal.footer': 'OK',
+   'page.header.register.strength.password': 'Password Strength',
+   'page.header.register.password.too.weak': 'TOO WEAK',
+   'page.header.register.password.weak': 'WEAK',
+   'page.header.register.password.good': 'GOOD',
+   'page.header.register.password.strong': 'STRONG',
+   'page.header.register.password.very.strong': 'VERY STRONG',
    'page.resendConfirmation': 'Resend Confirmation',
    'page.forgotPassword': 'Forgot Password',
    'page.forgotPassword.subtitle':
@@ -879,6 +880,7 @@ export const en = {
    'identity.password.user_doesnt_exist': "User doesn't exist",
    'identity.user.passwords_doesnt_match': "Passwords don't match",
    'identity.user.utilized_token': 'Wrong pin code',
+   'identity.session.rack_attack_limit': 'Wrong pin code',
    'identity.session.invalid_login_params': 'Invalid Email or Password',
    'identity.session.invalid': 'Invalid Session',
    'identity.captcha.required': 'captcha_response is required',
@@ -1077,6 +1079,7 @@ export const en = {
    'market.order.market_order_price': "Market order doesn't have price",
    'market.trade.not_permitted':
       'Please, pass the corresponding verification steps to enable trading',
+   'market.trade.invalid_type': 'Invalid type',
    'market.account.insufficient_balance': 'Account balance is insufficient',
 
    'public.currency.doesnt_exist': "Currency doesn't exist",

@@ -14,7 +14,7 @@ const ChangeForgottenPasswordMobileScreen: React.FC = () => {
             isOpen={true}
             onClose={() => history.push('/trading')}
             title={intl.formatMessage({
-               id: 'page.header.signIn.resetPassword.title',
+               id: 'page.header.login.resetPassword.title',
             })}>
             <ChangeForgottenPasswordScreen />
          </Modal>

@@ -10,9 +10,9 @@ import {
 } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { IntlProps } from '../../';
+import { IntlProps } from '../..';
 import { isUsernameEnabled } from '../../api';
-import { Captcha, Modal, SignUpForm } from '../../components';
+import { Captcha, Modal, RegisterForm } from '../../components';
 import {
    EMAIL_REGEX,
    ERROR_INVALID_EMAIL,
@@ -38,9 +38,9 @@ import {
    selectCurrentPasswordEntropy,
    selectGeetestCaptchaSuccess,
    selectRecaptchaSuccess,
-   selectSignUpError,
-   selectSignUpRequireVerification,
-   signUp,
+   selectregisterError,
+   selectregisterRequireVerification,
+   register,
 } from '../../modules';
 
 interface ReduxProps {
@@ -57,7 +57,7 @@ interface ReduxProps {
 }
 
 interface DispatchProps {
-   signUp: typeof signUp;
+   register: typeof register;
    fetchCurrentPasswordEntropy: typeof entropyPasswordFetch;
    resetCaptchaState: typeof resetCaptchaState;
 }
@@ -70,7 +70,7 @@ interface RouterProps {
 }
 
 interface OwnProps {
-   signUpError: boolean;
+   registerError: boolean;
    i18n: LanguageState['lang'];
 }
 
@@ -79,7 +79,7 @@ type Props = ReduxProps & DispatchProps & RouterProps & IntlProps & OwnProps;
 // Adib Comment
 // export const extractRefID = (props: RouterProps) => new URLSearchParams(props.location.search).get('refid');
 
-class SignUp extends React.Component<Props> {
+class Register extends React.Component<Props> {
    public readonly state = {
       showModal: false,
       username: '',
@@ -104,6 +104,7 @@ class SignUp extends React.Component<Props> {
    };
 
    private myRef = React.createRef<HTMLInputElement>();
+
    private passwordWrapper = React.createRef<HTMLDivElement>();
 
    public componentDidMount() {
@@ -125,7 +126,7 @@ class SignUp extends React.Component<Props> {
       const { email } = this.state;
 
       if (!prev.requireVerification && this.props.requireVerification) {
-         this.props.history.push('/email-verification', { email: email });
+         this.props.history.push('/email-verification', { email });
       }
    }
 
@@ -134,10 +135,10 @@ class SignUp extends React.Component<Props> {
    }
 
    public renderCaptcha = () => {
-      const { signUpError } = this.props;
+      const { registerError } = this.props;
       const { confirmationError, emailError } = this.state;
 
-      const error = signUpError || confirmationError || emailError;
+      const error = registerError || confirmationError || emailError;
 
       return <Captcha error={error} />;
    };
@@ -172,38 +173,38 @@ class SignUp extends React.Component<Props> {
          passwordPopUp,
       } = this.state;
 
-      const className = cx('pg-sign-up-screen__container', { loading });
+      const className = cx('pg-register-screen__container', { loading });
 
       return (
          <div>
             <div className={className}>
-               <SignUpForm
-                  labelSignIn={this.props.intl.formatMessage({
-                     id: 'page.header.signIn',
+               <RegisterForm
+                  labelLogin={this.props.intl.formatMessage({
+                     id: 'page.header.login',
                   })}
-                  labelSignUp={this.props.intl.formatMessage({
-                     id: 'page.header.signUp',
+                  labelregister={this.props.intl.formatMessage({
+                     id: 'page.header.register',
                   })}
                   emailLabel={this.props.intl.formatMessage({
-                     id: 'page.header.signUp.email',
+                     id: 'page.header.register.email',
                   })}
                   passwordLabel={this.props.intl.formatMessage({
-                     id: 'page.header.signUp.password',
+                     id: 'page.header.register.password',
                   })}
                   confirmPasswordLabel={this.props.intl.formatMessage({
-                     id: 'page.header.signUp.confirmPassword',
+                     id: 'page.header.register.confirmPassword',
                   })}
                   referalCodeLabel={this.props.intl.formatMessage({
-                     id: 'page.header.signUp.referalCode',
+                     id: 'page.header.register.referalCode',
                   })}
                   termsMessage={this.props.intl.formatMessage({
-                     id: 'page.header.signUp.terms',
+                     id: 'page.header.register.terms',
                   })}
                   refId={refId}
                   handleChangeRefId={this.handleChangeRefId}
                   isLoading={loading}
-                  onSignIn={this.handleSignIn}
-                  onSignUp={this.handleSignUp}
+                  onLogin={this.handleLogin}
+                  onregister={this.handleregister}
                   username={username}
                   handleChangeUsername={this.handleChangeUsername}
                   email={email}
@@ -390,11 +391,11 @@ class SignUp extends React.Component<Props> {
       });
    };
 
-   private handleSignIn = () => {
+   private handleLogin = () => {
       this.props.history.push('/login');
    };
 
-   private handleSignUp = () => {
+   private handleregister = () => {
       const { configs, i18n, captcha_response } = this.props;
       const { username, email, password, refId } = this.state;
       let payload: any = {
@@ -418,10 +419,10 @@ class SignUp extends React.Component<Props> {
          case 'geetest':
             payload = { ...payload, captcha_response };
 
-            this.props.signUp(payload);
+            this.props.register(payload);
             break;
          default:
-            this.props.signUp(payload);
+            this.props.register(payload);
             break;
       }
 
@@ -432,7 +433,7 @@ class SignUp extends React.Component<Props> {
       return (
          <div className="pg-exchange-modal-submit-header">
             {this.props.intl.formatMessage({
-               id: 'page.header.signUp.modal.header',
+               id: 'page.header.register.modal.header',
             })}
          </div>
       );
@@ -443,7 +444,7 @@ class SignUp extends React.Component<Props> {
          <div className="pg-exchange-modal-submit-body">
             <h2>
                {this.props.intl.formatMessage({
-                  id: 'page.header.signUp.modal.body',
+                  id: 'page.header.register.modal.body',
                })}
             </h2>
          </div>
@@ -454,12 +455,12 @@ class SignUp extends React.Component<Props> {
       return (
          <div className="pg-exchange-modal-submit-footer">
             <Button
-               block={true}
+               block
                onClick={this.closeModal}
                size="lg"
                variant="primary">
                {this.props.intl.formatMessage({
-                  id: 'page.header.signUp.modal.footer',
+                  id: 'page.header.register.modal.footer',
                })}
             </Button>
          </div>
@@ -530,8 +531,6 @@ class SignUp extends React.Component<Props> {
             passwordError: '',
             hasConfirmed: false,
          });
-
-         return;
       }
    };
 }
@@ -539,8 +538,8 @@ class SignUp extends React.Component<Props> {
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    configs: selectConfigs(state),
    i18n: selectCurrentLanguage(state),
-   requireVerification: selectSignUpRequireVerification(state),
-   signUpError: selectSignUpError(state),
+   requireVerification: selectregisterRequireVerification(state),
+   registerError: selectregisterError(state),
    currentPasswordEntropy: selectCurrentPasswordEntropy(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
@@ -551,14 +550,14 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    DispatchProps,
    {}
 > = dispatch => ({
-   signUp: credentials => dispatch(signUp(credentials)),
+   register: credentials => dispatch(register(credentials)),
    fetchCurrentPasswordEntropy: payload =>
       dispatch(entropyPasswordFetch(payload)),
    resetCaptchaState: () => dispatch(resetCaptchaState()),
 });
 
-export const SignUpScreen = compose(
+export const RegisterScreen = compose(
    injectIntl,
    withRouter,
    connect(mapStateToProps, mapDispatchToProps)
-)(SignUp) as React.ComponentClass;
+)(Register) as React.ComponentClass;

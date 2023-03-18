@@ -137,7 +137,7 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
          />
          <div className="space-y-3 text-center">
             <Button
-               text={'Confirm'}
+               text="Confirm"
                disabled={pin.length !== 6}
                onClick={handleActivate}
                withLoading={beneficiariesActivateLoading}

@@ -1,6 +1,32 @@
-import React from 'react';
-import { TextProps } from '../types';
+import React, { FC } from 'react';
+import { classNames } from 'helpers';
+import { TextProps, Weight } from '../types';
 
-export const TextBase = ({ text, className }: TextProps) => {
-   return <div className={`text-base leading-normal ${className}`}>{text}</div>;
+const classes = {
+   font: {
+      normal: 'font-normal',
+      medium: 'font-medium',
+      semibold: 'font-semibold',
+   },
+};
+
+interface TextBaseProps extends TextProps {
+   font?: Weight;
+}
+
+export const TextBase: FC<TextBaseProps> = ({ font, text, className }) => {
+   return (
+      <div
+         className={classNames(
+            `text-base leading-normal ${font ? classes.font[font] : ''} ${
+               className || ''
+            }`
+         )}>
+         {text}
+      </div>
+   );
+};
+
+TextBase.defaultProps = {
+   font: 'medium',
 };

@@ -1,14 +1,13 @@
 import { ComponentType } from 'react';
 import { RouteProps as RProps } from 'react-router-dom';
 import { RouterProps } from 'react-router';
-import { IntlProps } from '../';
+import { IntlProps } from 'index';
 import {
    configsFetch,
    groupFetch,
    logoutFetch,
    Market,
    memberLevelsFetch,
-   sonicFetch,
    toggleChartRebuild,
    User,
    userFetch,
@@ -42,7 +41,6 @@ export interface ReduxProps {
 
 export interface DispatchProps {
    fetchConfigs: typeof configsFetch;
-   fetchSonic: typeof sonicFetch;
    userFetch: typeof userFetch;
    fetchMemberLevel: typeof memberLevelsFetch;
    fetchCustomization: typeof customizationFetch;

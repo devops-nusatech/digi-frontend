@@ -40,3 +40,4 @@ export * from './EstimatedValue';
 export * from './TableOrderHistory';
 export * from './TableWallets';
 export * from './TableMarketTrades';
+export * from './TableMarket';

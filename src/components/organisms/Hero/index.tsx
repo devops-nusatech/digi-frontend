@@ -1,26 +1,29 @@
-import React, { FC } from 'react';
+import React, { useCallback, MouseEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import { illusCard, illusCard2 } from 'assets';
 import { useMarket } from 'hooks';
 import { Button, Skeleton, Image } from 'components';
 import { renderCurrencyIcon } from 'helpers';
 
-export const Hero: FC = (props: any) => {
+export const Hero = () => {
    const history = useHistory();
-   const { marketsData, handleRedirectToTrading, isLoading } = useMarket();
+   const { markets, handleRedirectToTrading, isLoading } = useMarket();
 
-   const handleScroll = (e: any, id: string) => {
-      e.preventDefault();
-      let hero = document.getElementById(id);
-      hero &&
-         hero.scrollIntoView({
-            behavior: 'smooth',
-         });
-   };
+   const handleScroll = useCallback(
+      (e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>, id: string) => {
+         e.preventDefault();
+         const hero = document.getElementById(id);
+         hero &&
+            hero.scrollIntoView({
+               behavior: 'smooth',
+            });
+      },
+      []
+   );
 
    return (
-      <section className="mb-34 overflow-hidden pt-8 lg:pt-20 lg2:pt-40">
-         <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
+      <section className="relative mb-34 overflow-hidden pt-8 lg:pt-20 lg2:pt-40">
+         <div className="mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
             <div className="mb-4 grid grid-cols-2 md:mb-20 lg2:mb-[143px]">
                <div className="col-span-2 select-none md:col-span-1">
                   <div className="mb-5 font-dm text-5xl font-bold tracking-custom md:text-64">
@@ -57,7 +60,7 @@ export const Hero: FC = (props: any) => {
                   </div>
                </div>
                <div className="col-span-2 md:col-span-1">
-                  <div className="pointer-events-none absolute -top-40 -right-28 lg2:-top-76">
+                  <div className="pointer-events-none absolute -top-20 -right-6 lg2:-top-36">
                      <img
                         className="hidden md:block md:w-[500px] lg:w-[700px] xl:w-auto"
                         srcSet={`${illusCard2} 2x`}
@@ -96,8 +99,8 @@ export const Hero: FC = (props: any) => {
                         rounded="2xl"
                      />
                   </>
-               ) : marketsData?.length ? (
-                  marketsData?.slice(0, 4)?.map(market => (
+               ) : markets?.length ? (
+                  markets?.slice(0, 4)?.map(market => (
                      <div
                         key={market.id}
                         onClick={() => handleRedirectToTrading(market.id)}

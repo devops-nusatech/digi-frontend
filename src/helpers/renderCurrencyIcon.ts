@@ -30,13 +30,11 @@ import {
    icSAND,
    icAXS,
    ic1INCH,
+   icLtc,
 } from 'assets';
 // import { imageIsExists } from 'helpers';
 
-export const renderCurrencyIcon = (
-   currency: string = '',
-   iconUrl: string = ''
-): string => {
+export const renderCurrencyIcon = (currency = '', iconUrl = ''): string => {
    switch (currency) {
       case 'btc':
          return icBitcoin;
@@ -99,6 +97,8 @@ export const renderCurrencyIcon = (
          return icAXS;
       case '1inch':
          return ic1INCH;
+      case 'ltc':
+         return icLtc;
 
       default:
          return iconUrl || icLogo;

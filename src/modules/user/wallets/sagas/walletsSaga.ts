@@ -7,12 +7,14 @@ const walletsOptions: RequestOptions = {
    apiVersion: 'peatio',
 };
 
+export const getCurrencies = (state: RootState) => state.public.currencies.list;
 export const getUser = (state: RootState) => state.user.profile.userData.user;
 
 export function* walletsSaga(action: WalletsFetch) {
    try {
       const accounts: Balance[] = yield call(API.get(walletsOptions), '/account/balances');
-      const currencies: Currency[] = yield call(API.get(walletsOptions), '/public/currencies');
+      // const currencies: Currency[] = yield call(API.get(walletsOptions), '/public/currencies');
+      const currencies: Currency[] = yield select(getCurrencies);
       const user: User = yield select(getUser);
 
       const accountsByCurrencies = currencies.map(currency => {
@@ -42,6 +44,7 @@ export function* walletsSaga(action: WalletsFetch) {
       const wallets = accountsByCurrencies.filter((item) => item && item.currency);
       yield put(walletsData(wallets));
    } catch (error) {
+      yield console.log('error :>> ', error);
       yield put(sendError({
          error,
          processingType: 'alert',

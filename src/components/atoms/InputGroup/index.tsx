@@ -4,9 +4,11 @@ import React, {
    FocusEvent,
    useState,
    ChangeEvent,
+   useMemo,
+   useCallback,
 } from 'react';
-import { InputType, Size, Variant, Width } from '../types';
 import { classNames } from 'helpers';
+import { InputType, Size, Variant, Width } from '../types';
 
 const classes = {
    base: 'px-3.5 rounded-xl font-medium leading-12 outline-none border-2 border-neutral6 dark:border-neutral3 bg-none bg-transparent shadow-none transition ease-in-out duration-300',
@@ -63,8 +65,10 @@ interface InputGroupProps {
    onBlurCapture?: (e?: FocusEvent<Ref>) => void;
    onKeyPress?: (e: KeyboardEvent<Ref>) => void;
    onClick?: (e: any) => void;
+   onClickInput?: (e: any) => void;
    withIconPassword?: boolean;
    withIconReset?: boolean;
+   withIconSearch?: boolean;
    onClickResetEmail?: () => void;
    withError?: boolean;
    disabled?: boolean;
@@ -74,6 +78,7 @@ interface InputGroupProps {
    minLength?: number;
    autoComplete?: 'on' | 'off';
    required?: boolean;
+   withLabelAlt?: boolean;
 }
 
 export const InputGroup = forwardRef<Ref, InputGroupProps>(
@@ -108,8 +113,10 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(
          onBlurCapture,
          onKeyPress,
          onClick,
+         onClickInput,
          withIconPassword,
          withIconReset,
+         withIconSearch,
          onClickResetEmail,
          withError,
          disabled,
@@ -119,90 +126,150 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(
          minLength,
          autoComplete,
          required,
+         withLabelAlt,
       },
-      ref,
-      ...rest
+      ref
    ) => {
       const [showPassword, setShowPassword] = useState(false);
-      const handleShowPassword = () => setShowPassword(!showPassword);
-
-      const renderTypePassword = showPassword ? 'text' : 'password';
-      const inputType = withIconPassword ? renderTypePassword : type;
-
-      const renderIconEyeOpen = () => (
-         <svg className="h-6 w-6 fill-neutral5 transition-colors duration-500 hover:fill-neutral4 dark:fill-neutral4 dark:hover:fill-neutral5">
-            <use xlinkHref="#icon-eye" />
-         </svg>
-      );
-      const renderIconEyeClose = () => (
-         <svg className="h-6 w-6 fill-neutral5 transition-colors duration-500 hover:fill-neutral4 dark:fill-neutral4 dark:hover:fill-neutral5">
-            <use xlinkHref="#icon-eye-close" />
-         </svg>
-      );
-      const renderIconReset = () => (
-         <svg
-            onClick={onClickResetEmail}
-            className="h-6 w-6 fill-neutral5 transition-colors duration-500 hover:fill-neutral4 dark:fill-neutral4 dark:hover:fill-neutral5">
-            <use xlinkHref="#icon-close-circle" />
-         </svg>
+      const handleShowPassword = useCallback(
+         () => setShowPassword(!showPassword),
+         [showPassword]
       );
 
-      const renderLabel = () =>
-         label && (
-            <div
-               className={`leading-none ${
-                  parentClassNameLabel ? parentClassNameLabel : ''
-               }`}>
-               <label
-                  htmlFor={id}
-                  className={`text-xs text-neutral5 ${lableClassName} font-bold uppercase leading-none`}>
-                  {label}
-               </label>
-            </div>
-         );
-      const renderWithButton = () =>
-         (withIconPassword || withIconReset || icon) && (
-            <button
-               type="button"
-               onClick={onClick || handleShowPassword}
-               className={`group absolute top-0 right-0 ${
-                  classes.size[String(size)]
-               } w-12 ${iconClassName} flex items-center justify-center bg-none text-center transition-all duration-300`}
-               tabIndex={-1}>
-               {withIconPassword
-                  ? showPassword
-                     ? renderIconEyeClose()
-                     : renderIconEyeOpen()
-                  : withIconReset
-                  ? renderIconReset()
-                  : icon}
-            </button>
-         );
-      const renderInfo = () =>
-         (info || infoAlt) && (
-            <div
-               className={`flex justify-between ${
-                  parentClassNameInfo ? parentClassNameInfo : ''
-               }`}>
-               {info && (
-                  <div
-                     className={`${classNameInfo ? classNameInfo : ''} ${
-                        withError && 'text-primary4'
-                     } text-x font-medium leading-relaxed`}>
-                     {info}
-                  </div>
-               )}
-               {infoAlt && (
-                  <div className="text-x font-medium leading-relaxed text-neutral4">
-                     {infoAlt}
-                  </div>
-               )}
-            </div>
-         );
+      const renderTypePassword = useMemo(
+         () => (showPassword ? 'text' : 'password'),
+         [showPassword]
+      );
+      const inputType = useMemo(
+         () => (withIconPassword ? renderTypePassword : type),
+         [renderTypePassword, type, withIconPassword]
+      );
+
+      const renderIconEyeOpen = useMemo(
+         () => (
+            <svg className="h-6 w-6 fill-neutral5 transition-colors duration-500 hover:fill-neutral4 dark:fill-neutral4 dark:hover:fill-neutral5">
+               <use xlinkHref="#icon-eye" />
+            </svg>
+         ),
+         []
+      );
+      const renderIconEyeClose = useMemo(
+         () => (
+            <svg className="h-6 w-6 fill-neutral5 transition-colors duration-500 hover:fill-neutral4 dark:fill-neutral4 dark:hover:fill-neutral5">
+               <use xlinkHref="#icon-eye-close" />
+            </svg>
+         ),
+         []
+      );
+      const renderIconReset = useMemo(
+         () => (
+            <svg
+               onClick={onClickResetEmail}
+               className="h-6 w-6 fill-neutral5 transition-colors duration-500 hover:fill-neutral4 dark:fill-neutral4 dark:hover:fill-neutral5">
+               <use xlinkHref="#icon-close-circle" />
+            </svg>
+         ),
+         [onClickResetEmail]
+      );
+      const renderIconSearch = useMemo(
+         () => (
+            <svg className="h-5 w-5 fill-neutral4 transition-colors duration-300">
+               <use xlinkHref="#icon-search" />
+            </svg>
+         ),
+         []
+      );
+
+      const renderLabel = useMemo(
+         () =>
+            (label || withLabelAlt) && (
+               <div
+                  className={`${!withLabelAlt ? 'leading-none' : ''} ${
+                     parentClassNameLabel || ''
+                  }`}>
+                  <label
+                     htmlFor={id}
+                     className={`${
+                        !withLabelAlt
+                           ? 'text-xs font-bold uppercase leading-none text-neutral5'
+                           : 'font-medium'
+                     } ${lableClassName || ''}`}>
+                     {label}
+                  </label>
+               </div>
+            ),
+         [id, label, lableClassName, parentClassNameLabel, withLabelAlt]
+      );
+      const renderWithButton = useMemo(
+         () =>
+            (withIconPassword || withIconReset || withIconSearch || icon) && (
+               <button
+                  type="button"
+                  onClick={onClick || handleShowPassword}
+                  className={`group absolute top-0 right-0 ${
+                     classes.size[size!]
+                  } ${
+                     size === 'small'
+                        ? 'w-8'
+                        : size === 'normal'
+                        ? 'w-10'
+                        : 'w-12'
+                  } flex items-center justify-center bg-none text-center transition-all duration-300`}
+                  tabIndex={-1}>
+                  {withIconPassword
+                     ? showPassword
+                        ? renderIconEyeClose
+                        : renderIconEyeOpen
+                     : withIconReset
+                     ? renderIconReset
+                     : withIconSearch
+                     ? renderIconSearch
+                     : icon}
+               </button>
+            ),
+         [
+            handleShowPassword,
+            icon,
+            onClick,
+            renderIconEyeClose,
+            renderIconEyeOpen,
+            renderIconReset,
+            renderIconSearch,
+            showPassword,
+            size,
+            withIconPassword,
+            withIconReset,
+            withIconSearch,
+         ]
+      );
+      const renderInfo = useMemo(
+         () =>
+            (info || infoAlt) && (
+               <div
+                  className={`flex justify-between ${
+                     parentClassNameInfo || ''
+                  }`}>
+                  {info && (
+                     <div
+                        className={`${classNameInfo || ''} ${
+                           withError && 'text-primary4'
+                        } text-x font-medium leading-relaxed`}>
+                        {info}
+                     </div>
+                  )}
+                  {infoAlt && (
+                     <div className="text-x font-medium leading-relaxed text-neutral4">
+                        {infoAlt}
+                     </div>
+                  )}
+               </div>
+            ),
+         [classNameInfo, info, infoAlt, parentClassNameInfo, withError]
+      );
 
       return (
          <div className={`space-y-2.5 ${parentClassName || ''}`}>
-            {renderLabel()}
+            {renderLabel}
             <div className="relative">
                <input
                   ref={ref}
@@ -221,6 +288,7 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(
                   onBlur={onBlur}
                   onBlurCapture={onBlurCapture}
                   onKeyPress={onKeyPress}
+                  onClick={onClickInput}
                   placeholder={placeholder}
                   readOnly={readOnly}
                   disabled={disabled}
@@ -238,13 +306,12 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(
                      ${disabled ? classes.disabled : ''}
                      ${withError ? classes.withError : ''}
                      ${withIconPassword ? classes.icon : ''}
-                     ${className ? className : ''}
+                     ${className || ''}
                   `)}
-                  {...rest}
                />
-               {renderWithButton()}
+               {renderWithButton}
             </div>
-            {renderInfo()}
+            {renderInfo}
          </div>
       );
    }

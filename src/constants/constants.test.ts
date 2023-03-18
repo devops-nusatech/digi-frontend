@@ -10,8 +10,8 @@ describe('Constants', () => {
    ];
 
    const expectedRoutesForNotLoggedInUser = [
-      ['page.header.navbar.signIn', '/signin', 'signin'],
-      ['page.header.signUp', '/signup', 'signup'],
+      ['page.header.navbar.login', '/login', 'login'],
+      ['page.header.register', '/register', 'register'],
       ['page.header.navbar.trade', '/trading/', 'trade'],
    ];
 

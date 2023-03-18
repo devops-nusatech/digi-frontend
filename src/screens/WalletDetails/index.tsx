@@ -60,7 +60,7 @@ const WalletDetailsFC = memo(
    }: Props) => {
       const { id = '' } = useParams<Params>();
       const sliderRef = useRef<HTMLDivElement>(null);
-      const { marketsData, handleRedirectToTrading } = useMarket();
+      const { markets, handleRedirectToTrading } = useMarket();
 
       useEffect(() => {
          setDocumentTitle(`${name} wallet details`);
@@ -75,7 +75,7 @@ const WalletDetailsFC = memo(
          : [DEFAULT_WALLET];
       const { currency, balance, fixed, name, networks, status } = wallet[0];
 
-      const friendsMarket = arrayFilter(marketsData, currency);
+      const friendsMarket = arrayFilter(markets, currency);
 
       const handleSlideRight = () => {
          if (sliderRef.current) {

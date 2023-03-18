@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router';
-import { SignUpScreen } from '../../../screens/SignUpScreen';
+import { RegisterScreen } from '../../../screens/RegisterScreen';
 import { Modal } from '../../components';
 
-const SignUpMobileScreen: React.FC = () => {
+const RegisterMobileScreen: React.FC = () => {
    const history = useHistory();
    const intl = useIntl();
 
    return (
       <div>
          <Modal
-            isOpen={true}
+            isOpen
             onClose={() => history.push('/trading')}
             onBack={() => history.push('/login')}
             backTitle={intl.formatMessage({
@@ -20,10 +20,10 @@ const SignUpMobileScreen: React.FC = () => {
             title={intl.formatMessage({
                id: 'page.body.landing.header.button3',
             })}>
-            <SignUpScreen />
+            <RegisterScreen />
          </Modal>
       </div>
    );
 };
 
-export { SignUpMobileScreen };
+export { RegisterMobileScreen };

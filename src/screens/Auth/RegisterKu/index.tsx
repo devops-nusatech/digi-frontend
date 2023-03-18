@@ -13,15 +13,15 @@ import {
    GeetestCaptchaResponse,
    LanguageState,
    RootState,
-   SignUpFetch,
+   registerFetch,
    resetCaptchaState,
    selectCaptchaResponse,
    selectConfigs,
    selectGeetestCaptchaSuccess,
    selectRecaptchaSuccess,
-   selectSignUpLoading,
-   selectSignUpRequireVerification,
-   signUp,
+   selectregisterLoading,
+   selectregisterRequireVerification,
+   register,
 } from 'modules';
 import { IntlProps } from 'index';
 import {
@@ -56,7 +56,7 @@ type RegisterState = {
 };
 
 type OwnProps = {
-   signUpError: boolean;
+   registerError: boolean;
    i18n: LanguageState['lang'];
 };
 
@@ -77,7 +77,7 @@ interface RouterProps {
 }
 
 type DispatchProps = {
-   register: typeof signUp;
+   register: typeof register;
    resetCaptchaState: typeof resetCaptchaState;
 };
 
@@ -85,7 +85,7 @@ type Props = ReduxProps & RouterProps & DispatchProps & IntlProps & OwnProps;
 
 const RegisterKuFC = ({
    configs,
-   signUpError,
+   registerError,
    i18n,
    requireVerification,
    loading,
@@ -208,7 +208,7 @@ const RegisterKuFC = ({
 
    const handleLogin = () => push('/login');
    const handleRegister = () => {
-      const payload: SignUpFetch['payload'] = {
+      const payload: registerFetch['payload'] = {
          email,
          password,
          data: JSON.stringify({
@@ -273,7 +273,7 @@ const RegisterKuFC = ({
    const translate = (id: string) => intl.formatMessage({ id });
 
    const renderCaptcha = () => {
-      const error = signUpError || confirmationError || emailError;
+      const error = registerError || confirmationError || emailError;
       return <Captcha error={error} />;
    };
 
@@ -314,19 +314,19 @@ const RegisterKuFC = ({
             handleFocusRefId={handleFocusRefId}
             handleResetEmail={handleResetEmail}
             usernameLabel={'username'}
-            emailLabel={translate('page.header.signUp.email')}
-            passwordLabel={translate('page.header.signUp.password')}
+            emailLabel={translate('page.header.register.email')}
+            passwordLabel={translate('page.header.register.password')}
             confirmPasswordLabel={translate(
-               'page.header.signUp.confirmPassword'
+               'page.header.register.confirmPassword'
             )}
-            refIdLabel={translate('page.header.signUp.referalCode')}
+            refIdLabel={translate('page.header.register.referalCode')}
             emailError={emailError}
             passwordError={passwordError}
             confirmPasswordError={confirmationError}
             USERNAME_REGEXP={USERNAME_REGEX}
             EMAIL_REGEXP={EMAIL_REGEX}
             PASSWORD_REGEXP={PASSWORD_REGEX}
-            termsMessage={translate('page.header.signUp.terms')}
+            termsMessage={translate('page.header.register.terms')}
             translate={translate}
             isUsernameEnabled={isUsernameEnabled()}
          />
@@ -336,8 +336,8 @@ const RegisterKuFC = ({
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    configs: selectConfigs(state),
-   requireVerification: selectSignUpRequireVerification(state),
-   loading: selectSignUpLoading(state),
+   requireVerification: selectregisterRequireVerification(state),
+   loading: selectregisterLoading(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
@@ -347,7 +347,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    DispatchProps,
    {}
 > = dispatch => ({
-   register: credentials => dispatch(signUp(credentials)),
+   register: credentials => dispatch(register(credentials)),
    resetCaptchaState: () => dispatch(resetCaptchaState()),
 });
 

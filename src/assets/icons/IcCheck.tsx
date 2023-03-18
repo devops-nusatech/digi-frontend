@@ -12,8 +12,7 @@ export const IcCheck = ({ className, onClick }: Props) => (
       height="25"
       viewBox="0 0 24 25"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-   >
+      xmlns="http://www.w3.org/2000/svg">
       <path
          d="M6 12.0039L10 16.0039L18 8.00391"
          stroke="#FCFCFD"

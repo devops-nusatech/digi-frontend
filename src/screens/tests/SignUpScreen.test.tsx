@@ -4,19 +4,19 @@ import { connect, Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { IntlProps } from '../../';
 import { rootReducer } from '../../modules';
-import { SignUpScreen } from '../SignUpScreen';
+import { RegisterScreen } from '../RegisterScreen';
 
 const store = createStore(rootReducer);
-const SignUp = connect()(SignUpScreen);
+const Register = connect()(RegisterScreen);
 
 const setup = (props: Partial<IntlProps> = {}) =>
    shallow(
       <Provider store={store}>
-         <SignUp />
+         <Register />
       </Provider>
    );
 
-describe('SignUpScreen', () => {
+describe('RegisterScreen', () => {
    const wrapper = setup();
 
    it('should render', () => {

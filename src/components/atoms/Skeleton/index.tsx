@@ -42,7 +42,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
                ${isWithFull ? classes().isWithFull : ''}
                ${isHeightFull ? classes().isHeightFull : ''}
                ${classes().rounded[String(rounded)]}
-               ${className ? className : ''}
+               ${className || ''}
             `)}
          />
       );

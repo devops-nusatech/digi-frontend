@@ -3,6 +3,7 @@ import React, {
    HTMLAttributes,
    MouseEvent,
    ReactNode,
+   useMemo,
 } from 'react';
 import { classNames } from 'helpers';
 import { ButtonType, Rounded, Size, Variant, Width, Color } from '../types';
@@ -97,17 +98,47 @@ export const Button = forwardRef<Ref, ButtonProps>(
          withLoading,
       },
       ref
-   ) => (
-      <button
-         ref={ref}
-         type={type}
-         onClick={onClick}
-         disabled={disabled}
-         onMouseOver={onMouseOver}
-         onMouseLeave={onMouseLeave}
-         tabIndex={tabIndex}
-         onFocus={onFocus}
-         className={classNames(`
+   ) => {
+      const renderWithLoading = useMemo(
+         () =>
+            withLoading && (
+               <svg
+                  className={`-ml-1 mr-3 h-5 w-5 animate-spin ${
+                     variant === 'outline'
+                        ? 'text-neutral2 group-hover:text-neutral8 dark:text-neutral8'
+                        : 'text-neutral8'
+                  }`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <circle
+                     className="opacity-25"
+                     cx="12"
+                     cy="12"
+                     r="10"
+                     stroke="currentColor"
+                     strokeWidth="4"
+                  />
+                  <path
+                     className="opacity-75"
+                     fill="currentColor"
+                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+               </svg>
+            ),
+         [variant, withLoading]
+      );
+      return (
+         <button
+            ref={ref}
+            type={type}
+            onClick={onClick}
+            disabled={disabled}
+            onMouseOver={onMouseOver}
+            onMouseLeave={onMouseLeave}
+            tabIndex={tabIndex}
+            onFocus={onFocus}
+            className={classNames(`
                ${classes.base}
                ${classes.size[String(size)]}
                ${classes.variant[String(variant)]}
@@ -117,32 +148,15 @@ export const Button = forwardRef<Ref, ButtonProps>(
                ${fontDM ? classes.fontDM : ''}
                ${disabled ? classes.disabled : ''}
                ${withLoading ? `!cursor-progress ${classes.disabled}` : ''}
-               ${className ? className : ''}
+               ${className || ''}
            `)}>
-         {withLoading && (
-            <svg
-               className="-ml-1 mr-3 h-5 w-5 animate-spin text-neutral8"
-               xmlns="http://www.w3.org/2000/svg"
-               fill="none"
-               viewBox="0 0 24 24">
-               <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"></circle>
-               <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-         )}
-         {icLeft}
-         <span>{text ?? children}</span>
-         {icRight}
-      </button>
-   )
+            {renderWithLoading}
+            {icLeft}
+            <span>{text ?? children}</span>
+            {icRight}
+         </button>
+      );
+   }
 );
 
 Button.defaultProps = {

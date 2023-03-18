@@ -52,7 +52,7 @@ export const ComboboxMarket: FC<ComboboxMarketProps> = ({
    displayValue,
    defaultValue,
 }) => {
-   const { marketsData } = useMarket();
+   const marketsData = useMarket().markets;
 
    const [state, setState] = useState<ComboboxMarketState>({
       markets: marketsData,

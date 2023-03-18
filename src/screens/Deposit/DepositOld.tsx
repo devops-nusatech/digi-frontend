@@ -20,8 +20,6 @@ import {
    alertPush,
    selectUserInfo,
    selectWalletsLoading,
-   Sonic,
-   selectSonic,
    MemberLevels,
    selectMemberLevels,
 } from 'modules';
@@ -40,11 +38,10 @@ import {
    Label,
    ComboboxCurrency,
 } from 'components';
+import { platformCurrency } from 'api';
 import { DEFAULT_WALLET } from '../../constants';
-import { peatioPlatformCurrency } from 'api';
 
 type ReduxProps = {
-   sonic: Sonic;
    user: User;
    wallets: Wallet[];
    generateAddressLoading?: boolean;
@@ -72,7 +69,6 @@ type DepositProps = ReduxProps &
 
 const DepositFC = memo(
    ({
-      sonic,
       user,
       wallets,
       generateAddressLoading,
@@ -86,11 +82,8 @@ const DepositFC = memo(
       intl,
    }: DepositProps) => {
       const defaultWallet: Wallet =
-         wallets.find(
-            e =>
-               e.currency === sonic.peatio_platform_currency ||
-               peatioPlatformCurrency()?.toLowerCase()
-         ) || DEFAULT_WALLET;
+         wallets.find(e => e.currency === platformCurrency()?.toLowerCase()) ||
+         DEFAULT_WALLET;
 
       const [selected, setSelected] = useState<Wallet>(
          location.state ? location.state : defaultWallet
@@ -142,7 +135,7 @@ const DepositFC = memo(
       const depositAddress = formatedWallet?.deposit_addresses?.find(
          address => address.blockchain_key === currencyActive?.blockchain_key
       );
-      let loadingFetchGenerate: boolean = false;
+      let loadingFetchGenerate = false;
 
       const translate = useCallback(
          (id: string) => intl.formatMessage({ id }),
@@ -155,7 +148,8 @@ const DepositFC = memo(
             blockchainKey: currencyActive?.blockchain_key,
          });
          fetchWallets();
-         loadingFetchGenerate = walletLoading ? true : false;
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+         loadingFetchGenerate = !!walletLoading;
       }, [
          generateAdress,
          formatedWallet,
@@ -368,8 +362,7 @@ const DepositFC = memo(
                                                             : 'font-normal'
                                                       } group-hover:font-medium`}>
                                                       {wallet?.name}{' '}
-                                                      <span
-                                                         className={`font-normal text-neutral4`}>
+                                                      <span className="font-normal text-neutral4">
                                                          {wallet.currency.toUpperCase()}
                                                       </span>
                                                    </div>
@@ -592,7 +585,6 @@ const DepositFC = memo(
 );
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
-   sonic: selectSonic(state),
    user: selectUserInfo(state),
    wallets: selectWallets(state),
    generateAddressLoading: selectGenerateAddressLoading(state),

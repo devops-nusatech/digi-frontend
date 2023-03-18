@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { CustomInput, PasswordStrengthMeter } from '../';
+import { CustomInput, PasswordStrengthMeter } from '..';
 import { isUsernameEnabled } from '../../api';
 import {
    EMAIL_REGEX,
@@ -19,15 +19,15 @@ import {
 } from '../../modules';
 import { selectMobileDeviceState } from '../../modules/public/globalSettings';
 
-export interface SignUpFormProps {
+export interface RegisterFormProps {
    isLoading?: boolean;
    title?: string;
-   onSignUp: () => void;
-   onSignIn?: () => void;
+   onregister: () => void;
+   onLogin?: () => void;
    className?: string;
    image?: string;
-   labelSignIn?: string;
-   labelSignUp?: string;
+   labelLogin?: string;
+   labelregister?: string;
    usernameLabel?: string;
    emailLabel?: string;
    passwordLabel?: string;
@@ -79,16 +79,16 @@ export interface SignUpFormProps {
    translate: (id: string) => string;
 }
 
-const SignUpFormComponent: React.FC<SignUpFormProps> = ({
+const RegisterFormComponent = ({
    username,
    email,
    confirmPassword,
    refId,
-   onSignIn,
+   onLogin,
    image,
    isLoading,
-   labelSignIn,
-   labelSignUp,
+   labelLogin,
+   labelregister,
    usernameLabel,
    emailLabel,
    confirmPasswordLabel,
@@ -117,7 +117,7 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
    minPasswordEntropy,
    refIdFocused,
    validateForm,
-   onSignUp,
+   onregister,
    handleChangeUsername,
    handleFocusUsername,
    handleChangeEmail,
@@ -128,7 +128,7 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
    handleFocusRefId,
    clickCheckBox,
    renderCaptcha,
-}) => {
+}: RegisterFormProps) => {
    const isMobileDevice = useSelector(selectMobileDeviceState);
    const history = useHistory();
    const { formatMessage } = useIntl();
@@ -165,8 +165,8 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
    ]);
 
    const renderPasswordInput = React.useCallback(() => {
-      const passwordGroupClass = cr('cr-sign-up-form__group', {
-         'cr-sign-up-form__group--focused': passwordFocused,
+      const passwordGroupClass = cr('cr-register-form__group', {
+         'cr-register-form__group--focused': passwordFocused,
       });
 
       return (
@@ -179,8 +179,8 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                handleChangeInput={handleChangePassword}
                inputValue={password}
                handleFocusInput={handleFocusPassword}
-               classNameLabel="cr-sign-up-form__label"
-               classNameInput="cr-sign-up-form__input"
+               classNameLabel="cr-register-form__label"
+               classNameInput="cr-register-form__input"
                autoFocus={false}
             />
             {password ? (
@@ -213,8 +213,8 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
    ]);
 
    const handleSubmitForm = React.useCallback(() => {
-      onSignUp();
-   }, [onSignUp]);
+      onregister();
+   }, [onregister]);
 
    const isValidForm = React.useCallback(() => {
       const isEmailValid = email.match(EMAIL_REGEX);
@@ -265,13 +265,13 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
 
    const renderLogIn = React.useCallback(() => {
       return (
-         <div className="pg-sign-up-screen__login">
+         <div className="pg-register-screen__login">
             <span>
-               {formatMessage({ id: 'page.header.signUp.alreadyRegistered' })}
+               {formatMessage({ id: 'page.header.register.alreadyRegistered' })}
                <span
-                  onClick={() => history.push('/signin')}
-                  className="pg-sign-up-screen__login-button">
-                  {formatMessage({ id: 'page.mobile.header.signIn' })}
+                  onClick={() => history.push('/login')}
+                  className="pg-register-screen__login-button">
+                  {formatMessage({ id: 'page.mobile.header.login' })}
                </span>
             </span>
          </div>
@@ -281,29 +281,29 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
    return (
       <form>
          <div
-            className="cr-sign-up-form"
+            className="cr-register-form"
             onKeyPress={handleEnterPress}>
             {!isMobileDevice && (
-               <div className="cr-sign-up-form__options-group">
-                  <div className="cr-sign-up-form__option">
+               <div className="cr-register-form__options-group">
+                  <div className="cr-register-form__option">
                      <div
-                        className="cr-sign-up-form__option-inner cr-sign-in-form__tab-signin"
-                        onClick={onSignIn}>
-                        {labelSignIn || 'Sign In'}
+                        className="cr-register-form__option-inner cr-login-form__tab-login"
+                        onClick={onLogin}>
+                        {labelLogin || 'Sign In'}
                      </div>
                   </div>
-                  <div className="cr-sign-up-form__option">
-                     <div className="cr-sign-up-form__option-inner __selected">
-                        {labelSignUp || 'Sign Up'}
+                  <div className="cr-register-form__option">
+                     <div className="cr-register-form__option-inner __selected">
+                        {labelregister || 'Sign Up'}
                      </div>
                   </div>
                </div>
             )}
-            <div className="cr-sign-up-form__form-content">
+            <div className="cr-register-form__form-content">
                {image ? (
-                  <h1 className="cr-sign-up-form__title">
+                  <h1 className="cr-register-form__title">
                      <img
-                        className="cr-sign-up-form__image"
+                        className="cr-register-form__image"
                         src={image}
                         alt="logo"
                      />
@@ -311,9 +311,9 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                ) : null}
                {isUsernameEnabled() ? (
                   <div
-                     className={cr('cr-sign-up-form__group', {
-                        'cr-sign-up-form__group--focused': usernameFocused,
-                        'cr-sign-up-form__group--errored':
+                     className={cr('cr-register-form__group', {
+                        'cr-register-form__group--focused': usernameFocused,
+                        'cr-register-form__group--errored':
                            username.length &&
                            !usernameFocused &&
                            !username.match(USERNAME_REGEX),
@@ -326,22 +326,22 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                         handleChangeInput={handleChangeUsername}
                         inputValue={username}
                         handleFocusInput={handleFocusUsername}
-                        classNameLabel="cr-sign-up-form__label"
-                        classNameInput="cr-sign-up-form__input"
+                        classNameLabel="cr-register-form__label"
+                        classNameInput="cr-register-form__input"
                         autoFocus={!isMobileDevice}
                      />
                      {!username.match(USERNAME_REGEX) &&
                      !usernameFocused &&
                      username.length ? (
-                        <div className="cr-sign-up-form__error">
+                        <div className="cr-register-form__error">
                            {renderUsernameError(username)}
                         </div>
                      ) : null}
                   </div>
                ) : null}
                <div
-                  className={cr('cr-sign-up-form__group', {
-                     'cr-sign-up-form__group--focused': emailFocused,
+                  className={cr('cr-register-form__group', {
+                     'cr-register-form__group--focused': emailFocused,
                   })}>
                   <CustomInput
                      type="email"
@@ -351,18 +351,18 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      handleChangeInput={handleChangeEmail}
                      inputValue={email}
                      handleFocusInput={handleFocusEmail}
-                     classNameLabel="cr-sign-up-form__label"
-                     classNameInput="cr-sign-up-form__input"
+                     classNameLabel="cr-register-form__label"
+                     classNameInput="cr-register-form__input"
                      autoFocus={!isUsernameEnabled() && !isMobileDevice}
                   />
                   {emailError && (
-                     <div className="cr-sign-up-form__error">{emailError}</div>
+                     <div className="cr-register-form__error">{emailError}</div>
                   )}
                </div>
                {renderPasswordInput()}
                <div
-                  className={cr('cr-sign-up-form__group', {
-                     'cr-sign-up-form__group--focused': confirmPasswordFocused,
+                  className={cr('cr-register-form__group', {
+                     'cr-register-form__group--focused': confirmPasswordFocused,
                   })}>
                   <CustomInput
                      type="password"
@@ -372,19 +372,19 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      handleChangeInput={handleChangeConfirmPassword}
                      inputValue={confirmPassword}
                      handleFocusInput={handleFocusConfirmPassword}
-                     classNameLabel="cr-sign-up-form__label"
-                     classNameInput="cr-sign-up-form__input"
+                     classNameLabel="cr-register-form__label"
+                     classNameInput="cr-register-form__input"
                      autoFocus={false}
                   />
                   {confirmationError && (
-                     <div className={'cr-sign-up-form__error'}>
+                     <div className="cr-register-form__error">
                         {confirmationError}
                      </div>
                   )}
                </div>
                <div
-                  className={cr('cr-sign-up-form__group', {
-                     'cr-sign-up-form__group--focused': refIdFocused,
+                  className={cr('cr-register-form__group', {
+                     'cr-register-form__group--focused': refIdFocused,
                   })}>
                   <CustomInput
                      type="text"
@@ -394,13 +394,13 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      handleChangeInput={handleChangeRefId}
                      inputValue={refId}
                      handleFocusInput={handleFocusRefId}
-                     classNameLabel="cr-sign-up-form__label"
-                     classNameInput="cr-sign-up-form__input"
+                     classNameLabel="cr-register-form__label"
+                     classNameInput="cr-register-form__input"
                      autoFocus={false}
                   />
                </div>
                <Form
-                  className="cr-sign-up-form__group"
+                  className="cr-register-form__group"
                   onClick={clickCheckBox}>
                   <Form.Check
                      type="checkbox"
@@ -408,26 +408,21 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
                      id="agreeWithTerms"
                      checked={hasConfirmed}
                      label={
-                        termsMessage
-                           ? termsMessage
-                           : 'I  agree all statements in terms of service'
+                        termsMessage ||
+                        'I  agree all statements in terms of service'
                      }
                   />
                </Form>
                {renderCaptcha}
-               <div className="cr-sign-up-form__button-wrapper">
+               <div className="cr-register-form__button-wrapper">
                   <Button
-                     block={true}
+                     block
                      type="button"
                      disabled={disableButton}
                      onClick={e => handleClick(e as any)}
                      size="lg"
                      variant="primary">
-                     {isLoading
-                        ? 'Loading...'
-                        : labelSignUp
-                        ? labelSignUp
-                        : 'Sign up'}
+                     {isLoading ? 'Loading...' : labelregister || 'Sign up'}
                   </Button>
                </div>
                {isMobileDevice && renderLogIn()}
@@ -437,4 +432,4 @@ const SignUpFormComponent: React.FC<SignUpFormProps> = ({
    );
 };
 
-export const SignUpForm = React.memo(SignUpFormComponent);
+export const RegisterForm = React.memo(RegisterFormComponent);

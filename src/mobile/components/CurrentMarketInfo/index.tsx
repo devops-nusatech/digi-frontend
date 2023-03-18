@@ -161,7 +161,7 @@ const CurrentMarketInfoComponent: React.FC = () => {
             isOpen={isOpenMarketSelector}
             onClose={() => setOpenMarketSelector(!isOpenMarketSelector)}
             title={intl.formatMessage({
-               id: 'page.header.signUp.modal.header',
+               id: 'page.header.register.modal.header',
             })}>
             <MarketsTable
                handleChangeCurrentMarket={() => setOpenMarketSelector(false)}

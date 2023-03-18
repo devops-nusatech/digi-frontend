@@ -66,9 +66,9 @@ import {
 } from 'modules';
 import { copyToClipboard, setDocumentTitle } from 'helpers';
 import { IntlProps } from 'index';
+import { useMarket } from 'hooks';
 import { defaultBeneficiary, Params } from './types';
 import { DEFAULT_CCY_PRECISION, DEFAULT_WALLET } from '../../constants';
-import { useMarket } from 'hooks';
 
 export interface WithdrawProps {
    amount: string;
@@ -298,7 +298,7 @@ const WalletDetailsFC = ({
          return (
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary1">
                <svg className="h-6 w-6 fill-neutral8 transition-colors duration-300">
-                  <use xlinkHref="#icon-wallet"></use>
+                  <use xlinkHref="#icon-wallet" />
                </svg>
             </div>
          );
@@ -351,7 +351,7 @@ const WalletDetailsFC = ({
             </>
          );
       }
-      return;
+      return null;
    };
 
    const renderContentModalTFA = () => {
@@ -360,7 +360,7 @@ const WalletDetailsFC = ({
             <>
                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary4">
                   <svg className="h-8 w-8 fill-neutral8 transition-colors duration-300">
-                     <use xlinkHref="#icon-lock"></use>
+                     <use xlinkHref="#icon-lock" />
                   </svg>
                </div>
                <div className="text-center text-base font-medium leading-normal">
@@ -380,7 +380,7 @@ const WalletDetailsFC = ({
             <>
                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary4">
                   <svg className="h-8 w-8 fill-neutral8 transition-colors duration-300">
-                     <use xlinkHref="#icon-lock"></use>
+                     <use xlinkHref="#icon-lock" />
                   </svg>
                </div>
                <div className="text-center text-base font-medium leading-normal">
@@ -437,19 +437,19 @@ const WalletDetailsFC = ({
    ) => {
       if (user.state === 'pending') {
          return push('/email-verification');
-      } else {
-         if (user && !user.otp) {
-            return push('/2fa');
-         }
       }
+      if (user && !user.otp) {
+         return push('/2fa');
+      }
+
       if (user.level !== 3) {
          return push('/email-verification');
       }
       return setState((state: WalletDetailsFCState) => ({
          ...state,
          amount: amount || '',
-         beneficiary: beneficiary ? beneficiary : defaultBeneficiary,
-         otpCode: otpCode ? otpCode : '',
+         beneficiary: beneficiary || defaultBeneficiary,
+         otpCode: otpCode || '',
          withdrawConfirmModal: !state.withdrawConfirmModal,
          total: total || '',
          withdrawDone: false,
@@ -474,8 +474,8 @@ const WalletDetailsFC = ({
       setState((state: WalletDetailsFCState) => ({
          ...myState,
          amount: amount || '',
-         beneficiary: beneficiary ? beneficiary : defaultBeneficiary,
-         otpCode: otpCode ? otpCode : '',
+         beneficiary: beneficiary || defaultBeneficiary,
+         otpCode: otpCode || '',
          withdrawConfirmModal: !state.withdrawConfirmModal,
          total: total || '',
          withdrawDone: false,
@@ -568,7 +568,7 @@ const WalletDetailsFC = ({
       }
    };
 
-   const { marketsData } = useMarket();
+   const marketsData = useMarket().markets;
    const friendsMarket = marketsData.filter(
       market => market.quote_unit === 'usdt'
    );
@@ -654,8 +654,9 @@ const WalletDetailsFC = ({
                            } snap-x snap-mandatory gap-10 overflow-x-auto pb-8 transition-transform duration-500 lg:gap-20`}>
                            {friendsMarket.length ? (
                               friendsMarket.map(market => {
-                                 const klinesData: number[] = market.kline;
-                                 let labels: number[], data: number[];
+                                 const klinesData: number[][] = market.kline!;
+                                 let labels: number[];
+                                 let data: number[];
                                  labels = klinesData.map(e => e[0]);
                                  data = klinesData.map(e => e[2]);
 

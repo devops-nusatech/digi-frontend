@@ -20,10 +20,10 @@
 | passwordPopUp             | Yes     | -             | boolean                | show tooltip with password strength status                                                   |
 | translate                 | Yes     | -             | (id: string) => string | function for translate password status                                                       |
 
-| Status   | Translation variable                 | Description                                                               |
-| -------- | ------------------------------------ | ------------------------------------------------------------------------- | --- | ------------------------ |
-| Too weak | page.header.signUp.password.too.weak | ```currentPasswordEntropy < minPasswordEntropy                            |     | !passwordLengthSolved``` |
-| Weak     | page.header.signUp.password.weak     | ```(currentPasswordEntropy <= minPasswordEntropy && passwordLengthSolved) |     | passwordLengthSolved```  |
+| Status   | Translation variable                   | Description                                                               |
+| -------- | -------------------------------------- | ------------------------------------------------------------------------- | --- | ------------------------ |
+| Too weak | page.header.register.password.too.weak | ```currentPasswordEntropy < minPasswordEntropy                            |     | !passwordLengthSolved``` |
+| Weak     | page.header.register.password.weak     | ```(currentPasswordEntropy <= minPasswordEntropy && passwordLengthSolved) |     | passwordLengthSolved```  |
 
 **Next status avaible only if:** `passwordSuccess = true`
 
@@ -32,11 +32,11 @@
 `AVG_PASSWORD_ENTROPY = minPasswordEntropy + passwordEntropyStep`
 `STRONG_PASSWORD_ENTROPY = minPasswordEntropy + passwordEntropyStep * 2`
 
-|             |                                         |                                                                                                 |
-| ----------- | --------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Good        | page.header.signUp.password.good        | `currentPasswordEntropy > minPasswordEntropy && currentPasswordEntropy < AVG_PASSWORD_ENTROPY`  |
-| Strong      | page.header.signUp.password.strong      | `currentPasswordEntropy >= minPasswordEntropy && currentPasswordEntropy < AVG_PASSWORD_ENTROPY` |
-| Very Strong | page.header.signUp.password.very.strong | `props.currentPasswordEntropy >= STRONG_PASSWORD_ENTROPY`                                       |
+|             |                                           |                                                                                                 |
+| ----------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Good        | page.header.register.password.good        | `currentPasswordEntropy > minPasswordEntropy && currentPasswordEntropy < AVG_PASSWORD_ENTROPY`  |
+| Strong      | page.header.register.password.strong      | `currentPasswordEntropy >= minPasswordEntropy && currentPasswordEntropy < AVG_PASSWORD_ENTROPY` |
+| Very Strong | page.header.register.password.very.strong | `props.currentPasswordEntropy >= STRONG_PASSWORD_ENTROPY`                                       |
 
 ##### All status naming can be change in src/translations
 

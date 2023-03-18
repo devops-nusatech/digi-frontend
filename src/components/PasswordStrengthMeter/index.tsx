@@ -30,7 +30,7 @@ const renderPasswordStrengthTip = (
       <div className="pg-password-pop-up">
          <div className="pg-password-pop-up__strength">
             <div className="pg-password-pop-up__strength-title">
-               {props.translate('page.header.signUp.strength.password')}
+               {props.translate('page.header.register.strength.password')}
             </div>
             <div
                className={`pg-password-pop-up__strength-status ${passwordStrengthClassName(
@@ -75,20 +75,24 @@ const passwordStrengthStatus = (
 ) => {
    switch (passwordStrengthMeterLength) {
       case 0:
-         return translate('page.header.signUp.password.too.weak') || 'TOO WEAK';
+         return (
+            translate('page.header.register.password.too.weak') || 'TOO WEAK'
+         );
       case 1:
-         return translate('page.header.signUp.password.too.weak') || 'WEAK';
+         return translate('page.header.register.password.too.weak') || 'WEAK';
       case 2:
-         return translate('page.header.signUp.password.good') || 'GOOD';
+         return translate('page.header.register.password.good') || 'GOOD';
       case 3:
-         return translate('page.header.signUp.password.strong') || 'STRONG';
+         return translate('page.header.register.password.strong') || 'STRONG';
       case 4:
          return (
-            translate('page.header.signUp.password.very.strong') ||
+            translate('page.header.register.password.very.strong') ||
             'VERY STRONG'
          );
       default:
-         return translate('page.header.signUp.password.too.weak') || 'TOO WEAK';
+         return (
+            translate('page.header.register.password.too.weak') || 'TOO WEAK'
+         );
    }
 };
 

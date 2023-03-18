@@ -18,14 +18,14 @@ import {
 
 interface HeaderProps {
    txtLogin?: string;
-   txtSignup?: string;
+   txtregister?: string;
    isLogined?: boolean;
    isFull?: boolean;
 }
 
 export const HeaderBefore: FC<HeaderProps> = ({
    txtLogin,
-   txtSignup,
+   txtregister,
    isLogined,
    isFull,
 }) => {
@@ -200,12 +200,12 @@ export const HeaderBefore: FC<HeaderProps> = ({
                   <div className="header__btns">
                      <a
                         className="button-small header__button"
-                        href="sign-up.html">
+                        href="register.html">
                         Sign Up
                      </a>
                      <a
                         className="button-stroke button-small header__button"
-                        href="sign-in.html">
+                        href="login.html">
                         Login
                      </a>
                   </div>
@@ -560,7 +560,7 @@ export const HeaderBefore: FC<HeaderProps> = ({
                         className="button-small header__button"
                         style={{ marginRight: '8px' }}
                         to="/register">
-                        {txtSignup}
+                        {txtregister}
                      </Link>
                      <Link
                         className="button-stroke button-small header__button"

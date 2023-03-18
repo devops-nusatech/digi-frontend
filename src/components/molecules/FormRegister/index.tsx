@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {
    FormEvent,
    KeyboardEvent,
@@ -296,6 +297,7 @@ export const FormRegister = memo(
                      </svg>
                   </div>
                   <InputGroup
+                     onClickInput={e => e.stopPropagation()}
                      label={refIdLabel || 'referral code (optional)'}
                      placeholder={refIdLabel || 'Referral code (Optional)'}
                      value={refid}
@@ -313,7 +315,7 @@ export const FormRegister = memo(
                      termsMessage
                   ) : (
                      <>
-                        By signing up I agree that I’m 18 years of age or older,
+                        By loging up I agree that I’m 18 years of age or older,
                         to the{' '}
                         <a
                            className="font-medium text-neutral2 hover:text-primary1 dark:text-neutral8"

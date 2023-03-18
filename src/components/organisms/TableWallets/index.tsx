@@ -1,10 +1,10 @@
 import React from 'react';
 import { IcEmty } from 'assets';
-import { Wallet, selectSonic } from 'modules';
+import { Wallet } from 'modules';
 import { Decimal, Image } from 'components';
 import { renderCurrencyIcon } from 'helpers';
-import { useSelector } from 'react-redux';
 import { useMarket } from 'hooks';
+import { platformCurrency } from 'api';
 
 type TableWalletsPRops = {
    /**
@@ -20,8 +20,7 @@ export const TableWallets = ({
    push,
    translate,
 }: TableWalletsPRops) => {
-   const { peatio_platform_currency } = useSelector(selectSonic);
-   const { otherMarkets } = useMarket();
+   const { markets } = useMarket();
 
    const ceckString = (value: string) =>
       value?.includes(',') ? value?.split(',')?.join('') : value;
@@ -29,15 +28,12 @@ export const TableWallets = ({
       Number(
          ceckString(
             String(
-               balances?.find(e => e.currency === peatio_platform_currency)
-                  ?.fixed
+               balances?.find(e => e.currency === platformCurrency())?.fixed
             )
          )
       ) || defualt;
    const estimatedFormat = (currency: string, value?: string | number) => {
-      const availableCurrency = otherMarkets?.find(
-         e => e?.base_unit === currency
-      );
+      const availableCurrency = markets?.find(e => e?.base_unit === currency);
       const balance = Number(value);
       return balance > 0 && availableCurrency
          ? +ceckString(availableCurrency?.last) * balance
@@ -78,7 +74,7 @@ export const TableWallets = ({
                                     ),
                                     percision(fixed),
                                     ','
-                                 )} ${peatio_platform_currency?.toUpperCase()}`,
+                                 )} ${platformCurrency()?.toUpperCase()}`,
                               })
                            }
                            className="cursor-pointer hover:bg-neutral7 dark:hover:bg-neutral2 [&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
@@ -124,7 +120,7 @@ export const TableWallets = ({
                                     percision(fixed),
                                     ','
                                  )}{' '}
-                                 {peatio_platform_currency}
+                                 {platformCurrency()}
                               </div>
                            </td>
                            <td className="p-4 text-right uppercase first:pl-8 last:pr-8">
@@ -143,7 +139,7 @@ export const TableWallets = ({
                                     percision(fixed),
                                     ','
                                  )}{' '}
-                                 {peatio_platform_currency}
+                                 {platformCurrency()}
                               </div>
                            </td>
                            <td className="p-4 text-right uppercase first:pl-8 last:pr-8">
@@ -165,7 +161,7 @@ export const TableWallets = ({
                                     percision(fixed),
                                     ','
                                  )}{' '}
-                                 {peatio_platform_currency}
+                                 {platformCurrency()}
                               </div>
                            </td>
                         </tr>

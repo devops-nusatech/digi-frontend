@@ -7,7 +7,7 @@ import { WrappedComponentProps } from 'react-intl';
 // import 'react-perfect-scrollbar/dist/css/styles.css';
 import { Provider } from 'react-redux';
 import { sentryEnabled } from './api/config';
-import { App } from './App';
+import App from './App';
 import './main.css';
 // import './main.css';
 import './output.min.css';

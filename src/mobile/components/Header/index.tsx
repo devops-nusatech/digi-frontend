@@ -27,14 +27,14 @@ const HeaderComponent: React.FC = () => {
                </Link>
             ) : (
                <Link
-                  to="/signin"
+                  to="/login"
                   className="pg-mobile-header__account__log-in">
                   <Button
                      block={true}
                      type="button"
                      size="lg"
                      variant="primary">
-                     {intl.formatMessage({ id: 'page.mobile.header.signIn' })}
+                     {intl.formatMessage({ id: 'page.mobile.header.login' })}
                   </Button>
                </Link>
             )}

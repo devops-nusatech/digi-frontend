@@ -15,8 +15,7 @@ export const Logo = ({ className, onClick }: Props) => {
          width="150"
          height="32"
          viewBox="0 0 150 32"
-         fill="none"
-      >
+         fill="none">
          <rect
             width="32"
             height="32"
@@ -31,8 +30,7 @@ export const Logo = ({ className, onClick }: Props) => {
                id="pattern0"
                patternContentUnits="objectBoundingBox"
                width="1"
-               height="1"
-            >
+               height="1">
                <use
                   xlinkHref="#image0_3345_34210"
                   transform="scale(0.00389105)"

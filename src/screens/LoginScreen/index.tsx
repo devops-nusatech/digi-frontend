@@ -9,9 +9,9 @@ import {
 import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { IntlProps } from '../../';
+import { IntlProps } from '../..';
 import { captchaLogin } from '../../api';
-import { Captcha, SignInComponent, TwoFactorAuth } from '../../components';
+import { Captcha, LoginComponent, TwoFactorAuth } from '../../components';
 import {
    EMAIL_REGEX,
    ERROR_EMPTY_PASSWORD,
@@ -29,15 +29,15 @@ import {
    selectConfigs,
    selectGeetestCaptchaSuccess,
    selectRecaptchaSuccess,
-   selectSignInError,
-   selectSignInRequire2FA,
-   selectSignUpRequireVerification,
+   selectLoginError,
+   selectLoginRequire2FA,
+   selectregisterRequireVerification,
    selectUserFetching,
    selectUserLoggedIn,
-   signIn,
-   signInError,
-   signInRequire2FA,
-   signUpRequireVerification,
+   login,
+   loginError,
+   loginRequire2FA,
+   registerRequireVerification,
 } from '../../modules';
 import { CommonError } from '../../modules/types';
 
@@ -57,14 +57,14 @@ interface ReduxProps {
 }
 
 interface DispatchProps {
-   signIn: typeof signIn;
-   signInError: typeof signInError;
-   signInRequire2FA: typeof signInRequire2FA;
+   login: typeof login;
+   loginError: typeof loginError;
+   loginRequire2FA: typeof loginRequire2FA;
    resetCaptchaState: typeof resetCaptchaState;
-   signUpRequireVerification: typeof signUpRequireVerification;
+   registerRequireVerification: typeof registerRequireVerification;
 }
 
-interface SignInState {
+interface LoginState {
    email: string;
    emailError: string;
    emailFocused: boolean;
@@ -78,7 +78,7 @@ interface SignInState {
 
 type Props = ReduxProps & DispatchProps & RouterProps & IntlProps;
 
-class SignIn extends React.Component<Props, SignInState> {
+class Login extends React.Component<Props, LoginState> {
    public state = {
       email: '',
       emailError: '',
@@ -93,8 +93,8 @@ class SignIn extends React.Component<Props, SignInState> {
 
    public componentDidMount() {
       setDocumentTitle('Sign In');
-      this.props.signInError({ code: 0, message: [''] });
-      this.props.signUpRequireVerification({ requireVerification: false });
+      this.props.loginError({ code: 0, message: [''] });
+      this.props.registerRequireVerification({ requireVerification: false });
    }
 
    public componentWillReceiveProps(nextProps: Props) {
@@ -123,18 +123,18 @@ class SignIn extends React.Component<Props, SignInState> {
    public render() {
       const { loading, require2FA } = this.props;
 
-      const className = cx('pg-sign-in-screen__container', { loading });
+      const className = cx('pg-login-screen__container', { loading });
 
       return (
-         <div className="pg-sign-in-screen">
+         <div className="pg-login-screen">
             <div className={className}>
-               {require2FA ? this.render2FA() : this.renderSignInForm()}
+               {require2FA ? this.render2FA() : this.renderLoginForm()}
             </div>
          </div>
       );
    }
 
-   private renderSignInForm = () => {
+   private renderLoginForm = () => {
       const {
          configs,
          loading,
@@ -152,41 +152,41 @@ class SignIn extends React.Component<Props, SignInState> {
       } = this.state;
 
       return (
-         <SignInComponent
+         <LoginComponent
             email={email}
             emailError={emailError}
             emailFocused={emailFocused}
             emailPlaceholder={this.props.intl.formatMessage({
-               id: 'page.header.signIn.email',
+               id: 'page.header.login.email',
             })}
             password={password}
             passwordError={passwordError}
             passwordFocused={passwordFocused}
             passwordPlaceholder={this.props.intl.formatMessage({
-               id: 'page.header.signIn.password',
+               id: 'page.header.login.password',
             })}
-            labelSignIn={this.props.intl.formatMessage({
-               id: 'page.header.signIn',
+            labelLogin={this.props.intl.formatMessage({
+               id: 'page.header.login',
             })}
-            labelSignUp={this.props.intl.formatMessage({
-               id: 'page.header.signUp',
+            labelregister={this.props.intl.formatMessage({
+               id: 'page.header.register',
             })}
             emailLabel={this.props.intl.formatMessage({
-               id: 'page.header.signIn.email',
+               id: 'page.header.login.email',
             })}
             passwordLabel={this.props.intl.formatMessage({
-               id: 'page.header.signIn.password',
+               id: 'page.header.login.password',
             })}
             receiveConfirmationLabel={this.props.intl.formatMessage({
-               id: 'page.header.signIn.receiveConfirmation',
+               id: 'page.header.login.receiveConfirmation',
             })}
             forgotPasswordLabel={this.props.intl.formatMessage({
-               id: 'page.header.signIn.forgotPassword',
+               id: 'page.header.login.forgotPassword',
             })}
             isLoading={loading}
             onForgotPassword={this.forgotPassword}
-            onSignUp={this.handleSignUp}
-            onSignIn={this.handleSignIn}
+            onregister={this.handleregister}
+            onLogin={this.handleLogin}
             handleChangeFocusField={this.handleFieldFocus}
             isFormValid={this.validateForm}
             refreshError={this.refreshError}
@@ -208,13 +208,13 @@ class SignIn extends React.Component<Props, SignInState> {
       return (
          <TwoFactorAuth
             isLoading={loading}
-            onSubmit={this.handle2FASignIn}
+            onSubmit={this.handle2FALogin}
             title={this.props.intl.formatMessage({ id: 'page.password2fa' })}
             label={this.props.intl.formatMessage({
                id: 'page.body.wallets.tabs.withdraw.content.code2fa',
             })}
             buttonLabel={this.props.intl.formatMessage({
-               id: 'page.header.signIn',
+               id: 'page.header.login',
             })}
             message={this.props.intl.formatMessage({
                id: 'page.password2fa.message',
@@ -243,7 +243,7 @@ class SignIn extends React.Component<Props, SignInState> {
       });
    };
 
-   private handleSignIn = () => {
+   private handleLogin = () => {
       const { email, password } = this.state;
       const {
          configs: { captcha_type },
@@ -251,13 +251,13 @@ class SignIn extends React.Component<Props, SignInState> {
       } = this.props;
 
       if (captcha_type !== 'none' && captchaLogin()) {
-         this.props.signIn({ email, password, captcha_response });
+         this.props.login({ email, password, captcha_response });
       } else {
-         this.props.signIn({ email, password });
+         this.props.login({ email, password });
       }
    };
 
-   private handle2FASignIn = () => {
+   private handle2FALogin = () => {
       const { email, password, otpCode } = this.state;
       const {
          configs: { captcha_type },
@@ -270,20 +270,20 @@ class SignIn extends React.Component<Props, SignInState> {
          });
       } else {
          if (captcha_type !== 'none' && captchaLogin()) {
-            this.props.signIn({
+            this.props.login({
                email,
                password,
                captcha_response,
                otp_code: otpCode,
             });
          } else {
-            this.props.signIn({ email, password, otp_code: otpCode });
+            this.props.login({ email, password, otp_code: otpCode });
          }
       }
    };
 
-   private handleSignUp = () => {
-      this.props.history.push('/signup');
+   private handleregister = () => {
+      this.props.history.push('/register');
    };
 
    private forgotPassword = () => {
@@ -352,17 +352,17 @@ class SignIn extends React.Component<Props, SignInState> {
    };
 
    private handleClose = () => {
-      this.props.signInRequire2FA({ require2fa: false });
+      this.props.loginRequire2FA({ require2fa: false });
    };
 }
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    alert: selectAlertState(state),
-   error: selectSignInError(state),
+   error: selectLoginError(state),
    isLoggedIn: selectUserLoggedIn(state),
    loading: selectUserFetching(state),
-   require2FA: selectSignInRequire2FA(state),
-   requireEmailVerification: selectSignUpRequireVerification(state),
+   require2FA: selectLoginRequire2FA(state),
+   requireEmailVerification: selectregisterRequireVerification(state),
    configs: selectConfigs(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
@@ -373,15 +373,16 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    DispatchProps,
    {}
 > = dispatch => ({
-   signIn: data => dispatch(signIn(data)),
-   signInError: error => dispatch(signInError(error)),
-   signInRequire2FA: payload => dispatch(signInRequire2FA(payload)),
+   login: data => dispatch(login(data)),
+   loginError: error => dispatch(loginError(error)),
+   loginRequire2FA: payload => dispatch(loginRequire2FA(payload)),
    resetCaptchaState: () => dispatch(resetCaptchaState()),
-   signUpRequireVerification: data => dispatch(signUpRequireVerification(data)),
+   registerRequireVerification: data =>
+      dispatch(registerRequireVerification(data)),
 });
 
-export const SignInScreen = compose(
+export const LoginScreen = compose(
    injectIntl,
    withRouter,
    connect(mapStateToProps, mapDispatchToProps)
-)(SignIn) as React.ComponentClass;
+)(Login) as React.ComponentClass;

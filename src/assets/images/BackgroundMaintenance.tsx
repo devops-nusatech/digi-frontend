@@ -4,14 +4,15 @@ interface BackgroundMaintenanceProps {
    className?: string;
 }
 
-export const BackgroundMaintenance: React.FC<BackgroundMaintenanceProps> = (props: BackgroundMaintenanceProps) => (
+export const BackgroundMaintenance: React.FC<BackgroundMaintenanceProps> = (
+   props: BackgroundMaintenanceProps
+) => (
    <svg
       width="514"
       height="486"
       viewBox="0 0 514 486"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-   >
+      xmlns="http://www.w3.org/2000/svg">
       <g opacity="0.08">
          <path
             d="M284.899 139.731C281.96 136.792 277.195 136.791 274.257 139.73L265.987 147.999C263.047 150.938 263.047 155.703 265.986 158.641C267.456 160.111 269.382 160.845 271.308 160.845C273.234 160.845 275.16 160.111 276.629 158.642L284.899 150.373C287.838 147.434 287.838 142.669 284.899 139.731V139.731Z"

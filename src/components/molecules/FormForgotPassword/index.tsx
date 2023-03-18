@@ -1,4 +1,4 @@
-import React, { FC, RefObject, memo, useEffect } from 'react';
+import React, { RefObject, memo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, InputGroup } from 'components';
 import { EMAIL_REGEX } from 'helpers';
@@ -31,7 +31,7 @@ interface FormForgotPasswordProps {
    handleRenderInputNewPass: () => void;
 }
 
-export const FormForgotPassword: FC<FormForgotPasswordProps> = memo(
+export const FormForgotPassword = memo(
    ({
       geetestCaptchaRef,
       buttonLabel,
@@ -48,7 +48,7 @@ export const FormForgotPassword: FC<FormForgotPasswordProps> = memo(
       reCaptchaSuccess,
       geetestCaptchaSuccess,
       handleRenderInputNewPass,
-   }) => {
+   }: FormForgotPasswordProps) => {
       const isMobileDevice = useSelector(selectMobileDeviceState);
 
       useEffect(() => {

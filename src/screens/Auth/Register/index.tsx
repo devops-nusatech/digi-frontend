@@ -8,7 +8,6 @@ import {
 } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { IntlProps } from '../../../';
 import { isUsernameEnabled } from 'api';
 import { Captcha, FormRegister, LayoutAuth } from 'components';
 import {
@@ -34,11 +33,12 @@ import {
    selectCurrentPasswordEntropy,
    selectGeetestCaptchaSuccess,
    selectRecaptchaSuccess,
-   selectSignUpError,
-   selectSignUpLoading,
-   selectSignUpRequireVerification,
-   signUp,
+   selectregisterError,
+   selectregisterLoading,
+   selectregisterRequireVerification,
+   register,
 } from 'modules';
+import { IntlProps } from '../../../';
 
 interface ReduxProps {
    configs: Configs;
@@ -56,7 +56,7 @@ interface ReduxProps {
 }
 
 interface DispatchProps {
-   signUp: typeof signUp;
+   register: typeof register;
    fetchCurrentPasswordEntropy: typeof entropyPasswordFetch;
    resetCaptchaState: typeof resetCaptchaState;
 }
@@ -69,7 +69,7 @@ interface RouterProps {
 }
 
 interface OwnProps {
-   signUpError: boolean;
+   registerError: boolean;
    i18n: LanguageState['lang'];
 }
 
@@ -123,9 +123,9 @@ class RegisterClass extends Component<Props> {
    }
 
    public renderCaptcha = () => {
-      // const { signUpError } = this.props;
+      // const { registerError } = this.props;
       // const { confirmationError, emailError } = this.state;
-      // const error = signUpError || confirmationError || emailError;
+      // const error = registerError || confirmationError || emailError;
       return <Captcha geetestCaptchaRef={this.geetestCaptchaRef} />;
    };
 
@@ -171,8 +171,8 @@ class RegisterClass extends Component<Props> {
                isGeetestCaptchaSuccess={geetestCaptchaSuccess}
                hasConfirmed={hasConfirmed}
                isLoading={isLoading || captchaLoading}
-               onRegister={this.handleSignUp}
-               onLogin={this.handleSignIn}
+               onRegister={this.handleregister}
+               onLogin={this.handleLogin}
                validateForm={this.handleValidateForm}
                clickCheckBox={this.handleCheckboxClick}
                username={username}
@@ -196,21 +196,23 @@ class RegisterClass extends Component<Props> {
                handleFocusConfirmPassword={this.handleFocusConfirmPassword}
                handleFocusRefId={this.handleFocusRefId}
                handleResetEmail={this.handleResetEmail}
-               usernameLabel={`Username`}
-               emailLabel={formatMessage({ id: 'page.header.signUp.email' })}
+               usernameLabel="Username"
+               emailLabel={formatMessage({ id: 'page.header.register.email' })}
                passwordLabel={formatMessage({
-                  id: 'page.header.signUp.password',
+                  id: 'page.header.register.password',
                })}
                confirmPasswordLabel={formatMessage({
-                  id: 'page.header.signUp.confirmPassword',
+                  id: 'page.header.register.confirmPassword',
                })}
                refIdLabel={`${formatMessage({
-                  id: 'page.header.signUp.referalCode',
+                  id: 'page.header.register.referalCode',
                })} (optional)`}
                emailError={emailError}
                passwordError={passwordError}
                confirmPasswordError={confirmationError}
-               termsMessage={formatMessage({ id: 'page.header.signUp.terms' })}
+               termsMessage={formatMessage({
+                  id: 'page.header.register.terms',
+               })}
                translate={this.translate}
             />
          </LayoutAuth>
@@ -238,6 +240,7 @@ class RegisterClass extends Component<Props> {
          emailFocused: true,
          emailError: 'Email must be filled',
       });
+
    private handleChangeEmail = (email: string) => {
       const isEmailValid = email.match(EMAIL_REGEX);
       this.setState({
@@ -249,6 +252,7 @@ class RegisterClass extends Component<Props> {
             : '',
       });
    };
+
    private handleChangePassword = (password: string) => {
       this.setState({ password });
    };
@@ -295,12 +299,12 @@ class RegisterClass extends Component<Props> {
       });
    };
 
-   private handleSignIn = () => {
+   private handleLogin = () => {
       this.props.history.push('/login');
    };
 
-   private handleSignUp = () => {
-      const { configs, i18n, captcha_response, signUp } = this.props;
+   private handleregister = () => {
+      const { configs, i18n, captcha_response, register } = this.props;
       const { username, email, password, refId } = this.state;
       let payload: any = {
          email,
@@ -323,10 +327,10 @@ class RegisterClass extends Component<Props> {
          case 'geetest':
             payload = { ...payload, captcha_response };
 
-            signUp(payload);
+            register(payload);
             break;
          default:
-            signUp(payload);
+            register(payload);
             break;
       }
       this.props.resetCaptchaState();
@@ -383,8 +387,6 @@ class RegisterClass extends Component<Props> {
             passwordError: '',
             hasConfirmed: false,
          });
-
-         return;
       }
    };
 
@@ -395,13 +397,13 @@ class RegisterClass extends Component<Props> {
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    configs: selectConfigs(state),
    i18n: selectCurrentLanguage(state),
-   requireVerification: selectSignUpRequireVerification(state),
-   signUpError: selectSignUpError(state),
+   requireVerification: selectregisterRequireVerification(state),
+   registerError: selectregisterError(state),
    currentPasswordEntropy: selectCurrentPasswordEntropy(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
-   isLoading: selectSignUpLoading(state),
+   isLoading: selectregisterLoading(state),
    captchaLoading: selectCaptchaDataObjectLoading(state),
 });
 
@@ -409,7 +411,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    DispatchProps,
    {}
 > = dispatch => ({
-   signUp: credentials => dispatch(signUp(credentials)),
+   register: credentials => dispatch(register(credentials)),
    fetchCurrentPasswordEntropy: payload =>
       dispatch(entropyPasswordFetch(payload)),
    resetCaptchaState: () => dispatch(resetCaptchaState()),
