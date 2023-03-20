@@ -69,6 +69,7 @@ const buildRequest = (request: Request, configData: RequestOptions) => {
       method,
       url,
       withCredentials: withCredentials(),
+      timeout: 5000,
    };
 
    return requestConfig;

@@ -10,7 +10,10 @@ import { DepositFiat } from '../../../components/DepositFiat';
 import { selectCurrencies } from '../../../modules/public/currencies';
 import { selectUserInfo } from '../../../modules/user/profile';
 
-const WalletDepositBodyComponent = props => {
+const WalletDepositBodyComponent = (props: {
+   wallet: any;
+   handleGenerateAddress?: any;
+}) => {
    const intl = useIntl();
    const currencies = useSelector(selectCurrencies);
    const user = useSelector(selectUserInfo);
@@ -74,7 +77,7 @@ const WalletDepositBodyComponent = props => {
 
       if (wallet.type === 'coin') {
          return (
-            <React.Fragment>
+            <>
                <CurrencyInfo wallet={wallet} />
                {currencyItem && !currencyItem.deposit_enabled ? (
                   <Blur
@@ -97,28 +100,27 @@ const WalletDepositBodyComponent = props => {
                   wallet={wallet}
                   network={tab}
                />
-            </React.Fragment>
-         );
-      } else {
-         return (
-            <React.Fragment>
-               <CurrencyInfo wallet={wallet} />
-               {currencyItem && !currencyItem.deposit_enabled ? (
-                  <Blur
-                     className="pg-blur-deposit-fiat"
-                     text={intl.formatMessage({
-                        id: 'page.body.wallets.tabs.deposit.disabled.message',
-                     })}
-                  />
-               ) : null}
-               <DepositFiat
-                  title={title}
-                  description={description}
-                  uid={user ? user.uid : ''}
-               />
-            </React.Fragment>
+            </>
          );
       }
+      return (
+         <>
+            <CurrencyInfo wallet={wallet} />
+            {currencyItem && !currencyItem.deposit_enabled ? (
+               <Blur
+                  className="pg-blur-deposit-fiat"
+                  text={intl.formatMessage({
+                     id: 'page.body.wallets.tabs.deposit.disabled.message',
+                  })}
+               />
+            ) : null}
+            <DepositFiat
+               title={title}
+               description={description}
+               uid={user ? user.uid : ''}
+            />
+         </>
+      );
    };
 
    return (

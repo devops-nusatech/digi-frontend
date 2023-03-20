@@ -6,6 +6,7 @@ import { connect, MapDispatchToProps } from 'react-redux';
 import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
+import { defaultBeneficiary } from 'screens/WalletDetails/types';
 import { IntlProps } from '../../';
 import {
    Blur,
@@ -48,7 +49,6 @@ import {
    walletsFetch,
    walletsWithdrawCcyFetch,
 } from '../../modules';
-import { defaultBeneficiary } from 'screens/WalletDetails/types';
 
 interface ReduxProps {
    user: User;
@@ -117,12 +117,13 @@ class WalletsComponent extends React.Component<Props, WalletsState> {
       };
    }
 
-   //tslint:disable member-ordering
+   // tslint:disable member-ordering
    public translate = (id: string) => this.props.intl.formatMessage({ id });
 
    private title = this.translate(
       'page.body.wallets.tabs.deposit.fiat.message1'
    );
+
    private description = this.translate(
       'page.body.wallets.tabs.deposit.fiat.message2'
    );
@@ -282,7 +283,9 @@ class WalletsComponent extends React.Component<Props, WalletsState> {
    }
 
    private onTabChange = label => this.setState({ tab: label });
+
    private onActiveIndexChange = index => this.setState({ activeIndex: index });
+
    private onCurrentTabChange = index =>
       this.setState({ currentTabIndex: index });
 
@@ -301,8 +304,8 @@ class WalletsComponent extends React.Component<Props, WalletsState> {
    ) => {
       this.setState((state: WalletsState) => ({
          amount: amount || '',
-         beneficiary: beneficiary ? beneficiary : defaultBeneficiary,
-         otpCode: otpCode ? otpCode : '',
+         beneficiary: beneficiary || defaultBeneficiary,
+         otpCode: otpCode || '',
          withdrawConfirmModal: !state.withdrawConfirmModal,
          total: total || '',
          withdrawDone: false,
@@ -419,7 +422,7 @@ class WalletsComponent extends React.Component<Props, WalletsState> {
 
       if (wallets[selectedWalletIndex].type === 'coin') {
          return (
-            <React.Fragment>
+            <>
                <CurrencyInfo wallet={wallets[selectedWalletIndex]} />
                {currencyItem && !currencyItem.deposit_enabled ? (
                   <Blur
@@ -451,35 +454,34 @@ class WalletsComponent extends React.Component<Props, WalletsState> {
                      currency={wallet.currency}
                   />
                )}
-            </React.Fragment>
-         );
-      } else {
-         return (
-            <React.Fragment>
-               <CurrencyInfo wallet={wallets[selectedWalletIndex]} />
-               {currencyItem && !currencyItem.deposit_enabled ? (
-                  <Blur
-                     className="pg-blur-deposit-fiat"
-                     text={this.translate(
-                        'page.body.wallets.tabs.deposit.disabled.message'
-                     )}
-                  />
-               ) : null}
-               <DepositFiat
-                  title={this.title}
-                  description={this.description}
-                  uid={user ? user.uid : ''}
-               />
-               {wallet.currency && (
-                  <WalletHistory
-                     label="deposit"
-                     type="deposits"
-                     currency={wallet.currency}
-                  />
-               )}
-            </React.Fragment>
+            </>
          );
       }
+      return (
+         <>
+            <CurrencyInfo wallet={wallets[selectedWalletIndex]} />
+            {currencyItem && !currencyItem.deposit_enabled ? (
+               <Blur
+                  className="pg-blur-deposit-fiat"
+                  text={this.translate(
+                     'page.body.wallets.tabs.deposit.disabled.message'
+                  )}
+               />
+            ) : null}
+            <DepositFiat
+               title={this.title}
+               description={this.description}
+               uid={user ? user.uid : ''}
+            />
+            {wallet.currency && (
+               <WalletHistory
+                  label="deposit"
+                  type="deposits"
+                  currency={wallet.currency}
+               />
+            )}
+         </>
+      );
    };
 
    private renderWithdraw = () => {
@@ -570,7 +572,7 @@ class WalletsComponent extends React.Component<Props, WalletsState> {
                )}
             </p>
             <Button
-               block={true}
+               block
                onClick={this.redirectToEnable2fa}
                size="lg"
                variant="primary">

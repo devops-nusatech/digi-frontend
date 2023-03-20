@@ -4,7 +4,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 export const TradingOrderBackToLogin = () => {
-   const { push } = useHistory();
+   const history = useHistory();
    return (
       <>
          <div className="absolute inset-0 z-30 rounded bg-neutral8/30 backdrop-blur-md dark:bg-neutral2/30" />
@@ -17,7 +17,11 @@ export const TradingOrderBackToLogin = () => {
                   Please login for accessing trade...
                </div>
                <Button
-                  onClick={() => push('/login')}
+                  onClick={() =>
+                     history.push('/login', {
+                        pathname: history.location.pathname,
+                     })
+                  }
                   text="Login"
                />
             </div>

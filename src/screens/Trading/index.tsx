@@ -1,4 +1,4 @@
-import React, { FC, FunctionComponent, useState } from 'react';
+import React, { FC, FunctionComponent, useEffect, useState } from 'react';
 import {
    connect,
    MapDispatchToPropsFunction,
@@ -20,6 +20,7 @@ import {
    selectMarkets,
    selectMarketTickers,
    selectUserLoggedIn,
+   setCurrentMarket,
    Ticker,
 } from 'modules';
 import { compose } from 'redux';
@@ -37,20 +38,54 @@ type ReduxProps = {
    theme: string;
 };
 
-interface DispatchProps {}
+interface DispatchProps {
+   setCurrentMarket: typeof setCurrentMarket;
+}
 
-type TradingProps = RouterProps & IntlProps & ReduxProps & DispatchProps;
+interface OwnProps {
+   location: {
+      state: {
+         pathname: string;
+      };
+   };
+}
+
+type TradingProps = RouterProps &
+   IntlProps &
+   ReduxProps &
+   DispatchProps &
+   OwnProps;
 
 const TradingFC: FC<TradingProps> = ({
    isLoggedIn,
    currentMarket,
+   setCurrentMarket,
    markets,
    marketTickers,
    intl,
    theme,
+   location,
 }) => {
    const [tab, setTab] = useState(0);
    const translate = (id: string) => intl.formatMessage({ id });
+
+   useEffect(() => {
+      if (!currentMarket) {
+         setCurrentMarket(
+            location.state && location.state?.pathname
+               ? markets.find(
+                    e => e.id === location.state?.pathname.split('/').pop()
+                 )!
+               : markets[0]
+         );
+      }
+   }, [
+      currentMarket,
+      location.state,
+      location.state?.pathname,
+      markets,
+      setCurrentMarket,
+   ]);
 
    return (
       <div className="min-h-[calc(100vh-114px)] bg-shade4 p-4 pb-33 dark:bg-neutral1 lg:min-h-[calc(100vh-88px)] lg:p-1">
@@ -100,7 +135,9 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
 const mapDispatchToProps: MapDispatchToPropsFunction<
    DispatchProps,
    {}
-> = dispatch => ({});
+> = dispatch => ({
+   setCurrentMarket: payload => dispatch(setCurrentMarket(payload)),
+});
 
 export const Trading = compose(
    injectIntl,

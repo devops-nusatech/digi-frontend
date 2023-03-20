@@ -542,7 +542,7 @@ export const FormLogin = memo(
                         autoComplete="off"
                      />
                      <Link
-                        to="/forgot-password"
+                        to="/forgot_password"
                         className="float-right mt-4 text-xs font-semibold leading-custom4 text-primary1 transition-colors duration-300 hover:text-primary2">
                         Forgot password?
                      </Link>

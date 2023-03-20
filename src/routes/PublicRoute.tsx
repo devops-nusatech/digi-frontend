@@ -3,10 +3,19 @@ import { Redirect, Route } from 'react-router-dom';
 import { Loader } from 'components';
 import { RouteProps } from './types';
 
-const PublicRoute: React.FC<RouteProps> = ({
+type PublicRouteProps = RouteProps & {
+   location?: {
+      state: {
+         pathname: string;
+      };
+   };
+};
+
+const PublicRoute: React.FC<PublicRouteProps> = ({
    component: Component,
    loading,
    isLogged,
+   location,
    ...rest
 }) => {
    if (loading) {
@@ -24,7 +33,13 @@ const PublicRoute: React.FC<RouteProps> = ({
 
    return (
       <Route {...rest}>
-         <Redirect to={'/wallets'} />
+         <Redirect
+            to={
+               location?.state && location?.state?.pathname
+                  ? location?.state?.pathname
+                  : '/wallets'
+            }
+         />
       </Route>
    );
 };

@@ -104,12 +104,9 @@ const HeaderFC = ({
    intl,
 }: HeaderProps) => {
    useScrollUp();
-   const [showModalConfirmLogout, setShowModalConfirmLogout] =
-      useState<boolean>(false);
-   const [isDarkMode, setDarkMode] = useState<boolean>(
-      theme === 'dark' ? true : false
-   );
-   const [dataMode, setDataMode] = useState<string>(
+   const [showModalConfirmLogout, setShowModalConfirmLogout] = useState(false);
+   const [isDarkMode, setDarkMode] = useState(theme === 'dark');
+   const [dataMode, setDataMode] = useState(
       (window.document.documentElement.dataset.mode =
          theme === 'dark' ? 'dark' : 'light')
    );
@@ -132,10 +129,10 @@ const HeaderFC = ({
       type === 'lang' ? changeLanguage(value) : null;
    const translate = (id: string) => intl.formatMessage({ id });
 
-   // const [dropDwonCrypto, setDropDwonCrypto] = useState<boolean>(false);
-   const [dropDwonFlag, setDropDwonFlag] = useState<boolean>(false);
-   const [dropDwonNotif, setDropDwonNotif] = useState<boolean>(false);
-   const [dropDwonProfile, setDropDwonProfile] = useState<boolean>(false);
+   // const [dropDwonCrypto, setDropDwonCrypto] = useState(false);
+   const [dropDwonFlag, setDropDwonFlag] = useState(false);
+   const [dropDwonNotif, setDropDwonNotif] = useState(false);
+   const [dropDwonProfile, setDropDwonProfile] = useState(false);
 
    // const refDropDwonCrypto = useRef<HTMLDivElement>(null);
    const refDropDwonFlag = useRef<HTMLDivElement>(null);
@@ -192,8 +189,7 @@ const HeaderFC = ({
          );
    }, []);
 
-   const handleSwithTheme = () =>
-      dropDwonCryptoDarkMode(isDarkMode ? false : true);
+   const handleSwithTheme = () => dropDwonCryptoDarkMode(!isDarkMode);
 
    const { push } = history;
    const shouldRenderHeader = !noHeaderRoutes.some(r =>
@@ -233,7 +229,7 @@ const HeaderFC = ({
                            alt="Logo"
                         />
                      </Link>
-                     <div className="border-gray4 h-[content] border-r border-solid dark:border-neutral3 1xl-max:hidden" />
+                     <div className="h-[content] border-r border-neutral6 dark:border-neutral3 1xl-max:hidden" />
                      <div className="hidden items-center space-x-0 whitespace-nowrap font-dm font-bold text-neutral4 md:flex md:space-x-2 lg:space-x-5 lg2:space-x-8">
                         <Link
                            to={`/trading/${currentMarket?.id}`}
@@ -365,7 +361,7 @@ const HeaderFC = ({
                               </div>
                               <DropdownListNotification
                                  isOpen={dropDwonNotif}
-                                 notifActive={''}
+                                 notifActive=""
                                  onSelect={() => push('/notifications')}
                               />
                            </button>
@@ -421,13 +417,21 @@ const HeaderFC = ({
                               <Button
                                  text="Register"
                                  size="normal"
-                                 onClick={() => push('/register')}
+                                 onClick={() =>
+                                    push('/register', {
+                                       pathname: location.pathname,
+                                    })
+                                 }
                               />
                               <Button
                                  text="Login"
                                  size="normal"
                                  variant="outline"
-                                 onClick={() => push('/login')}
+                                 onClick={() =>
+                                    push('/login', {
+                                       pathname: location.pathname,
+                                    })
+                                 }
                               />
                            </div>
                         </>

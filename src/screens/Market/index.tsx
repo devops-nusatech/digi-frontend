@@ -55,7 +55,7 @@ const MarketFC = ({ intl }: Props) => {
          <div className="relative -mt-[137px] mb-[72px]">
             <div className="mx-auto w-full max-w-7xl px-8 md:px-10 lg:px-20">
                <div className="-mx-4 mb-8 rounded-3xl border border-neutral7 bg-neutral8 shadow-card2 dark:border-neutral2 dark:bg-shade1 md:m-0">
-                  <div className="flex space-x-4.5">
+                  <div className="hide-scroll flex space-x-4.5 overflow-x-scroll">
                      {isLoading ? (
                         <>
                            <Skeleton

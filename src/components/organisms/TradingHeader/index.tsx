@@ -1,13 +1,7 @@
-import React, { FC, memo } from 'react';
-import { Decimal } from 'components';
+import React, { memo, useCallback, useMemo } from 'react';
+import { Decimal, Info, Skeleton, Text2xl, TextXs } from 'components';
 import { Market, Ticker } from 'modules';
-import {
-   CurrencyDollarIcon,
-   ClockIcon,
-   ArrowCircleUpIcon,
-   ArrowCircleDownIcon,
-   ChartBarIcon,
-} from '@heroicons/react/outline';
+import { DEFAULT_TICKER } from '../../../constants';
 
 interface TradingHeaderProps {
    currentMarket?: Market;
@@ -17,143 +11,141 @@ interface TradingHeaderProps {
    translate(id: string): string;
 }
 
-export const TradingHeader: FC<TradingHeaderProps> = memo(
-   ({ currentMarket, marketTickers, translate }) => {
-      const defaultTicker: Ticker = {
-         avg_price: '0',
-         high: '0',
-         last: '0',
-         low: '0',
-         open: '0',
-         price_change_percent: '+0.00%',
-         volume: '0',
-         amount: '0',
-      };
-
-      const getTickerValue = (value: string) => {
-         return (
+export const TradingHeader = memo(
+   ({ currentMarket, marketTickers, translate }: TradingHeaderProps) => {
+      const ticker = useMemo(
+         () =>
             currentMarket &&
-            (marketTickers[currentMarket.id] || defaultTicker)[value]
-         );
-      };
+            (marketTickers[currentMarket.id] || DEFAULT_TICKER),
+         [currentMarket, marketTickers]
+      );
+      const isPositive = useMemo(
+         () => currentMarket && /\+/.test(ticker?.price_change_percent!),
+         [currentMarket, ticker?.price_change_percent]
+      );
+      const bidUnit = useMemo(
+         () => currentMarket && currentMarket.quote_unit.toUpperCase(),
+         [currentMarket]
+      );
+      const name = useMemo(
+         () => currentMarket && currentMarket?.name,
+         [currentMarket]
+      );
+      const fullname = useMemo(
+         () => currentMarket && currentMarket?.fullname,
+         [currentMarket]
+      );
+      const pricePrecision = useMemo(
+         () => currentMarket && currentMarket?.price_precision,
+         [currentMarket]
+      );
 
-      const isPositive =
-         currentMarket && /\+/.test(getTickerValue('price_change_percent'));
-
-      const bidUnit = currentMarket && currentMarket.quote_unit.toUpperCase();
-      const name = currentMarket?.name.split('/').shift();
-
-      const pricePrecision = currentMarket?.price_precision;
+      const renderStatictics = useCallback(
+         (icon: string, title: string, value: string) => (
+            <div className="w-1/2 shrink-0 grow-0 basis-1/2 pr-6 md:w-auto md:grow md:basis-auto lg:grow-0 lg2:w-40 lg2:basis-40 md-max:mt-3 [&:not(:last-child)]:mr-6 [&:not(:last-child)]:border-r [&:not(:last-child)]:border-neutral6 [&:not(:last-child)]:dark:border-neutral3">
+               <div className="mb-1 flex items-center gap-1">
+                  <svg className="h-4 w-4 fill-neutral4">
+                     <use xlinkHref={`#icon-${icon}`} />
+                  </svg>
+                  <TextXs
+                     text={translate(`page.body.trade.toolBar.${title}`)}
+                  />
+               </div>
+               <div className="font-medium text-neutral1 dark:text-neutral8">
+                  {value}
+               </div>
+            </div>
+         ),
+         [translate]
+      );
 
       return (
-         <div className="block items-center rounded-[4px] bg-neutral8 p-5 dark:bg-shade2 lg:flex">
-            <div className="flex flex-col md:flex-row md:items-center md:space-x-8">
-               <div className="flex flex-col space-y-1">
-                  <div className="flex items-center space-x-1">
-                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1 text-neutral1 dark:text-neutral8">
-                        {currentMarket?.name ?? 'Market name'}
-                     </div>
-                     <div
-                        className={`rounded-xl py-1 px-2 ${
-                           isPositive ? 'bg-chart1' : 'bg-primary4'
-                        } inline-block text-xs font-bold uppercase text-neutral8`}>
-                        {currentMarket &&
-                           (marketTickers[currentMarket.id] || defaultTicker)
-                              .price_change_percent}
-                     </div>
+         <div className="block rounded bg-neutral8 p-5 dark:bg-shade2 lg:flex lg:items-center">
+            <div className="block md:flex md:items-center md-max:mb-6 lg-max:mb-4">
+               <div className="md:mr-8 md-max:mb-2">
+                  <div className="mb-1 flex items-center gap-1">
+                     <Text2xl
+                        text={
+                           name || (
+                              <Skeleton
+                                 height={30}
+                                 width={120}
+                              />
+                           )
+                        }
+                        className="text-neutral1 dark:text-neutral8"
+                     />
+                     <Info
+                        text={ticker?.price_change_percent}
+                        theme={isPositive ? 'positive' : 'negative'}
+                     />
                   </div>
-                  <div className="text-xs font-semibold leading-custom1 text-neutral4">
-                     {name === 'BTC'
-                        ? 'Bitcoin'
-                        : name === 'ETH'
-                        ? 'Ethereum'
-                        : name ?? 'Market name'}
-                  </div>
+                  <TextXs
+                     text={
+                        fullname || (
+                           <Skeleton
+                              height={16}
+                              width={70}
+                           />
+                        )
+                     }
+                     className="font-semibold"
+                  />
                </div>
-               <div className="flex flex-col space-y-1">
-                  <div className="text-2xl font-semibold leading-custom2 tracking-custom1 text-primary4">
-                     {(currentMarket &&
-                        Decimal.format(
-                           Number(getTickerValue('last')),
-                           Number(pricePrecision),
-                           ','
-                        )) ??
-                        defaultTicker.last}
-                  </div>
-                  <div className="flex items-center text-xs font-semibold leading-custom1 text-neutral4">
-                     <CurrencyDollarIcon className="mr-1 h-4 w-4 stroke-neutral4" />
-                     {(currentMarket &&
-                        Decimal.format(
-                           Number(getTickerValue('last')) -
-                              Number(getTickerValue('open')),
-                           Number(pricePrecision),
-                           ','
-                        )) ||
-                        0}
+               <div>
+                  <Text2xl
+                     text={Decimal.format(ticker?.last, pricePrecision!, ',')}
+                     className="text-primary4"
+                  />
+                  <div className="flex items-center gap-1">
+                     <svg className="h-4 w-4 fill-neutral4">
+                        <use xlinkHref="#icon-coin" />
+                     </svg>
+                     <TextXs
+                        text={
+                           Decimal.format(
+                              +ticker?.last! - +ticker?.open!,
+                              pricePrecision!,
+                              ','
+                           ) || (
+                              <Skeleton
+                                 height={16}
+                                 width={70}
+                              />
+                           )
+                        }
+                        className="font-semibold"
+                     />
                   </div>
                </div>
             </div>
-            <div className="ml-auto mt-5 flex items-center justify-between space-x-6 lg:mt-0">
-               <div className="w-auto shrink-0 grow-0 basis-auto space-y-1 border-r border-neutral6 pr-6 dark:border-neutral2 lg2:w-40 lg2:basis-40">
-                  <div className="flex items-center space-y-1 text-xs leading-custom1 text-neutral4">
-                     <ClockIcon className="mr-1 h-4 w-4 stroke-neutral4" />
-                     24h {translate('page.body.trade.toolBar.change')}
-                  </div>
-                  <div className="font-medium text-neutral1 dark:text-neutral8">
-                     {(currentMarket &&
-                        (marketTickers[currentMarket.id] || defaultTicker)
-                           .price_change_percent) ||
-                        defaultTicker.price_change_percent}
-                  </div>
-               </div>
-               <div className="w-auto shrink-0 grow-0 basis-auto space-y-1 border-r border-neutral6 pr-6 dark:border-neutral2 lg2:w-40 lg2:basis-40">
-                  <div className="flex items-center space-y-1 text-xs leading-custom1 text-neutral4">
-                     <ArrowCircleUpIcon className="mr-1 h-4 w-4 stroke-neutral4" />
-                     {translate('page.body.trade.toolBar.lowest')}
-                  </div>
-                  <div className="font-medium text-neutral1 dark:text-neutral8">
-                     {(currentMarket &&
-                        Decimal.format(
-                           Number(getTickerValue('low')),
-                           Number(pricePrecision),
-                           ','
-                        )) ||
-                        defaultTicker.low}{' '}
-                     {bidUnit}
-                  </div>
-               </div>
-               <div className="w-auto shrink-0 grow-0 basis-auto space-y-1 border-r border-neutral6 pr-6 dark:border-neutral2 lg2:w-40 lg2:basis-40">
-                  <div className="flex items-center space-y-1 text-xs leading-custom1 text-neutral4">
-                     <ArrowCircleDownIcon className="mr-1 h-4 w-4 stroke-neutral4" />
-                     {translate('page.body.trade.toolBar.highest')}
-                  </div>
-                  <div className="font-medium text-neutral1 dark:text-neutral8">
-                     {(currentMarket &&
-                        Decimal.format(
-                           Number(getTickerValue('high')),
-                           Number(pricePrecision),
-                           ','
-                        )) ||
-                        defaultTicker.high}{' '}
-                     {bidUnit}
-                  </div>
-               </div>
-               <div className="w-auto shrink-0 grow-0 basis-auto space-y-1 pr-6 lg2:w-40 lg2:basis-40 ">
-                  <div className="flex items-center space-y-1 text-xs leading-custom1 text-neutral4">
-                     <ChartBarIcon className="mr-1 h-4 w-4 stroke-neutral4" />
-                     {translate('page.body.trade.toolBar.volume')}
-                  </div>
-                  <div className="font-medium text-neutral1 dark:text-neutral8">
-                     {(currentMarket &&
-                        Decimal.format(
-                           Number(getTickerValue('volume')),
-                           Number(pricePrecision),
-                           ','
-                        )) ||
-                        defaultTicker.volume}{' '}
-                     {bidUnit ?? 'IDR/USDT'}
-                  </div>
-               </div>
+            <div className="flex lg:ml-auto md-max:-mt-3 md-max:flex-wrap">
+               {renderStatictics(
+                  'clock',
+                  'change',
+                  ticker?.price_change_percent!
+               )}
+               {renderStatictics(
+                  'arrow-top',
+                  'highest',
+                  `${Decimal.format(ticker?.high, pricePrecision!, ',')} ${
+                     typeof bidUnit !== 'undefined' ? bidUnit : ''
+                  }`
+               )}
+               {renderStatictics(
+                  'arrow-bottom',
+                  'lowest',
+                  `${Decimal.format(ticker?.low, pricePrecision!, ',')} ${
+                     typeof bidUnit !== 'undefined' ? bidUnit : ''
+                  }`
+               )}
+               {renderStatictics(
+                  'chart',
+                  'volume',
+                  `${Decimal.format(ticker?.volume, pricePrecision!, ',')} ${
+                     typeof bidUnit !== 'undefined' ? bidUnit : ''
+                  }`
+               )}
             </div>
          </div>
       );

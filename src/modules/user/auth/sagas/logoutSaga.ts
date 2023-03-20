@@ -1,12 +1,11 @@
-import { logoutData } from './../actions';
 import { call, put } from 'redux-saga/effects';
-import { sendError } from '../../../';
-import { API, RequestOptions } from '../../../../api';
+import { API, RequestOptions } from 'api';
+import { sendError } from 'modules';
 import { loginRequire2FA } from '../../auth';
 import { resetHistory } from '../../history';
 import { userOpenOrdersReset } from '../../openOrders';
 import { userReset } from '../../profile';
-import { logoutError, LogoutFetch } from '../actions';
+import { logoutData, logoutError, LogoutFetch } from '../actions';
 
 const requestOptions: RequestOptions = {
    apiVersion: 'barong',

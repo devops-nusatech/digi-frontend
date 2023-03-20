@@ -135,7 +135,10 @@ export const TableActivity = memo(
                // ...(core === 'transfers' && { sender: user.uid }),
                ...(advanceFilter &&
                   core !== 'trades' && { currency, state: formatState }),
-               ...(advanceFilter && core === 'trades' && { market, type }),
+               ...(advanceFilter &&
+                  core === 'trades' &&
+                  market &&
+                  type && { market, type }),
             });
          },
          [

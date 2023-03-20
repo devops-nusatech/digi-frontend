@@ -419,7 +419,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Transition } from '@headlessui/react';
 
-import { captchaType, captchaLogin, kycSteps } from 'api';
+import { captchaType, captchaLogin } from 'api';
 import { Captcha, FormLogin, TFA, LayoutAuth } from 'components';
 import {
    EMAIL_REGEX,
@@ -450,6 +450,7 @@ interface OwnProps {
       state: {
          email: string;
          password: string;
+         pathname: string;
       };
    };
 }
@@ -487,10 +488,6 @@ export const Login = () => {
    const geetestCaptchaRef = useRef<HTMLButtonElement>(null);
 
    useEffect(() => {
-      console.log('window.env', kycSteps());
-   }, []);
-
-   useEffect(() => {
       setDocumentTitle('Login');
       dispatch(loginError({ code: 0, message: [''] }));
       dispatch(registerRequireVerification({ requireVerification: false }));
@@ -509,9 +506,9 @@ export const Login = () => {
    useEffect(() => {
       if (isLoggedIn) {
          handleReset2Fa();
-         push('/wallets');
+         push(location?.pathname ? location?.pathname : '/wallets');
       }
-   }, [isLoggedIn, push]);
+   }, [isLoggedIn, push, location?.pathname]);
 
    useEffect(() => {
       if (
@@ -568,7 +565,7 @@ export const Login = () => {
    }, [push]);
 
    const forgotPassword = useCallback(() => {
-      push('/forgot-password');
+      push('/forgot_password');
    }, [push]);
 
    const handleFieldFocus = useCallback(

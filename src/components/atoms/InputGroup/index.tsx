@@ -299,10 +299,20 @@ export const InputGroup = forwardRef<Ref, InputGroupProps>(
                   required={required}
                   className={classNames(`
                      ${classes.base}
-                     ${icon ? classes.icon : ''}
-                     ${classes.size[String(size)]}
-                     ${classes.variant[String(variant)]}
-                     ${classes.width[String(width)]}
+                     ${
+                        (icon ||
+                           withIconPassword ||
+                           withIconReset ||
+                           withIconSearch) &&
+                        size === 'small'
+                           ? 'pr-8'
+                           : size === 'normal'
+                           ? 'pr-10'
+                           : 'pr-12'
+                     }
+                     ${classes.size[size!]}
+                     ${classes.variant[variant!]}
+                     ${classes.width[width!]}
                      ${disabled ? classes.disabled : ''}
                      ${withError ? classes.withError : ''}
                      ${withIconPassword ? classes.icon : ''}

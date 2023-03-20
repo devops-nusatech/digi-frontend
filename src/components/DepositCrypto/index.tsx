@@ -242,7 +242,7 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (
 
    const renderMemo = React.useMemo(() => {
       return (
-         <React.Fragment>
+         <>
             <div className="cr-deposit-crypto__block">
                <form className="cr-deposit-crypto__copyable">
                   <fieldset
@@ -269,7 +269,7 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (
                   })}
                </p>
             </div>
-         </React.Fragment>
+         </>
       );
    }, [walletTag]);
 
@@ -279,12 +279,12 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (
             <div className="cr-deposit-crypto__create">
                <div className="cr-deposit-crypto__create-btn">
                   <Button
-                     block={true}
+                     block
                      type="button"
                      onClick={handleGenerateAddress}
                      size="lg"
                      variant="primary">
-                     {buttonLabel ? buttonLabel : 'Generate deposit address'}
+                     {buttonLabel || 'Generate deposit address'}
                   </Button>
                </div>
             </div>
@@ -308,7 +308,7 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (
    window.console.log(wallet, network);
 
    return (
-      <React.Fragment>
+      <>
          <div className="cr-withdraw__group__warning">
             <OverlayTrigger
                placement="right"
@@ -369,9 +369,7 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (
                         copyButtonText={copyButtonText}
                         disabled={disabled}
                         label={
-                           copiableTextFieldText
-                              ? copiableTextFieldText
-                              : 'Deposit by Wallet Address'
+                           copiableTextFieldText || 'Deposit by Wallet Address'
                         }
                      />
                   </fieldset>
@@ -391,7 +389,7 @@ const DepositCrypto: React.FunctionComponent<DepositCryptoProps> = (
                { currency: wallet?.currency.toUpperCase() }
             )}
          </p>
-      </React.Fragment>
+      </>
    );
 };
 
