@@ -257,7 +257,8 @@ export const NewTickerTable = memo(({ redirectToTrading }: Props) => {
             Header: 'Chart',
             accessor: ({ price_change_percent, kline, base_unit }) => {
                const klinesData: number[] = kline;
-               let labels: number[], data: number[];
+               let labels: number[];
+               let data: number[];
                labels = klinesData.map(e => e[0]);
                data = klinesData.map(e => e[2]);
                return (

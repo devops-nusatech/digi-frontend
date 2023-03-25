@@ -1,6 +1,6 @@
 import React from 'react';
-import { PageLink } from '../PageLink';
 import { getPaginationItems } from 'helpers';
+import { PageLink } from '../PageLink';
 
 export type PaginationsProps = {
    currentPage: number;

@@ -1,9 +1,9 @@
-import { WithdrawLimit } from './../types';
+import { getCsrfToken } from 'helpers';
 import { call, put } from 'redux-saga/effects';
+import { WithdrawLimit } from './../types';
 import { sendError } from '../../../';
 import { API, RequestOptions } from '../../../../api';
 import { withdrawLimitData, withdrawLimitError, WithdrawLimitFetch } from '../actions';
-import { getCsrfToken } from 'helpers';
 
 const withdrawOption = (csrfToken?: string): RequestOptions => ({
    apiVersion: 'peatio',

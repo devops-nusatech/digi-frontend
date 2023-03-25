@@ -521,6 +521,16 @@ export const Login = () => {
       }
    }, [errorLogin, captchaType(), captchaLogin()]);
 
+   useEffect(() => {
+      if (
+         !email ||
+         !password ||
+         (captchaType() !== 'none' && !captcha_response)
+      ) {
+         dispatch(loginRequire2FA({ require2fa: false }));
+      }
+   }, [captcha_response, dispatch, email, password]);
+
    const translate = useCallback(
       (id: string) => formatMessage({ id }),
       [formatMessage]

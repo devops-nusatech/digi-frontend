@@ -31,7 +31,6 @@ export * from './Skeleton';
 export * from './PageLink';
 export * from './Paginations';
 export * from './Checkbox';
-export * from './AdibDropdown';
 export * from './Label';
 export * from './LabelAlt';
 export * from './GenericSelect';

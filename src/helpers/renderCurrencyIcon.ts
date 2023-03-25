@@ -31,6 +31,9 @@ import {
    icAXS,
    ic1INCH,
    icLtc,
+   icZil,
+   icUSDD,
+   icBUSD,
 } from 'assets';
 // import { imageIsExists } from 'helpers';
 
@@ -99,6 +102,12 @@ export const renderCurrencyIcon = (currency = '', iconUrl = ''): string => {
          return ic1INCH;
       case 'ltc':
          return icLtc;
+      case 'zil':
+         return icZil;
+      case 'usdd':
+         return icUSDD;
+      case 'busd':
+         return icBUSD;
 
       default:
          return iconUrl || icLogo;
