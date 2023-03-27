@@ -3,5 +3,5 @@ export const useShowGeetestCaptcha = () => {
    if (captchaObj) {
       captchaObj.showCaptcha();
    }
-   return captchaObj
-}
+   return captchaObj;
+};

@@ -50,13 +50,16 @@ interface OrdersState {
    orderType: boolean;
 }
 
-
 type Props = OrdersProps & ReduxProps & DispatchProps & IntlProps;
 
-class OrdersComponent extends React.PureComponent<Props, OrdersState>  {
+class OrdersComponent extends React.PureComponent<Props, OrdersState> {
    public componentDidMount() {
       const { type } = this.props;
-      this.props.userOrdersHistoryFetch({ pageIndex: 0, core: type, limit: 25 });
+      this.props.userOrdersHistoryFetch({
+         pageIndex: 0,
+         core: type,
+         limit: 25,
+      });
    }
 
    public render() {
@@ -67,23 +70,41 @@ class OrdersComponent extends React.PureComponent<Props, OrdersState>  {
          updateList = list.filter(o => o.state === 'wait');
       }
 
-      const emptyMsg = this.props.intl.formatMessage({ id: 'page.noDataToShow' });
+      const emptyMsg = this.props.intl.formatMessage({
+         id: 'page.noDataToShow',
+      });
 
       return (
-         <div className={`pg-history-elem ${updateList.length ? '' : 'pg-history-elem-empty'}`}>
-            {fetching && <div className="text-center"><Spinner animation="border" variant="primary" /></div>}
+         <div
+            className={`pg-history-elem ${
+               updateList.length ? '' : 'pg-history-elem-empty'
+            }`}>
+            {fetching && (
+               <div className="text-center">
+                  <Spinner
+                     animation="border"
+                     variant="primary"
+                  />
+               </div>
+            )}
             {updateList.length ? this.renderContent(updateList) : null}
-            {!updateList.length && !fetching ? <p className="pg-history-elem__empty">{emptyMsg}</p> : null}
+            {!updateList.length && !fetching ? (
+               <p className="pg-history-elem__empty">{emptyMsg}</p>
+            ) : null}
          </div>
       );
    }
 
    public renderContent = list => {
-      const { firstElemIndex, lastElemIndex, pageIndex, nextPageExists } = this.props;
+      const { firstElemIndex, lastElemIndex, pageIndex, nextPageExists } =
+         this.props;
 
       return (
          <React.Fragment>
-            <History headers={this.renderHeaders()} data={this.retrieveData(list)} />
+            <History
+               headers={this.renderHeaders()}
+               data={this.retrieveData(list)}
+            />
             <Pagination
                firstElemIndex={firstElemIndex}
                lastElemIndex={lastElemIndex}
@@ -98,25 +119,51 @@ class OrdersComponent extends React.PureComponent<Props, OrdersState>  {
 
    private onClickPrevPage = () => {
       const { pageIndex, type } = this.props;
-      this.props.userOrdersHistoryFetch({ pageIndex: Number(pageIndex) - 1, core: type, limit: 25 });
+      this.props.userOrdersHistoryFetch({
+         pageIndex: Number(pageIndex) - 1,
+         core: type,
+         limit: 25,
+      });
    };
 
    private onClickNextPage = () => {
       const { pageIndex, type } = this.props;
-      this.props.userOrdersHistoryFetch({ pageIndex: Number(pageIndex) + 1, core: type, limit: 25 });
+      this.props.userOrdersHistoryFetch({
+         pageIndex: Number(pageIndex) + 1,
+         core: type,
+         limit: 25,
+      });
    };
 
    private renderHeaders = () => {
       return [
-         this.props.intl.formatMessage({ id: 'page.body.history.deposit.header.date' }),
-         this.props.intl.formatMessage({ id: 'page.body.openOrders.header.orderType' }),
-         this.props.intl.formatMessage({ id: 'page.body.openOrders.header.pair' }),
-         this.props.intl.formatMessage({ id: 'page.body.openOrders.header.price' }),
-         this.props.intl.formatMessage({ id: 'page.body.openOrders.header.amount' }),
-         this.props.intl.formatMessage({ id: 'page.body.openOrders.header.executed' }),
-         this.props.intl.formatMessage({ id: 'page.body.openOrders.header.remaining' }),
-         this.props.intl.formatMessage({ id: 'page.body.openOrders.header.costRemaining' }),
-         this.props.intl.formatMessage({ id: 'page.body.openOrders.header.status' }),
+         this.props.intl.formatMessage({
+            id: 'page.body.history.deposit.header.date',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.openOrders.header.orderType',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.openOrders.header.pair',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.openOrders.header.price',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.openOrders.header.amount',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.openOrders.header.executed',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.openOrders.header.remaining',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.openOrders.header.costRemaining',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.openOrders.header.status',
+         }),
          '',
       ];
    };
@@ -140,27 +187,63 @@ class OrdersComponent extends React.PureComponent<Props, OrdersState>  {
          updated_at,
          created_at,
       } = item;
-      const currentMarket = this.props.marketsData.find(m => m.id === market)
-         || { name: '', price_precision: 0, amount_precision: 0 };
+      const currentMarket = this.props.marketsData.find(
+         m => m.id === market
+      ) || { name: '', price_precision: 0, amount_precision: 0 };
 
       const orderType = this.getType(side, ord_type);
       const marketName = currentMarket ? currentMarket.name : market;
       const costRemaining = remaining_volume * price; // price or avg_price ???
       const date = localeDate(updated_at ? updated_at : created_at, 'fullDate');
       const status = this.setOrderStatus(state);
-      const actualPrice = ord_type === 'market' || status === 'done' ? avg_price : price;
+      const actualPrice =
+         ord_type === 'market' || status === 'done' ? avg_price : price;
 
       return [
          date,
-         <span style={{ color: setTradeColor(side).color }} key={id}>{orderType}</span>,
+         <span
+            style={{ color: setTradeColor(side).color }}
+            key={id}>
+            {orderType}
+         </span>,
          marketName,
-         <Decimal key={id} fixed={currentMarket.price_precision} thousSep=",">{actualPrice}</Decimal>,
-         <Decimal key={id} fixed={currentMarket.amount_precision} thousSep=",">{origin_volume}</Decimal>,
-         <Decimal key={id} fixed={currentMarket.amount_precision} thousSep=",">{executed_volume}</Decimal>,
-         <Decimal key={id} fixed={currentMarket.amount_precision} thousSep=",">{remaining_volume}</Decimal>,
-         <Decimal key={id} fixed={currentMarket.amount_precision} thousSep=",">{costRemaining.toString()}</Decimal>,
+         <Decimal
+            key={id}
+            fixed={currentMarket.price_precision}
+            thousSep=",">
+            {actualPrice}
+         </Decimal>,
+         <Decimal
+            key={id}
+            fixed={currentMarket.amount_precision}
+            thousSep=",">
+            {origin_volume}
+         </Decimal>,
+         <Decimal
+            key={id}
+            fixed={currentMarket.amount_precision}
+            thousSep=",">
+            {executed_volume}
+         </Decimal>,
+         <Decimal
+            key={id}
+            fixed={currentMarket.amount_precision}
+            thousSep=",">
+            {remaining_volume}
+         </Decimal>,
+         <Decimal
+            key={id}
+            fixed={currentMarket.amount_precision}
+            thousSep=",">
+            {costRemaining.toString()}
+         </Decimal>,
          status,
-         state === 'wait' && <CloseIcon key={id} onClick={this.handleCancel(id)} />,
+         state === 'wait' && (
+            <CloseIcon
+               key={id}
+               onClick={this.handleCancel(id)}
+            />
+         ),
       ];
    };
 
@@ -169,7 +252,9 @@ class OrdersComponent extends React.PureComponent<Props, OrdersState>  {
          return '';
       }
 
-      return this.props.intl.formatMessage({ id: `page.body.openOrders.header.orderType.${side}.${orderType}` });
+      return this.props.intl.formatMessage({
+         id: `page.body.openOrders.header.orderType.${side}.${orderType}`,
+      });
    };
 
    private setOrderStatus = (status: string) => {
@@ -177,19 +262,25 @@ class OrdersComponent extends React.PureComponent<Props, OrdersState>  {
          case 'done':
             return (
                <span className="pg-history-elem-executed">
-                  <FormattedMessage id={`page.body.openOrders.content.status.done`} />
+                  <FormattedMessage
+                     id={`page.body.openOrders.content.status.done`}
+                  />
                </span>
             );
          case 'cancel':
             return (
                <span className="pg-history-elem-canceled">
-                  <FormattedMessage id={`page.body.openOrders.content.status.cancel`} />
+                  <FormattedMessage
+                     id={`page.body.openOrders.content.status.cancel`}
+                  />
                </span>
             );
          case 'wait':
             return (
                <span className="pg-history-elem-opened">
-                  <FormattedMessage id={`page.body.openOrders.content.status.wait`} />
+                  <FormattedMessage
+                     id={`page.body.openOrders.content.status.wait`}
+                  />
                </span>
             );
          default:
@@ -218,13 +309,16 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    cancelFetching: selectCancelFetching(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
-   dispatch => ({
-      ordersHistoryCancelFetch: payload => dispatch(ordersHistoryCancelFetch(payload)),
-      userOrdersHistoryFetch: payload => dispatch(userOrdersHistoryFetch(payload)),
-   });
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   ordersHistoryCancelFetch: payload =>
+      dispatch(ordersHistoryCancelFetch(payload)),
+   userOrdersHistoryFetch: payload => dispatch(userOrdersHistoryFetch(payload)),
+});
 
 export const OrdersElement = compose(
    injectIntl,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(OrdersComponent) as any; // tslint:disable-line

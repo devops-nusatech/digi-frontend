@@ -10,7 +10,11 @@ import {
 } from 'components';
 import { IcWallet } from 'assets';
 import { OrderType } from 'modules/types';
-import { cleanPositiveFloatInput, getTotalPrice, precisionRegExp } from 'helpers';
+import {
+   cleanPositiveFloatInput,
+   getTotalPrice,
+   precisionRegExp,
+} from 'helpers';
 
 type Ref = null | any;
 interface TradingOrderBidProps {
@@ -58,7 +62,7 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    asks,
    executeLoading,
    maker,
-   taker
+   taker,
 }) => {
    const [listenPrice, setListenPrice] = useState<string>('');
    const [orderVolume, setOrderVolume] = useState<string>('');
@@ -88,17 +92,40 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    }, [market]);
 
    useEffect(() => {
-      const formatPrice = Number(typeof orderPrice === 'string' ? orderPrice.split(',').join('') : orderPrice);
-      setOrderTotal(Decimal.format(formatPrice * Number(orderVolume.includes(',') ? orderVolume?.split(',')?.join('') : orderVolume), pricePrecision, ','));
+      const formatPrice = Number(
+         typeof orderPrice === 'string'
+            ? orderPrice.split(',').join('')
+            : orderPrice
+      );
+      setOrderTotal(
+         Decimal.format(
+            formatPrice *
+               Number(
+                  orderVolume.includes(',')
+                     ? orderVolume?.split(',')?.join('')
+                     : orderVolume
+               ),
+            pricePrecision,
+            ','
+         )
+      );
       handleResetSlider();
       console.log('effect :>> ', 3);
    }, [orderPrice]);
 
    useEffect(() => {
       if (slide > 0 && convertPrice()) {
-         setOrderVolume(Decimal.format((availableQuote * slide) / convertPrice(), amountPrecision, ','));
+         setOrderVolume(
+            Decimal.format(
+               (availableQuote * slide) / convertPrice(),
+               amountPrecision,
+               ','
+            )
+         );
          const formatVolume = (availableQuote * slide) / convertPrice();
-         setOrderTotal(Decimal.format(convertPrice() * formatVolume, pricePrecision, ','));
+         setOrderTotal(
+            Decimal.format(convertPrice() * formatVolume, pricePrecision, ',')
+         );
          console.log('effect :>> ', 4);
          console.log(slide);
       }
@@ -107,19 +134,53 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    const handleChangePrice = (value: string) => {
       const formatPrice = value.split(',').join('');
       setListenPrice(value);
-      setOrderTotal(Decimal.format(+formatPrice * Number(orderVolume), pricePrecision, ','));
-      ((+formatPrice < +minPrice) && value.length) ? setPriceError(`Minimum price ${Decimal.format(minPrice, pricePrecision, ',')} ${from}`) : ((+formatPrice > maxPrice) && value.length) ? setPriceError(`Maximum price ${Decimal.format(maxPrice, pricePrecision, ',')} ${from}`) : setPriceError('');
-   }
+      setOrderTotal(
+         Decimal.format(+formatPrice * Number(orderVolume), pricePrecision, ',')
+      );
+      +formatPrice < +minPrice && value.length
+         ? setPriceError(
+              `Minimum price ${Decimal.format(
+                 minPrice,
+                 pricePrecision,
+                 ','
+              )} ${from}`
+           )
+         : +formatPrice > maxPrice && value.length
+         ? setPriceError(
+              `Maximum price ${Decimal.format(
+                 maxPrice,
+                 pricePrecision,
+                 ','
+              )} ${from}`
+           )
+         : setPriceError('');
+   };
 
    const handleChangeAmount = (value: string) => {
-      ((+value < minAmount) && value.length) ? setAmountError(`Minimum amount ${Decimal.format(minAmount, amountPrecision, ',')} ${from}`) : ((+value * convertPrice()) > availableQuote) ? setAmountError('Balance is insufficient') : setAmountError('');
-      const convertedValue = cleanPositiveFloatInput(value)
+      +value < minAmount && value.length
+         ? setAmountError(
+              `Minimum amount ${Decimal.format(
+                 minAmount,
+                 amountPrecision,
+                 ','
+              )} ${from}`
+           )
+         : +value * convertPrice() > availableQuote
+         ? setAmountError('Balance is insufficient')
+         : setAmountError('');
+      const convertedValue = cleanPositiveFloatInput(value);
       if (convertedValue.match(precisionRegExp(amountPrecision))) {
          setOrderVolume(convertedValue);
-         setOrderTotal(Decimal.format(convertPrice() * Number(convertedValue), pricePrecision, ','));
+         setOrderTotal(
+            Decimal.format(
+               convertPrice() * Number(convertedValue),
+               pricePrecision,
+               ','
+            )
+         );
          setSlide(0);
          handleResetSlider();
-      };
+      }
       // if (value === '') {
       //    setOrderVolume(amountVolume);
       // } else {
@@ -131,7 +192,7 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
       //       handleResetSlider();
       //    };
       // }
-   }
+   };
 
    const handleChangePercentage = (a, b, c) => setSlide(c[0] / 100);
 
@@ -147,54 +208,79 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
       setOrderVolume('');
       setOrderTotal('');
       handleResetSlider();
-   }
+   };
 
    const onSubmit = () => {
       const value: IOrderProps = {
          side: 'buy',
-         price: typeof listenPrice === 'string' ? listenPrice.split(',').join('') : listenPrice,
+         price:
+            typeof listenPrice === 'string'
+               ? listenPrice.split(',').join('')
+               : listenPrice,
          volume: orderVolume,
-      }
+      };
       handleOrder(value);
       resetState();
       handleOrderConfirm();
-   }
+   };
 
    const isDisabled = (): boolean => {
       const invalidAmount = Number(orderVolume) <= 0;
-      const invalidLimitPrice = orderType === 'limit' && (Number(listenPrice) <= 0);
-      return disabled || !availableQuote || invalidAmount || invalidLimitPrice || +Number(listenPrice) > +availableQuote
-         || +availableQuote < +minPrice || +orderVolume < +minAmount || (orderType === 'limit' && +availableQuote < (+orderVolume * + convertPrice()));
-   }
+      const invalidLimitPrice =
+         orderType === 'limit' && Number(listenPrice) <= 0;
+      return (
+         disabled ||
+         !availableQuote ||
+         invalidAmount ||
+         invalidLimitPrice ||
+         +Number(listenPrice) > +availableQuote ||
+         +availableQuote < +minPrice ||
+         +orderVolume < +minAmount ||
+         (orderType === 'limit' &&
+            +availableQuote < +orderVolume * +convertPrice())
+      );
+   };
 
-   const convertPrice = () => Number(typeof listenPrice === 'string' ? listenPrice.split(',').join('') : listenPrice);
+   const convertPrice = () =>
+      Number(
+         typeof listenPrice === 'string'
+            ? listenPrice.split(',').join('')
+            : listenPrice
+      );
 
-   const totalPriceMarket = () => orderType === 'market' && Decimal.format(totalPrice(), pricePrecision, ',')
+   const totalPriceMarket = () =>
+      orderType === 'market' &&
+      Decimal.format(totalPrice(), pricePrecision, ',');
 
-   const totalPrice = () => getTotalPrice(orderVolume, Number(priceMarket), asks);
-   const safePrice = () => totalPrice() / Number(orderVolume) || Number(priceMarket);
+   const totalPrice = () =>
+      getTotalPrice(orderVolume, Number(priceMarket), asks);
+   const safePrice = () =>
+      totalPrice() / Number(orderVolume) || Number(priceMarket);
    // const handleSetValue = (value: string | number | undefined, defaultValue: string) => (
    //    value || defaultValue
    // );
 
    const safeAmount = Number(orderVolume) || 0;
-   const total = orderType === 'market'
-      ? totalPrice() : safeAmount * (convertPrice() || 0);
+   const total =
+      orderType === 'market'
+         ? totalPrice()
+         : safeAmount * (convertPrice() || 0);
 
    console.log('safePrice() :>> ', safePrice());
    console.log('total :>> ', total);
 
    return (
       <>
-         <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
-            <div className="flex items-center justify-between mb-4">
-               <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+         <div className="my-0 mx-4 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
+            <div className="mb-4 flex items-center justify-between">
+               <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                   Buy {to}
                </div>
                <div className="flex items-center space-x-1">
-                  <IcWallet className="w-4 h-4 fill-neutral2 dark:fill-neutral4 transition-colors duration-300" />
+                  <IcWallet className="h-4 w-4 fill-neutral2 transition-colors duration-300 dark:fill-neutral4" />
                   <div className="text-xs font-semibold leading-custom1">
-                     {Decimal.format(availableQuote, pricePrecision, ',')} {from}
+                     {Decimal.format(availableQuote, pricePrecision, ',')}{' '}
+                     {from}
                   </div>
                </div>
             </div>
@@ -226,18 +312,26 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
          </pre> */}
             <form className="flex flex-col space-y-3">
                <InputCurrency
-                  titleLeft={translate('page.body.trade.header.newOrder.content.price')}
+                  titleLeft={translate(
+                     'page.body.trade.header.newOrder.content.price'
+                  )}
                   titleRight={from}
                   placeholder={orderType === 'market' ? 'Market' : ''}
                   disabled={orderType === 'market'}
                   value={orderType === 'market' ? '' : listenPrice}
                   onChange={handleChangePrice}
-                  className={orderType === 'market' ? '!bg-neutral7 dark:!bg-shade1' : ''}
+                  className={
+                     orderType === 'market'
+                        ? '!bg-neutral7 dark:!bg-shade1'
+                        : ''
+                  }
                   withError={!!priceError.length}
                   info={priceError}
                />
                <InputOrder
-                  titleLeft={translate('page.body.trade.header.newOrder.content.amount')}
+                  titleLeft={translate(
+                     'page.body.trade.header.newOrder.content.amount'
+                  )}
                   titleRight={to}
                   value={orderVolume === '' ? '' : orderVolume}
                   onChange={handleChangeAmount}
@@ -253,17 +347,23 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
                   }}
                   range={{
                      min: 0,
-                     max: 100
+                     max: 100,
                   }}
                   start={0}
                   onSlide={handleChangePercentage}
                />
                <InputOrder
-                  titleLeft={translate('page.body.trade.header.newOrder.content.total')}
+                  titleLeft={translate(
+                     'page.body.trade.header.newOrder.content.total'
+                  )}
                   titleRight={from}
                   value={
-                     orderType === 'market' ? totalPriceMarket()
-                        : orderTotal === 'NaN' ? 'Total is too long...' : orderTotal}
+                     orderType === 'market'
+                        ? totalPriceMarket()
+                        : orderTotal === 'NaN'
+                        ? 'Total is too long...'
+                        : orderTotal
+                  }
                   // value={
                   //    orderType === 'market' ? totalPriceMarket()
                   //       : (orderTotal === '' || orderTotal === '0' || orderTotal === '0.00') ? ''
@@ -285,28 +385,43 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
          <Dialog
             isOpen={modalConfirmOrder}
             setIsOpen={handleOrderConfirm}
-            title="Confirm Order"
-         >
+            title="Confirm Order">
             <div className="space-y-2">
                <div className="text-center font-medium leading-normal">
                   You get
                </div>
-               <div className="text-center font-dm font-bold text-3.5xl leading-tight tracking-custom1 uppercase">
-                  &asymp; {Decimal.format(
+               <div className="text-center font-dm text-3.5xl font-bold uppercase leading-tight tracking-custom1">
+                  &asymp;{' '}
+                  {Decimal.format(
                      orderType === 'market'
                         ? String(totalPriceMarket())?.includes(',')
                            ? String(totalPriceMarket())?.split(',')?.join('')
                            : String(totalPriceMarket())
                         : orderTotal?.includes(',')
-                           ? (Number(orderTotal?.split(',')?.join('')) - (taker * Number(orderTotal?.split(',')?.join(''))))
-                           : Number(orderTotal) - (taker * Number(orderTotal)),
-                     pricePrecision, ',') || 0} {from}
+                        ? Number(orderTotal?.split(',')?.join('')) -
+                          taker * Number(orderTotal?.split(',')?.join(''))
+                        : Number(orderTotal) - taker * Number(orderTotal),
+                     pricePrecision,
+                     ','
+                  ) || 0}{' '}
+                  {from}
                </div>
             </div>
             <div className="space-y-3">
                <List
                   left="Price"
-                  right={orderType === 'market' ? 'Market' : Decimal.format(typeof listenPrice === 'string' && listenPrice?.includes(',') ? listenPrice?.split(',')?.join('') : listenPrice, pricePrecision, ',')}
+                  right={
+                     orderType === 'market'
+                        ? 'Market'
+                        : Decimal.format(
+                             typeof listenPrice === 'string' &&
+                                listenPrice?.includes(',')
+                                ? listenPrice?.split(',')?.join('')
+                                : listenPrice,
+                             pricePrecision,
+                             ','
+                          )
+                  }
                   rightAlt={from}
                />
                <List
@@ -331,24 +446,20 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
             />
          </Dialog>
       </>
-   )
-}
+   );
+};
 
 type ListProps = {
    left: string;
    right: string;
    rightAlt?: string;
    classNameRight?: string;
-}
-const List = ({
-   left,
-   right,
-   rightAlt,
-   classNameRight
-}: ListProps) => (
+};
+const List = ({ left, right, rightAlt, classNameRight }: ListProps) => (
    <div className="flex items-center">
       <div className="text-neutral4">{left}</div>
-      <div className={`text-right font-medium ml-auto capitalize ${classNameRight}`}>
+      <div
+         className={`ml-auto text-right font-medium capitalize ${classNameRight}`}>
          {right} <span className="text-neutral4">{rightAlt}</span>
       </div>
    </div>

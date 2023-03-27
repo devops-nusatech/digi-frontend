@@ -1,15 +1,21 @@
-import React, {
-   FunctionComponent,
-   useEffect,
-   useState
-} from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, InputGroup, LayoutProfile, ProfileSidebar } from 'components';
 import { injectIntl } from 'react-intl';
 // import { RouterProps } from 'react-router';
 import { compose } from 'redux';
 import { copyToClipboard, setDocumentTitle } from '../../helpers';
-import { alertPush, generate2faQRFetch, RootState, selectTwoFactorAuthBarcode, selectTwoFactorAuthQR, selectTwoFactorAuthSuccess, selectUserInfo, toggle2faFetch, User } from 'modules';
+import {
+   alertPush,
+   generate2faQRFetch,
+   RootState,
+   selectTwoFactorAuthBarcode,
+   selectTwoFactorAuthQR,
+   selectTwoFactorAuthSuccess,
+   selectUserInfo,
+   toggle2faFetch,
+   User,
+} from 'modules';
 import { connect, MapDispatchToProps, MapStateToProps } from 'react-redux';
 import { IntlProps } from 'index';
 
@@ -41,7 +47,7 @@ const TwoFAFC = ({
    intl,
    qrUrl,
    toggle2fa,
-   success
+   success,
 }: Props) => {
    const [otpCode, setOtpCode] = useState<string>('');
    useEffect(() => {
@@ -76,7 +82,16 @@ const TwoFAFC = ({
 
    const renderTwoFactorAuthQR = (barcode: string) => {
       const src = `data:image/png;base64,${barcode}`;
-      return barcode.length > 0 && <img className="w-full" src={src} alt="Qr code" title="Scan me" />;
+      return (
+         barcode.length > 0 && (
+            <img
+               className="w-full"
+               src={src}
+               alt="Qr code"
+               title="Scan me"
+            />
+         )
+      );
    };
 
    const handleOnKeyPress = (e: React.KeyboardEvent) => {
@@ -90,15 +105,14 @@ const TwoFAFC = ({
    const handleCopy = (url: string, type: string) => {
       copyToClipboard(url);
       fetchSuccess({ message: [`${type} Copied`], type: 'success' });
-   }
+   };
 
    const renderIconCopied = (title: string) => (
       <button
-         className="cursor-copy group"
+         className="group cursor-copy"
          onClick={() => handleCopy(secret, title)}
-         title="Copy referral"
-      >
-         <svg className="w-6 h-6 group-hover:scale-110 fill-neutral4 group-hover:fill-neutral3 dark:group-hover:fill-neutral5 transition-transform duration-200">
+         title="Copy referral">
+         <svg className="h-6 w-6 fill-neutral4 transition-transform duration-200 group-hover:scale-110 group-hover:fill-neutral3 dark:group-hover:fill-neutral5">
             <use xlinkHref="#icon-copy" />
          </svg>
       </button>
@@ -111,24 +125,36 @@ const TwoFAFC = ({
             display: 'Home',
             href: '/',
             active: 'TFA',
-         }}
-      >
+         }}>
          <ProfileSidebar />
-         <div className="grow p-4 md:px-8 lg:p-10 shadow-card2 rounded-2xl bg-neutral8 dark:bg-shade1">
-            <div className="mb-4 text-4.5xl leading-1.2 tracking-custom1 font-dm font-bold">
+         <div className="grow rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 lg:p-10">
+            <div className="mb-4 font-dm text-4.5xl font-bold leading-1.2 tracking-custom1">
                2FA
-               <span className={otp ? 'text-primary5' : 'text-primary4'}> {otp ? 'Enabled' : 'Disabled'}</span>
+               <span className={otp ? 'text-primary5' : 'text-primary4'}>
+                  {' '}
+                  {otp ? 'Enabled' : 'Disabled'}
+               </span>
             </div>
             <div className="mb-10 text-xs leading-custom4 text-neutral4">
-               If you want to {!otp ? 'turn on' : 'turn off'} 2FA, input your the six-digit code provided by the Google Authenticator app below, then click <span className="font-semibold text-neutral3 dark:text-neutral5">" {!otp ? 'Enabled' : 'Disabled'} 2FA"</span>.
+               If you want to {!otp ? 'turn on' : 'turn off'} 2FA, input your
+               the six-digit code provided by the Google Authenticator app
+               below, then click{' '}
+               <span className="font-semibold text-neutral3 dark:text-neutral5">
+                  " {!otp ? 'Enabled' : 'Disabled'} 2FA"
+               </span>
+               .
             </div>
-            <div className="mb-2 text-2xl leading-custom2 font-semibold tracking-custom1">
+            <div className="mb-2 text-2xl font-semibold leading-custom2 tracking-custom1">
                {!otp ? 'Enabled' : 'Disabled'} 2FA
             </div>
             <div className="mb-6 text-neutral3 dark:text-neutral5">
-               {!otp ? 'Scan SQ code by the Google Authenticator app to Enable the 2FA verification.' : 'Enter your the six-digit code provided by the Google Authenticator app to Disable the 2FA verification'}
+               {!otp
+                  ? 'Scan SQ code by the Google Authenticator app to Enable the 2FA verification.'
+                  : 'Enter your the six-digit code provided by the Google Authenticator app to Disable the 2FA verification'}
             </div>
-            <div className="space-y-8" onKeyPress={handleOnKeyPress}>
+            <div
+               className="space-y-8"
+               onKeyPress={handleOnKeyPress}>
                <div className="flex space-x-4">
                   {!otp && (
                      <InputGroup
@@ -152,12 +178,15 @@ const TwoFAFC = ({
                   />
                </div>
                {!otp && (
-                  <div className="flex bg-neutral7 dark:bg-neutral2 rounded-2xl">
-                     <div className="max-w-64 mt-16 mx-auto py-8 px-12 bg-neutral8 dark:bg-neutral3 rounded-t-5xl">
-                        <div className="p-4 rounded-lg border-2 border-dashed border-primary1">
+                  <div className="flex rounded-2xl bg-neutral7 dark:bg-neutral2">
+                     <div className="mx-auto mt-16 max-w-64 rounded-t-5xl bg-neutral8 py-8 px-12 dark:bg-neutral3">
+                        <div className="rounded-lg border-2 border-dashed border-primary1 p-4">
                            {!otp && renderTwoFactorAuthQR(barcode)}
                         </div>
-                        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" rel="noopener noreferrer" target="_blank">
+                        <a
+                           href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
+                           rel="noopener noreferrer"
+                           target="_blank">
                            <Button
                               text="Download app"
                               variant="outline"
@@ -171,7 +200,7 @@ const TwoFAFC = ({
                <div className="text-center">
                   <Button
                      text={!otp ? 'Enabled 2FA' : 'Disabled 2FA'}
-                     variant={otp ? 'orange' : 'green'}
+                     variant={otp ? 'orange' : 'primary'}
                      onClick={submitHandler}
                      disabled={otpCode.length < 6}
                      width="noFull"
@@ -180,10 +209,14 @@ const TwoFAFC = ({
             </div>
          </div>
       </LayoutProfile>
-   )
-}
+   );
+};
 
-const mapStateToProps: MapStateToProps<ReduxProps, Props, RootState> = state => ({
+const mapStateToProps: MapStateToProps<
+   ReduxProps,
+   Props,
+   RootState
+> = state => ({
    user: selectUserInfo(state),
    qrUrl: selectTwoFactorAuthQR(state),
    barcode: selectTwoFactorAuthBarcode(state),

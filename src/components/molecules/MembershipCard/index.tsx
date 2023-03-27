@@ -1,9 +1,9 @@
-import { Button, Decimal } from 'components'
-import { Membership, selectSonic } from 'modules';
-import React, { ReactNode } from 'react'
-import { useSelector } from 'react-redux';
+import { Button, Decimal } from 'components';
+import { Membership } from 'modules';
+import React, { ReactNode } from 'react';
+import { platformCurrency } from 'api';
 
-interface MembershipCard {
+interface MembershipCardProps {
    banner: ReactNode;
    tier: Membership['tier'];
    directReff: string;
@@ -18,18 +18,15 @@ export const MembershipCard = ({
    directReff,
    subReff,
    withdrawLimit1H,
-   onClick
-}: MembershipCard) => {
-   const { peatio_platform_currency } = useSelector(selectSonic);
+   onClick,
+}: MembershipCardProps) => {
    return (
-      <div className="snap-start shrink-0 first:pl-3 last:pr-3">
-         <div className="space-y-3.5 rounded-2xl shadow-thin hover:shadow-lg dark:hover:bg-neutral2 px-3 py-6 cursor-pointer transition-all duration-200">
+      <div className="shrink-0 snap-start first:pl-3 last:pr-3">
+         <div className="cursor-pointer space-y-3.5 rounded-2xl px-3 py-6 shadow-thin transition-all duration-200 hover:shadow-lg dark:hover:bg-neutral2">
             {banner}
-            <div className="text-base font-medium">
-               Reward {tier}
-            </div>
+            <div className="text-base font-medium">Reward {tier}</div>
             <div className="space-y-3">
-               <div className="flex gap-2 justify-between items-center">
+               <div className="flex items-center justify-between gap-2">
                   <div className="text-neutral3">
                      Refferal Comision on Direct
                   </div>
@@ -37,7 +34,7 @@ export const MembershipCard = ({
                      {+directReff * 100}%
                   </div>
                </div>
-               <div className="flex gap-2 justify-between items-center">
+               <div className="flex items-center justify-between gap-2">
                   <div className="text-neutral3">
                      Refferal Comision 1st Level
                   </div>
@@ -45,12 +42,11 @@ export const MembershipCard = ({
                      {+subReff * 100}%
                   </div>
                </div>
-               <div className="flex gap-2 justify-between items-center">
-                  <div className="text-neutral3">
-                     Withdraw Limit
-                  </div>
+               <div className="flex items-center justify-between gap-2">
+                  <div className="text-neutral3">Withdraw Limit</div>
                   <div className="text-base font-medium text-neutral4">
-                     {Decimal.format(withdrawLimit1H, 0, ',')} {peatio_platform_currency?.toUpperCase()} /Day
+                     {Decimal.format(withdrawLimit1H, 0, ',')}{' '}
+                     {platformCurrency()?.toUpperCase()} /Day
                   </div>
                </div>
             </div>
@@ -64,5 +60,5 @@ export const MembershipCard = ({
             </div>
          </div>
       </div>
-   )
-}
+   );
+};

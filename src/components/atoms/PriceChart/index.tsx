@@ -11,5 +11,5 @@ export const PriceChart = (props: HighchartsReact.Props) => {
          options={props.options}
          {...props}
       />
-   )
-}
+   );
+};

@@ -3,7 +3,7 @@ import React, {
    useEffect,
    useState,
    KeyboardEvent,
-   useRef
+   useRef,
 } from 'react';
 import { injectIntl } from 'react-intl';
 import {
@@ -14,12 +14,8 @@ import {
 import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { IntlProps } from '../../..';
-import {
-   Captcha,
-   FormChangeNewPassword,
-   LayoutAuth
-} from 'components';
+import { IntlProps } from 'index';
+import { Captcha, FormChangeNewPassword, LayoutAuth } from 'components';
 import { truncateMiddle } from 'helpers';
 import {
    changeForgotPasswordFetch,
@@ -45,13 +41,16 @@ type State = {
    isRendered: 0 | 1;
    otpCode: string;
    password: string;
-}
+};
 
 interface ReduxProps {
    forgotPasswordRequested: boolean;
    forgotPasswordChanged: boolean;
    configs: Configs;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
    success: boolean;
@@ -71,12 +70,12 @@ type OwnProps = {
          email: string;
       };
    };
-}
+};
 
 type PasswordProps = {
    password: string;
    confirm_password: string;
-}
+};
 
 type Props = RouterProps & DispatchProps & OwnProps & ReduxProps & IntlProps;
 
@@ -107,7 +106,8 @@ const ChangeForgotPasswordFC = ({
 
    useDocumentTitle('Change forgotten password');
    useEffect(() => {
-      forgotPasswordChanged && history.push('/login', { email: location.state?.email, password });
+      forgotPasswordChanged &&
+         history.push('/login', { email: location.state?.email, password });
    }, [forgotPasswordChanged]);
    useEffect(() => {
       if (configs.captcha_type !== 'none') {
@@ -119,38 +119,43 @@ const ChangeForgotPasswordFC = ({
 
    const translate = (id: string) => intl.formatMessage({ id });
 
-   const handleChangeOTP = (otpCode: string) => setState({
-      ...state,
-      otpCode
-   });
+   const handleChangeOTP = (otpCode: string) =>
+      setState({
+         ...state,
+         otpCode,
+      });
 
-   const handleChangeRendered = () => setState({
-      ...state,
-      isRendered: isRendered == 1 ? 0 : 1
-   });
+   const handleChangeRendered = () =>
+      setState({
+         ...state,
+         isRendered: isRendered == 1 ? 0 : 1,
+      });
 
    const handleSendNewPassword = ({
       password,
-      confirm_password
+      confirm_password,
    }: PasswordProps) => {
       changeForgotPasswordFetch({
          password,
          confirm_password,
          reset_password_token: otpCode,
-         email: location.state?.email
+         email: location.state?.email,
       });
       setState({
          ...state,
-         password
+         password,
       });
-   }
+   };
 
    const handleResendGenerateCode = () => {
       if (location.state?.email && isRendered === 0) {
          switch (configs.captcha_type) {
             case 'recaptcha':
             case 'geetest':
-               fetchForgotPassword({ email: location.state?.email, captcha_response });
+               fetchForgotPassword({
+                  email: location.state?.email,
+                  captcha_response,
+               });
                break;
             default:
                fetchForgotPassword({ email: location.state?.email });
@@ -160,22 +165,24 @@ const ChangeForgotPasswordFC = ({
       } else {
          history.push('/forgot_password');
       }
-   }
+   };
 
-   const renderCaptcha = () => <Captcha geetestCaptchaRef={geetestCaptchaRef} />;
+   const renderCaptcha = () => (
+      <Captcha geetestCaptchaRef={geetestCaptchaRef} />
+   );
 
    const handleOnKeyPress = (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === 'Enter') {
          switch (isRendered) {
             case 0:
-               return handleChangeRendered()
+               return handleChangeRendered();
             case 1:
-               return handleResendGenerateCode()
+               return handleResendGenerateCode();
             default:
                return;
          }
       }
-   }
+   };
 
    const isDisabled = () => {
       if (isRendered === 0 && otpCode.length < 6) {
@@ -185,18 +192,30 @@ const ChangeForgotPasswordFC = ({
          return true;
       }
       return false;
-   }
+   };
 
    return (
       <LayoutAuth
          linkTo="/register"
          linkToTxt={translate('page.body.landing.header.button3')}
          descLinkTo="Don’t have an account?"
-         title={`${isRendered === 0 ? 'PIN forgot password' : translate('page.header.signIn.resetPassword.newPassword')}`}
-         subTitle={`${isRendered === 0 ? 'To reset your password, please complete the following verification. Enter the 6 digit code received by ' : ''}`}
-         withSubTitleOneOfBold={`${isRendered === 0 ? (location?.state && (truncateMiddle(location?.state?.email ?? '', 12, '***'))) : ''}`}
-         onKeyPress={handleOnKeyPress}
-      >
+         title={`${
+            isRendered === 0
+               ? 'PIN forgot password'
+               : translate('page.header.login.resetPassword.newPassword')
+         }`}
+         subTitle={`${
+            isRendered === 0
+               ? 'To reset your password, please complete the following verification. Enter the 6 digit code received by '
+               : ''
+         }`}
+         withSubTitleOneOfBold={`${
+            isRendered === 0
+               ? location?.state &&
+                 truncateMiddle(location?.state?.email ?? '', 12, '***')
+               : ''
+         }`}
+         onKeyPress={handleOnKeyPress}>
          <FormChangeNewPassword
             geetestCaptchaRef={geetestCaptchaRef}
             isRendered={isRendered}
@@ -209,11 +228,16 @@ const ChangeForgotPasswordFC = ({
             isLoading={isLoading}
             translate={translate}
             renderCaptcha={renderCaptcha()}
-            handleResendGenerateCode={configs.captcha_type !== 'none' ? useShowGeetestCaptcha : handleResendGenerateCode}
+            handleResendGenerateCode={
+               configs.captcha_type !== 'none'
+                  ? useShowGeetestCaptcha
+                  : handleResendGenerateCode
+            }
+            captcha_response={captcha_response}
          />
       </LayoutAuth>
-   )
-}
+   );
+};
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    forgotPasswordRequested: selectForgotPasswordSuccess(state),
@@ -227,14 +251,18 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    isLoading: selectChangeForgotPasswordLoading(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
-   changeForgotPasswordFetch: credentials => dispatch(changeForgotPasswordFetch(credentials)),
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   changeForgotPasswordFetch: credentials =>
+      dispatch(changeForgotPasswordFetch(credentials)),
    fetchForgotPassword: credentials => dispatch(forgotPassword(credentials)),
-   resetCaptchaState: () => dispatch(resetCaptchaState())
+   resetCaptchaState: () => dispatch(resetCaptchaState()),
 });
 
 export const ChangeForgotPassword = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(ChangeForgotPasswordFC) as FunctionComponent;

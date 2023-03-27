@@ -1,44 +1,43 @@
 import * as React from 'react';
 
 interface PaginationProps {
-    /**
-     * Number shows first element index in pagination
-     */
-    firstElemIndex: number;
-    /**
-     * Number shows last element index in pagination
-     */
-    lastElemIndex: number;
-    /**
-     * Previous page click handler
-     */
-    onClickPrevPage: () => void;
-    /**
-     * Next page click handler
-     */
-    onClickNextPage: () => void;
-    /**
-     * Number shows current page index
-     */
-    page: number;
-    /**
-     * Value for defining if next page exist or not
-     */
-    nextPageExists: boolean;
-    /**
-     * Number shows total amount of elements
-     */
-    total?: number;
-    /**
-     * Separator between first and last values
-     */
-    separator?: string;
-    /**
-     * Text before total value
-     */
-    totalText?: string;
+   /**
+    * Number shows first element index in pagination
+    */
+   firstElemIndex: number;
+   /**
+    * Number shows last element index in pagination
+    */
+   lastElemIndex: number;
+   /**
+    * Previous page click handler
+    */
+   onClickPrevPage: () => void;
+   /**
+    * Next page click handler
+    */
+   onClickNextPage: () => void;
+   /**
+    * Number shows current page index
+    */
+   page: number;
+   /**
+    * Value for defining if next page exist or not
+    */
+   nextPageExists: boolean;
+   /**
+    * Number shows total amount of elements
+    */
+   total?: number;
+   /**
+    * Separator between first and last values
+    */
+   separator?: string;
+   /**
+    * Text before total value
+    */
+   totalText?: string;
 }
-
 
 // interface PreviousIconProps {
 //     /**
@@ -90,71 +89,64 @@ interface PaginationProps {
  * Pagination component helper for tables
  */
 class Pagination extends React.Component<PaginationProps> {
-    public renderInfoElement = () => {
-        const {
-            firstElemIndex,
-            lastElemIndex,
-            separator,
-            total,
-            totalText,
-        } = this.props;
+   public renderInfoElement = () => {
+      const { firstElemIndex, lastElemIndex, separator, total, totalText } =
+         this.props;
 
-        if (total) {
-            return (
-                <p>
-                    <span>{firstElemIndex}</span>
-                    <span>{separator || ' - '}</span>
-                    <span>{lastElemIndex}</span>
-                    <span>{totalText || ' of '}</span>
-                    <span>{total}</span>
-                </p>
-            );
-        }
-
-        return (
+      if (total) {
+         return (
             <p>
-                <span>{firstElemIndex}</span>
-                <span>{separator || ' - '}</span>
-                <span>{lastElemIndex}</span>
+               <span>{firstElemIndex}</span>
+               <span>{separator || ' - '}</span>
+               <span>{lastElemIndex}</span>
+               <span>{totalText || ' of '}</span>
+               <span>{total}</span>
             </p>
-        );
-    };
+         );
+      }
 
-    public render() {
-        const {page, nextPageExists } = this.props;
-        const prevDisabled = page === 0;
-        const nextDisabled = !nextPageExists;
+      return (
+         <p>
+            <span>{firstElemIndex}</span>
+            <span>{separator || ' - '}</span>
+            <span>{lastElemIndex}</span>
+         </p>
+      );
+   };
 
-        return (
-            <div className="flex items-center justify-between">
-                {this.renderInfoElement()}
-                <div className="space-x-3">
-                  {/* <button
+   public render() {
+      const { page, nextPageExists } = this.props;
+      const prevDisabled = page === 0;
+      const nextDisabled = !nextPageExists;
+
+      return (
+         <div className="flex items-center justify-between">
+            {this.renderInfoElement()}
+            <div className="space-x-3">
+               {/* <button
                      className="pg-history__pagination-prev"
                      onClick={this.onClickPrevPage}
                      disabled={prevDisabled}
                   >
                      <PreviousIcon disabled={prevDisabled}/>
                   </button> */}
-                  <button
-                        onClick={this.onClickPrevPage}
-                        disabled={prevDisabled}
-                        className={`w-8 h-8 bg-primary1 rounded-full disabled:cursor-not-allowed disabled:bg-neutral5 disabled:hover:bg-none disabled:dark:bg-neutral3 hover:bg-primary2 transition-all duration-300`}
-                     >
-                        <svg className="rotate-180 translate-x-2 w-4 h-4 fill-neutral8">
-                           <use xlinkHref="#icon-arrow-next" />
-                        </svg>
-                     </button>
-                  <button
-                        onClick={this.onClickNextPage}
-                        disabled={nextDisabled}
-                        className={`w-8 h-8 bg-primary1 rounded-full disabled:cursor-not-allowed disabled:bg-neutral5 disabled:hover:bg-none disabled:dark:bg-neutral3 hover:bg-primary2 transition-all duration-300`}
-                     >
-                        <svg className="translate-x-2 w-4 h-4 fill-neutral8">
-                           <use xlinkHref="#icon-arrow-next" />
-                        </svg>
-                     </button>
-                  {/* <button
+               <button
+                  onClick={this.onClickPrevPage}
+                  disabled={prevDisabled}
+                  className={`h-8 w-8 rounded-full bg-primary1 transition-all duration-300 hover:bg-primary2 disabled:cursor-not-allowed disabled:bg-neutral5 disabled:hover:bg-none disabled:dark:bg-neutral3`}>
+                  <svg className="h-4 w-4 translate-x-2 rotate-180 fill-neutral8">
+                     <use xlinkHref="#icon-arrow-next" />
+                  </svg>
+               </button>
+               <button
+                  onClick={this.onClickNextPage}
+                  disabled={nextDisabled}
+                  className={`h-8 w-8 rounded-full bg-primary1 transition-all duration-300 hover:bg-primary2 disabled:cursor-not-allowed disabled:bg-neutral5 disabled:hover:bg-none disabled:dark:bg-neutral3`}>
+                  <svg className="h-4 w-4 translate-x-2 fill-neutral8">
+                     <use xlinkHref="#icon-arrow-next" />
+                  </svg>
+               </button>
+               {/* <button
                      className="pg-history__pagination-next"
                      onClick={this.onClickNextPage}
                      disabled={nextDisabled}
@@ -170,26 +162,24 @@ class Pagination extends React.Component<PaginationProps> {
                      </button>
                      <NextPageIcon disabled={nextDisabled}/>
                   </button> */}
-                </div>
             </div>
-        );
-    }
+         </div>
+      );
+   }
 
-    private onClickPrevPage = () => {
-        if (this.props.page === 0) {
-            return;
-        }
-        this.props.onClickPrevPage();
-    };
+   private onClickPrevPage = () => {
+      if (this.props.page === 0) {
+         return;
+      }
+      this.props.onClickPrevPage();
+   };
 
-    private onClickNextPage = () => {
-        if (!this.props.nextPageExists) {
-            return;
-        }
-        this.props.onClickNextPage();
-    };
+   private onClickNextPage = () => {
+      if (!this.props.nextPageExists) {
+         return;
+      }
+      this.props.onClickNextPage();
+   };
 }
 
-export {
-    Pagination,
-};
+export { Pagination };

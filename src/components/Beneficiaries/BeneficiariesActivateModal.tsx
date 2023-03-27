@@ -18,10 +18,10 @@ interface Props {
    isOpenConfirmationModal: boolean;
 }
 
-
 const BeneficiariesActivateModalComponent: React.FC<Props> = (props: Props) => {
    const [confirmationModalCode, setConfirmationModalCode] = React.useState('');
-   const [confirmationModalCodeFocused, setConfirmationModalCodeFocused] = React.useState(false);
+   const [confirmationModalCodeFocused, setConfirmationModalCodeFocused] =
+      React.useState(false);
 
    const { formatMessage } = useIntl();
    const dispatch = useDispatch();
@@ -30,9 +30,12 @@ const BeneficiariesActivateModalComponent: React.FC<Props> = (props: Props) => {
 
    const { handleToggleConfirmationModal, beneficiariesAddData } = props;
 
-   const handleChangeFieldValue = React.useCallback((key: string, value: string) => {
-      setConfirmationModalCode(value);
-   }, []);
+   const handleChangeFieldValue = React.useCallback(
+      (key: string, value: string) => {
+         setConfirmationModalCode(value);
+      },
+      []
+   );
 
    const handleChangeFieldFocus = React.useCallback((key: string) => {
       setConfirmationModalCodeFocused(v => !v);
@@ -43,14 +46,16 @@ const BeneficiariesActivateModalComponent: React.FC<Props> = (props: Props) => {
       setConfirmationModalCodeFocused(false);
    }, []);
 
-   const handleClickToggleConfirmationModal = React.useCallback((clear?: boolean) => () => {
-      handleToggleConfirmationModal();
+   const handleClickToggleConfirmationModal = React.useCallback(
+      (clear?: boolean) => () => {
+         handleToggleConfirmationModal();
 
-      if (clear) {
-         handleClearModalsInputs();
-      }
-   }, [handleToggleConfirmationModal, handleClearModalsInputs]);
-
+         if (clear) {
+            handleClearModalsInputs();
+         }
+      },
+      [handleToggleConfirmationModal, handleClearModalsInputs]
+   );
 
    const handleSubmitConfirmationModal = React.useCallback(() => {
       if (beneficiariesAddData) {
@@ -63,7 +68,12 @@ const BeneficiariesActivateModalComponent: React.FC<Props> = (props: Props) => {
       }
 
       handleClearModalsInputs();
-   }, [confirmationModalCode, dispatch, beneficiariesAddData, handleClearModalsInputs]);
+   }, [
+      confirmationModalCode,
+      dispatch,
+      beneficiariesAddData,
+      handleClearModalsInputs,
+   ]);
 
    const handleResendConfirmationCode = React.useCallback(() => {
       if (beneficiariesAddData) {
@@ -75,52 +85,73 @@ const BeneficiariesActivateModalComponent: React.FC<Props> = (props: Props) => {
       }
    }, [beneficiariesAddData, dispatch]);
 
-   const renderConfirmationModalBodyItem = React.useCallback((field: string, optional?: boolean) => {
-      const focusedClass = classnames('cr-email-form__group', {
-         'cr-email-form__group--focused': confirmationModalCodeFocused,
-         'cr-email-form__group--optional': optional,
-      });
+   const renderConfirmationModalBodyItem = React.useCallback(
+      (field: string, optional?: boolean) => {
+         const focusedClass = classnames('cr-email-form__group', {
+            'cr-email-form__group--focused': confirmationModalCodeFocused,
+            'cr-email-form__group--optional': optional,
+         });
 
-      return (
-         <div key={field} className={focusedClass}>
-            <InputGroup
-               type="text"
-               autoFocus={true}
-               label={formatMessage({ id: `page.body.wallets.beneficiaries.confirmationModal.body.${field}` })}
-               onChange={value => handleChangeFieldValue(field, value)}
-               value={confirmationModalCode}
-               onFocus={() => handleChangeFieldFocus(`${field}Focused`)}
-            />
-         </div>
-      );
-   }, [confirmationModalCodeFocused, confirmationModalCode, formatMessage, handleChangeFieldFocus, handleChangeFieldValue]);
+         return (
+            <div
+               key={field}
+               className={focusedClass}>
+               <InputGroup
+                  type="text"
+                  autoFocus={true}
+                  label={formatMessage({
+                     id: `page.body.wallets.beneficiaries.confirmationModal.body.${field}`,
+                  })}
+                  onChange={value => handleChangeFieldValue(field, value)}
+                  value={confirmationModalCode}
+                  onFocus={() => handleChangeFieldFocus(`${field}Focused`)}
+               />
+            </div>
+         );
+      },
+      [
+         confirmationModalCodeFocused,
+         confirmationModalCode,
+         formatMessage,
+         handleChangeFieldFocus,
+         handleChangeFieldValue,
+      ]
+   );
 
    const renderConfirmationModalBody = React.useCallback(() => {
       const isDisabled = confirmationModalCode.length < 6;
 
       return (
          <div className="space-y-8">
-            <div className="flex flex-col items-center justify-center text-center mx-auto">
-               <LetterIcon className="w-20 h-20 fill-primary1 transition-colors duration-300" />
+            <div className="mx-auto flex flex-col items-center justify-center text-center">
+               <LetterIcon className="h-20 w-20 fill-primary1 transition-colors duration-300" />
             </div>
-            <div className="text-center space-y-3">
-               <div className="font-medium text-base leading-normal">
-                  {formatMessage({ id: 'page.body.wallets.beneficiaries.confirmationModal.header' })}
+            <div className="space-y-3 text-center">
+               <div className="text-base font-medium leading-normal">
+                  {formatMessage({
+                     id: 'page.body.wallets.beneficiaries.confirmationModal.header',
+                  })}
                </div>
-               <div className="text-xs text-neutral4 leading-custom4">
-                  {formatMessage({ id: 'page.body.wallets.beneficiaries.confirmationModal.body.text' })}
+               <div className="text-xs leading-custom4 text-neutral4">
+                  {formatMessage({
+                     id: 'page.body.wallets.beneficiaries.confirmationModal.body.text',
+                  })}
                </div>
             </div>
             {renderConfirmationModalBodyItem('confirmationModalCode')}
             <div className="flex space-x-4">
                <Button
-                  text={formatMessage({ id: 'page.body.wallets.beneficiaries.confirmationModal.body.resendButton' })}
+                  text={formatMessage({
+                     id: 'page.body.wallets.beneficiaries.confirmationModal.body.resendButton',
+                  })}
                   onClick={handleResendConfirmationCode}
                   variant="outline"
                   width="full"
                />
                <Button
-                  text={formatMessage({ id: 'page.body.wallets.beneficiaries.confirmationModal.body.button' })}
+                  text={formatMessage({
+                     id: 'page.body.wallets.beneficiaries.confirmationModal.body.button',
+                  })}
                   onClick={handleSubmitConfirmationModal}
                   disabled={isDisabled}
                   width="full"
@@ -128,7 +159,13 @@ const BeneficiariesActivateModalComponent: React.FC<Props> = (props: Props) => {
             </div>
          </div>
       );
-   }, [confirmationModalCode, formatMessage, handleResendConfirmationCode, handleSubmitConfirmationModal, renderConfirmationModalBodyItem]);
+   }, [
+      confirmationModalCode,
+      formatMessage,
+      handleResendConfirmationCode,
+      handleSubmitConfirmationModal,
+      renderConfirmationModalBodyItem,
+   ]);
 
    const renderContent = React.useCallback(() => {
       return (
@@ -136,22 +173,26 @@ const BeneficiariesActivateModalComponent: React.FC<Props> = (props: Props) => {
             show={props.isOpenConfirmationModal}
             close={handleClickToggleConfirmationModal(true)}
             zIndexBackdrop={1045}
-            zIndexContent={1046}
-         >
+            zIndexContent={1046}>
             {renderConfirmationModalBody()}
          </Portal>
       );
    }, [renderConfirmationModalBody]);
 
-   return (
-      isMobileDevice ?
-         <Modal
-            onClose={props.handleToggleConfirmationModal}
-            title={formatMessage({ id: 'page.mobile.wallet.withdraw.modal.new.account' })}
-            isOpen>
-            {renderContent()}
-         </Modal> : renderContent()
+   return isMobileDevice ? (
+      <Modal
+         onClose={props.handleToggleConfirmationModal}
+         title={formatMessage({
+            id: 'page.mobile.wallet.withdraw.modal.new.account',
+         })}
+         isOpen>
+         {renderContent()}
+      </Modal>
+   ) : (
+      renderContent()
    );
 };
 
-export const BeneficiariesActivateModal = React.memo(BeneficiariesActivateModalComponent);
+export const BeneficiariesActivateModal = React.memo(
+   BeneficiariesActivateModalComponent
+);

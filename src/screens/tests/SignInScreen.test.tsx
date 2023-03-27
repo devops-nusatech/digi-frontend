@@ -4,22 +4,22 @@ import { connect, Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { IntlProps } from '../../';
 import { rootReducer } from '../../modules';
-import { SignInScreen } from '../SignInScreen';
+import { LoginScreen } from '../LoginScreen';
 
 const store = createStore(rootReducer);
-const Identity = connect()(SignInScreen);
+const Identity = connect()(LoginScreen);
 
 const setup = (props: Partial<IntlProps> = {}) =>
-    shallow(
-        <Provider store={store}>
-            <Identity />
-        </Provider>,
-    );
+   shallow(
+      <Provider store={store}>
+         <Identity />
+      </Provider>
+   );
 
-describe('SignInScreen', () => {
-    const wrapper = setup();
+describe('LoginScreen', () => {
+   const wrapper = setup();
 
-    it('should render', () => {
-        expect(wrapper).toMatchSnapshot();
-    });
+   it('should render', () => {
+      expect(wrapper).toMatchSnapshot();
+   });
 });

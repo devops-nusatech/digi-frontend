@@ -7,7 +7,7 @@ import { useMarket } from 'hooks';
 import { renderCurrencyIcon } from 'helpers';
 
 export const StaticticCurrency = () => {
-   const { marketsData, handleRedirectToTrading, isLoading } = useMarket();
+   const { markets, handleRedirectToTrading, isLoading } = useMarket();
    return (
       <div className="grid grid-cols-4 md:gap-x-8 p-6 mt-4 md:mt-20 lg2:mt-[143px] rounded-3xl bg-neutral7 dark:bg-neutral2">
          {isLoading ? (
@@ -17,7 +17,7 @@ export const StaticticCurrency = () => {
                <Skeleton className="col-span-4 sm:col-span-2 lg:col-span-1" height={196} width={244} rounded="2xl" />
                <Skeleton className="col-span-4 sm:col-span-2 lg:col-span-1" height={196} width={244} rounded="2xl" />
             </>
-         ) : marketsData?.length ? marketsData?.slice(0, 4)?.map(market => (
+         ) : markets?.length ? markets?.slice(0, 4)?.map(market => (
             <div
                key={market.id}
                onClick={() => handleRedirectToTrading(market.id)}

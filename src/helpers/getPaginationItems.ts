@@ -59,7 +59,8 @@ export const getPaginationItems = (
 
       // handle ellipsis not in the middle
       else {
-         const isNearFirstPage = currentPage - firstPage < lastPage - currentPage;
+         const isNearFirstPage =
+            currentPage - firstPage < lastPage - currentPage;
          let remainingLength = maxLength;
 
          if (isNearFirstPage) {
@@ -91,4 +92,4 @@ export const getPaginationItems = (
    }
 
    return res;
-}
+};

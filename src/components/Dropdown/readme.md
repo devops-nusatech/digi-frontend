@@ -1,12 +1,10 @@
-
 ```js
 const testData = ['Limit', 'Market'];
 
-const onSelect = (value) => console.log(value);
+const onSelect = value => console.log(value);
 
 <Dropdown
-  list={testData}
-  onSelect={onSelect}
-/>
-
+   list={testData}
+   onSelect={onSelect}
+/>;
 ```

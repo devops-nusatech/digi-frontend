@@ -1,8 +1,7 @@
 import React, { ReactNode, PureComponent } from 'react';
 import { OrderBook } from '../../';
 import { CellData } from '../../Table';
-import { TradingOrderListTable } from 'components'
-
+import { TradingOrderListTable } from 'components';
 
 export interface TradingOrderListCombinedProps {
    /**
@@ -55,9 +54,7 @@ export interface TradingOrderListCombinedProps {
    lastPrice: ReactNode;
 }
 
-
 export class TradingOrderListCombined extends PureComponent<TradingOrderListCombinedProps> {
-
    public componentDidMount() {
       const scroll = document.getElementsByClassName('cr-order-book')[0];
       if (!this.props.isLarge && scroll) {
@@ -73,15 +70,9 @@ export class TradingOrderListCombined extends PureComponent<TradingOrderListComb
    }
 
    public render() {
-      const {
-         isLarge,
-      } = this.props;
+      const { isLarge } = this.props;
 
-      return (
-         <>
-            {isLarge ? this.orderBookLarge() : this.orderBookSmall()}
-         </>
-      );
+      return <>{isLarge ? this.orderBookLarge() : this.orderBookSmall()}</>;
    }
 
    private orderBookLarge = () => {
@@ -155,9 +146,7 @@ export class TradingOrderListCombined extends PureComponent<TradingOrderListComb
                   orderBookEntry={orderBookEntryAsks}
                   onSelect={onSelectAsks}
                />
-               <div className="cr-combined-order-book__market">
-                  {lastPrice}
-               </div>
+               <div className="cr-combined-order-book__market">{lastPrice}</div>
                <OrderBook
                   side={'left'}
                   data={dataBids}

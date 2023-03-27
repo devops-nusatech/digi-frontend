@@ -42,3 +42,4 @@ export * from './TableOrderHistory';
 export * from './TableWallets';
 export * from './TableMarketTrades';
 export * from './StaticticCurrency';
+export * from './TableMarket';

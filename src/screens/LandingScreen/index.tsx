@@ -46,7 +46,6 @@ const FeaturesAPIIcon = require('../../assets/images/landing/features/API.svg');
 // const MediumIcon = require('../../assets/images/landing/social/Medium.svg');
 // const CoinMarketIcon = require('../../assets/images/landing/social/CoinMarket.svg');
 
-
 interface ReduxProps {
    isLoggedIn: boolean;
    colorTheme: string;
@@ -78,10 +77,22 @@ class Landing extends React.Component<Props> {
          <div className="pg-landing-screen__market-info">
             <div className="pg-landing-screen__market-info__wrap">
                <div className="pg-landing-screen__market-info__wrap__title">
-                  <h1>{this.translate('page.body.landing.marketInfo.title.text1')}</h1>
-                  <h1>{this.translate('page.body.landing.marketInfo.title.text2')}</h1>
-                  <Link to="/trading" className="landing-button">
-                     {this.translate('page.body.landing.marketInfo.title.button')}
+                  <h1>
+                     {this.translate(
+                        'page.body.landing.marketInfo.title.text1'
+                     )}
+                  </h1>
+                  <h1>
+                     {this.translate(
+                        'page.body.landing.marketInfo.title.text2'
+                     )}
+                  </h1>
+                  <Link
+                     to="/trading"
+                     className="landing-button">
+                     {this.translate(
+                        'page.body.landing.marketInfo.title.button'
+                     )}
                   </Link>
                </div>
                {/* <MyMarketsTable /> */}
@@ -95,16 +106,40 @@ class Landing extends React.Component<Props> {
          <div className="pg-landing-screen__platform-info">
             <div className="pg-landing-screen__platform-info__wrap">
                <div className="pg-landing-screen__platform-info__wrap__item">
-                  <span>{this.translate('page.body.landing.platformInfo.item.first.value')}</span>
-                  <span>{this.translate('page.body.landing.platformInfo.item.first.title')}</span>
+                  <span>
+                     {this.translate(
+                        'page.body.landing.platformInfo.item.first.value'
+                     )}
+                  </span>
+                  <span>
+                     {this.translate(
+                        'page.body.landing.platformInfo.item.first.title'
+                     )}
+                  </span>
                </div>
                <div className="pg-landing-screen__platform-info__wrap__item">
-                  <span>{this.translate('page.body.landing.platformInfo.item.second.value')}</span>
-                  <span>{this.translate('page.body.landing.platformInfo.item.second.title')}</span>
+                  <span>
+                     {this.translate(
+                        'page.body.landing.platformInfo.item.second.value'
+                     )}
+                  </span>
+                  <span>
+                     {this.translate(
+                        'page.body.landing.platformInfo.item.second.title'
+                     )}
+                  </span>
                </div>
                <div className="pg-landing-screen__platform-info__wrap__item">
-                  <span>{this.translate('page.body.landing.platformInfo.item.third.value')}</span>
-                  <span>{this.translate('page.body.landing.platformInfo.item.third.title')}</span>
+                  <span>
+                     {this.translate(
+                        'page.body.landing.platformInfo.item.third.value'
+                     )}
+                  </span>
+                  <span>
+                     {this.translate(
+                        'page.body.landing.platformInfo.item.third.title'
+                     )}
+                  </span>
                </div>
             </div>
          </div>
@@ -116,9 +151,15 @@ class Landing extends React.Component<Props> {
          <div className="pg-landing-screen__register">
             <div className="pg-landing-screen__register__wrap">
                <div className="pg-landing-screen__register__wrap__item">
-                  <h1>{this.translate('page.body.landing.register.item.title')}</h1>
-                  <h2>{this.translate('page.body.landing.register.item.text')}</h2>
-                  <Link to="/signup" className="landing-button">
+                  <h1>
+                     {this.translate('page.body.landing.register.item.title')}
+                  </h1>
+                  <h2>
+                     {this.translate('page.body.landing.register.item.text')}
+                  </h2>
+                  <Link
+                     to="/register"
+                     className="landing-button">
                      {this.translate('page.body.landing.register.item.button')}
                   </Link>
                </div>
@@ -137,54 +178,114 @@ class Landing extends React.Component<Props> {
                      <div className="pg-landing-screen__features__content__row__item">
                         <img
                            src={FeaturesExchangeIcon}
-                           alt={this.translate('page.body.landing.features.features.item1.title')}
+                           alt={this.translate(
+                              'page.body.landing.features.features.item1.title'
+                           )}
                         />
-                        <h2>{this.translate('page.body.landing.features.features.item1.title')}</h2>
-                        <span>{this.translate('page.body.landing.features.features.item1.text')}</span>
+                        <h2>
+                           {this.translate(
+                              'page.body.landing.features.features.item1.title'
+                           )}
+                        </h2>
+                        <span>
+                           {this.translate(
+                              'page.body.landing.features.features.item1.text'
+                           )}
+                        </span>
                      </div>
                      <div className="pg-landing-screen__features__content__row__item">
                         <img
                            src={FeaturesTypesIcon}
-                           alt={this.translate('page.body.landing.features.features.item2.title')}
+                           alt={this.translate(
+                              'page.body.landing.features.features.item2.title'
+                           )}
                         />
-                        <h2>{this.translate('page.body.landing.features.features.item2.title')}</h2>
-                        <span>{this.translate('page.body.landing.features.features.item2.text')}</span>
+                        <h2>
+                           {this.translate(
+                              'page.body.landing.features.features.item2.title'
+                           )}
+                        </h2>
+                        <span>
+                           {this.translate(
+                              'page.body.landing.features.features.item2.text'
+                           )}
+                        </span>
                      </div>
                   </div>
                   <div className="pg-landing-screen__features__content__row">
                      <div className="pg-landing-screen__features__content__row__item">
                         <img
                            src={FeaturesCustomizeIcon}
-                           alt={this.translate('page.body.landing.features.features.item3.title')}
+                           alt={this.translate(
+                              'page.body.landing.features.features.item3.title'
+                           )}
                         />
-                        <h2>{this.translate('page.body.landing.features.features.item3.title')}</h2>
-                        <span>{this.translate('page.body.landing.features.features.item3.text')}</span>
+                        <h2>
+                           {this.translate(
+                              'page.body.landing.features.features.item3.title'
+                           )}
+                        </h2>
+                        <span>
+                           {this.translate(
+                              'page.body.landing.features.features.item3.text'
+                           )}
+                        </span>
                      </div>
                      <div className="pg-landing-screen__features__content__row__item">
                         <img
                            src={FeaturesSecurityIcon}
-                           alt={this.translate('page.body.landing.features.features.item4.title')}
+                           alt={this.translate(
+                              'page.body.landing.features.features.item4.title'
+                           )}
                         />
-                        <h2>{this.translate('page.body.landing.features.features.item4.title')}</h2>
-                        <span>{this.translate('page.body.landing.features.features.item4.text')}</span>
+                        <h2>
+                           {this.translate(
+                              'page.body.landing.features.features.item4.title'
+                           )}
+                        </h2>
+                        <span>
+                           {this.translate(
+                              'page.body.landing.features.features.item4.text'
+                           )}
+                        </span>
                      </div>
                   </div>
                   <div className="pg-landing-screen__features__content__row">
                      <div className="pg-landing-screen__features__content__row__item">
                         <img
                            src={FeaturesCommunityIcon}
-                           alt={this.translate('page.body.landing.features.features.item5.title')}
+                           alt={this.translate(
+                              'page.body.landing.features.features.item5.title'
+                           )}
                         />
-                        <h2>{this.translate('page.body.landing.features.features.item5.title')}</h2>
-                        <span>{this.translate('page.body.landing.features.features.item5.text')}</span>
+                        <h2>
+                           {this.translate(
+                              'page.body.landing.features.features.item5.title'
+                           )}
+                        </h2>
+                        <span>
+                           {this.translate(
+                              'page.body.landing.features.features.item5.text'
+                           )}
+                        </span>
                      </div>
                      <div className="pg-landing-screen__features__content__row__item">
                         <img
                            src={FeaturesAPIIcon}
-                           alt={this.translate('page.body.landing.features.features.item6.title')}
+                           alt={this.translate(
+                              'page.body.landing.features.features.item6.title'
+                           )}
                         />
-                        <h2>{this.translate('page.body.landing.features.features.item6.title')}</h2>
-                        <span>{this.translate('page.body.landing.features.features.item6.text')}</span>
+                        <h2>
+                           {this.translate(
+                              'page.body.landing.features.features.item6.title'
+                           )}
+                        </h2>
+                        <span>
+                           {this.translate(
+                              'page.body.landing.features.features.item6.text'
+                           )}
+                        </span>
                      </div>
                   </div>
                </div>
@@ -199,12 +300,32 @@ class Landing extends React.Component<Props> {
             <div className="pg-landing-screen__trade-on-the-go__wrap">
                <div className="pg-landing-screen__trade-on-the-go__wrap__image" />
                <div className="pg-landing-screen__trade-on-the-go__wrap__content">
-                  <h1>{this.translate('page.body.landing.tradeOnTheGo.item.title')}</h1>
-                  <h2>{this.translate('page.body.landing.tradeOnTheGo.item.text1')}</h2>
-                  <h2>{this.translate('page.body.landing.tradeOnTheGo.item.text2')}</h2>
-                  <h2>{this.translate('page.body.landing.tradeOnTheGo.item.text3')}</h2>
-                  <Link to="/trading/" className="landing-button">
-                     {this.translate('page.body.landing.tradeOnTheGo.item.button')}
+                  <h1>
+                     {this.translate(
+                        'page.body.landing.tradeOnTheGo.item.title'
+                     )}
+                  </h1>
+                  <h2>
+                     {this.translate(
+                        'page.body.landing.tradeOnTheGo.item.text1'
+                     )}
+                  </h2>
+                  <h2>
+                     {this.translate(
+                        'page.body.landing.tradeOnTheGo.item.text2'
+                     )}
+                  </h2>
+                  <h2>
+                     {this.translate(
+                        'page.body.landing.tradeOnTheGo.item.text3'
+                     )}
+                  </h2>
+                  <Link
+                     to="/trading/"
+                     className="landing-button">
+                     {this.translate(
+                        'page.body.landing.tradeOnTheGo.item.button'
+                     )}
                   </Link>
                </div>
             </div>
@@ -218,10 +339,14 @@ class Landing extends React.Component<Props> {
             <div className="pg-landing-screen__start-trading__wrap">
                <h1>{this.translate('page.body.landing.startTrading.title')}</h1>
                <div className="pg-landing-screen__start-trading__wrap__content">
-                  <Link to="/signup" className="landing-button">
+                  <Link
+                     to="/register"
+                     className="landing-button">
                      {this.translate('page.body.landing.startTrading.button1')}
                   </Link>
-                  <Link to="/trading/" className="landing-button landing-button--secondary">
+                  <Link
+                     to="/trading/"
+                     className="landing-button landing-button--secondary">
                      {this.translate('page.body.landing.startTrading.button2')}
                   </Link>
                </div>
@@ -235,38 +360,51 @@ class Landing extends React.Component<Props> {
          superLargeDesktop: {
             // the naming can be any, depends on you.
             breakpoint: { max: 4000, min: 3000 },
-            items: 5
+            items: 5,
          },
          desktop: {
             breakpoint: { max: 3000, min: 1024 },
-            items: 3
+            items: 3,
          },
          tablet: {
             breakpoint: { max: 1024, min: 640 },
-            items: 2
+            items: 2,
          },
          mobile: {
             breakpoint: { max: 640, min: 0 },
-            items: 1
-         }
+            items: 1,
+         },
       };
       return (
-         <section className="relative bg-neutral7 dark:bg-shade1 py-16 lg:py-28 lg2:py-34 popular">
-            <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20">
-               <div className="max-w-[455px] mt-0 mb-12 md:mb-16 mx-auto md:text-center">
-                  <div className="mb-5 text-4.5xl md:text-5xl font-dm font-bold tracking-custom1 md:tracking-custom leading-[1.2] md:leading-custom1">
+         <section className="popular relative bg-neutral7 py-16 dark:bg-shade1 lg:py-28 lg2:py-34">
+            <div className="mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
+               <div className="mx-auto mt-0 mb-12 max-w-[455px] md:mb-16 md:text-center">
+                  <div className="mb-5 font-dm text-4.5xl font-bold leading-[1.2] tracking-custom1 md:text-5xl md:leading-custom1 md:tracking-custom">
                      Become a crypto trader in seconds
                   </div>
-                  <div className="text-base text-neutral4">We've got everything you need to start trading.</div>
+                  <div className="text-base text-neutral4">
+                     We've got everything you need to start trading.
+                  </div>
                </div>
                <div className="-mx-3">
                   <Carousel responsive={responsive}>
-                     <div className="flex flex-col items-center py-12 px-8 rounded-20 bg-neutral8 dark:bg-neutral2 text-center hover:border-[0.09375rem] hover:shadow-card dark:shadow-input-dark h-auto mx-3 transition-all duration-300">
-                        <div className="flex justify-center items-center h-40 mt-0 mb-8 mx-auto">
-                           <img className="max-w-full max-h-full block pointer-events-none" srcSet={`${illusCard12} 2x`} src={illusCard11} alt="" />
+                     <div className="mx-3 flex h-auto flex-col items-center rounded-20 bg-neutral8 py-12 px-8 text-center transition-all duration-300 hover:border-[0.09375rem] hover:shadow-card dark:bg-neutral2 dark:shadow-input-dark">
+                        <div className="mx-auto mt-0 mb-8 flex h-40 items-center justify-center">
+                           <img
+                              className="pointer-events-none block max-h-full max-w-full"
+                              srcSet={`${illusCard12} 2x`}
+                              src={illusCard11}
+                              alt=""
+                           />
                         </div>
-                        <div className="mb-4 text-base font-medium">Buy & Sell Crypto</div>
-                        <div className="mb-4 text-neutral4">We realize ideas from simple to complex, everything becomes easy to use and reach the most potential customers.</div>
+                        <div className="mb-4 text-base font-medium">
+                           Buy & Sell Crypto
+                        </div>
+                        <div className="mb-4 text-neutral4">
+                           We realize ideas from simple to complex, everything
+                           becomes easy to use and reach the most potential
+                           customers.
+                        </div>
                         <Button
                            text="Buy crypto"
                            variant="outline"
@@ -275,12 +413,23 @@ class Landing extends React.Component<Props> {
                            onClick={() => this.props.history.push('/trading/')}
                         />
                      </div>
-                     <div className="flex flex-col items-center py-12 px-8 rounded-20 bg-neutral8 dark:bg-neutral2 text-center hover:border-[0.09375rem] hover:shadow-card dark:shadow-input-dark h-auto mx-3 transition-all duration-300">
-                        <div className="flex justify-center items-center h-40 mt-0 mb-8 mx-auto">
-                           <img className="max-w-full max-h-full block pointer-events-none" srcSet={`${illusCard22} 2x`} src={illusCard21} alt="" />
+                     <div className="mx-3 flex h-auto flex-col items-center rounded-20 bg-neutral8 py-12 px-8 text-center transition-all duration-300 hover:border-[0.09375rem] hover:shadow-card dark:bg-neutral2 dark:shadow-input-dark">
+                        <div className="mx-auto mt-0 mb-8 flex h-40 items-center justify-center">
+                           <img
+                              className="pointer-events-none block max-h-full max-w-full"
+                              srcSet={`${illusCard22} 2x`}
+                              src={illusCard21}
+                              alt=""
+                           />
                         </div>
-                        <div className="mb-4 text-base font-medium">Trade Assets</div>
-                        <div className="mb-4 text-neutral4">We realize ideas from simple to complex, everything becomes easy to use and reach the most potential customers.</div>
+                        <div className="mb-4 text-base font-medium">
+                           Trade Assets
+                        </div>
+                        <div className="mb-4 text-neutral4">
+                           We realize ideas from simple to complex, everything
+                           becomes easy to use and reach the most potential
+                           customers.
+                        </div>
                         <Button
                            text="Trade now"
                            variant="outline"
@@ -289,23 +438,38 @@ class Landing extends React.Component<Props> {
                            onClick={() => this.props.history.push('/trading/')}
                         />
                      </div>
-                     <div className="flex flex-col items-center py-12 px-8 rounded-20 bg-neutral8 dark:bg-neutral2 text-center hover:border-[0.09375rem] hover:shadow-card dark:shadow-input-dark h-auto mx-3 transition-all duration-300">
-                        <div className="flex justify-center items-center h-40 mt-0 mb-8 mx-auto">
-                           <img className="max-w-full max-h-full block pointer-events-none" srcSet={`${illusCard32} 2x`} src={illusCard31} alt="" />
+                     <div className="mx-3 flex h-auto flex-col items-center rounded-20 bg-neutral8 py-12 px-8 text-center transition-all duration-300 hover:border-[0.09375rem] hover:shadow-card dark:bg-neutral2 dark:shadow-input-dark">
+                        <div className="mx-auto mt-0 mb-8 flex h-40 items-center justify-center">
+                           <img
+                              className="pointer-events-none block max-h-full max-w-full"
+                              srcSet={`${illusCard32} 2x`}
+                              src={illusCard31}
+                              alt=""
+                           />
                         </div>
-                        <div className="mb-4 text-base font-medium">Learn Crypto</div>
-                        <div className="mb-4 text-neutral4">We realize ideas from simple to complex, everything becomes easy to use and reach the most potential customers.</div>
+                        <div className="mb-4 text-base font-medium">
+                           Learn Crypto
+                        </div>
+                        <div className="mb-4 text-neutral4">
+                           We realize ideas from simple to complex, everything
+                           becomes easy to use and reach the most potential
+                           customers.
+                        </div>
                         <Button
                            text="Learn now"
                            variant="outline"
                            size="normal"
                            width="noFull"
-                           onClick={() => openInNewTab('https://www.digiassetindo.com/blog/')}
+                           onClick={() =>
+                              openInNewTab(
+                                 'https://www.digiassetindo.com/blog/'
+                              )
+                           }
                         />
                      </div>
                   </Carousel>
                </div>
-               <div className="text-center mt-10 lg:mt-17">
+               <div className="mt-10 text-center lg:mt-17">
                   <Button
                      text="Contact us"
                      variant="outline"
@@ -315,7 +479,7 @@ class Landing extends React.Component<Props> {
                </div>
             </div>
          </section>
-      )
+      );
    }
 
    public renderNews() {
@@ -323,27 +487,31 @@ class Landing extends React.Component<Props> {
          superLargeDesktop: {
             // the naming can be any, depends on you.
             breakpoint: { max: 4000, min: 3000 },
-            items: 1
+            items: 1,
          },
          desktop: {
             breakpoint: { max: 3000, min: 1024 },
-            items: 1
+            items: 1,
          },
          tablet: {
             breakpoint: { max: 1024, min: 640 },
-            items: 1
+            items: 1,
          },
          mobile: {
             breakpoint: { max: 640, min: 0 },
-            items: 1
+            items: 1,
          },
       };
       return (
-         <section className="relative bg-neutral7 dark:bg-shade1 py-16 lg:py-28 lg2:py-34 mb-16 lg:mb-28 lg2:mb-34">
-            <div className="w-full max-w-5.5xl mx-auto px-6 md:px-10 lg:px-20">
-               <div className="max-w-xl mt-0 mb-12 md:mb-16 lg:mb-20 mx-auto text-center">
-                  <img className="mx-auto mb-4" src={icLogoLight} alt="Logo" />
-                  <div className="mb-5 text-4.5xl md:text-5xl font-dm font-bold tracking-custom1 md:tracking-custom leading-[1.2] md:leading-custom1">
+         <section className="relative mb-16 bg-neutral7 py-16 dark:bg-shade1 lg:mb-28 lg:py-28 lg2:mb-34 lg2:py-34">
+            <div className="mx-auto w-full max-w-5.5xl px-6 md:px-10 lg:px-20">
+               <div className="mx-auto mt-0 mb-12 max-w-xl text-center md:mb-16 lg:mb-20">
+                  <img
+                     className="mx-auto mb-4"
+                     src={icLogoLight}
+                     alt="Logo"
+                  />
+                  <div className="mb-5 font-dm text-4.5xl font-bold leading-[1.2] tracking-custom1 md:text-5xl md:leading-custom1 md:tracking-custom">
                      Stay in the know on crypto with Digiasset
                   </div>
                   <div className="text-base text-neutral4">
@@ -351,85 +519,118 @@ class Landing extends React.Component<Props> {
                   </div>
                </div>
                <Carousel responsive={news}>
-                  <div className="relative flex flex-col lg:flex-row items-center min-h-[544px] lg:py-20 lg:px-24 lg:rounded-3xl lg:bg-neutral8 lg:dark:bg-neutral2 lg:shadow-card2">
-                     <div className="w-full lg:w-1/2 order-2 lg:order-1">
-                        <div className="text-xs mb-4 uppercase font-bold text-neutral4">
+                  <div className="relative flex min-h-[544px] flex-col items-center lg:flex-row lg:rounded-3xl lg:bg-neutral8 lg:py-20 lg:px-24 lg:shadow-card2 lg:dark:bg-neutral2">
+                     <div className="order-2 w-full lg:order-1 lg:w-1/2">
+                        <div className="mb-4 text-xs font-bold uppercase text-neutral4">
                            Crypto News
                         </div>
-                        <div className="text-2xl mb-5 leading-custom2 tracking-custom1">
+                        <div className="mb-5 text-2xl leading-custom2 tracking-custom1">
                            Be Part of our Global Community
                         </div>
                         <div className="mb-24 text-base text-neutral4">
-                           Let’s stay in touch. Join our communities to keep up with the Digiasset team and our traders from across the world.
+                           Let’s stay in touch. Join our communities to keep up
+                           with the Digiasset team and our traders from across
+                           the world.
                         </div>
                         <Button
                            text="Join now"
                            variant="outline"
                            size="normal"
                            width="noFull"
-                           onClick={() => this.props.isLoggedIn ? this.props.history.push('/wallets') : this.props.history.push('/register')}
+                           onClick={() =>
+                              this.props.isLoggedIn
+                                 ? this.props.history.push('/wallets')
+                                 : this.props.history.push('/register')
+                           }
                         />
                      </div>
-                     <div className="w-full lg:w-1/2 order-1 lg:order-2">
+                     <div className="order-1 w-full lg:order-2 lg:w-1/2">
                         <div className="w-full overflow-visible">
-                           <img className="pointer-events-none object-cover w-full h-full scale-[1.3] -translate-x-10 lg:translate-x-10" srcSet={`${illusNews12} 2x`} src={illusNews11} alt="" />
+                           <img
+                              className="pointer-events-none h-full w-full -translate-x-10 scale-[1.3] object-cover lg:translate-x-10"
+                              srcSet={`${illusNews12} 2x`}
+                              src={illusNews11}
+                              alt=""
+                           />
                         </div>
                      </div>
                   </div>
-                  <div className="relative flex flex-col lg:flex-row items-center min-h-[544px] lg:py-20 lg:px-24 lg:rounded-3xl lg:bg-neutral8 lg:dark:bg-neutral2 lg:shadow-card2">
-                     <div className="w-full lg:w-1/2 order-2 lg:order-1">
-                        <div className="text-xs mb-4 uppercase font-bold text-neutral4">
+                  <div className="relative flex min-h-[544px] flex-col items-center lg:flex-row lg:rounded-3xl lg:bg-neutral8 lg:py-20 lg:px-24 lg:shadow-card2 lg:dark:bg-neutral2">
+                     <div className="order-2 w-full lg:order-1 lg:w-1/2">
+                        <div className="mb-4 text-xs font-bold uppercase text-neutral4">
                            Crypto News
                         </div>
-                        <div className="text-2xl mb-5 leading-custom2 tracking-custom1">
+                        <div className="mb-5 text-2xl leading-custom2 tracking-custom1">
                            Be Part of our Global Community
                         </div>
                         <div className="mb-24 text-base text-neutral4">
-                           Let’s stay in touch. Join our communities to keep up with the Digiasset team and our traders from across the world.
+                           Let’s stay in touch. Join our communities to keep up
+                           with the Digiasset team and our traders from across
+                           the world.
                         </div>
                         <Button
                            text="Join now"
                            variant="outline"
                            size="normal"
                            width="noFull"
-                           onClick={() => this.props.isLoggedIn ? this.props.history.push('/wallets') : this.props.history.push('/register')}
+                           onClick={() =>
+                              this.props.isLoggedIn
+                                 ? this.props.history.push('/wallets')
+                                 : this.props.history.push('/register')
+                           }
                         />
                      </div>
-                     <div className="w-full lg:w-1/2 order-1 lg:order-2">
+                     <div className="order-1 w-full lg:order-2 lg:w-1/2">
                         <div className="w-full overflow-visible">
-                           <img className="pointer-events-none object-cover w-full h-full scale-[1.3] -translate-x-10 lg:translate-x-10" srcSet={`${illusNews12} 2x`} src={illusNews11} alt="" />
+                           <img
+                              className="pointer-events-none h-full w-full -translate-x-10 scale-[1.3] object-cover lg:translate-x-10"
+                              srcSet={`${illusNews12} 2x`}
+                              src={illusNews11}
+                              alt=""
+                           />
                         </div>
                      </div>
                   </div>
-                  <div className="relative flex flex-col lg:flex-row items-center min-h-[544px] lg:py-20 lg:px-24 lg:rounded-3xl lg:bg-neutral8 lg:dark:bg-neutral2 lg:shadow-card2">
-                     <div className="w-full lg:w-1/2 order-2 lg:order-1">
-                        <div className="text-xs mb-4 uppercase font-bold text-neutral4">
+                  <div className="relative flex min-h-[544px] flex-col items-center lg:flex-row lg:rounded-3xl lg:bg-neutral8 lg:py-20 lg:px-24 lg:shadow-card2 lg:dark:bg-neutral2">
+                     <div className="order-2 w-full lg:order-1 lg:w-1/2">
+                        <div className="mb-4 text-xs font-bold uppercase text-neutral4">
                            Crypto News
                         </div>
-                        <div className="text-2xl mb-5 leading-custom2 tracking-custom1">
+                        <div className="mb-5 text-2xl leading-custom2 tracking-custom1">
                            Be Part of our Global Community
                         </div>
                         <div className="mb-24 text-base text-neutral4">
-                           Let’s stay in touch. Join our communities to keep up with the Digiasset team and our traders from across the world.
+                           Let’s stay in touch. Join our communities to keep up
+                           with the Digiasset team and our traders from across
+                           the world.
                         </div>
                         <Button
                            text="Join now"
                            variant="outline"
                            size="normal"
                            width="noFull"
-                           onClick={() => this.props.isLoggedIn ? this.props.history.push('/wallets') : this.props.history.push('/register')}
+                           onClick={() =>
+                              this.props.isLoggedIn
+                                 ? this.props.history.push('/wallets')
+                                 : this.props.history.push('/register')
+                           }
                         />
                      </div>
-                     <div className="w-full lg:w-1/2 order-1 lg:order-2">
+                     <div className="order-1 w-full lg:order-2 lg:w-1/2">
                         <div className="w-full overflow-visible">
-                           <img className="pointer-events-none object-cover w-full h-full scale-[1.3] -translate-x-10 lg:translate-x-10" srcSet={`${illusNews12} 2x`} src={illusNews11} alt="" />
+                           <img
+                              className="pointer-events-none h-full w-full -translate-x-10 scale-[1.3] object-cover lg:translate-x-10"
+                              srcSet={`${illusNews12} 2x`}
+                              src={illusNews11}
+                              alt=""
+                           />
                         </div>
                      </div>
                   </div>
                </Carousel>
             </div>
          </section>
-      )
+      );
    }
 
    public renderMain() {
@@ -454,12 +655,12 @@ class Landing extends React.Component<Props> {
             </Hero>
             <Learn />
             <MyMarketsTable />
-            {this.renderPopular()}
+            {/* {this.renderPopular()} */}
             <Download />
-            {this.renderNews()}
+            {/* {this.renderNews()} */}
             <Step />
          </>
-      )
+      );
    }
 
    public render() {
@@ -480,7 +681,8 @@ class Landing extends React.Component<Props> {
    //    window.scrollTo({ top: 0, behavior: 'smooth' });
    // };
 
-   private translate = (key: string) => this.props.intl.formatMessage({ id: key });
+   private translate = (key: string) =>
+      this.props.intl.formatMessage({ id: key });
 }
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
@@ -491,5 +693,5 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
 export const LandingScreen = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, null),
+   connect(mapStateToProps, null)
 )(Landing) as React.ComponentClass;

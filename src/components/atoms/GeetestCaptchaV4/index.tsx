@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { removeElement } from 'helpers';
-import { GeetestCaptchaV4Props as Props, GeetestCaptchaV4State as State } from './types';
+import {
+   GeetestCaptchaV4Props as Props,
+   GeetestCaptchaV4State as State,
+} from './types';
 import { GeetestCaptchaV4Response } from 'modules';
 import { toast } from 'react-toastify';
 
@@ -27,17 +30,21 @@ export class GeetestCaptchaV4 extends React.Component<Props, State> {
             language: 'eng',
             protocol: 'https://',
          },
-         handler: this.captchaHandler.bind(this)
-      }
+         handler: this.captchaHandler.bind(this),
+      };
       this.action = this.action.bind(this);
       this.validate = this.validate.bind(this);
    }
    public render() {
       return (
-         <div id="geetestCaptcha" className={`${this.captchaConfig.config.product === 'bind' ? "hidden" : null}`}>
+         <div
+            id="geetestCaptcha"
+            className={`${
+               this.captchaConfig.config.product === 'bind' ? 'hidden' : null
+            }`}>
             <Geetest captcha-config={this.captchaConfig} />
          </div>
-      )
+      );
    }
 
    private action = () => {
@@ -52,16 +59,18 @@ export class GeetestCaptchaV4 extends React.Component<Props, State> {
          this.validate();
       }
       return false;
-   }
+   };
 
    private validate = () => {
-      const result: GeetestCaptchaV4Response = (window as any).captchaObj.getValidate();
+      const result: GeetestCaptchaV4Response = (
+         window as any
+      ).captchaObj.getValidate();
       if (!result) {
          console.log('Result is not valid');
          return;
       }
       this.props.onSuccess(result);
-   }
+   };
 
    private captchaHandler = (captchaObj: any) => {
       (window as any).captchaObj = captchaObj;
@@ -88,14 +97,17 @@ export class GeetestCaptchaV4 extends React.Component<Props, State> {
          .onError(() => {
             console.log('On Error');
          })
-         .onSuccess(() => {
-            if (this.captchaConfig.config.product === 'bind') {
-               this.validate();
+         .onSuccess(
+            () => {
+               if (this.captchaConfig.config.product === 'bind') {
+                  this.validate();
+               }
+            },
+            (data: { status: 'fail' }) => {
+               if (data.status === 'fail') {
+                  captchaObj.reset();
+               }
             }
-         }, (data: { status: 'fail' }) => {
-            if (data.status === 'fail') {
-               captchaObj.reset();
-            }
-         });
-   }
-};
+         );
+   };
+}

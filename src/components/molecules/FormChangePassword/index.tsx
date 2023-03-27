@@ -1,17 +1,7 @@
-import React, {
-   KeyboardEvent,
-   memo,
-   useState
-} from 'react';
+import React, { KeyboardEvent, memo, useState } from 'react';
 import { useIntl } from 'react-intl';
-import {
-   Button,
-   InputGroup,
-   InputPassword,
-} from 'components';
-import {
-   PASSWORD_REGEX,
-} from 'helpers';
+import { Button, InputGroup, InputPassword } from 'components';
+import { PASSWORD_REGEX } from 'helpers';
 
 export const FormChangePassword = memo((props: any) => {
    const [oldPassword, setOldPassword] = useState('');
@@ -25,13 +15,14 @@ export const FormChangePassword = memo((props: any) => {
    const handleChangePassword = () => {
       const payload = props.hideOldPassword
          ? {
-            password: newPassword,
-            confirm_password: confirmationPassword,
-         } : {
-            old_password: oldPassword,
-            new_password: newPassword,
-            confirm_password: confirmationPassword,
-         };
+              password: newPassword,
+              confirm_password: confirmationPassword,
+           }
+         : {
+              old_password: oldPassword,
+              new_password: newPassword,
+              confirm_password: confirmationPassword,
+           };
 
       props.handleChangePassword(payload);
 
@@ -53,7 +44,8 @@ export const FormChangePassword = memo((props: any) => {
    const isValidForm = () => {
       const isNewPasswordValid = newPassword.match(PASSWORD_REGEX);
       const isConfirmPasswordValid = newPassword === confirmationPassword;
-      const isOldPasswordValid = (!props.hideOldPassword && oldPassword) || true;
+      const isOldPasswordValid =
+         (!props.hideOldPassword && oldPassword) || true;
 
       return isOldPasswordValid && isNewPasswordValid && isConfirmPasswordValid;
    };
@@ -61,36 +53,45 @@ export const FormChangePassword = memo((props: any) => {
    return (
       <form
          onKeyPress={handleEnterPress}
-         className="w-full sm:w-84 mx-auto space-y-8"
-      >
+         className="mx-auto w-full space-y-8 sm:w-84">
          {props.title && (
-            <div className="text-center text-4.5xl leading-[1.2] tracking-custom1 font-dm font-bold">
+            <div className="text-center font-dm text-4.5xl font-bold leading-[1.2] tracking-custom1">
                {props.title}
             </div>
          )}
-         {!props.hideOldPassword &&
+         {!props.hideOldPassword && (
             <InputGroup
                autoFocus={!props.hideOldPassword}
-               label={translate('page.body.profile.header.account.content.password.old')}
-               placeholder={translate('page.body.profile.header.account.content.password.old')}
+               label={translate(
+                  'page.body.profile.header.account.content.password.old'
+               )}
+               placeholder={translate(
+                  'page.body.profile.header.account.content.password.old'
+               )}
                onChange={setOldPassword}
                value={oldPassword}
                withIconPassword
             />
-         }
+         )}
          <InputPassword
             autoFocus={props.hideOldPassword}
             onChange={setNewPassword}
          />
          <InputGroup
-            label={translate('page.body.profile.header.account.content.password.conf')}
-            placeholder={translate('page.body.profile.header.account.content.password.conf')}
+            label={translate(
+               'page.body.profile.header.account.content.password.conf'
+            )}
+            placeholder={translate(
+               'page.body.profile.header.account.content.password.conf'
+            )}
             onChange={setConfirmationPassword}
             value={confirmationPassword}
             withIconPassword
          />
          <Button
-            text={translate('page.body.profile.header.account.content.password.button.change')}
+            text={translate(
+               'page.body.profile.header.account.content.password.button.change'
+            )}
             disabled={!isValidForm()}
             onClick={handleChangePassword}
             withLoading={props.isLoading}

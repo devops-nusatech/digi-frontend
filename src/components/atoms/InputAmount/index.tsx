@@ -4,11 +4,14 @@ import { PatternFormat, PatternFormatProps } from 'react-number-format';
 interface InputAmountProps extends PatternFormatProps {}
 
 export const InputAmount: FC<InputAmountProps> = ({ format, ...rest }) => {
-  return (
-   <PatternFormat {...rest} format={format} />
-  )
-}
+   return (
+      <PatternFormat
+         {...rest}
+         format={format}
+      />
+   );
+};
 
 InputAmount.defaultProps = {
-   format: '#.########'
-}
+   format: '#.########',
+};

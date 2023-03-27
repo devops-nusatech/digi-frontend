@@ -1,7 +1,7 @@
 import { nationalitiesNames } from './nationalities';
 
 export const en = {
-   'page.header.navbar.signIn': 'Sign In',
+   'page.header.navbar.login': 'Sign In',
    'page.header.navbar.trade': 'Trade',
    'page.header.navbar.wallets': 'Wallets',
    'page.header.navbar.openOrders': 'Orders',
@@ -43,18 +43,24 @@ export const en = {
    'page.body.trade.header.newOrder.content.amount': 'Amount',
    'page.body.trade.header.newOrder.content.total': 'Total',
    'page.body.trade.header.newOrder.content.available': 'Available',
-   'page.body.trade.header.newOrder.content.filterPrice': 'Valid price step is {priceStep}',
+   'page.body.trade.header.newOrder.content.filterPrice':
+      'Valid price step is {priceStep}',
 
-   'error.order.create.minAmount': 'Amount is too low. Minimum amount is {amount} {currency}',
-   'error.order.create.minPrice': 'Price is too low. Minimum price is {price} {currency}',
-   'error.order.create.maxPrice': 'Price is too high. Maximum price is {price} {currency}',
-   'error.order.create.available': 'Balance exceeded. Available {available} {currency}',
+   'error.order.create.minAmount':
+      'Amount is too low. Minimum amount is {amount} {currency}',
+   'error.order.create.minPrice':
+      'Price is too low. Minimum price is {price} {currency}',
+   'error.order.create.maxPrice':
+      'Price is too high. Maximum price is {price} {currency}',
+   'error.order.create.available':
+      'Balance exceeded. Available {available} {currency}',
 
    'page.body.trade.header.marketDepths': 'Market Depth',
    'page.body.trade.header.marketDepths.content.price': 'Price:',
    'page.body.trade.header.marketDepths.content.volume': 'Amount:',
    'page.body.trade.header.marketDepths.content.cumulativeVolume': 'Total:',
-   'page.body.trade.header.marketDepths.content.cumulativeValue': 'Estimated Value:',
+   'page.body.trade.header.marketDepths.content.cumulativeValue':
+      'Estimated Value:',
 
    'page.body.trade.toolBar.lowest': '24h Low',
    'page.body.trade.toolBar.lastPrice': 'Last Price',
@@ -97,14 +103,14 @@ export const en = {
    'page.body.marketsTable.header.low': '24 low',
    'page.body.marketsTable.header.volume': '24 Volume',
 
-
    /* Landing */
    'page.body.landing.header.button1': 'Profile',
    'page.body.landing.header.button2': 'Login',
    'page.body.landing.header.button3': 'Register',
 
    'page.body.landing.marketInfo.title.text1': 'Welcome to Digiassetindo.',
-   'page.body.landing.marketInfo.title.text2': 'Buy, sell and trade digital currency.',
+   'page.body.landing.marketInfo.title.text2':
+      'Buy, sell and trade digital currency.',
    'page.body.landing.marketInfo.title.button': 'start trading',
 
    'page.body.landing.platformInfo.item.first.value': '30M+',
@@ -115,7 +121,8 @@ export const en = {
    'page.body.landing.platformInfo.item.third.title': 'Countries supported',
 
    'page.body.landing.register.item.title': 'No matter your experience level',
-   'page.body.landing.register.item.text': 'Digiassetindo offers an intuitive interface with real time orderbooks, charting tools, trade history, and a simple order process so you can trade from day one.',
+   'page.body.landing.register.item.text':
+      'Digiassetindo offers an intuitive interface with real time orderbooks, charting tools, trade history, and a simple order process so you can trade from day one.',
    'page.body.landing.register.item.button': 'register',
 
    'page.body.landing.features.title': 'Digiassetindo platform features',
@@ -125,17 +132,26 @@ export const en = {
    'page.body.landing.features.features.item4.title': 'Security',
    'page.body.landing.features.features.item5.title': 'Community',
    'page.body.landing.features.features.item6.title': 'Industry leading API',
-   'page.body.landing.features.features.item1.text': 'Digiassetindo offers the most liquid order book in the world, allowing users to easily exchange Bitcoin, Ethereum, EOS, Litecoin, Ripple, NEO and many other digital assets with minimal slippage.',
-   'page.body.landing.features.features.item2.text': 'Digiassetindo offers a suite of order types to give traders the tools they need for every scenario. Discover more about our most advanced Algorithmic orders types.',
-   'page.body.landing.features.features.item3.text': 'Organize your workspace according to your needs: compose your layout, choose between themes, set up notifications and data preferences.',
-   'page.body.landing.features.features.item4.text': 'Security of user information and funds is our first priority. Contact us to learn more about our security features and integrations.',
-   'page.body.landing.features.features.item5.text': 'Join a global community that believes in the power of crypto.',
-   'page.body.landing.features.features.item6.text': 'Our Websocket feed lets you easily gain access to real-time market data, while our trading API lets you develop secure, programmatic trading bots.',
+   'page.body.landing.features.features.item1.text':
+      'Digiassetindo offers the most liquid order book in the world, allowing users to easily exchange Bitcoin, Ethereum, EOS, Litecoin, Ripple, NEO and many other digital assets with minimal slippage.',
+   'page.body.landing.features.features.item2.text':
+      'Digiassetindo offers a suite of order types to give traders the tools they need for every scenario. Discover more about our most advanced Algorithmic orders types.',
+   'page.body.landing.features.features.item3.text':
+      'Organize your workspace according to your needs: compose your layout, choose between themes, set up notifications and data preferences.',
+   'page.body.landing.features.features.item4.text':
+      'Security of user information and funds is our first priority. Contact us to learn more about our security features and integrations.',
+   'page.body.landing.features.features.item5.text':
+      'Join a global community that believes in the power of crypto.',
+   'page.body.landing.features.features.item6.text':
+      'Our Websocket feed lets you easily gain access to real-time market data, while our trading API lets you develop secure, programmatic trading bots.',
 
    'page.body.landing.tradeOnTheGo.item.title': 'Trade on the go',
-   'page.body.landing.tradeOnTheGo.item.text1': 'Our platform is optimized for trading on any device.',
-   'page.body.landing.tradeOnTheGo.item.text2': 'And you don’t need to download any additional applications.',
-   'page.body.landing.tradeOnTheGo.item.text3': 'All the power of Digiassetindo cryptocurrency exchange, in the palm of your hand.',
+   'page.body.landing.tradeOnTheGo.item.text1':
+      'Our platform is optimized for trading on any device.',
+   'page.body.landing.tradeOnTheGo.item.text2':
+      'And you don’t need to download any additional applications.',
+   'page.body.landing.tradeOnTheGo.item.text3':
+      'All the power of Digiassetindo cryptocurrency exchange, in the palm of your hand.',
    'page.body.landing.tradeOnTheGo.item.button': 'let’s try',
 
    'page.body.landing.startTrading.title': 'Start trading now',
@@ -155,24 +171,28 @@ export const en = {
 
    'pagy.body.footer.powered_by': 'Powered by',
 
-
    /* Wallets */
    'page.body.wallets.estimated_value': 'Estimated Value',
 
    'page.body.wallets.locked': 'Locked',
    'page.body.wallets.balance': 'Balance',
    'page.body.wallets.tabs.deposit': 'Deposit',
-   'page.body.wallets.tabs.deposit.disabled.message': 'Deposit was disabled by administration',
-   'page.body.wallets.tabs.deposit.ccy.message.submit': 'Submit a deposit using the following address or QR code. Your deposit will be reflected in your account after {confirmations} confirmations',
+   'page.body.wallets.tabs.deposit.disabled.message':
+      'Deposit was disabled by administration',
+   'page.body.wallets.tabs.deposit.ccy.message.submit':
+      'Submit a deposit using the following address or QR code. Your deposit will be reflected in your account after {confirmations} confirmations',
    'page.body.wallets.tabs.deposit.ccy.message.address': 'Deposit Address',
    'page.body.wallets.tabs.deposit.ccy.message.button': 'COPY',
    'page.body.wallets.tabs.deposit.ccy.message.success': 'Address copied',
-   'page.body.wallets.tabs.deposit.ccy.message.pending': 'Generating deposit address',
+   'page.body.wallets.tabs.deposit.ccy.message.pending':
+      'Generating deposit address',
    'page.body.wallets.tabs.deposit.ccy.button.generate': 'Generate',
    'page.body.wallets.tabs.deposit.ccy.button.address': 'address',
 
-   'page.body.wallets.tabs.deposit.fiat.message1': 'Deposit using bank transfer',
-   'page.body.wallets.tabs.deposit.fiat.message2': 'Please use the following credentials to initiate your bank transfer. Your deposit will be reflected in your account within 2 business days.',
+   'page.body.wallets.tabs.deposit.fiat.message1':
+      'Deposit using bank transfer',
+   'page.body.wallets.tabs.deposit.fiat.message2':
+      'Please use the following credentials to initiate your bank transfer. Your deposit will be reflected in your account within 2 business days.',
    'page.body.wallets.tabs.deposit.fiat.bankName': 'Bank Name',
    'page.body.wallets.tabs.deposit.fiat.accountNumber': 'Account number',
    'page.body.wallets.tabs.deposit.fiat.accountName': 'Account name',
@@ -180,7 +200,8 @@ export const en = {
    'page.body.wallets.tabs.deposit.fiat.referenceCode': 'Your reference code',
    'page.body.wallets.table.pending': 'Pending',
    'page.body.wallets.table.rejected': 'Rejected',
-   'page.body.wallets.tabs.deposit.fiat.admin': ' To initiate a fiat withdrawal, please contact administrator!',
+   'page.body.wallets.tabs.deposit.fiat.admin':
+      ' To initiate a fiat withdrawal, please contact administrator!',
 
    'page.body.wallets.tabs.withdraw': 'Withdraw',
    'page.body.wallets.tabs.withdraw.content.amount': 'Withdrawal Amount',
@@ -188,7 +209,8 @@ export const en = {
    'page.body.wallets.tabs.withdraw.content.fee': 'Fee',
    'page.body.wallets.tabs.withdraw.content.total': 'Total Withdrawal Amount',
    'page.body.wallets.tabs.withdraw.content.button': 'WITHDRAW',
-   'page.body.wallets.tabs.withdraw.disabled.message': 'Withdraw was disabled by administration',
+   'page.body.wallets.tabs.withdraw.disabled.message':
+      'Withdraw was disabled by administration',
 
    'page.body.wallets.tabs.withdraw.modal.confirmation': 'Confirmation',
    'page.body.wallets.tabs.withdraw.modal.message1': 'You will receive ',
@@ -196,14 +218,16 @@ export const en = {
    'page.body.wallets.tabs.withdraw.modal.button.cancel': 'Cancel',
    'page.body.wallets.tabs.withdraw.modal.button.withdraw': 'Withdraw',
 
-   'page.body.wallets.tabs.withdraw.content.enable2fa': 'To withdraw you have to enable 2FA',
+   'page.body.wallets.tabs.withdraw.content.enable2fa':
+      'To withdraw you have to enable 2FA',
    'page.body.wallets.tabs.withdraw.content.enable2faButton': 'Enable 2FA',
 
    'success.beneficiaries.created': 'Beneficiaries: successfully created',
    'success.beneficiaries.activated': 'Beneficiaries: successfully activated',
    'success.beneficiaries.deleted': 'Beneficiaries: successfully deleted',
    'success.beneficiaries.resent_pin': 'Beneficiaries: pin resent',
-   'error.beneficiaries.max10.addresses': 'You can register up to 10 withdrawal addresses',
+   'error.beneficiaries.max10.addresses':
+      'You can register up to 10 withdrawal addresses',
 
    'page.body.wallets.beneficiaries.title': 'Withdraw address',
    'page.body.wallets.beneficiaries.fiat.title': 'Withdrawal details',
@@ -213,36 +237,54 @@ export const en = {
    'page.body.wallets.beneficiaries.dropdown.pending': 'Pending',
 
    'page.body.wallets.beneficiaries.dropdown.fiat.account': 'Account',
-   'page.body.wallets.beneficiaries.dropdown.fiat.bankOfBeneficiary': 'Bank of Beneficiary',
+   'page.body.wallets.beneficiaries.dropdown.fiat.bankOfBeneficiary':
+      'Bank of Beneficiary',
    'page.body.wallets.beneficiaries.dropdown.fiat.beneficiary': 'Beneficiary',
    'page.body.wallets.beneficiaries.dropdown.fiat.description': 'Description',
    'page.body.wallets.beneficiaries.dropdown.fiat.name': 'Name',
    'page.body.wallets.beneficiaries.dropdown.fiat.fullName': 'Full Name',
 
    'page.body.wallets.beneficiaries.addAddress': 'Add Address',
-   'page.body.wallets.beneficiaries.addAddressModal.header': 'Add new withdrawal address',
+   'page.body.wallets.beneficiaries.addAddressModal.header':
+      'Add new withdrawal address',
 
-   'page.body.wallets.beneficiaries.addAddressModal.body.coinAddress': 'Blockchain Address',
-   'page.body.wallets.beneficiaries.addAddressModal.body.invalidAddress': 'Invalid Address',
-   'page.body.wallets.beneficiaries.addAddressModal.body.coinBeneficiaryName': 'Beneficiary Name',
-   'page.body.wallets.beneficiaries.addAddressModal.body.coinDescription': 'Description (optional)',
-   'page.body.wallets.beneficiaries.addAddressModal.body.coinDestinationTag': 'Destination Tag (optional)',
+   'page.body.wallets.beneficiaries.addAddressModal.body.coinAddress':
+      'Blockchain Address',
+   'page.body.wallets.beneficiaries.addAddressModal.body.invalidAddress':
+      'Invalid Address',
+   'page.body.wallets.beneficiaries.addAddressModal.body.coinBeneficiaryName':
+      'Beneficiary Name',
+   'page.body.wallets.beneficiaries.addAddressModal.body.coinDescription':
+      'Description (optional)',
+   'page.body.wallets.beneficiaries.addAddressModal.body.coinDestinationTag':
+      'Destination Tag (optional)',
 
-   'page.body.wallets.beneficiaries.addAddressModal.body.fiatName': 'Beneficiary Name',
-   'page.body.wallets.beneficiaries.addAddressModal.body.fiatFullName': 'Full Name',
-   'page.body.wallets.beneficiaries.addAddressModal.body.fiatAccountNumber': 'Account Number',
-   'page.body.wallets.beneficiaries.addAddressModal.body.fiatBankName': 'Bank Name',
-   'page.body.wallets.beneficiaries.addAddressModal.body.fiatBankSwiftCode': 'Bank Swift Code (optional)',
-   'page.body.wallets.beneficiaries.addAddressModal.body.fiatIntermediaryBankName': 'Intermediary Bank Name (optional)',
-   'page.body.wallets.beneficiaries.addAddressModal.body.fiatIntermediaryBankSwiftCode': 'Intermediary Bank Swift Code (optional)',
+   'page.body.wallets.beneficiaries.addAddressModal.body.fiatName':
+      'Beneficiary Name',
+   'page.body.wallets.beneficiaries.addAddressModal.body.fiatFullName':
+      'Full Name',
+   'page.body.wallets.beneficiaries.addAddressModal.body.fiatAccountNumber':
+      'Account Number',
+   'page.body.wallets.beneficiaries.addAddressModal.body.fiatBankName':
+      'Bank Name',
+   'page.body.wallets.beneficiaries.addAddressModal.body.fiatBankSwiftCode':
+      'Bank Swift Code (optional)',
+   'page.body.wallets.beneficiaries.addAddressModal.body.fiatIntermediaryBankName':
+      'Intermediary Bank Name (optional)',
+   'page.body.wallets.beneficiaries.addAddressModal.body.fiatIntermediaryBankSwiftCode':
+      'Intermediary Bank Swift Code (optional)',
 
+   'page.body.wallets.beneficiaries.addAddressModal.body.button':
+      'Submit for confirmation',
 
-   'page.body.wallets.beneficiaries.addAddressModal.body.button': 'Submit for confirmation',
-
-   'page.body.wallets.beneficiaries.confirmationModal.header': 'Confirm new address',
-   'page.body.wallets.beneficiaries.confirmationModal.body.text': 'We have sent you an email containing a confirmation code pin, please enter it below to save the new address:',
-   'page.body.wallets.beneficiaries.confirmationModal.body.confirmationModalCode': 'Pin code',
-   'page.body.wallets.beneficiaries.confirmationModal.body.resendButton': 'Resend pin',
+   'page.body.wallets.beneficiaries.confirmationModal.header':
+      'Confirm new address',
+   'page.body.wallets.beneficiaries.confirmationModal.body.text':
+      'We have sent you an email containing a confirmation code pin, please enter it below to save the new address:',
+   'page.body.wallets.beneficiaries.confirmationModal.body.confirmationModalCode':
+      'Pin code',
+   'page.body.wallets.beneficiaries.confirmationModal.body.resendButton':
+      'Resend pin',
    'page.body.wallets.beneficiaries.confirmationModal.body.button': 'Confirm',
 
    'page.body.wallets.beneficiaries.tipAddress': 'Address',
@@ -250,7 +292,8 @@ export const en = {
    'page.body.wallets.beneficiaries.tipDescription': 'Note',
 
    'page.body.wallets.beneficiaries.failAddModal.header': 'Warning',
-   'page.body.wallets.beneficiaries.failAddModal.content': 'You need to confirm your account to add a beneficiary',
+   'page.body.wallets.beneficiaries.failAddModal.content':
+      'You need to confirm your account to add a beneficiary',
    'page.body.wallets.beneficiaries.failAddModal.button': 'Confirm an account',
 
    'page.body.openOrders.tab.all': 'All',
@@ -319,7 +362,6 @@ export const en = {
    'page.body.history.trade.header.amount': 'Amount',
    'page.body.history.trade.header.balance': 'Balance',
 
-
    'page.body.profile.header.account': 'Profile',
 
    'page.body.profile.header.account.username': 'Username',
@@ -329,36 +371,60 @@ export const en = {
    'page.body.profile.header.account.content.password.new': 'New password',
    'page.body.profile.header.account.content.password.button.save': 'Save',
    'page.body.profile.header.account.content.password.button.cancel': 'Cancel',
-   'page.body.profile.header.account.content.password.conf': 'Password Confirmation',
-   'page.body.profile.header.account.content.password.dont.match': 'Passwords don\'t match',
-   'page.body.profile.header.account.content.password.change.success': 'Success!',
-   'page.body.profile.header.account.content.password.change': 'Change password',
+   'page.body.profile.header.account.content.password.conf':
+      'Password Confirmation',
+   'page.body.profile.header.account.content.password.dont.match':
+      "Passwords don't match",
+   'page.body.profile.header.account.content.password.change.success':
+      'Success!',
+   'page.body.profile.header.account.content.password.change':
+      'Change password',
 
    'page.body.profile.header.account.content.twoFactorAuthentication': '2FA',
-   'page.body.profile.header.account.content.twoFactorAuthentication.message.enable': 'Enabled',
-   'page.body.profile.header.account.content.twoFactorAuthentication.message.disable': 'Disabled',
-   'page.body.profile.header.account.content.twoFactorAuthentication.header': 'Google Authenticator',
-   'page.body.profile.header.account.content.twoFactorAuthentication.message.1': 'Download and install Google Authenticator application from ',
-   'page.body.profile.header.account.content.twoFactorAuthentication.message.or': 'or ',
-   'page.body.profile.header.account.content.twoFactorAuthentication.message.2': 'Scan QR code or use secret MFA code:',
-   'page.body.profile.header.account.content.twoFactorAuthentication.message.3': '* Save this secret in a secure location. This code can be used to gain 2FA access from a different device.',
-   'page.body.profile.header.account.content.twoFactorAuthentication.message.mfa': 'MFA code',
-   'page.body.profile.header.account.content.twoFactorAuthentication.message.4': 'Enter 2fa code from the app',
-   'page.body.profile.header.account.content.twoFactorAuthentication.subHeader': '2FA code',
-   'page.body.profile.header.account.content.twoFactorAuthentication.enable': 'ENABLE',
-   'page.body.profile.header.account.content.twoFactorAuthentication.disable': 'DISABLE 2FA',
-   'page.body.profile.header.account.content.twoFactorAuthentication.modalBody': 'Please сontact administrator to disable',
-   'page.body.profile.header.account.content.twoFactorAuthentication.modalHeader': 'Two-factor authentication is enabled',
+   'page.body.profile.header.account.content.twoFactorAuthentication.message.enable':
+      'Enabled',
+   'page.body.profile.header.account.content.twoFactorAuthentication.message.disable':
+      'Disabled',
+   'page.body.profile.header.account.content.twoFactorAuthentication.header':
+      'Google Authenticator',
+   'page.body.profile.header.account.content.twoFactorAuthentication.message.1':
+      'Download and install Google Authenticator application from ',
+   'page.body.profile.header.account.content.twoFactorAuthentication.message.or':
+      'or ',
+   'page.body.profile.header.account.content.twoFactorAuthentication.message.2':
+      'Scan QR code or use secret MFA code:',
+   'page.body.profile.header.account.content.twoFactorAuthentication.message.3':
+      '* Save this secret in a secure location. This code can be used to gain 2FA access from a different device.',
+   'page.body.profile.header.account.content.twoFactorAuthentication.message.mfa':
+      'MFA code',
+   'page.body.profile.header.account.content.twoFactorAuthentication.message.4':
+      'Enter 2fa code from the app',
+   'page.body.profile.header.account.content.twoFactorAuthentication.subHeader':
+      '2FA code',
+   'page.body.profile.header.account.content.twoFactorAuthentication.enable':
+      'ENABLE',
+   'page.body.profile.header.account.content.twoFactorAuthentication.disable':
+      'DISABLE 2FA',
+   'page.body.profile.header.account.content.twoFactorAuthentication.modalBody':
+      'Please сontact administrator to disable',
+   'page.body.profile.header.account.content.twoFactorAuthentication.modalHeader':
+      'Two-factor authentication is enabled',
 
    'page.body.profile.header.account.profile': 'Profile Verification',
    'page.body.profile.header.account.profile.email.title': 'Email verified',
-   'page.body.profile.header.account.profile.email.message': 'Deposit/Withdraw enabled',
-   'page.body.profile.header.account.profile.phone.unverified.title': 'Phone verification',
+   'page.body.profile.header.account.profile.email.message':
+      'Deposit/Withdraw enabled',
+   'page.body.profile.header.account.profile.phone.unverified.title':
+      'Phone verification',
    'page.body.profile.header.account.profile.phone.title': 'Phone verified',
-   'page.body.profile.header.account.profile.phone.message': 'Deposit/Trade enabled',
-   'page.body.profile.header.account.profile.identity.unverified.title': 'Identity verification',
-   'page.body.profile.header.account.profile.identity.title': 'Identity verified',
-   'page.body.profile.header.account.profile.identity.message': 'Withdraw enabled',
+   'page.body.profile.header.account.profile.phone.message':
+      'Deposit/Trade enabled',
+   'page.body.profile.header.account.profile.identity.unverified.title':
+      'Identity verification',
+   'page.body.profile.header.account.profile.identity.title':
+      'Identity verified',
+   'page.body.profile.header.account.profile.identity.message':
+      'Withdraw enabled',
 
    'page.body.profile.header.referralProgram': 'Referral Link',
    'page.body.profile.content.copyLink': 'Copy',
@@ -380,8 +446,10 @@ export const en = {
    'page.body.profile.apiKeys.modal.created_header': 'Created',
    'page.body.profile.apiKeys.modal.access_key': 'Access Key',
    'page.body.profile.apiKeys.modal.secret_key': 'Secret Key',
-   'page.body.profile.apiKeys.modal.secret_key_info': 'This information will be shown only once and cannot be retrieved once lost.',
-   'page.body.profile.apiKeys.modal.secret_key_store': 'Please store it properly.',
+   'page.body.profile.apiKeys.modal.secret_key_info':
+      'This information will be shown only once and cannot be retrieved once lost.',
+   'page.body.profile.apiKeys.modal.secret_key_store':
+      'Please store it properly.',
    'page.body.profile.apiKeys.modal.note': 'Note',
    'page.body.profile.apiKeys.modal.note_content': `To avoid asset loss, please do not tell your Secret Key and Private Key to others.\
  If you forget you Secret Key, please delete it and apply for a new Secret Key pair.`,
@@ -414,51 +482,73 @@ export const en = {
    'page.body.profile.content.action.request2fa': 'Request QR code for 2FA',
    'page.body.profile.content.action.enable2fa': 'Enable 2FA',
    'page.body.profile.content.action.login.2fa': 'Login with 2FA',
-   'page.body.profile.content.action.requestPasswordReset': 'Request password reset',
+   'page.body.profile.content.action.requestPasswordReset':
+      'Request password reset',
    'page.body.profile.content.action.passwordReset': 'Password reset',
 
    'page.body.profile.content.result.succeed': 'Succeed',
    'page.body.profile.content.result.failed': 'Failed',
    'page.body.profile.content.result.denied': 'Denied',
 
-
    /* Profile - verification */
    'page.body.profile.verification.email.title': 'Email address',
    'page.body.profile.verification.email.subtitle': 'Withdrawal allowed',
-   'page.body.profile.verification.email.rejected.tooltip': 'Your email was rejected',
+   'page.body.profile.verification.email.rejected.tooltip':
+      'Your email was rejected',
    'page.body.profile.verification.phone.title': 'Verify Phone number',
-   'page.body.profile.verification.phone.subtitle': 'To allow Deposits and Trades',
-   'page.body.profile.verification.phone.rejected.tooltip': 'Your phone was rejected',
+   'page.body.profile.verification.phone.subtitle':
+      'To allow Deposits and Trades',
+   'page.body.profile.verification.phone.rejected.tooltip':
+      'Your phone was rejected',
    'page.body.profile.verification.profile.title': 'Complete your profile',
    'page.body.profile.verification.profile.subtitle': ' ',
-   'page.body.profile.verification.profile.rejected.tooltip': 'Your profile was rejected',
+   'page.body.profile.verification.profile.rejected.tooltip':
+      'Your profile was rejected',
    'page.body.profile.verification.document.title': 'Verify your Identity',
-   'page.body.profile.verification.document.subtitle': 'Increase Withdrawal limit to 10 BTC',
-   'page.body.profile.verification.document.rejected.tooltip': 'Your identity was rejected',
+   'page.body.profile.verification.document.subtitle':
+      'Increase Withdrawal limit to 10 BTC',
+   'page.body.profile.verification.document.rejected.tooltip':
+      'Your identity was rejected',
    'page.body.profile.verification.address.title': 'Verify Proof of residence',
-   'page.body.profile.verification.address.subtitle': 'Increase Withdrawal limit to 100 BTC',
-   'page.body.profile.verification.address.rejected.tooltip': 'Your proof of residence was rejected',
+   'page.body.profile.verification.address.subtitle':
+      'Increase Withdrawal limit to 100 BTC',
+   'page.body.profile.verification.address.rejected.tooltip':
+      'Your proof of residence was rejected',
    'page.body.profile.verification.pending': 'Pending',
    'page.body.profile.verification.reverify': 'Reverify',
    'page.body.profile.verification.verify': 'Verify',
    'page.body.profile.verification.verified': 'Verified',
    'page.body.profile.verification.progress.level': 'Level',
-   'page.body.profile.verification.progress.tooltip.email.default': 'Email address to to get level 1 and allow Withdrawal',
-   'page.body.profile.verification.progress.tooltip.email.rejected': 'Your email was rejected',
-   'page.body.profile.verification.progress.tooltip.email.pending': 'Email address verification may take 1-3 business days.',
-   'page.body.profile.verification.progress.tooltip.phone.default': 'Verify Phone number to get level 2 and allow Deposits and Trades',
-   'page.body.profile.verification.progress.tooltip.phone.rejected': 'Your phone was rejected',
-   'page.body.profile.verification.progress.tooltip.phone.pending': 'Phone number verification may take 1-3 business days.',
-   'page.body.profile.verification.progress.tooltip.profile.default': 'Complete your profile to get level 3 and Increase Withdrawal limit to 1 BTC',
-   'page.body.profile.verification.progress.tooltip.profile.rejected': 'Your profile was rejected',
-   'page.body.profile.verification.progress.tooltip.profile.pending': 'Profile verification may take 1-3 business days.',
-   'page.body.profile.verification.progress.tooltip.document.default': 'Verify you identity to get level 4 and Increase Withdrawal limit to 10 BTC',
-   'page.body.profile.verification.progress.tooltip.document.rejected': 'Your identity was rejected',
-   'page.body.profile.verification.progress.tooltip.document.pending': 'Identity verification may take 1-3 business days.',
-   'page.body.profile.verification.progress.tooltip.address.default': 'Verify Proof of residence to get level 5 and Increase Withdrawal limit to 100 BTC',
-   'page.body.profile.verification.progress.tooltip.address.rejected': 'Your proof of residence was rejected',
-   'page.body.profile.verification.progress.tooltip.address.pending': 'Proof of residence verification may take 1-3 business days.',
-
+   'page.body.profile.verification.progress.tooltip.email.default':
+      'Email address to to get level 1 and allow Withdrawal',
+   'page.body.profile.verification.progress.tooltip.email.rejected':
+      'Your email was rejected',
+   'page.body.profile.verification.progress.tooltip.email.pending':
+      'Email address verification may take 1-3 business days.',
+   'page.body.profile.verification.progress.tooltip.phone.default':
+      'Verify Phone number to get level 2 and allow Deposits and Trades',
+   'page.body.profile.verification.progress.tooltip.phone.rejected':
+      'Your phone was rejected',
+   'page.body.profile.verification.progress.tooltip.phone.pending':
+      'Phone number verification may take 1-3 business days.',
+   'page.body.profile.verification.progress.tooltip.profile.default':
+      'Complete your profile to get level 3 and Increase Withdrawal limit to 1 BTC',
+   'page.body.profile.verification.progress.tooltip.profile.rejected':
+      'Your profile was rejected',
+   'page.body.profile.verification.progress.tooltip.profile.pending':
+      'Profile verification may take 1-3 business days.',
+   'page.body.profile.verification.progress.tooltip.document.default':
+      'Verify you identity to get level 4 and Increase Withdrawal limit to 10 BTC',
+   'page.body.profile.verification.progress.tooltip.document.rejected':
+      'Your identity was rejected',
+   'page.body.profile.verification.progress.tooltip.document.pending':
+      'Identity verification may take 1-3 business days.',
+   'page.body.profile.verification.progress.tooltip.address.default':
+      'Verify Proof of residence to get level 5 and Increase Withdrawal limit to 100 BTC',
+   'page.body.profile.verification.progress.tooltip.address.rejected':
+      'Your proof of residence was rejected',
+   'page.body.profile.verification.progress.tooltip.address.pending':
+      'Proof of residence verification may take 1-3 business days.',
 
    /* KYC */
    'page.confirm.title.email': 'Get Verified your email',
@@ -484,19 +574,24 @@ export const en = {
    'page.body.kyc.documents.expiryDate.placeholder': 'DD / MM / YYYY',
 
    'page.body.kyc.documents.uploadFile.front.title': 'Front of ID card',
-   'page.body.kyc.documents.uploadFile.front.label': 'Please upload a copy of your valid ID card (Photo or scan)',
+   'page.body.kyc.documents.uploadFile.front.label':
+      'Please upload a copy of your valid ID card (Photo or scan)',
    'page.body.kyc.documents.uploadFile.front.button': 'Upload',
-   'page.body.kyc.documents.uploadFile.front.sizes': 'Maximum file size is 20MB',
+   'page.body.kyc.documents.uploadFile.front.sizes':
+      'Maximum file size is 20MB',
    'page.body.kyc.documents.uploadFile.front.formats': 'JPG, BMP, PNG formats',
    'page.body.kyc.documents.uploadFile.back.title': 'Back of ID card',
-   'page.body.kyc.documents.uploadFile.back.label': 'Please upload a copy of your valid ID card (Photo or scan)',
+   'page.body.kyc.documents.uploadFile.back.label':
+      'Please upload a copy of your valid ID card (Photo or scan)',
    'page.body.kyc.documents.uploadFile.back.button': 'Upload',
    'page.body.kyc.documents.uploadFile.back.sizes': 'Maximum file size is 20MB',
    'page.body.kyc.documents.uploadFile.back.formats': 'JPG, BMP, PNG formats',
    'page.body.kyc.documents.uploadFile.selfie.title': 'Selfie image',
-   'page.body.kyc.documents.uploadFile.selfie.label': 'Please upload a photo of you holding your document',
+   'page.body.kyc.documents.uploadFile.selfie.label':
+      'Please upload a photo of you holding your document',
    'page.body.kyc.documents.uploadFile.selfie.button': 'Upload',
-   'page.body.kyc.documents.uploadFile.selfie.sizes': 'Maximum file size is 20MB',
+   'page.body.kyc.documents.uploadFile.selfie.sizes':
+      'Maximum file size is 20MB',
    'page.body.kyc.documents.uploadFile.selfie.formats': 'JPG, BMP, PNG formats',
 
    'page.body.kyc.address.address': 'Address',
@@ -506,11 +601,13 @@ export const en = {
    'page.body.kyc.address.postcode': 'Postcode (ZIP)',
    'page.body.kyc.address.postcode.placeholder': 'Your Postcode',
    'page.body.kyc.address.uploadFile.title': 'Proof of Address',
-   'page.body.kyc.address.uploadFile.label': 'Please upload a Utility bill with your Address (Photo or scan)',
+   'page.body.kyc.address.uploadFile.label':
+      'Please upload a Utility bill with your Address (Photo or scan)',
    'page.body.kyc.address.uploadFile.button': 'Upload',
    'page.body.kyc.address.uploadFile.sizes': 'Maximum file size is 20MB',
    'page.body.kyc.address.uploadFile.formats': 'JPG, BMP, PNG formats',
-   'page.body.kyc.address.uploadFile.tip': 'Please take a photo or scan of a utility bill showing your name/surname and your address. For the verification to work, the bill must be issued in your name and less than a 3 months ago',
+   'page.body.kyc.address.uploadFile.tip':
+      'Please take a photo or scan of a utility bill showing your name/surname and your address. For the verification to work, the bill must be issued in your name and less than a 3 months ago',
 
    'page.body.kyc.phone.head': 'Verify Phone',
    'page.body.kyc.phone.enterPhone': 'Enter phone number',
@@ -547,45 +644,55 @@ export const en = {
    'page.footer.legalDocuments': 'Legal documents',
    'page.footer.faq': 'FAQ',
 
-   'page.header.signIn': 'Login',
-   'page.header.signIn.email': 'Email Address',
-   'page.header.signIn.password': 'Password',
-   'page.header.signIn.password.message.error': 'Password is invalid',
-   'page.header.signIn.receiveConfirmation': 'Didn\'t receive your confirmation email?',
-   'page.header.signIn.forgotPassword': 'Forgot your password?',
-   'page.header.signIn.resetPassword.title': 'Reset password',
-   'page.header.signIn.resetPassword.newPassword': 'New password',
-   'page.header.signIn.resetPassword.repeatPassword': 'Repeat password',
-   'page.header.signIn.resetPassword.button': 'Change',
-   'page.header.signIn.resetPassword.error': 'Fields are empty or don`t matches',
+   'page.header.login': 'Login',
+   'page.header.login.email': 'Email Address',
+   'page.header.login.password': 'Password',
+   'page.header.login.password.message.error': 'Password is invalid',
+   'page.header.login.receiveConfirmation':
+      "Didn't receive your confirmation email?",
+   'page.header.login.forgotPassword': 'Forgot your password?',
+   'page.header.login.resetPassword.title': 'Reset password',
+   'page.header.login.resetPassword.newPassword': 'New password',
+   'page.header.login.resetPassword.repeatPassword': 'Repeat password',
+   'page.header.login.resetPassword.button': 'Change',
+   'page.header.login.resetPassword.error': 'Fields are empty or don`t matches',
 
-   'page.header.signUp': 'Sign Up',
-   'page.header.signUp.username.minLength.error': 'Please, enter more characters. Min number of characters is 4',
-   'page.header.signUp.username.maxLength.error': 'Please, enter fewer characters. Maximum number of characters is 12',
-   'page.header.signUp.username.uniqueness.error': 'This username is already taken',
-   'page.header.signUp.email': 'Email',
-   'page.header.signUp.email.message.error': 'Not valid email address, must be example@mail.com',
-   'page.header.signUp.password': 'Password',
-   'page.header.signUp.password.message.error': 'Password must contain at least 8 characters, at least one capital letter and one digit',
-   'page.header.signUp.confirmPassword': 'Confirm Password',
-   'page.header.signUp.confirmPassword.message.error': 'Passwords don\'t match',
-   'page.header.signUp.referalCode': 'Referral Code',
-   'page.header.signUp.terms': 'I have read and agree to the Terms of Service',
-   'page.header.signUp.modal.header': 'VERIFY YOUR ACCOUNT',
-   'page.header.signUp.modal.body': 'To complete registration, check for an ' +
+   'page.header.register': 'Sign Up',
+   'page.header.register.username.minLength.error':
+      'Please, enter more characters. Min number of characters is 4',
+   'page.header.register.username.maxLength.error':
+      'Please, enter fewer characters. Maximum number of characters is 12',
+   'page.header.register.username.uniqueness.error':
+      'This username is already taken',
+   'page.header.register.email': 'Email',
+   'page.header.register.email.message.error':
+      'Not valid email address, must be example@mail.com',
+   'page.header.register.password': 'Password',
+   'page.header.register.password.message.error':
+      'Password must contain at least 8 characters, at least one capital letter and one digit',
+   'page.header.register.confirmPassword': 'Confirm Password',
+   'page.header.register.confirmPassword.message.error':
+      "Passwords don't match",
+   'page.header.register.referalCode': 'Referral Code',
+   'page.header.register.terms':
+      'I have read and agree to the Terms of Service',
+   'page.header.register.modal.header': 'VERIFY YOUR ACCOUNT',
+   'page.header.register.modal.body':
+      'To complete registration, check for an ' +
       'email in your inbox with further ' +
       'instruction. If you cannot find the email, ' +
       'please check your spam folder',
-   'page.header.signUp.modal.footer': 'OK',
-   'page.header.signUp.strength.password': 'Password Strength',
-   'page.header.signUp.password.too.weak': 'TOO WEAK',
-   'page.header.signUp.password.weak': 'WEAK',
-   'page.header.signUp.password.good': 'GOOD',
-   'page.header.signUp.password.strong': 'STRONG',
-   'page.header.signUp.password.very.strong': 'VERY STRONG',
+   'page.header.register.modal.footer': 'OK',
+   'page.header.register.strength.password': 'Password Strength',
+   'page.header.register.password.too.weak': 'TOO WEAK',
+   'page.header.register.password.weak': 'WEAK',
+   'page.header.register.password.good': 'GOOD',
+   'page.header.register.password.strong': 'STRONG',
+   'page.header.register.password.very.strong': 'VERY STRONG',
    'page.resendConfirmation': 'Resend Confirmation',
    'page.forgotPassword': 'Forgot Password',
-   'page.forgotPassword.subtitle': 'Please input your email address and we will send you there a pin to reset your password',
+   'page.forgotPassword.subtitle':
+      'Please input your email address and we will send you there a pin to reset your password',
    'page.forgotPassword.message': 'Enter email to reset password',
    'page.forgotPassword.label': 'Enter the account email',
    'page.password2fa': '2FA verification',
@@ -595,12 +702,12 @@ export const en = {
    'page.noDataToShow': 'There is no data to show',
 
    'page.modal.withdraw.success': 'Success!',
-   'page.modal.withdraw.success.message.content': 'Your withdrawal request has been received',
+   'page.modal.withdraw.success.message.content':
+      'Your withdrawal request has been received',
    'page.modal.withdraw.success.button': 'OK',
 
    'page.modal.expired.title': 'Your session has expired',
    'page.modal.expired.submit': 'Login again',
-
 
    /* Customization */
    'page.body.customization.tabs.themes': 'Colors',
@@ -613,15 +720,23 @@ export const en = {
 
    'page.body.customization.themes.selector.label': 'Theme Presets',
 
-   'page.body.customization.themes.color.mainBackgroundColor': 'Main background',
-   'page.body.customization.themes.color.bodyBackgroundColor': 'Body background',
-   'page.body.customization.themes.color.headerBackgroundColor': 'Header background',
-   'page.body.customization.themes.color.subheaderBackgroundColor': 'Subheader background',
-   'page.body.customization.themes.color.dropdownBackgroundColor': 'Dropdown background',
+   'page.body.customization.themes.color.mainBackgroundColor':
+      'Main background',
+   'page.body.customization.themes.color.bodyBackgroundColor':
+      'Body background',
+   'page.body.customization.themes.color.headerBackgroundColor':
+      'Header background',
+   'page.body.customization.themes.color.subheaderBackgroundColor':
+      'Subheader background',
+   'page.body.customization.themes.color.dropdownBackgroundColor':
+      'Dropdown background',
    'page.body.customization.themes.color.icon': 'Icons',
-   'page.body.customization.themes.color.primaryCtaColor': 'Primary Call to action',
-   'page.body.customization.themes.color.contrastCtaColor': 'Contrast Call to action',
-   'page.body.customization.themes.color.secondaryContrastCtaColor': 'Secondary Contrast CTA',
+   'page.body.customization.themes.color.primaryCtaColor':
+      'Primary Call to action',
+   'page.body.customization.themes.color.contrastCtaColor':
+      'Contrast Call to action',
+   'page.body.customization.themes.color.secondaryContrastCtaColor':
+      'Secondary Contrast CTA',
    'page.body.customization.themes.color.ctaLayerColor': 'CTA Layer',
    'page.body.customization.themes.color.systemGreen': 'System Green',
    'page.body.customization.themes.color.systemRed': 'System Red',
@@ -630,39 +745,54 @@ export const en = {
    'page.body.customization.themes.color.bids': 'Bids color',
    'page.body.customization.themes.color.primaryTextColor': 'Primary text',
    'page.body.customization.themes.color.textContrastColor': 'Text contrast',
-   'page.body.customization.themes.color.inputBackgroundColor': 'Input background',
+   'page.body.customization.themes.color.inputBackgroundColor':
+      'Input background',
    'page.body.customization.themes.color.dividerColor': 'Divider color',
    'page.body.customization.themes.color.shadowColor': 'Shadow color',
-   'page.body.customization.themes.color.landingBackgroundColor': 'Landing background',
-   'page.body.customization.themes.color.strengthMeterVeryStrong': 'Password very strong',
+   'page.body.customization.themes.color.landingBackgroundColor':
+      'Landing background',
+   'page.body.customization.themes.color.strengthMeterVeryStrong':
+      'Password very strong',
 
    'page.body.customization.themes.theme.darkBlue.title': 'Dark blue',
    'page.body.customization.themes.theme.darkRed.title': 'Dark red',
    'page.body.customization.themes.theme.purple.title': 'Purple',
    'page.body.customization.themes.theme.green.title': 'Green',
 
-
    /* Documentation */
    'page.documentation.header.version.title': 'Version:',
    'page.documentation.header.contactInfo.title': 'Contact information:',
    'page.documentation.header.license.title': 'License:',
 
-   'page.documentation.endpoints.requestTypeItem.description.title': 'Description',
-   'page.documentation.endpoints.requestTypeItem.parameters.title': 'Parameters',
+   'page.documentation.endpoints.requestTypeItem.description.title':
+      'Description',
+   'page.documentation.endpoints.requestTypeItem.parameters.title':
+      'Parameters',
    'page.documentation.endpoints.requestTypeItem.responses.title': 'Responses',
 
-   'page.documentation.endpoints.requestTypeItem.parameters.table.header.name': 'Name',
-   'page.documentation.endpoints.requestTypeItem.parameters.table.header.location': 'Located in',
-   'page.documentation.endpoints.requestTypeItem.parameters.table.header.description': 'Description',
-   'page.documentation.endpoints.requestTypeItem.parameters.table.header.required': 'Required',
-   'page.documentation.endpoints.requestTypeItem.parameters.table.header.schema': 'Schema',
-   'page.documentation.endpoints.requestTypeItem.parameters.table.data.required.true': 'Yes',
-   'page.documentation.endpoints.requestTypeItem.parameters.table.data.required.false': 'No',
+   'page.documentation.endpoints.requestTypeItem.parameters.table.header.name':
+      'Name',
+   'page.documentation.endpoints.requestTypeItem.parameters.table.header.location':
+      'Located in',
+   'page.documentation.endpoints.requestTypeItem.parameters.table.header.description':
+      'Description',
+   'page.documentation.endpoints.requestTypeItem.parameters.table.header.required':
+      'Required',
+   'page.documentation.endpoints.requestTypeItem.parameters.table.header.schema':
+      'Schema',
+   'page.documentation.endpoints.requestTypeItem.parameters.table.data.required.true':
+      'Yes',
+   'page.documentation.endpoints.requestTypeItem.parameters.table.data.required.false':
+      'No',
 
-   'page.documentation.endpoints.requestTypeItem.responses.table.header.code': 'Code',
-   'page.documentation.endpoints.requestTypeItem.responses.table.header.description': 'Description',
-   'page.documentation.endpoints.requestTypeItem.responses.table.header.schema': 'Schema',
-   'page.documentation.endpoints.requestTypeItem.responses.table.data.noSchema': 'no',
+   'page.documentation.endpoints.requestTypeItem.responses.table.header.code':
+      'Code',
+   'page.documentation.endpoints.requestTypeItem.responses.table.header.description':
+      'Description',
+   'page.documentation.endpoints.requestTypeItem.responses.table.header.schema':
+      'Schema',
+   'page.documentation.endpoints.requestTypeItem.responses.table.data.noSchema':
+      'no',
 
    'page.documentation.models.title': 'Models',
    'page.documentation.models.item.table.header.name': 'Name',
@@ -677,7 +807,6 @@ export const en = {
    'page.body.restricted': 'Page not found',
    'page.body.500.maintenance': 'The platform is under maintenance',
    'page.body.500.availableSoon': 'It will be available as soon as possible',
-
 
    // success messages
    'success.addresses.accepted': 'Addresses upload was successful',
@@ -694,11 +823,13 @@ export const en = {
    'success.order.canceled': 'Order was cancelled',
    'success.order.canceled.all': 'All orders were cancelled',
    'success.order.cancelling.all': 'All orders are being canceled',
-   'success.phone.verification.send': 'Verification code was sent to your phone',
+   'success.phone.verification.send':
+      'Verification code was sent to your phone',
    'success.phone.confirmed': 'Your phone was confirmed',
    'success.phone.confirmation.message': 'Success!',
    'success.message.sent': 'Message was sent',
-   'success.email.confirmed': 'Your email address has been successfully confirmed',
+   'success.email.confirmed':
+      'Your email address has been successfully confirmed',
    'success.order.created': 'Order was created',
    'success.order.done': 'Order successfully completed',
    'success.data.changed.language': 'Language has been changed',
@@ -712,25 +843,33 @@ export const en = {
    'error.request_entity_too_large': 'Order - request entity too large',
 
    // barong
-   'resource.labels.private': 'Can\'t update label',
+   'resource.labels.private': "Can't update label",
    'resource.user.no_activity': 'No activity recorded or wrong topic',
    'resource.profile.not_exist': 'User has no profile',
    'resource.profile.exist': 'Profile already exists',
    'resource.api_key.2fa_disabled': 'Only accounts with enabled 2FA alowed',
-   'resource.api_key.missing_otp': 'Theaccount has enabled 2FA but OTP code is missing',
+   'resource.api_key.missing_otp':
+      'Theaccount has enabled 2FA but OTP code is missing',
    'resource.api_key.invalid_otp': 'OTP code is invalid',
    'resource.phone.twillio': 'Something wrong with Twilio Client',
    'resource.phone.invalid_num': 'Phone number is invalid',
-   'resource.phone.exists': 'Phone number was not verified. Verification code was resent.',
+   'resource.phone.exists':
+      'Phone number was not verified. Verification code was resent.',
    'resource.phone.number_exist': 'Phone number already exists',
-   'resource.phone.verification_invalid': 'Phone is not found or verification code is invalid',
-   'resource.documents.limit_reached': 'Maximum number of documents already reached',
-   'resource.documents.limit_will_be_reached': 'Documents amount will reach limit by this upload',
-   'resource.otp.already_enabled': '2FA has been already enabled for this account',
+   'resource.phone.verification_invalid':
+      'Phone is not found or verification code is invalid',
+   'resource.documents.limit_reached':
+      'Maximum number of documents already reached',
+   'resource.documents.limit_will_be_reached':
+      'Documents amount will reach limit by this upload',
+   'resource.otp.already_enabled':
+      '2FA has been already enabled for this account',
    'resource.otp.invalid': 'OTP code is invalid',
-   'resource.password.doesnt_match': 'New passwords don\'t match',
-   'resource.password.prev_pass_not_correct': 'Previous password is not correct',
-   'resource.password.no_change_provided': 'New password cant be the same, as old one',
+   'resource.password.doesnt_match': "New passwords don't match",
+   'resource.password.prev_pass_not_correct':
+      'Previous password is not correct',
+   'resource.password.no_change_provided':
+      'New password cant be the same, as old one',
    'resource.document.empty_doc_expire': 'Expiration Date is invalid',
    'password.requirements': 'Password does not meet the minimum requirements',
    'password.password.password_strength': 'Password is too weak',
@@ -738,11 +877,13 @@ export const en = {
    'email.taken': 'Email already have been taken',
 
    'identity.user.invalid_referral_format': 'Invalid referral uid format',
-   'identity.user.referral_doesnt_exist': 'Referral doesn\'t exist',
-   'identity.user.active_or_doesnt_exist': 'User doesn\'t exist or has already been activated',
-   'identity.password.user_doesnt_exist': 'User doesn\'t exist',
-   'identity.user.passwords_doesnt_match': 'Passwords don\'t match',
-   'identity.user.utilized_token': 'JWT has already been used',
+   'identity.user.referral_doesnt_exist': "Referral doesn't exist",
+   'identity.user.active_or_doesnt_exist':
+      "User doesn't exist or has already been activated",
+   'identity.password.user_doesnt_exist': "User doesn't exist",
+   'identity.user.passwords_doesnt_match': "Passwords don't match",
+   'identity.user.utilized_token': 'Wrong pin code',
+   'identity.session.rack_attack_limit': 'Wrong pin code',
    'identity.session.invalid_login_params': 'Invalid Email or Password',
    'identity.session.invalid': 'Invalid Session',
    'identity.captcha.required': 'captcha_response is required',
@@ -750,7 +891,8 @@ export const en = {
    'identity.session.not_active': 'Your account is not active',
    'identity.session.banned': 'Your account is banned',
    'identity.session.invalid_params': 'Invalid Email or Password',
-   'identity.session.missing_otp': 'The account has enabled 2FA but OTP code is missing',
+   'identity.session.missing_otp':
+      'The account has enabled 2FA but OTP code is missing',
    'identity.session.invalid_otp': 'OTP code is invalid',
 
    'username.taken': 'This username is already taken',
@@ -766,7 +908,8 @@ export const en = {
    'city.blank': 'City is missing or empty',
    'country.blank': 'Country is missing or empty',
    'postcode.blank': 'Postcode.blank is missing or empty',
-   'country.must have alpha2 or alpha3 format': 'Country must have alpha2 or alpha3 format',
+   'country.must have alpha2 or alpha3 format':
+      'Country must have alpha2 or alpha3 format',
 
    'totp.error': 'OTP code is invalid',
 
@@ -774,8 +917,8 @@ export const en = {
    'jwt.decode_and_verify': 'Failed to decode and verify JWT',
    'authz.invalid_session': 'Failed to decode cookies',
    'authz.user_not_active': 'User is not active',
-   'authz.invalid_signature': 'API Key header \'signature\' is invalid',
-   'authz.apikey_not_active': 'API Key state is \'inactive',
+   'authz.invalid_signature': "API Key header 'signature' is invalid",
+   'authz.apikey_not_active': "API Key state is 'inactive",
    'authz.disabled_2fa': 'API Key owner has disabled 2FA',
    'authz.invalid_api_key_headers': 'Blank or missing API Key headers',
    'authz.permission_denied': 'Path is denylisted',
@@ -791,10 +934,13 @@ export const en = {
    'identity.user.empty_password': 'Password is missing or empty',
    'identity.user.missing_token': 'Token is missing',
    'identity.user.empty_token': 'Token is missing or empty',
-   'identity.user.missing_reset_password_token': 'Reset password token is missing',
-   'identity.user.empty_reset_password_token': 'Reset password token is missing or empty',
+   'identity.user.missing_reset_password_token':
+      'Reset password token is missing',
+   'identity.user.empty_reset_password_token':
+      'Reset password token is missing or empty',
    'identity.user.missing_confirm_password': 'Confirm password is missing',
-   'identity.user.empty_confirm_password': 'Confirm password is missing or empty',
+   'identity.user.empty_confirm_password':
+      'Confirm password is missing or empty',
 
    'identity.session.missing_emai': 'Email is missing',
    'identity.session.missing_password': 'Password is missing',
@@ -809,15 +955,17 @@ export const en = {
    'resource.labels.missing_value': 'Value is missing',
    'resource.labels.empty_value': 'Value is missing or empty',
 
-   'resource.documents.missing_doc_expire': 'Documents expiration date is missing',
-   'resource.documents.empty_doc_expire': 'Documents expiration date is missing or empty',
+   'resource.documents.missing_doc_expire':
+      'Documents expiration date is missing',
+   'resource.documents.empty_doc_expire':
+      'Documents expiration date is missing or empty',
    'resource.documents.expire_not_a_date': 'Documents expiration is not a date',
    'resource.documents.missing_doc_type': 'Documents type is missing',
    'resource.documents.empty_doc_type': 'Documents type is missing or empty',
    'resource.documents.missing_doc_number': 'Documents number is missing',
-   'resource.documents.empty_doc_number': 'Documents number is missing or empty',
+   'resource.documents.empty_doc_number':
+      'Documents number is missing or empty',
    'resource.documents.missing_upload': 'Attachment is missing',
-
 
    'resource.user.missing_topic': 'Topic is missing',
    'resource.user.empty_topic': 'Topic is missing or empty',
@@ -826,7 +974,8 @@ export const en = {
    'resource.user.missing_new_password': 'New password is missing',
    'resource.user.empty_new_password': 'New password is missing or empty',
    'resource.user.missing_confirm_password': 'Confirm password is missing',
-   'resource.user.empty_confirm_password': 'Confirm password is missing or empty',
+   'resource.user.empty_confirm_password':
+      'Confirm password is missing or empty',
 
    'resource.profile.missing_first_name': 'First name is missing',
    'resource.profile.missing_last_name': 'Last name is missing',
@@ -848,116 +997,155 @@ export const en = {
    'resource.phone.missing_phone_number': 'Phone number is missing',
    'resource.phone.empty_phone_number': 'Phone number is missing or empty',
    'resource.phone.missing_verification_code': 'Verification code is missing',
-   'resource.phone.empty_verification_code': 'Verification code is missing or empty',
+   'resource.phone.empty_verification_code':
+      'Verification code is missing or empty',
 
    // peatio
-   'account.currency.doesnt_exist': 'Currency doesn\'t exist',
+   'account.currency.doesnt_exist': "Currency doesn't exist",
    'account.deposit.invalid_state': 'Deposit invalid state',
-   'account.deposit.non_integer_limit': 'Value you send could not be parsed into Integer type',
+   'account.deposit.non_integer_limit':
+      'Value you send could not be parsed into Integer type',
    'account.deposit.invalid_limit': 'Invalid limit',
    'account.deposit.non_positive_page': 'Page value must be positive',
    'account.deposit.empty_txid': 'Txid is missing, txid is empty',
-   'account.deposit_address.invalid_address_format': 'Invalid deposit address format',
-   'account.deposit_address.doesnt_support_cash_address_format': 'Currency doesn\'t support cash address format',
-   'account.withdraw.non_integer_limit': 'Limit Value you send could not be parsed into Integer type',
+   'account.deposit_address.invalid_address_format':
+      'Invalid deposit address format',
+   'account.deposit_address.doesnt_support_cash_address_format':
+      "Currency doesn't support cash address format",
+   'account.withdraw.non_integer_limit':
+      'Limit Value you send could not be parsed into Integer type',
    'account.withdraw.invalid_limit': 'Invalid limit',
    'account.withdraw.non_positive_page': 'Page value must be positive',
-   'account.withdraw.non_integer_otp': 'Otp value could not be parsed into Integer type',
+   'account.withdraw.non_integer_otp':
+      'Otp value could not be parsed into Integer type',
    'account.withdraw.empty_otp': 'Otp is missing, otp is empty',
    'account.withdraw.empty_rid': 'Rid is missing, rid is empty',
-   'account.withdraw.non_decimal_amount': 'Amount value you send could not be parsed into Decimal type',
+   'account.withdraw.non_decimal_amount':
+      'Amount value you send could not be parsed into Decimal type',
    'account.withdraw.non_positive_amount': 'Amount value must be positive',
-   'account.deposit.not_permitted': 'Deposits are allowed after phone verification',
-   'account.withdraw.not_permitted': 'Please, pass the corresponding verification steps to withdraw funds',
+   'account.deposit.not_permitted':
+      'Deposits are allowed after phone verification',
+   'account.withdraw.not_permitted':
+      'Please, pass the corresponding verification steps to withdraw funds',
    'account.withdraw.insufficient_balance': 'Account balance is insufficient',
    'account.withdraw.invalid_amount': 'Invalid withdraw amount',
    'account.withdraw.create_error': 'Failed to create withdraw',
    'account.withdraw.invalid_otp': 'Invalid otp',
    'account.withdraw.disabled_api': 'Withdrawal API is disabled',
 
-   'account.internaltransfer.empty_username_or_uid': 'Please enter a valid Receiver',
+   'account.internaltransfer.empty_username_or_uid':
+      'Please enter a valid Receiver',
    'account.internaltransfer.empty_otp': 'Please enter a valid OTP Code',
    'account.internal_transfer.non_positive_amount': 'Amount must be positive',
    'account.internal_transfer.receiver_not_found': 'Receiver not valid',
    'account.internal_transfer.invalid_otp': 'Invalid otp',
-   'account.internal_transfer.can_not_tranfer_to_yourself': 'Can not transfer to yourself',
+   'account.internal_transfer.can_not_tranfer_to_yourself':
+      'Can not transfer to yourself',
    'account.internal_transfer.insufficient_balance': 'Insufficient balance',
 
    'account.beneficiary.invalid_pin': 'Invalid beneficiary activation pin',
-   'account.beneficiary.cant_resend_within_1_minute': 'Can\'t resend activation pin within 1 minute',
+   'account.beneficiary.cant_resend_within_1_minute':
+      "Can't resend activation pin within 1 minute",
 
-   'market.market.doesnt_exist': 'Market doesn\'t exist',
+   'account.wallet.not_found': 'Wallet not found',
+
+   'market.market.doesnt_exist': "Market doesn't exist",
    'market.order.invalid_state': 'Invalid deposit state',
    'market.order.invalid_limit': 'Invalid limit',
-   'market.order.non_integer_limit': 'Limit value you send could not be parsed into Integer type',
+   'market.order.non_integer_limit':
+      'Limit value you send could not be parsed into Integer type',
    'market.trade.empty_page': 'Page is missing or empty',
    'market.order.invalid_order_by': 'Invalid order_by',
    'market.order.invalid_side': 'Invalid order side',
-   'market.order.non_decimal_volume': 'Volume value you send could not be parsed into Decimal type',
+   'market.order.non_decimal_volume':
+      'Volume value you send could not be parsed into Decimal type',
    'market.order.non_positive_volume': 'Volume value must be positive',
    'market.order.invalid_type': 'Invalid order type',
-   'market.order.non_decimal_price': 'Volume value you send could not be parsed into Decimal type',
+   'market.order.non_decimal_price':
+      'Volume value you send could not be parsed into Decimal type',
    'market.order.non_positive_price': 'Volume value must be positive',
-   'market.order.non_integer_id': 'Id value  you send could not be parsed into Integer type',
+   'market.order.non_integer_id':
+      'Id value  you send could not be parsed into Integer type',
    'market.order.empty_id': 'Id is missing or empty',
-   'market.trade.non_integer_limit': 'Limit value you send could not be parsed into Integer type',
+   'market.trade.non_integer_limit':
+      'Limit value you send could not be parsed into Integer type',
    'market.trade.invalid_limit': 'Invalid limit',
-   'market.trade.non_integer_timestamp': 'Timestamp value you send could not be parsed into Integer type',
+   'market.trade.non_integer_timestamp':
+      'Timestamp value you send could not be parsed into Integer type',
    'market.trade.empty_timestamp': 'Timestamp is missing or empty',
    'market.trade.invalid_order_by': 'Invalid order_by',
-   'market.order.insufficient_market_liquidity': 'Insufficient market liquidity ',
+   'market.order.insufficient_market_liquidity':
+      'Insufficient market liquidity ',
    'market.order.invalid_volume_or_price': 'Invalid volume or price',
    'market.order.create_error': 'Failed to create error',
    'market.order.cancel_error': 'Failed to cancel error',
-   'market.order.market_order_price': 'Market order doesn\'t have price',
-   'market.trade.not_permitted': 'Please, pass the corresponding verification steps to enable trading',
+   'market.order.market_order_price': "Market order doesn't have price",
+   'market.trade.not_permitted':
+      'Please, pass the corresponding verification steps to enable trading',
+   'market.trade.invalid_type': 'Invalid type',
    'market.account.insufficient_balance': 'Account balance is insufficient',
 
-   'public.currency.doesnt_exist': 'Currency doesn\'t exist',
+   'public.currency.doesnt_exist': "Currency doesn't exist",
    'public.currency.invalid_type': 'Invalid currency type',
-   'public.market.doesnt_exist': 'Market doesn\'t exist',
-   'public.order_book.non_integer_ask_limit': 'Ask limit value you send could not be parsed into Integer type',
+   'public.market.doesnt_exist': "Market doesn't exist",
+   'public.order_book.non_integer_ask_limit':
+      'Ask limit value you send could not be parsed into Integer type',
    'public.order_book.invalid_ask_limit': 'Invlalid ask limit',
-   'public.order_book.non_integer_bid_limit': 'Bid limir value you send could not be parsed into Integer type',
+   'public.order_book.non_integer_bid_limit':
+      'Bid limir value you send could not be parsed into Integer type',
    'public.order_book.invalid_bid_limit': 'Invalid bid limit',
-   'public.trade.non_integer_limit': 'Limit value you send could not be parsed into Integer type',
+   'public.trade.non_integer_limit':
+      'Limit value you send could not be parsed into Integer type',
    'public.trade.invalid_limit': 'Invalid limit',
    'public.trade.non_positive_page': 'Page value must be positive',
-   'public.trade.non_integer_timestamp': 'Timestamp value you send could not be parsed into Integer type',
+   'public.trade.non_integer_timestamp':
+      'Timestamp value you send could not be parsed into Integer type',
    'public.trade.invalid_order_by': 'Invalid order by',
-   'public.market_depth.non_integer_limit': 'Limit value you send could not be parsed into Integer type',
+   'public.market_depth.non_integer_limit':
+      'Limit value you send could not be parsed into Integer type',
    'public.market_depth.invalid_limit': 'Invalid limit',
-   'public.k_line.non_integer_period': 'Limit value you send could not be parsed into Integer type',
+   'public.k_line.non_integer_period':
+      'Limit value you send could not be parsed into Integer type',
    'public.k_line.invalid_period': 'Invalid period',
-   'public.k_line.non_integer_time_from': 'Limit value you send could not be parsed into Integer type',
+   'public.k_line.non_integer_time_from':
+      'Limit value you send could not be parsed into Integer type',
    'public.k_line.empty_time_from': 'Time_from param is missing or empty',
-   'public.k_line.non_integer_time_to': 'Limit value you send could not be parsed into Integer type',
+   'public.k_line.non_integer_time_to':
+      'Limit value you send could not be parsed into Integer type',
    'public.k_line.empty_time_to': 'Time_to param is missing or empty',
-   'public.k_line.non_integer_limit': 'Limit value you send could not be parsed into Integer type',
+   'public.k_line.non_integer_limit':
+      'Limit value you send could not be parsed into Integer type',
    'public.k_line.invalid_limit': 'Invalid limit',
 
    'server.internal_error': 'Internal Server Error',
 
    'password.strength.tip.influence': 'What influence on password strength',
    'password.strength.tip.number.characters': 'At least 8 characters',
-   'password.strength.tip.letter': 'At least One upper case and lower case letter',
+   'password.strength.tip.letter':
+      'At least One upper case and lower case letter',
    'password.strength.tip.digit': 'At least One digit',
 
    // metamask
    'metamask.success.connected': '[MetaMask] Account connected',
 
-   'metamask.error.noExtension': '[MetaMask] No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile',
-   'metamask.error.unsupportedNetwork': '[MetaMask] You\'re connected to an unsupported network',
-   'metamask.error.unauthorized': '[MetaMask] Please authorize this website to access your Ethereum account',
-   'metamask.error.unknown': '[MetaMask] An unknown error occurred. Check the console for more details',
+   'metamask.error.noExtension':
+      '[MetaMask] No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile',
+   'metamask.error.unsupportedNetwork':
+      "[MetaMask] You're connected to an unsupported network",
+   'metamask.error.unauthorized':
+      '[MetaMask] Please authorize this website to access your Ethereum account',
+   'metamask.error.unknown':
+      '[MetaMask] An unknown error occurred. Check the console for more details',
 
    //  Email verification
    'identity.user.wrong_code_error': 'Code otp is invalid',
 
    // update mas adib 28/11/2022
    'page.auth.2fa.title': 'Authentication Code',
-   'page.auth.2fa.subtitle': 'Please enter 6 digit google authentication code to continue',
-   'page.auth.2fa.modal.title': 'Please contact our customer service to reset Google Authenticator',
+   'page.auth.2fa.subtitle':
+      'Please enter 6 digit google authentication code to continue',
+   'page.auth.2fa.modal.title':
+      'Please contact our customer service to reset Google Authenticator',
    'page.auth.2fa.modal.button': 'Contact now',
    'mustBeFilled': 'must be filled',
 
@@ -966,13 +1154,17 @@ export const en = {
    'transfer.title': 'Send asset to another member',
    'transfer.receiver.detail': 'Receiver Detail',
    'transfer.intruction.title': 'Instruction of transfer',
-   'transfer.intruction.list_1': 'Please note to double check your receiver uid/ username before sending assets. Wrong uid/ username cause your asset to be lost.',
-   'transfer.intruction.list_2': 'In internal transfer transactions you are not charged any fees.',
-   'transfer.intruction.list_3': 'Even though the internal transfer does not have a minimum value, make sure your balance is sufficient to make an internal transfer.',
+   'transfer.intruction.list_1':
+      'Please note to double check your receiver uid/ username before sending assets. Wrong uid/ username cause your asset to be lost.',
+   'transfer.intruction.list_2':
+      'In internal transfer transactions you are not charged any fees.',
+   'transfer.intruction.list_3':
+      'Even though the internal transfer does not have a minimum value, make sure your balance is sufficient to make an internal transfer.',
 
    // DepositPage
    'deposit.content.right.title': 'Currency Detail',
-   'deposit.content.disabled': 'Deposit disabled: Deposit for this currency will be available shortly',
+   'deposit.content.disabled':
+      'Deposit disabled: Deposit for this currency will be available shortly',
    'deposit.content.button.enabled': 'Generate address',
    'deposit.content.button.disabled': 'Deposit disabled',
 

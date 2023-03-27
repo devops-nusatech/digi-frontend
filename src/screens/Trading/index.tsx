@@ -1,5 +1,9 @@
-import React, { FC, FunctionComponent, useState } from 'react';
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
+import React, { FC, FunctionComponent, useEffect, useState } from 'react';
+import {
+   connect,
+   MapDispatchToPropsFunction,
+   MapStateToProps,
+} from 'react-redux';
 import {
    TradingHeader,
    TradingOrderList,
@@ -8,7 +12,17 @@ import {
    TradingMarketList,
    Nav,
 } from 'components';
-import { Market, RootState, selectCurrentColorTheme, selectCurrentMarket, selectMarkets, selectMarketTickers, selectUserLoggedIn, Ticker } from 'modules';
+import {
+   Market,
+   RootState,
+   selectCurrentColorTheme,
+   selectCurrentMarket,
+   selectMarkets,
+   selectMarketTickers,
+   selectUserLoggedIn,
+   setCurrentMarket,
+   Ticker,
+} from 'modules';
 import { compose } from 'redux';
 import { injectIntl } from 'react-intl';
 import { RouterProps, withRouter } from 'react-router';
@@ -19,36 +33,68 @@ type ReduxProps = {
    currentMarket?: Market;
    markets: Market[];
    marketTickers: {
-      [key: string]: Ticker
+      [key: string]: Ticker;
    };
    theme: string;
-}
+};
 
 interface DispatchProps {
-
+   setCurrentMarket: typeof setCurrentMarket;
 }
 
-type TradingProps = RouterProps & IntlProps & ReduxProps & DispatchProps;
+interface OwnProps {
+   location: {
+      state: {
+         pathname: string;
+      };
+   };
+}
+
+type TradingProps = RouterProps &
+   IntlProps &
+   ReduxProps &
+   DispatchProps &
+   OwnProps;
 
 const TradingFC: FC<TradingProps> = ({
    isLoggedIn,
    currentMarket,
+   setCurrentMarket,
    markets,
    marketTickers,
    intl,
    theme,
+   location,
 }) => {
    const [tab, setTab] = useState(0);
    const translate = (id: string) => intl.formatMessage({ id });
 
+   useEffect(() => {
+      if (!currentMarket) {
+         setCurrentMarket(
+            location.state && location.state?.pathname
+               ? markets.find(
+                    e => e.id === location.state?.pathname.split('/').pop()
+                 )!
+               : markets[0]
+         );
+      }
+   }, [
+      currentMarket,
+      location.state,
+      location.state?.pathname,
+      markets,
+      setCurrentMarket,
+   ]);
+
    return (
-      <div className="bg-shade4 dark:bg-neutral1 min-h-[calc(100vh-114px)] lg:min-h-[calc(100vh-88px)] p-4 pb-33 lg:p-1">
+      <div className="min-h-[calc(100vh-114px)] bg-shade4 p-4 pb-33 dark:bg-neutral1 lg:min-h-[calc(100vh-88px)] lg:p-1">
          <TradingHeader
             currentMarket={currentMarket}
             marketTickers={marketTickers}
             translate={translate}
          />
-         <div className="flex lg:hidden space-x-0 md:space-x-2 lg:space-x-0 my-4 lg:mb-0 justify-between md:justify-start">
+         <div className="my-4 flex justify-between space-x-0 md:justify-start md:space-x-2 lg:mb-0 lg:hidden lg:space-x-0">
             <Nav
                title="Chart"
                theme={theme === 'dark' ? 'black' : 'grey'}
@@ -68,7 +114,7 @@ const TradingFC: FC<TradingProps> = ({
                onClick={() => setTab(2)}
             />
          </div>
-         <div className="block lg2:flex mt-1">
+         <div className="mt-1 block lg2:flex">
             <TradingOrderList />
             <TradingCenter />
             <TradingMarketList translate={translate} />
@@ -76,7 +122,7 @@ const TradingFC: FC<TradingProps> = ({
          {/* <TradingTrade isLoggedIn={isLoggedIn} /> */}
       </div>
    );
-}
+};
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    isLoggedIn: selectUserLoggedIn(state),
@@ -86,8 +132,11 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    theme: selectCurrentColorTheme(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
-
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   setCurrentMarket: payload => dispatch(setCurrentMarket(payload)),
 });
 
 export const Trading = compose(

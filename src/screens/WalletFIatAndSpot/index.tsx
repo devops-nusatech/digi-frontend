@@ -1,8 +1,4 @@
-import React, {
-   useState,
-   FunctionComponent,
-   memo,
-} from 'react';
+import React, { useState, FunctionComponent, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { RouterProps, withRouter } from 'react-router';
 import { connect, MapDispatchToProps } from 'react-redux';
@@ -31,12 +27,13 @@ import {
    selectWalletsLoading,
    selectWithdrawSuccess,
    Ticker,
-   User, Wallet,
+   User,
+   Wallet,
    WalletHistoryList,
    walletsAddressFetch,
    walletsData,
    walletsFetch,
-   walletsWithdrawCcyFetch
+   walletsWithdrawCcyFetch,
 } from 'modules';
 import { IntlProps } from 'index';
 import { useMarketsFetch } from 'hooks';
@@ -62,7 +59,6 @@ import { arrayFilter } from 'helpers';
 //    fixed: 0,
 //    fee: 0
 // }
-
 
 interface State {
    activeIndex: number;
@@ -111,7 +107,7 @@ interface DispatchProps {
 interface OwnProps {
    walletsError: {
       message: string;
-   }
+   };
 }
 
 type Props = RouterProps & ReduxProps & DispatchProps & OwnProps & IntlProps;
@@ -126,7 +122,8 @@ const WalletFIatAndSpotFC = memo((props: Props, state: State) => {
          amount_precision: market.amount_precision,
          price_precision: market.price_precision,
       }));
-   const combineWallets = combainById(markets, wallets.length > 0 ? wallets : []) || [];
+   const combineWallets =
+      combainById(markets, wallets.length > 0 ? wallets : []) || [];
    console.log('combineWallets :>> ', combineWallets);
 
    console.log('wallets', wallets);
@@ -134,227 +131,266 @@ const WalletFIatAndSpotFC = memo((props: Props, state: State) => {
    const [q, setQ] = useState<string>('');
    let formatedWallets = wallets || [];
    if (q) {
-      formatedWallets = formatedWallets.length ? arrayFilter(formatedWallets, q) : [];
+      formatedWallets = formatedWallets.length
+         ? arrayFilter(formatedWallets, q)
+         : [];
    }
 
    return (
-      <div className="block lg:flex pt-8 pb-4 px-4 lg:!p-1 bg-neutral7 dark:bg-neutral1">
+      <div className="block bg-neutral7 px-4 pt-8 pb-4 dark:bg-neutral1 lg:flex lg:!p-1">
          <WalletSidebar />
-         <div className="grow h-auto lg:h-[calc(100vh-88px)] pl-0 lg:pl-1 overflow-auto">
-            <div className="p-8 rounded bg-neutral8 dark:bg-shade2">
-               <div className="mb-5 text-3.5xl font-dm font-bold leading-tight tracking-custom1">
+         <div className="h-auto grow overflow-auto pl-0 lg:h-[calc(100vh-88px)] lg:pl-1">
+            <div className="rounded bg-neutral8 p-8 dark:bg-shade2">
+               <div className="mb-5 font-dm text-3.5xl font-bold leading-tight tracking-custom1">
                   Fiat and Spot
                </div>
                <div className="flex items-start justify-between">
                   <div>
-                     <div className="mb-1 text-neutral3 font-medium">
+                     <div className="mb-1 font-medium text-neutral3">
                         Fiat and Spot balance
                      </div>
                      <div className="flex items-center space-x-2">
-                        <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
+                        <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                            0.27894652
                         </div>
-                        <div className="inline-block px-2 py-1.5 rounded text-xs font-bold uppercase text-neutral8 bg-primary5">
+                        <div className="inline-block rounded bg-primary5 px-2 py-1.5 text-xs font-bold uppercase text-neutral8">
                            BTC
                         </div>
                      </div>
-                     <div className="text-base text-neutral4">
-                        $10,098.36
-                     </div>
+                     <div className="text-base text-neutral4">$10,098.36</div>
                   </div>
                   <div>
-                     <div className="mb-1 text-neutral3 font-medium">
+                     <div className="mb-1 font-medium text-neutral3">
                         Spot balance
                      </div>
                      <div className="flex items-center space-x-2">
-                        <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
+                        <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                            0.13894652
                         </div>
-                        <div className="inline-block px-2 py-1.5 rounded text-xs font-bold uppercase text-neutral8 bg-primary5">
+                        <div className="inline-block rounded bg-primary5 px-2 py-1.5 text-xs font-bold uppercase text-neutral8">
                            BTC
                         </div>
                      </div>
-                     <div className="text-base text-neutral4">
-                        $10,098.36
-                     </div>
+                     <div className="text-base text-neutral4">$10,098.36</div>
                   </div>
                   <div>
-                     <div className="mb-1 text-neutral3 font-medium">
+                     <div className="mb-1 font-medium text-neutral3">
                         Fiat balance
                      </div>
                      <div className="flex items-center space-x-2">
-                        <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
+                        <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                            0.18564652
                         </div>
-                        <div className="inline-block px-2 py-1.5 rounded text-xs font-bold uppercase text-neutral8 bg-primary5">
+                        <div className="inline-block rounded bg-primary5 px-2 py-1.5 text-xs font-bold uppercase text-neutral8">
                            BTC
                         </div>
                      </div>
-                     <div className="text-base text-neutral4">
-                        $10,098.36
-                     </div>
+                     <div className="text-base text-neutral4">$10,098.36</div>
                   </div>
                   <div>
-                     <div className="mb-1 text-neutral3 font-medium">
+                     <div className="mb-1 font-medium text-neutral3">
                         Yesterday's PNL
                      </div>
                      <div className="flex items-center space-x-2">
-                        <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
+                        <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                            0.00000000
                         </div>
-                        <div className="inline-block px-2 py-1.5 rounded text-xs font-bold uppercase text-neutral8 bg-primary5">
+                        <div className="inline-block rounded bg-primary5 px-2 py-1.5 text-xs font-bold uppercase text-neutral8">
                            BTC
                         </div>
                      </div>
-                     <div className="text-base text-neutral4">
-                        $10,098.36
-                     </div>
+                     <div className="text-base text-neutral4">$10,098.36</div>
                   </div>
                </div>
             </div>
             <div>
                <div>
-                  <div className="pt-5 pb-2 px-8 text-xs text-neutral4 font-medium leading-relaxed">Funds</div>
-                  <div className="bg-neutral8 dark:bg-shade2 rounded overflow-hidden">
+                  <div className="px-8 pt-5 pb-2 text-xs font-medium leading-relaxed text-neutral4">
+                     Funds
+                  </div>
+                  <div className="overflow-hidden rounded bg-neutral8 dark:bg-shade2">
                      <div className="pt-5">
                         <div className="flex items-center px-8">
-                           <div className="relative w-64 mr-auto">
+                           <div className="relative mr-auto w-64">
                               <input
                                  type="text"
-                                 className="h-10 text-xs w-full pt-0 pr-12 pb-0 pl-3.5 rounded-3xl border-2 border-neutral6 outline-none focus:border-neutral4 dark:border-neutral3 dark:bg-transparent dark:focus:border-neutral4"
+                                 className="h-10 w-full rounded-3xl border-2 border-neutral6 pt-0 pr-12 pb-0 pl-3.5 text-xs outline-none focus:border-neutral4 dark:border-neutral3 dark:bg-transparent dark:focus:border-neutral4"
                                  style={{ transition: 'border-color .2s' }}
                                  placeholder="Search coins"
                                  onChange={e => setQ(e.target.value)}
                               />
                               <button
                                  type="button"
-                                 className="absolute top-0 right-0 h-10 w-10 bg-none flex items-center justify-center"
-                              >
-                                 <SearchIcon className="w-5 h-5 stroke-neutral4 transition-all duration-300" />
+                                 className="absolute top-0 right-0 flex h-10 w-10 items-center justify-center bg-none">
+                                 <SearchIcon className="h-5 w-5 stroke-neutral4 transition-all duration-300" />
                               </button>
                            </div>
-                           <Link to="/wallet-margin" className="flex items-center text-xs font-medium leading-custom1 text-neutral4 hover:text-neutral2 transition-colors duration-300">
+                           <Link
+                              to="/wallet-margin"
+                              className="flex items-center text-xs font-medium leading-custom1 text-neutral4 transition-colors duration-300 hover:text-neutral2">
                               Borrowing history
-                              <ICChevronRight className="w-6 h-6 ml-1 fill-neutral4 transition-colors duration-200" />
+                              <ICChevronRight className="ml-1 h-6 w-6 fill-neutral4 transition-colors duration-200" />
                            </Link>
                         </div>
                         <div className="table w-full">
-                           <div className="table-row" style={{ transition: 'background .2s' }}>
-                              <div className="table-cell p-4 !pl-8 !pt-5 border-b border-neutral7 dark:border-neutral3 text-xs leading-custom1 font-semibold text-neutral3 dark:text-neutral8">
+                           <div
+                              className="table-row"
+                              style={{ transition: 'background .2s' }}>
+                              <div className="table-cell border-b border-neutral7 p-4 !pl-8 !pt-5 text-xs font-semibold leading-custom1 text-neutral3 dark:border-neutral3 dark:text-neutral8">
                                  Asset
                               </div>
-                              <div className="table-cell p-4 !pt-5 border-b border-neutral7 dark:border-neutral3 text-xs leading-custom1 font-semibold text-neutral3 dark:text-neutral8">
+                              <div className="table-cell border-b border-neutral7 p-4 !pt-5 text-xs font-semibold leading-custom1 text-neutral3 dark:border-neutral3 dark:text-neutral8">
                                  Earn
                               </div>
-                              <div className="table-cell p-4 !pt-5 border-b border-neutral7 dark:border-neutral3 text-xs leading-custom1 font-semibold text-neutral3 dark:text-neutral8 text-right">
+                              <div className="table-cell border-b border-neutral7 p-4 !pt-5 text-right text-xs font-semibold leading-custom1 text-neutral3 dark:border-neutral3 dark:text-neutral8">
                                  On orders
                               </div>
-                              <div className="table-cell p-4 !pt-5 border-b border-neutral7 dark:border-neutral3 text-xs leading-custom1 font-semibold text-neutral3 dark:text-neutral8 text-right">
+                              <div className="table-cell border-b border-neutral7 p-4 !pt-5 text-right text-xs font-semibold leading-custom1 text-neutral3 dark:border-neutral3 dark:text-neutral8">
                                  Available balance
                               </div>
-                              <div className="table-cell p-4 !pr-8 !pt-5 border-b border-neutral7 dark:border-neutral3 text-xs leading-custom1 font-semibold text-neutral3 dark:text-neutral8 text-right">
+                              <div className="table-cell border-b border-neutral7 p-4 !pr-8 !pt-5 text-right text-xs font-semibold leading-custom1 text-neutral3 dark:border-neutral3 dark:text-neutral8">
                                  Total balance
                               </div>
                            </div>
-                           {
-                              (formatedWallets.length > 0 || walletsLoading)
-                                 ? formatedWallets.map(wallet => (
-                                    <Link to="/" className="table-row hover:bg-neutral7 dark:hover:bg-neutral3" style={{ transition: 'background .2s' }}>
-                                       <div className={`table-cell p-4 !pl-8 align-middle ${wallet[Object.keys(wallet)[Object.keys(wallet).length - 1]] ? 'border-none' : 'border-b border-neutral6 dark:border-neutral3'}`}>
-                                          <div className="flex">
-                                             <div className="shrink-0 w-8 mr-5">
-                                                <img className="w-full" style={{
-                                                   clipPath: 'polygon(50% 0, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%)',
-                                                }} src={wallet?.iconUrl} alt={wallet?.name} />
+                           {formatedWallets.length > 0 || walletsLoading ? (
+                              formatedWallets.map(wallet => (
+                                 <Link
+                                    to="/"
+                                    className="table-row hover:bg-neutral7 dark:hover:bg-neutral3"
+                                    style={{ transition: 'background .2s' }}>
+                                    <div
+                                       className={`table-cell p-4 !pl-8 align-middle ${
+                                          wallet[
+                                             Object.keys(wallet)[
+                                                Object.keys(wallet).length - 1
+                                             ]
+                                          ]
+                                             ? 'border-none'
+                                             : 'border-b border-neutral6 dark:border-neutral3'
+                                       }`}>
+                                       <div className="flex">
+                                          <div className="mr-5 w-8 shrink-0">
+                                             <img
+                                                className="w-full"
+                                                style={{
+                                                   clipPath:
+                                                      'polygon(50% 0, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%)',
+                                                }}
+                                                src={wallet?.iconUrl}
+                                                alt={wallet?.name}
+                                             />
+                                          </div>
+                                          <div>
+                                             <div className="font-medium uppercase">
+                                                {wallet?.currency}
                                              </div>
-                                             <div>
-                                                <div className="font-medium uppercase">
-                                                   {wallet?.currency}
-                                                </div>
-                                                <div className="text-neutral4">
-                                                   {wallet?.name}
-                                                </div>
+                                             <div className="text-neutral4">
+                                                {wallet?.name}
                                              </div>
                                           </div>
                                        </div>
-                                       <div className="table-cell border-b border-neutral6 dark:border-neutral3 p-4">
-                                          <div className="inline-block pt-2 pb-1.5 px-2 rounded text-xs font-bold uppercase text-neutral8 bg-primary5">7.46% APR</div>
+                                    </div>
+                                    <div className="table-cell border-b border-neutral6 p-4 dark:border-neutral3">
+                                       <div className="inline-block rounded bg-primary5 px-2 pt-2 pb-1.5 text-xs font-bold uppercase text-neutral8">
+                                          7.46% APR
                                        </div>
-                                       <div className="table-cell border-b border-neutral6 dark:border-neutral3 p-4 text-right">
-                                          <div className="font-medium">
-                                             {Decimal.format(wallet?.balance, 0, ',')} {wallet?.currency?.toUpperCase()}
-                                          </div>
-                                          <div className="text-neutral4">$10,098.36</div>
+                                    </div>
+                                    <div className="table-cell border-b border-neutral6 p-4 text-right dark:border-neutral3">
+                                       <div className="font-medium">
+                                          {Decimal.format(
+                                             wallet?.balance,
+                                             0,
+                                             ','
+                                          )}{' '}
+                                          {wallet?.currency?.toUpperCase()}
                                        </div>
-                                       <div className="table-cell border-b border-neutral6 dark:border-neutral3 p-4 text-right">
-                                          <div className="font-medium">
-                                             {Decimal.format(wallet?.balance, 0, ',')} {wallet?.currency?.toUpperCase()}
-                                          </div>
-                                          <div className="text-neutral4">$10,098.36</div>
+                                       <div className="text-neutral4">
+                                          $10,098.36
                                        </div>
-                                       <div className="table-cell border-b border-neutral6 dark:border-neutral3 p-4 !pr-8 text-right">
-                                          <div className="font-medium">
-                                             {Decimal.format(wallet?.balance, 0, ',')} {wallet?.currency?.toUpperCase()}
-                                          </div>
-                                          <div className="text-neutral4">$10,098.36</div>
+                                    </div>
+                                    <div className="table-cell border-b border-neutral6 p-4 text-right dark:border-neutral3">
+                                       <div className="font-medium">
+                                          {Decimal.format(
+                                             wallet?.balance,
+                                             0,
+                                             ','
+                                          )}{' '}
+                                          {wallet?.currency?.toUpperCase()}
                                        </div>
-                                    </Link>
-                                 )) : (
-                                    <>
-                                       <div className="table-row">
-                                          <div className="table-cell pb-[10px] p-1.5 pl-0">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5 pr-0">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
+                                       <div className="text-neutral4">
+                                          $10,098.36
                                        </div>
-                                       <div className="table-row">
-                                          <div className="table-cell pb-[10px] p-1.5 pl-0">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5 pr-0">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
+                                    </div>
+                                    <div className="table-cell border-b border-neutral6 p-4 !pr-8 text-right dark:border-neutral3">
+                                       <div className="font-medium">
+                                          {Decimal.format(
+                                             wallet?.balance,
+                                             0,
+                                             ','
+                                          )}{' '}
+                                          {wallet?.currency?.toUpperCase()}
                                        </div>
-                                       <div className="table-row">
-                                          <div className="table-cell pb-[10px] p-1.5 pl-0">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
-                                          <div className="table-cell pb-[10px] p-1.5 pr-0">
-                                             <div className="h-5 w-full rounded-lg bg-neutral6 dark:bg-neutral4 animate-pulse" />
-                                          </div>
+                                       <div className="text-neutral4">
+                                          $10,098.36
                                        </div>
-                                    </>
-                                 )
-                           }
+                                    </div>
+                                 </Link>
+                              ))
+                           ) : (
+                              <>
+                                 <div className="table-row">
+                                    <div className="table-cell p-1.5 pb-[10px] pl-0">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px] pr-0">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                 </div>
+                                 <div className="table-row">
+                                    <div className="table-cell p-1.5 pb-[10px] pl-0">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px] pr-0">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                 </div>
+                                 <div className="table-row">
+                                    <div className="table-cell p-1.5 pb-[10px] pl-0">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px]">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                    <div className="table-cell p-1.5 pb-[10px] pr-0">
+                                       <div className="h-5 w-full animate-pulse rounded-lg bg-neutral6 dark:bg-neutral4" />
+                                    </div>
+                                 </div>
+                              </>
+                           )}
                         </div>
                      </div>
                   </div>
@@ -362,7 +398,7 @@ const WalletFIatAndSpotFC = memo((props: Props, state: State) => {
             </div>
          </div>
       </div>
-   )
+   );
 });
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
@@ -388,11 +424,11 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    walletsWithdrawCcy: params => dispatch(walletsWithdrawCcyFetch(params)),
    fetchSuccess: payload => dispatch(alertPush(payload)),
    currenciesFetch: () => dispatch(currenciesFetch()),
-   clearWallets: () => dispatch(walletsData([]))
+   clearWallets: () => dispatch(walletsData([])),
 });
 
 export const WalletFIatAndSpot = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(WalletFIatAndSpotFC) as FunctionComponent;

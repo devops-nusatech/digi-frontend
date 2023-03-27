@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 
-
 export const RE_DIGIT = new RegExp(/^\d+$/);
 
 export type Props = {
@@ -109,9 +108,9 @@ export default function OtpInput({ value, valueLength = 6, onChange }: Props) {
    };
 
    return (
-      <div className="flex mb-8 -mx-2 bg-neutral8">
+      <div className="-mx-2 mb-8 flex bg-neutral8">
          {valueItems.map((digit, idx) => (
-            <div className="flex-grow-0 flex-shrink-0 basis-[calc(16.6667%-16px)] w-[calc(16.6667%-16px)] my-0 mx-2">
+            <div className="my-0 mx-2 w-[calc(16.6667%-16px)] flex-shrink-0 flex-grow-0 basis-[calc(16.6667%-16px)]">
                <input
                   key={idx}
                   type="text"
@@ -119,13 +118,13 @@ export default function OtpInput({ value, valueLength = 6, onChange }: Props) {
                   autoComplete="one-time-code"
                   pattern="\d{1}"
                   maxLength={valueLength}
-                  className="w-full h-16 text-center font-dm text-[32px] font-semibold text-[#23262F] bg-neutral8 transition-all duration-300"
+                  className="h-16 w-full bg-neutral8 text-center font-dm text-[32px] font-semibold text-[#23262F] transition-all duration-300"
                   value={digit}
-                  onChange={(e) => inputOnChange(e, idx)}
+                  onChange={e => inputOnChange(e, idx)}
                   onKeyDown={inputOnKeyDown}
                   onFocus={inputOnFocus}
                />
-               <div className="w-full rounded-lg h-1 bg-[#ccd9fe]" />
+               <div className="h-1 w-full rounded-lg bg-[#ccd9fe]" />
             </div>
          ))}
       </div>

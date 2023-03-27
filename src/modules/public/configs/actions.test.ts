@@ -30,7 +30,7 @@ describe('Configs actions', () => {
     });
 
     it('should check ConfigsError action creator', () => {
-        const expectedAction = { type: CONFIGS_ERROR, error: error };
+        const expectedAction = { type: CONFIGS_ERROR, error };
         expect(actions.configsError(error)).toEqual(expectedAction);
     });
 });

@@ -36,11 +36,17 @@ export interface TradingOrderListTableProps {
    onSelect: (orderIndex: string) => void;
 }
 
-export const TradingOrderListTableMapValues = (maxVolume?: number, data?: number[]) => {
-   const resultData = data && maxVolume && data.length ? data.map(currentVolume => {
-      // tslint:disable-next-line:no-magic-numbers
-      return { value: (currentVolume / maxVolume) * 100 };
-   }) : [];
+export const TradingOrderListTableMapValues = (
+   maxVolume?: number,
+   data?: number[]
+) => {
+   const resultData =
+      data && maxVolume && data.length
+         ? data.map(currentVolume => {
+              // tslint:disable-next-line:no-magic-numbers
+              return { value: (currentVolume / maxVolume) * 100 };
+           })
+         : [];
 
    return resultData;
 };
@@ -57,7 +63,10 @@ export class TradingOrderListTable extends React.PureComponent<TradingOrderListT
          rowBackgroundColor,
          onSelect,
       } = this.props;
-      const resultData = TradingOrderListTableMapValues(maxVolume, orderBookEntry);
+      const resultData = TradingOrderListTableMapValues(
+         maxVolume,
+         orderBookEntry
+      );
 
       const getRowWidth = (index: number) => {
          if (resultData && resultData.length) {

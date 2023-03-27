@@ -3,12 +3,14 @@ import { AccordionData } from '../types';
 import { Item } from './Item';
 
 type AccordionProps = {
-   items: Array<AccordionData>
+   items: Array<AccordionData>;
+   withNumber?: boolean;
 };
 
-export const Accordion = ({ items }: AccordionProps) => {
+export const Accordion = ({ items, withNumber }: AccordionProps) => {
    const [currentIndex, setCurrentIndex] = useState(-1);
-   const handleOpen = (index: number) => setCurrentIndex(currentValue => currentValue !== index ? index : -1);
+   const handleOpen = (index: number) =>
+      setCurrentIndex(currentValue => (currentValue !== index ? index : -1));
 
    return (
       <ul>
@@ -19,8 +21,13 @@ export const Accordion = ({ items }: AccordionProps) => {
                no={index + 1}
                isOpen={index === currentIndex}
                onClick={() => handleOpen(index)}
+               withNumber={withNumber}
             />
          ))}
       </ul>
-   )
-}
+   );
+};
+
+Accordion.defaultProps = {
+   withNumber: true,
+};

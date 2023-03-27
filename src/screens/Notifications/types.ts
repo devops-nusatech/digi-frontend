@@ -6,4 +6,11 @@ export interface Notification {
    id_notif: string;
 }
 
-type Type = 'security' | 'deposit' | 'withdrawal' | 'trade' | 'transfer' | 'alert' | 'news';
+type Type =
+   | 'security'
+   | 'deposit'
+   | 'withdrawal'
+   | 'trade'
+   | 'transfer'
+   | 'alert'
+   | 'news';

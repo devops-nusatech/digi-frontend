@@ -1,12 +1,7 @@
-import React, {
-   FunctionComponent,
-} from 'react';
+import React, { FunctionComponent } from 'react';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
-import {
-   MapDispatchToPropsFunction,
-   connect
-} from 'react-redux';
+import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { History } from 'history';
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
@@ -14,7 +9,7 @@ import {
    ProfileSidebar,
    FormChangePassword,
    LayoutProfile,
-   Button
+   Button,
 } from 'components';
 import {
    changePasswordFetch,
@@ -31,7 +26,7 @@ interface ReduxProps {
 
 type RouterProps = {
    history: History;
-}
+};
 
 interface DispatchProps {
    changePassword: typeof changePasswordFetch;
@@ -44,7 +39,7 @@ const ChangePasswordFC = ({
    changePassword,
    changePasswordLoading,
    passwordChangeSuccess,
-   history: { push }
+   history: { push },
 }: Props) => {
    useDocumentTitle('Change Password');
 
@@ -57,19 +52,17 @@ const ChangePasswordFC = ({
             display: 'Home',
             href: '/',
             active: 'Change password',
-         }}
-      >
+         }}>
          <ProfileSidebar />
          <div
-            className="grow p-4 md:px-8 md:py-10 lg:p-10 shadow-card2 rounded-2xl bg-neutral8 dark:bg-shade1 space-y-12"
-            style={{ animationDuration: '100ms' }}
-         >
+            className="grow space-y-12 rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 md:py-10 lg:p-10"
+            style={{ animationDuration: '100ms' }}>
             {passwordChangeSuccess ? (
-               <div className="w-full sm:w-84 mx-auto">
-                  <div className="text-center text-4.5xl leading-[1.2] tracking-custom1 font-dm font-bold">
+               <div className="mx-auto w-full sm:w-84">
+                  <div className="text-center font-dm text-4.5xl font-bold leading-[1.2] tracking-custom1">
                      New password
                   </div>
-                  <div className="text-center text-base leading-normal mt-2 mb-8">
+                  <div className="mt-2 mb-8 text-center text-base leading-normal">
                      Your new password has been set
                   </div>
                   <div className="text-center">
@@ -83,31 +76,35 @@ const ChangePasswordFC = ({
                </div>
             ) : (
                <FormChangePassword
-                  title={translate('page.body.profile.header.account.content.password.change')}
+                  title={translate(
+                     'page.body.profile.header.account.content.password.change'
+                  )}
                   handleChangePassword={changePassword}
                   isLoading={changePasswordLoading}
                />
             )}
          </div>
       </LayoutProfile>
-   )
-}
+   );
+};
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    changePasswordLoading: selectChangePasswordLoading(state),
    passwordChangeSuccess: selectChangePasswordSuccess(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
-   changePassword: ({
-      old_password,
-      new_password,
-      confirm_password
-   }) => dispatch(changePasswordFetch({
-      old_password,
-      new_password,
-      confirm_password
-   })),
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   changePassword: ({ old_password, new_password, confirm_password }) =>
+      dispatch(
+         changePasswordFetch({
+            old_password,
+            new_password,
+            confirm_password,
+         })
+      ),
 });
 
 export const ChangePassword = compose(

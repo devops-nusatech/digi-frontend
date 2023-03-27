@@ -27,12 +27,28 @@ if (gaKey) {
 // const MobileHeader = React.lazy(() => import('./mobile/components/Header').then(({ Header }) => ({ default: Header })));
 
 /* Desktop components */
-const AlertsContainer = React.lazy(() => import('./containers/Alerts').then(({ Alerts }) => ({ default: Alerts })));
-const CustomizationContainer = React.lazy(() => import('./containers/Customization').then(({ Customization }) => ({ default: Customization })));
-const HeaderContainer = React.lazy(() => import('./components/molecules/Header').then(({ Header }) => ({ default: Header })));
-const FooterContainer = React.lazy(() => import('./components/molecules/Footer').then(({ Footer }) => ({ default: Footer })));
+const AlertsContainer = React.lazy(() =>
+   import('./containers/Alerts').then(({ Alerts }) => ({ default: Alerts }))
+);
+const CustomizationContainer = React.lazy(() =>
+   import('./containers/Customization').then(({ Customization }) => ({
+      default: Customization,
+   }))
+);
+const HeaderContainer = React.lazy(() =>
+   import('./components/molecules/Header').then(({ Header }) => ({
+      default: Header,
+   }))
+);
+const FooterContainer = React.lazy(() =>
+   import('./components/molecules/Footer').then(({ Footer }) => ({
+      default: Footer,
+   }))
+);
 // const SidebarContainer = React.lazy(() => import('./containers/Sidebar').then(({ Sidebar }) => ({ default: Sidebar })));
-const LayoutContainer = React.lazy(() => import('./routes').then(({ Layout }) => ({ default: Layout })));
+const LayoutContainer = React.lazy(() =>
+   import('./routes').then(({ Layout }) => ({ default: Layout }))
+);
 
 const getTranslations = (lang: string, isMobileDevice: boolean) => {
    if (isMobileDevice) {
@@ -63,7 +79,7 @@ const RenderDeviceContainers = () => {
    return (
       <>
          <HeaderContainer />
-         <main className="flex flex-col grow">
+         <main className="flex grow flex-col">
             <CustomizationContainer />
             <LayoutContainer />
          </main>
@@ -73,13 +89,16 @@ const RenderDeviceContainers = () => {
    );
 };
 
-export const App = () => {
+export default () => {
    useSetMobileDevice();
    const lang = useSelector(selectCurrentLanguage);
    const isMobileDevice = useSelector(selectMobileDeviceState);
 
    return (
-      <IntlProvider locale={lang} messages={getTranslations(lang, isMobileDevice)} key={lang}>
+      <IntlProvider
+         locale={lang}
+         messages={getTranslations(lang, isMobileDevice)}
+         key={lang}>
          <Router history={browserHistory}>
             <ErrorWrapper>
                <React.Suspense fallback={null}>

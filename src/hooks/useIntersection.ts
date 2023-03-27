@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 let listenerCallbacks = new WeakMap();
 
 const handleIntersections = (entries: any[]) => {
-   entries.forEach((entry) => {
+   entries.forEach(entry => {
       if (!listenerCallbacks.has(entry.target)) return;
 
       let callback = listenerCallbacks.get(entry.target);
@@ -18,7 +18,7 @@ const handleIntersections = (entries: any[]) => {
 
 let observer = new IntersectionObserver(handleIntersections, {
    rootMargin: '0px',
-   threshold: 0.15
+   threshold: 0.15,
 });
 
 export const useIntersection = (ref, callback: () => void) => {

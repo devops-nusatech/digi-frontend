@@ -1,22 +1,24 @@
 import { ComponentType } from 'react';
 import { RouteProps as RProps } from 'react-router-dom';
 import { RouterProps } from 'react-router';
-import { IntlProps } from '../';
+import { IntlProps } from 'index';
 import {
    configsFetch,
    groupFetch,
    logoutFetch,
    Market,
    memberLevelsFetch,
-   sonicFetch,
    tierFetch,
    toggleChartRebuild,
    User,
    userFetch,
-   walletsReset
+   walletsReset,
 } from 'modules';
 import { rangerConnectFetch, RangerState } from 'modules/public/ranger';
-import { CustomizationDataInterface, customizationFetch } from 'modules/public/customization';
+import {
+   CustomizationDataInterface,
+   customizationFetch,
+} from 'modules/public/customization';
 
 export interface RouteProps extends RProps {
    component: ComponentType<any>;
@@ -40,7 +42,6 @@ export interface ReduxProps {
 
 export interface DispatchProps {
    fetchConfigs: typeof configsFetch;
-   fetchSonic: typeof sonicFetch;
    userFetch: typeof userFetch;
    fetchMemberLevel: typeof memberLevelsFetch;
    fetchCustomization: typeof customizationFetch;
@@ -65,4 +66,8 @@ export interface OwnProps {
    toggleChartRebuild: typeof toggleChartRebuild;
 }
 
-export type LayoutProps = ReduxProps & DispatchProps & LocationProps & IntlProps & OwnProps;
+export type LayoutProps = ReduxProps &
+   DispatchProps &
+   LocationProps &
+   IntlProps &
+   OwnProps;

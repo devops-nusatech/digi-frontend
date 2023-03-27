@@ -7,4 +7,4 @@ export const useMemberLevelFetch = () => {
    useEffect(() => {
       dispatch(memberLevelsFetch());
    }, [dispatch]);
-}
+};

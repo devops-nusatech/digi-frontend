@@ -9,41 +9,42 @@ import { DepositCrypto } from './';
 const store = createStore(rootReducer);
 
 describe('DepositCrypto', () => {
-    let wrapper;
-    const handleOnCopy = jest.fn();
-    const handleGenerateAddress = jest.fn();
-    const wallet: Wallet = {
-        currency: 'eth',
-        name: '',
-        fixed: 0,
-        type: 'coin',
-        fee: 0,
-    };
+   let wrapper;
+   const handleOnCopy = jest.fn();
+   const handleGenerateAddress = jest.fn();
+   const wallet: Wallet = {
+      currency: 'eth',
+      name: '',
+      fixed: 0,
+      type: 'coin',
+      fee: 0,
+   };
 
-    beforeEach(() => {
-        wrapper = shallow(
-            <Provider store={store}>
-                <DepositCrypto
-                    dimensions={118}
-                    error={'error123'}
-                    handleGenerateAddress={handleGenerateAddress}
-                    handleOnCopy={handleOnCopy}
-                    text={'text123'}
-                    wallet={wallet}
-                />,
-            </Provider>,
-        );
-    });
+   beforeEach(() => {
+      wrapper = shallow(
+         <Provider store={store}>
+            <DepositCrypto
+               dimensions={118}
+               error={'error123'}
+               handleGenerateAddress={handleGenerateAddress}
+               handleOnCopy={handleOnCopy}
+               text={'text123'}
+               wallet={wallet}
+            />
+            ,
+         </Provider>
+      );
+   });
 
-    it('should contains QRCode', () => {
-        expect(wrapper.find('.qr-code-wrapper')).toBeTruthy();
-    });
+   it('should contains QRCode', () => {
+      expect(wrapper.find('.qr-code-wrapper')).toBeTruthy();
+   });
 
-    it('should contains CopyableTextField', () => {
-        expect(wrapper.find(CopyableTextField)).toBeTruthy();
-    });
+   it('should contains CopyableTextField', () => {
+      expect(wrapper.find(CopyableTextField)).toBeTruthy();
+   });
 
-    it('should match snapshot', () => {
-        expect(wrapper).toMatchSnapshot();
-    });
+   it('should match snapshot', () => {
+      expect(wrapper).toMatchSnapshot();
+   });
 });

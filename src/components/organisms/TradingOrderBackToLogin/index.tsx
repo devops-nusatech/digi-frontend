@@ -4,24 +4,28 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 export const TradingOrderBackToLogin = () => {
-   const { push } = useHistory();
+   const history = useHistory();
    return (
       <>
-         <div className="absolute inset-0 backdrop-blur-md bg-neutral8/30 dark:bg-neutral2/30 rounded z-30" />
-         <div className="absolute inset-0 flex justify-center items-center text-center z-40 bg-transparent">
+         <div className="absolute inset-0 z-30 rounded bg-neutral8/30 backdrop-blur-md dark:bg-neutral2/30" />
+         <div className="absolute inset-0 z-40 flex items-center justify-center bg-transparent text-center">
             <div className="space-y-5">
                <div className="flex justify-center">
-                  <IllusWorld className="w-40 h-40" />
+                  <IllusWorld className="h-40 w-40" />
                </div>
-               <div className="text-base font-dm font-bold animate-bounce">
+               <div className="animate-bounce font-dm text-base font-bold">
                   Please login for accessing trade...
                </div>
                <Button
-                  onClick={() => push('/login')}
+                  onClick={() =>
+                     history.push('/login', {
+                        pathname: history.location.pathname,
+                     })
+                  }
                   text="Login"
                />
             </div>
          </div>
       </>
-   )
-}
+   );
+};

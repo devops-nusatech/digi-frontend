@@ -12,10 +12,12 @@ export const DropdownListProfile = ({
    isOpen,
    headerFull,
    handleSetShowModalConfirmLogout,
-   translate
+   translate,
 }: DropdownListProfileProps) => {
    return (
-      <DropdownMenu isOpen={isOpen} className={`py-1 ${!headerFull ? '!-translate-x-60' : ''}`}>
+      <DropdownMenu
+         isOpen={isOpen}
+         className={`py-1 ${!headerFull ? '!-translate-x-60' : ''}`}>
          <ListDropdown
             to="/profile"
             icon="user"
@@ -48,13 +50,12 @@ export const DropdownListProfile = ({
          />
          <div
             onClick={handleSetShowModalConfirmLogout}
-            className="space-x-2 flex items-center py-3 font-dm font-bold hover:text-primary1 leading-custom3 transition-all duration-300"
-         >
+            className="flex items-center space-x-2 py-3 font-dm font-bold leading-custom3 transition-all duration-300 hover:text-primary1">
             <svg className="h-5 w-5 fill-neutral4 transition-colors duration-300">
                <use xlinkHref="#icon-exit" />
             </svg>
             <div>Logout</div>
          </div>
       </DropdownMenu>
-   )
-}
+   );
+};

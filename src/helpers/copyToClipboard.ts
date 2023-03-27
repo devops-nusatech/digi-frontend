@@ -6,4 +6,4 @@ export const copyToClipboard = (text: string): void => {
    };
    document.addEventListener('copy', listener);
    document.execCommand('copy');
-}
+};

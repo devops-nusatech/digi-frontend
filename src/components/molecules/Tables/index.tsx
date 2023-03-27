@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 
 /** Helpers */
 
 // helper to get an array containing the object values with
 // the correct type infered.
 function objectValues<T extends {}>(obj: T) {
-   return Object.keys(obj).map((objKey) => obj[objKey as keyof T]);
+   return Object.keys(obj).map(objKey => obj[objKey as keyof T]);
 }
 
 function objectKeys<T extends {}>(obj: T) {
-   return Object.keys(obj).map((objKey) => objKey as keyof T);
+   return Object.keys(obj).map(objKey => objKey as keyof T);
 }
 
 type PrimitiveType = string | Symbol | number | boolean;
@@ -18,10 +18,10 @@ type PrimitiveType = string | Symbol | number | boolean;
 // out of the box
 function isPrimitive(value: any): value is PrimitiveType {
    return (
-      typeof value === "string" ||
-      typeof value === "number" ||
-      typeof value === "boolean" ||
-      typeof value === "symbol"
+      typeof value === 'string' ||
+      typeof value === 'number' ||
+      typeof value === 'boolean' ||
+      typeof value === 'symbol'
    );
 }
 
@@ -47,7 +47,7 @@ export default function Tables<T extends MinTableItem>(props: TableProps<T>) {
    function renderRow(item: T) {
       return (
          <tr>
-            {objectKeys(item).map((itemProperty) => {
+            {objectKeys(item).map(itemProperty => {
                const customRenderer = props.customRenderers?.[itemProperty];
 
                if (customRenderer) {
@@ -55,7 +55,9 @@ export default function Tables<T extends MinTableItem>(props: TableProps<T>) {
                }
 
                return (
-                  <td>{isPrimitive(item[itemProperty]) ? item[itemProperty] : ""}</td>
+                  <td>
+                     {isPrimitive(item[itemProperty]) ? item[itemProperty] : ''}
+                  </td>
                );
             })}
          </tr>
@@ -65,7 +67,7 @@ export default function Tables<T extends MinTableItem>(props: TableProps<T>) {
    return (
       <table>
          <thead>
-            {objectValues(props.headers).map((headerValue) => (
+            {objectValues(props.headers).map(headerValue => (
                <th>{headerValue}</th>
             ))}
          </thead>

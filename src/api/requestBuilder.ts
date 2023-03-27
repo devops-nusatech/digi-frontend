@@ -12,15 +12,10 @@ import {
    withCredentials,
    newsUrl,
    p2pUrl,
-   membershipUrl
+   membershipUrl,
 } from './config';
 
-export type HTTPMethod =
-   'get'
-   | 'post'
-   | 'delete'
-   | 'put'
-   | 'patch';
+export type HTTPMethod = 'get' | 'post' | 'delete' | 'put' | 'patch';
 
 export interface JsonBody {
    //  tslint:disable-next-line no-any
@@ -28,7 +23,15 @@ export interface JsonBody {
 }
 
 export interface RequestOptions {
-   apiVersion: 'applogic' | 'peatio' | 'barong' | 'finex' | 'sonic' | 'p2p' | 'news' | 'membership';
+   apiVersion:
+      | 'applogic'
+      | 'peatio'
+      | 'barong'
+      | 'finex'
+      | 'sonic'
+      | 'p2p'
+      | 'news'
+      | 'membership';
    withHeaders?: boolean;
    headers?: Object;
 }
@@ -45,30 +48,23 @@ export interface ApiVariety {
    peatio: string;
 }
 
-const getAPI = () => {
-   // const hostUrl = window.location.hostname === 'localhost' ? 'http://localhost:9002' : '';
-   const hostUrl = 'https://api.heavenexchange.io'
-
-   return {
-      barong: authUrl(),
-      applogic: applogicUrl(),
-      peatio: tradeUrl(),
-      finex: finexUrl(),
-      sonic: `${hostUrl}/api/v2/sonic`,
-      p2p: p2pUrl(),
-      news: newsUrl(),
-      membership: membershipUrl(),
-   }
-};
+const getAPI = () => ({
+   barong: authUrl(),
+   applogic: applogicUrl(),
+   peatio: tradeUrl(),
+   finex: finexUrl(),
+   p2p: p2pUrl(),
+   news: newsUrl(),
+   membership: membershipUrl(),
+});
 
 const buildRequest = (request: Request, configData: RequestOptions) => {
    const { body, method, url } = request;
    const { apiVersion, headers } = configData;
    const api = getAPI();
 
-   const contentType = body instanceof FormData
-      ? 'multipart/form-data'
-      : 'application/json';
+   const contentType =
+      body instanceof FormData ? 'multipart/form-data' : 'application/json';
 
    const defaultHeaders = {
       'content-type': contentType,
@@ -83,6 +79,7 @@ const buildRequest = (request: Request, configData: RequestOptions) => {
       method,
       url,
       withCredentials: withCredentials(),
+      timeout: 5000,
    };
 
    return requestConfig;
@@ -97,7 +94,8 @@ export const defaultResponse: Partial<AxiosError['response']> = {
 
 export const formatError = (responseError: AxiosError) => {
    const response = responseError.response || defaultResponse;
-   const errors = (response.data && (response.data.errors || [response.data.error])) || [];
+   const errors =
+      (response.data && (response.data.errors || [response.data.error])) || [];
 
    return {
       code: response.status,
@@ -105,7 +103,10 @@ export const formatError = (responseError: AxiosError) => {
    };
 };
 
-export const makeRequest = async (request: Request, configData: RequestOptions) => {
+export const makeRequest = async (
+   request: Request,
+   configData: RequestOptions
+) => {
    const requestConfig = buildRequest(request, configData);
 
    return new Promise((resolve, reject) => {

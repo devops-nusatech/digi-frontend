@@ -1,6 +1,10 @@
-import { recentTradesFetch, selectCurrentMarket, selectRecentTrades } from "modules";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+   recentTradesFetch,
+   selectCurrentMarket,
+   selectRecentTrades,
+} from 'modules';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const useMarketTrades = () => {
    const dispatch = useDispatch();
@@ -10,4 +14,4 @@ export const useMarketTrades = () => {
    useEffect(() => {
       dispatch(recentTradesFetch(currentMarket));
    }, [dispatch, currentMarket, trades]);
-}
+};

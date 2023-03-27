@@ -1,13 +1,13 @@
 import React, {
    FC,
+   memo,
+   useCallback,
    useEffect,
-   useState
+   useMemo,
+   useState,
 } from 'react';
 import { compose } from 'redux';
-import {
-   MapDispatchToPropsFunction,
-   connect
-} from 'react-redux';
+import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
 
@@ -25,17 +25,15 @@ import {
    Label,
    Nav,
    Portal,
-   TableActivity
+   TableActivity,
 } from 'components';
 import {
    Currency,
    OrderSide,
    RootState,
-   Sonic,
    User,
    Wallet,
    WalletHistoryList,
-   currenciesFetch,
    fetchHistory,
    marketsFetch,
    resetHistory,
@@ -46,13 +44,13 @@ import {
    selectHistoryLoading,
    selectLastElemIndex,
    selectNextPageExists,
-   selectSonic,
    selectUserInfo,
    selectWallets,
-   walletsFetch
+   walletsFetch,
 } from 'modules';
-import { DEFAULT_WALLET } from '../../../constants';
 import { useDebounced } from 'hooks';
+import { platformCurrency } from 'api';
+import { DEFAULT_WALLET } from '../../../constants';
 
 export type Direction = 'IN' | 'OUT' | '';
 export type State = 'succeed' | 'pending' | 'failed' | 'refund';
@@ -67,11 +65,10 @@ type FilterState = {
    advanceFilter: boolean;
    isApply: boolean;
    direction: Direction;
-}
+};
 
 interface ReduxProps {
    user: User;
-   sonic: Sonic;
    currencies: Currency[];
    wallets: Wallet[];
    list: WalletHistoryList;
@@ -85,7 +82,6 @@ interface DispatchProps {
    resetHistory: typeof resetHistory;
    fetchWallets: typeof walletsFetch;
    fetchHistory: typeof fetchHistory;
-   fetchCurrencies: typeof currenciesFetch;
 }
 
 type OwnProps = {
@@ -93,7 +89,7 @@ type OwnProps = {
    hiddenCategory?: number[];
    currencyId?: string;
    withAdvancadFilter?: boolean;
-}
+};
 
 type TableFinanceProps = OwnProps & ReduxProps & DispatchProps & IntlProps;
 
@@ -103,7 +99,6 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    currencyId,
    withAdvancadFilter,
    user,
-   sonic,
    currencies,
    wallets,
    list,
@@ -115,20 +110,33 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
    resetHistory,
    fetchWallets,
    fetchHistory,
-   fetchCurrencies,
-   intl
+   intl,
 }) => {
-   const defaultWallet: Wallet = wallets.find(wallet => wallet.currency === sonic.peatio_platform_currency) || wallets[0] || DEFAULT_WALLET;
+   const defaultWallet = useMemo<Wallet>(
+      () =>
+         wallets.find(
+            wallet => wallet.currency === platformCurrency()?.toLowerCase()
+         ) ||
+         wallets[0] ||
+         DEFAULT_WALLET,
+      [wallets]
+   );
 
-   const [activeTab, setActiveTab] = useState(hiddenCategory && hiddenCategory?.includes(4) ? 1 : hiddenCategory?.includes(3) ? 4 : 0);
+   const [activeTab, setActiveTab] = useState(
+      hiddenCategory && hiddenCategory?.includes(4)
+         ? 1
+         : hiddenCategory?.includes(3)
+         ? 4
+         : 0
+   );
    const [q, setQ] = useState('');
-   const [qDebounce] = useDebounced(q, 1000);
+   const [qDebounce] = useDebounced(q, 500);
 
    const [showFilter, setShowFilter] = useState(false);
    const [showExport, setShowExport] = useState(false);
 
    const [filter, setFilter] = useState<FilterState>({
-      startDate: new Date((new Date).getFullYear(), (new Date).getMonth(), 1),
+      startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       endDate: new Date(),
       currency: defaultWallet?.currency || 'usdt',
       market: '',
@@ -136,214 +144,295 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
       type: '',
       advanceFilter: false,
       isApply: false,
-      direction: ''
+      direction: '',
    });
-   const { startDate, endDate, currency, market, state, isApply, advanceFilter, direction, type } = filter;
+   const {
+      startDate,
+      endDate,
+      currency,
+      market,
+      state,
+      isApply,
+      advanceFilter,
+      direction,
+      type,
+   } = filter;
 
-   const time_from = Math.floor(new Date(startDate).getTime() / 1000).toString()
-   const time_to = Math.floor(new Date(endDate).getTime() / 1000).toString()
+   const time_from = useMemo(
+      () => Math.floor(new Date(startDate).getTime() / 1000).toString(),
+      [startDate]
+   );
+   const time_to = useMemo(
+      () => Math.floor(new Date(endDate).getTime() / 1000).toString(),
+      [endDate]
+   );
 
    useEffect(() => {
       if (!wallets.length) {
          fetchWallets();
       }
       if (activeTab === 3) {
-         setFilter({ ...filter, advanceFilter: true })
+         setFilter({ ...filter, advanceFilter: true });
       }
       return () => {
          resetHistory();
-      }
+      };
    }, [activeTab]);
 
-   const handleShowExport = () => setShowExport(!showExport);
+   const handleShowExport = useCallback(
+      () => setShowExport(!showExport),
+      [showExport]
+   );
 
-   const handleShowAdvanceFilter = () => setFilter({ ...filter, advanceFilter: !advanceFilter });
+   const handleShowAdvanceFilter = useCallback(
+      () => setFilter({ ...filter, advanceFilter: !advanceFilter }),
+      [advanceFilter, filter]
+   );
 
-   const translate = (id: string) => intl.formatMessage({ id });
+   const translate = useCallback(
+      (id: string) => intl.formatMessage({ id }),
+      [intl]
+   );
 
-   const handleChangeStartDate = (startDate: Date) => {
-      setFilter({ ...filter, startDate });
-   }
-   const handleChangeEndDate = (endDate: Date) => {
-      setFilter({ ...filter, endDate })
-   }
-   const handleChangeAsset = (currency: string) => {
-      setFilter({ ...filter, currency })
-   }
-   const handleChangeMarket = (market: string) => {
-      setFilter({ ...filter, market })
-   }
-   const handleChangeState = (state: State) => {
-      setFilter({ ...filter, state, advanceFilter: true })
-   }
-   const handleChangeType = (type: OrderSide | '') => {
-      setFilter({ ...filter, type })
-   }
-   const handleApply = () => {
+   const handleChangeStartDate = useCallback(
+      (startDate: Date) => {
+         setFilter({ ...filter, startDate });
+      },
+      [filter]
+   );
+   const handleChangeEndDate = useCallback(
+      (endDate: Date) => {
+         setFilter({ ...filter, endDate });
+      },
+      [filter]
+   );
+   const handleChangeAsset = useCallback(
+      (currency: string) => {
+         setFilter({ ...filter, currency });
+      },
+      [filter]
+   );
+   const handleChangeMarket = useCallback(
+      (market: string) => {
+         setFilter({ ...filter, market });
+      },
+      [filter]
+   );
+   const handleChangeState = useCallback(
+      (state: State) => {
+         setFilter({ ...filter, state, advanceFilter: true });
+      },
+      [filter]
+   );
+   const handleChangeType = useCallback(
+      (type: OrderSide | '') => {
+         setFilter({ ...filter, type });
+      },
+      [filter]
+   );
+   const handleApply = useCallback(() => {
       setFilter({ ...filter, isApply: !isApply });
       setShowFilter(false);
-   }
+   }, [filter, isApply]);
 
-   const renderStateType = (): Array<string> => {
+   const renderStateType = useMemo<Array<string>>(() => {
       switch (activeTab) {
          case 0:
-            return ['Wade Cooper', 'Arlene Mccoy', 'Devon Webb', 'Tom Cook', 'Tanya Fox', 'Hellen Schmidt']
+            return [''];
          case 1:
-            return ['succeed', 'pending', 'failed', 'refund']
+            return ['succeed', 'pending', 'failed', 'refund'];
          case 2:
-            return ['succeed', 'pending', 'failed']
+            return ['succeed', 'pending', 'failed'];
 
          default:
             return [''];
       }
-   }
+   }, [activeTab]);
 
-   const renderActivity = () => {
+   const renderActivity = useMemo(() => {
       switch (activeTab) {
          case 1:
-            return <TableActivity
-               core="deposits"
-               search={qDebounce}
-               intl={translate}
-               currencies={currencies}
-               wallets={wallets}
-               list={list}
-               fetching={fetching}
-               page={page}
-               firstElemIndex={firstElemIndex}
-               lastElemIndex={lastElemIndex}
-               nextPageExists={nextPageExists}
-               fetchCurrencies={fetchCurrencies}
-               fetchHistory={fetchHistory}
-               advanceFilter={advanceFilter}
-               time_from={time_from}
-               time_to={time_to}
-               isApply={isApply}
-               handleApply={handleApply}
-               currency={currency}
-               state={state}
-               currencyId={currencyId}
-               direction={direction}
-               user={user}
-            />
+            return (
+               <TableActivity
+                  core="deposits"
+                  search={qDebounce}
+                  intl={translate}
+                  currencies={currencies}
+                  wallets={wallets}
+                  list={list}
+                  fetching={fetching}
+                  page={page}
+                  firstElemIndex={firstElemIndex}
+                  lastElemIndex={lastElemIndex}
+                  nextPageExists={nextPageExists}
+                  fetchHistory={fetchHistory}
+                  advanceFilter={advanceFilter}
+                  time_from={time_from}
+                  time_to={time_to}
+                  isApply={isApply}
+                  handleApply={handleApply}
+                  currency={currency}
+                  state={state}
+                  currencyId={currencyId}
+                  direction={direction}
+                  user={user}
+               />
+            );
          case 2:
-            return <TableActivity
-               core="withdraws"
-               search={qDebounce}
-               intl={translate}
-               currencies={currencies}
-               wallets={wallets}
-               list={list}
-               fetching={fetching}
-               page={page}
-               firstElemIndex={firstElemIndex}
-               lastElemIndex={lastElemIndex}
-               nextPageExists={nextPageExists}
-               fetchCurrencies={fetchCurrencies}
-               fetchHistory={fetchHistory}
-               advanceFilter={advanceFilter}
-               time_from={time_from}
-               time_to={time_to}
-               isApply={isApply}
-               handleApply={handleApply}
-               currency={currency}
-               state={state}
-               currencyId={currencyId}
-               direction={direction}
-               user={user}
-            />
+            return (
+               <TableActivity
+                  core="withdraws"
+                  search={qDebounce}
+                  intl={translate}
+                  currencies={currencies}
+                  wallets={wallets}
+                  list={list}
+                  fetching={fetching}
+                  page={page}
+                  firstElemIndex={firstElemIndex}
+                  lastElemIndex={lastElemIndex}
+                  nextPageExists={nextPageExists}
+                  fetchHistory={fetchHistory}
+                  advanceFilter={advanceFilter}
+                  time_from={time_from}
+                  time_to={time_to}
+                  isApply={isApply}
+                  handleApply={handleApply}
+                  currency={currency}
+                  state={state}
+                  currencyId={currencyId}
+                  direction={direction}
+                  user={user}
+               />
+            );
          case 3:
-            return <TableActivity
-               core="transfers"
-               search={qDebounce}
-               intl={translate}
-               currencies={currencies}
-               wallets={wallets}
-               list={list}
-               fetching={fetching}
-               page={page}
-               firstElemIndex={firstElemIndex}
-               lastElemIndex={lastElemIndex}
-               nextPageExists={nextPageExists}
-               fetchCurrencies={fetchCurrencies}
-               fetchHistory={fetchHistory}
-               advanceFilter={advanceFilter}
-               time_from={time_from}
-               time_to={time_to}
-               isApply={isApply}
-               handleApply={handleApply}
-               currency={currency}
-               state={state}
-               currencyId={currencyId}
-               direction={direction}
-               user={user}
-            />
+            return (
+               <TableActivity
+                  core="transfers"
+                  search={qDebounce}
+                  intl={translate}
+                  currencies={currencies}
+                  wallets={wallets}
+                  list={list}
+                  fetching={fetching}
+                  page={page}
+                  firstElemIndex={firstElemIndex}
+                  lastElemIndex={lastElemIndex}
+                  nextPageExists={nextPageExists}
+                  fetchHistory={fetchHistory}
+                  advanceFilter={advanceFilter}
+                  time_from={time_from}
+                  time_to={time_to}
+                  isApply={isApply}
+                  handleApply={handleApply}
+                  currency={currency}
+                  state={state}
+                  currencyId={currencyId}
+                  direction={direction}
+                  user={user}
+               />
+            );
          case 4:
-            return <TableActivity
-               core="trades"
-               search={qDebounce}
-               intl={translate}
-               currencies={currencies}
-               wallets={wallets}
-               list={list}
-               fetching={fetching}
-               page={page}
-               firstElemIndex={firstElemIndex}
-               lastElemIndex={lastElemIndex}
-               nextPageExists={nextPageExists}
-               fetchCurrencies={fetchCurrencies}
-               fetchHistory={fetchHistory}
-               advanceFilter={advanceFilter}
-               time_from={time_from}
-               time_to={time_to}
-               isApply={isApply}
-               handleApply={handleApply}
-               currency={currency}
-               market={market}
-               state={state}
-               type={type}
-               currencyId={currencyId}
-               direction={direction}
-               user={user}
-            />
+            return (
+               <TableActivity
+                  core="trades"
+                  search={qDebounce}
+                  intl={translate}
+                  currencies={currencies}
+                  wallets={wallets}
+                  list={list}
+                  fetching={fetching}
+                  page={page}
+                  firstElemIndex={firstElemIndex}
+                  lastElemIndex={lastElemIndex}
+                  nextPageExists={nextPageExists}
+                  fetchHistory={fetchHistory}
+                  advanceFilter={advanceFilter}
+                  time_from={time_from}
+                  time_to={time_to}
+                  isApply={isApply}
+                  handleApply={handleApply}
+                  currency={currency}
+                  market={market}
+                  state={state}
+                  type={type}
+                  currencyId={currencyId}
+                  direction={direction}
+                  user={user}
+               />
+            );
          default:
-            return <TableActivity
-               core="transactions"
-               search={qDebounce}
-               intl={translate}
-               currencies={currencies}
-               wallets={wallets}
-               list={list}
-               fetching={fetching}
-               page={page}
-               firstElemIndex={firstElemIndex}
-               lastElemIndex={lastElemIndex}
-               nextPageExists={nextPageExists}
-               fetchCurrencies={fetchCurrencies}
-               fetchHistory={fetchHistory}
-               advanceFilter={advanceFilter}
-               time_from={time_from}
-               time_to={time_to}
-               isApply={isApply}
-               handleApply={handleApply}
-               currency={currency}
-               state={state}
-               currencyId={currencyId}
-               direction={direction}
-               user={user}
-            />
+            return (
+               <TableActivity
+                  core="transactions"
+                  search={qDebounce}
+                  intl={translate}
+                  currencies={currencies}
+                  wallets={wallets}
+                  list={list}
+                  fetching={fetching}
+                  page={page}
+                  firstElemIndex={firstElemIndex}
+                  lastElemIndex={lastElemIndex}
+                  nextPageExists={nextPageExists}
+                  fetchHistory={fetchHistory}
+                  advanceFilter={advanceFilter}
+                  time_from={time_from}
+                  time_to={time_to}
+                  isApply={isApply}
+                  handleApply={handleApply}
+                  currency={currency}
+                  state={state}
+                  currencyId={currencyId}
+                  direction={direction}
+                  user={user}
+               />
+            );
       }
-   };
+   }, [
+      activeTab,
+      advanceFilter,
+      currencies,
+      currency,
+      currencyId,
+      direction,
+      fetchHistory,
+      fetching,
+      firstElemIndex,
+      handleApply,
+      isApply,
+      lastElemIndex,
+      list,
+      market,
+      nextPageExists,
+      page,
+      qDebounce,
+      state,
+      time_from,
+      time_to,
+      translate,
+      type,
+      user,
+      wallets,
+   ]);
 
-   const typeName = activeTab === 0
-      ? 'transactions' : activeTab === 1
-         ? 'deposit' : activeTab === 2
-            ? 'withdrawls' : activeTab === 3
-               ? 'internal transfer' : 'my trades';
+   const typeName = useMemo(
+      () =>
+         activeTab === 0
+            ? 'transactions'
+            : activeTab === 1
+            ? 'deposit'
+            : activeTab === 2
+            ? 'withdrawls'
+            : activeTab === 3
+            ? 'internal transfer'
+            : 'my trades',
+      [activeTab]
+   );
 
    return (
       <>
-         <div className="block md:flex items-center justify-between mb-8 p-0 md:pb-8 border-b-0 md:border-b border-neutral6 dark:border-neutral3">
+         <div className="mb-8 block items-center justify-between border-b-0 border-neutral6 p-0 dark:border-neutral3 md:flex md:border-b md:pb-8">
             <div className="flex space-x-4">
                {!hiddenCategory?.includes(0) && (
                   <Nav
@@ -361,7 +450,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                )}
                {!hiddenCategory?.includes(2) && (
                   <Nav
-                     title="Withdraw"
+                     title="Withdrawals"
                      isActive={activeTab === 2}
                      onClick={() => setActiveTab(2)}
                   />
@@ -391,33 +480,36 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                      onChange={setQ}
                      icon={
                         <svg className="h-5 w-5 fill-neutral4">
-                           <use xlinkHref="#icon-search"></use>
+                           <use xlinkHref="#icon-search" />
                         </svg>
                      }
                   />
                </div>
                {(!currencyId || activeTab !== 3) && (
                   <Button
-                     text='All time'
+                     text="All time"
                      variant="outline"
                      size="normal"
                      width="noFull"
                      onClick={() => {
                         setQ('');
                         setShowFilter(true);
-                        setFilter({ ...filter, advanceFilter: activeTab !== 3 ? false : true });
+                        setFilter({
+                           ...filter,
+                           advanceFilter: activeTab === 3,
+                        });
                      }}
                      icRight={
-                        <svg className="ml-3 w-4 h-4 fill-neutral4 group-hover:fill-neutral8 transition-all">
-                           <use xlinkHref="#icon-calendar"></use>
+                        <svg className="ml-3 h-4 w-4 fill-neutral4 transition-all group-hover:fill-neutral8">
+                           <use xlinkHref="#icon-calendar" />
                         </svg>
                      }
                   />
                )}
             </div>
          </div>
-         <div className="flex items-center justify-between mb-10.5">
-            <div className="text-3.5xl leading-tight tracking-custom1 font-dm font-bold">
+         <div className="mb-10.5 flex items-center justify-between">
+            <div className="font-dm text-3.5xl font-bold leading-tight tracking-custom1">
                {title}
             </div>
             <Button
@@ -425,7 +517,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                size="normal"
                onClick={handleShowExport}
                icLeft={
-                  <svg className="mr-3 w-4 h-4 fill-neutral8 transition-all duration-200">
+                  <svg className="mr-3 h-4 w-4 fill-neutral8 transition-all duration-200">
                      <use xlinkHref="#icon-arrow-bottom" />
                   </svg>
                }
@@ -433,17 +525,19 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                width="noFull"
             />
          </div>
-         <div className="overflow-x-auto">
-            {renderActivity()}
-         </div>
+         <div className="overflow-x-auto">{renderActivity}</div>
          <Dialog
             isOpen={showFilter}
             setIsOpen={() => {
                setShowFilter(false);
-               setFilter({ ...filter, advanceFilter: false, direction: '', type: '' });
+               setFilter({
+                  ...filter,
+                  advanceFilter: false,
+                  direction: '',
+                  type: '',
+               });
             }}
-            title="Filter"
-         >
+            title="Filter">
             {activeTab !== 3 && (
                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2.5">
@@ -459,14 +553,14 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                            scrollableMonthYearDropdown
                         />
                         <button className="absolute top-3 right-3.5 -z-2">
-                           <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
+                           <svg className="h-6 w-6 fill-neutral4 transition-all duration-300">
                               <use xlinkHref="#icon-calendar" />
                            </svg>
                         </button>
                      </div>
                   </div>
                   <div className="space-y-2.5">
-                     <Label label="start date" />
+                     <Label label="end date" />
                      <div className="relative">
                         <DatePicker
                            selected={endDate}
@@ -478,7 +572,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                            scrollableMonthYearDropdown
                         />
                         <button className="absolute top-3 right-3.5 -z-2">
-                           <svg className="w-6 h-6 fill-neutral4 transition-all duration-300">
+                           <svg className="h-6 w-6 fill-neutral4 transition-all duration-300">
                               <use xlinkHref="#icon-calendar" />
                            </svg>
                         </button>
@@ -489,22 +583,31 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
             {withAdvancadFilter && (
                <>
                   {activeTab !== 3 && (
-                     <div className="flex justify-between items-center space-x-2">
-                        <div className="w-full h-px bg-neutral6 dark:bg-neutral3 rounded" />
+                     <div className="flex items-center justify-between space-x-2">
+                        <div className="h-px w-full rounded bg-neutral6 dark:bg-neutral3" />
                         <div
-                           className="flex justify-between items-center space-x-2 cursor-pointer"
-                           onClick={handleShowAdvanceFilter}
-                        >
-                           <div className="text-xs font-medium whitespace-nowrap leading-5">
+                           className="flex cursor-pointer items-center justify-between space-x-2"
+                           onClick={handleShowAdvanceFilter}>
+                           <div className="whitespace-nowrap text-xs font-medium leading-5">
                               ADVANCE FILTER
                            </div>
-                           <svg className={`${advanceFilter ? '' : 'rotate-180'} w-6 h-6 fill-neutral4 transition-all duration-300`}>
+                           <svg
+                              className={`${
+                                 advanceFilter ? '' : 'rotate-180'
+                              } h-6 w-6 fill-neutral4 transition-all duration-300`}>
                               <use xlinkHref="#icon-arrow-down" />
                            </svg>
                         </div>
                      </div>
                   )}
-                  <div className={`space-y-8 ${advanceFilter && (activeTab === 3 || activeTab === 0) ? '' : advanceFilter ? 'h-44 opacity-100 visible' : 'h-0 opacity-0 -translate-y-4 !mt-0 invisible'} transition-all duration-300`}>
+                  <div
+                     className={`space-y-8 ${
+                        advanceFilter && (activeTab === 3 || activeTab === 0)
+                           ? ''
+                           : advanceFilter
+                           ? 'visible h-44 opacity-100'
+                           : 'invisible !mt-0 h-0 -translate-y-4 opacity-0'
+                     } transition-all duration-300`}>
                      {activeTab === 4 && (
                         <ComboboxMarket onChange={handleChangeMarket} />
                      )}
@@ -514,10 +617,11 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                      {(activeTab === 1 || activeTab === 2) && (
                         <AdibDropdown
                            label="State type"
-                           data={renderStateType()}
+                           data={renderStateType}
                            onChange={handleChangeState}
                         />
-                     )} {activeTab === 4 && (
+                     )}{' '}
+                     {activeTab === 4 && (
                         <div className="relative space-y-2.5">
                            <Label label="Order side" />
                            <div className="flex space-x-3">
@@ -547,17 +651,20 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
          <Portal
             title="Confirm download"
             show={showExport}
-            close={handleShowExport}
-         >
+            close={handleShowExport}>
             <div>
                <div className="mt-16.5 space-y-8">
-                  <div className="flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-primary3">
-                     <svg className="w-10 h-10 fill-neutral8 transition-colors duration-300">
-                        <use xlinkHref="#icon-arrow-bottom"></use>
+                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary3">
+                     <svg className="h-10 w-10 fill-neutral8 transition-colors duration-300">
+                        <use xlinkHref="#icon-arrow-bottom" />
                      </svg>
                   </div>
-                  <div className="text-center text-base leading-normal font-medium">
-                     Are you sure you want to download the filename <strong className="font-bold capitalize text-primary4 tracking-wider">{typeName}</strong> ?
+                  <div className="text-center text-base font-medium leading-normal">
+                     Are you sure you want to download the filename{' '}
+                     <strong className="font-bold capitalize tracking-wider text-primary4">
+                        {typeName}
+                     </strong>{' '}
+                     ?
                   </div>
                   <Export
                      title="Continue"
@@ -569,12 +676,11 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
             </div>
          </Portal>
       </>
-   )
-}
+   );
+};
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
-   sonic: selectSonic(state),
    currencies: selectCurrencies(state),
    wallets: selectWallets(state),
    list: selectHistory(state),
@@ -585,19 +691,21 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    nextPageExists: selectNextPageExists(state, 10),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    fetchMarkets: () => dispatch(marketsFetch()),
    fetchWallets: () => dispatch(walletsFetch()),
    fetchHistory: payload => dispatch(fetchHistory(payload)),
    resetHistory: () => dispatch(resetHistory()),
-   fetchCurrencies: () => dispatch(currenciesFetch()),
 });
 
 export const TableFinance = compose(
    injectIntl,
-   connect(mapStateToProps, mapDispatchToProps),
-)(TableFinanceFC) as FC<OwnProps>;
+   connect(mapStateToProps, mapDispatchToProps)
+)(memo(TableFinanceFC)) as FC<OwnProps>;
 
 TableFinance.defaultProps = {
-   withAdvancadFilter: true
-}
+   withAdvancadFilter: true,
+};

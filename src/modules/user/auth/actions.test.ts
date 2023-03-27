@@ -16,36 +16,36 @@ describe('Auth actions', () => {
         expect(actions.logoutError(error)).toEqual(expectedAction);
     });
 
-    it('should check signIn action creator', () => {
+    it('should check login action creator', () => {
         const payload = {
             email: 'john.barong@gmail.com',
             password: '123123',
         };
-        const expectedAction = { type: 'auth/SIGN_IN_FETCH', payload };
-        expect(actions.signIn(payload)).toEqual(expectedAction);
+        const expectedAction = { type: 'auth/LOGIN_FETCH', payload };
+        expect(actions.login(payload)).toEqual(expectedAction);
     });
 
-    it('should check signInError action creator', () => {
+    it('should check loginError action creator', () => {
         const error: CommonError = {
             code: 500,
             message: ['Server error'],
         };
-        const expectedAction = { type: 'auth/SIGN_IN_ERROR', error };
-        expect(actions.signInError(error)).toEqual(expectedAction);
+        const expectedAction = { type: 'auth/LOGIN_ERROR', error };
+        expect(actions.loginError(error)).toEqual(expectedAction);
     });
 
-    it('should check signUpError action creator', () => {
+    it('should check registerError action creator', () => {
         const error: CommonError = {
             code: 500,
             message: ['Server error'],
         };
-        const expectedAction = { type: 'auth/SIGN_UP_ERROR', error };
-        expect(actions.signUpError(error)).toEqual(expectedAction);
+        const expectedAction = { type: 'auth/REGISTER_ERROR', error };
+        expect(actions.registerError(error)).toEqual(expectedAction);
     });
 
-    it('should check signInRequire2FA action creator', () => {
+    it('should check loginRequire2FA action creator', () => {
         const payload = { require2fa: true };
-        const expectedAction = { type: 'auth/SIGN_IN_REQUIRE_2FA', payload };
-        expect(actions.signInRequire2FA(payload)).toEqual(expectedAction);
+        const expectedAction = { type: 'auth/LOGIN_REQUIRE_2FA', payload };
+        expect(actions.loginRequire2FA(payload)).toEqual(expectedAction);
     });
 });

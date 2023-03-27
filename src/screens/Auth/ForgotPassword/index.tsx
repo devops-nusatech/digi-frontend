@@ -1,4 +1,10 @@
-import React, { FC, FunctionComponent, KeyboardEvent, useRef, useState } from 'react';
+import React, {
+   FC,
+   FunctionComponent,
+   KeyboardEvent,
+   useRef,
+   useState,
+} from 'react';
 import { injectIntl } from 'react-intl';
 import {
    connect,
@@ -10,10 +16,7 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { IntlProps } from '../../..';
 import { Captcha, FormForgotPassword, LayoutAuth } from 'components';
-import {
-   EMAIL_REGEX,
-   ERROR_INVALID_EMAIL,
-} from 'helpers';
+import { EMAIL_REGEX, ERROR_INVALID_EMAIL } from 'helpers';
 import {
    Configs,
    forgotPassword,
@@ -35,7 +38,10 @@ interface ReduxProps {
    success: boolean;
    error?: CommonError;
    configs: Configs;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
    isLoading: boolean;
@@ -64,7 +70,7 @@ const ForgotPasswordFC: FC<Props> = ({
    forgotPassword,
    resetCaptchaState,
    history,
-   intl
+   intl,
 }) => {
    useDocumentTitle('Forgot Password');
    const geetestCaptchaRef = useRef<HTMLButtonElement>(null);
@@ -95,7 +101,11 @@ const ForgotPasswordFC: FC<Props> = ({
       setState({
          ...state,
          email,
-         emailError: !email ? `Email ${translate('mustBeFilled')}` : (email && !isEmailValid) ? translate(ERROR_INVALID_EMAIL) : ''
+         emailError: !email
+            ? `Email ${translate('mustBeFilled')}`
+            : email && !isEmailValid
+            ? translate(ERROR_INVALID_EMAIL)
+            : '',
       });
    };
 
@@ -117,9 +127,16 @@ const ForgotPasswordFC: FC<Props> = ({
       }
    };
 
-   const handleRenderInputNewPass = () => history.push('/accounts/password_reset', { email });
+   const handleRenderInputNewPass = () =>
+      history.push('/accounts/password_reset', { email });
 
-   const renderCaptcha = () => <Captcha geetestCaptchaRef={geetestCaptchaRef} error={error} success={success} />;
+   const renderCaptcha = () => (
+      <Captcha
+         geetestCaptchaRef={geetestCaptchaRef}
+         error={error}
+         success={success}
+      />
+   );
 
    return (
       <LayoutAuth
@@ -128,8 +145,7 @@ const ForgotPasswordFC: FC<Props> = ({
          descLinkTo="Don’t have an account?"
          onKeyPress={handleEnterPress}
          title={translate('page.forgotPassword')}
-         subTitle={translate('page.forgotPassword.subtitle')}
-      >
+         subTitle={translate('page.forgotPassword.subtitle')}>
          <FormForgotPassword
             geetestCaptchaRef={geetestCaptchaRef}
             buttonLabel={translate('page.body.kyc.next')}
@@ -138,7 +154,7 @@ const ForgotPasswordFC: FC<Props> = ({
             emailLabel={translate('page.forgotPassword.label')}
             email={email}
             emailError={emailError}
-            placeholder={translate('page.header.signIn.email')}
+            placeholder={translate('page.header.login.email')}
             validateForm={validateForm}
             handleChangeEmail={handleInputEmail}
             captchaType={configs.captcha_type}
@@ -149,8 +165,8 @@ const ForgotPasswordFC: FC<Props> = ({
             handleRenderInputNewPass={handleRenderInputNewPass}
          />
       </LayoutAuth>
-   )
-}
+   );
+};
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    success: selectForgotPasswordSuccess(state),
@@ -159,12 +175,15 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
-   isLoading: selectForgotPasswordSuccess(state)
+   isLoading: selectForgotPasswordSuccess(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    forgotPassword: credentials => dispatch(forgotPassword(credentials)),
-   resetCaptchaState: () => dispatch(resetCaptchaState())
+   resetCaptchaState: () => dispatch(resetCaptchaState()),
 });
 
 export const ForgotPassword = compose(

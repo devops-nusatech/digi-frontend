@@ -15,9 +15,14 @@ type ModalTransferState = {
    otp: string;
    isShowTransferConfirm: boolean;
    isShowTransferSuccess: boolean;
-}
+};
 
-export const ModalTransfer = ({ fixed, handleTransfer, balance, currency }: ModalTransferProps) => {
+export const ModalTransfer = ({
+   fixed,
+   handleTransfer,
+   balance,
+   currency,
+}: ModalTransferProps) => {
    const [state, setState] = useState<ModalTransferState>({
       receiver: '',
       amount: '',
@@ -28,27 +33,28 @@ export const ModalTransfer = ({ fixed, handleTransfer, balance, currency }: Moda
    const { receiver, amount, otp, isShowTransferConfirm } = state;
 
    const handleChangeReceiver = (receiver: string) => {
-      setState({ ...state, receiver })
-   }
+      setState({ ...state, receiver });
+   };
    const handleChangeAmount = (value: string) => {
-      const convertedValue = cleanPositiveFloatInput(value)
+      const convertedValue = cleanPositiveFloatInput(value);
       if (convertedValue.match(precisionRegExp(fixed))) {
-         setState({ ...state, amount: convertedValue })
-      };
-   }
+         setState({ ...state, amount: convertedValue });
+      }
+   };
    const handleChangeOTP = (otp: string) => {
-      setState({ ...state, otp: otp.replace(/\D/g, '') })
-   }
+      setState({ ...state, otp: otp.replace(/\D/g, '') });
+   };
 
    const isDisabled = () => {
-      return !Boolean(receiver) || !Boolean(amount) || Number(otp.length) < 6
-   }
+      return !Boolean(receiver) || !Boolean(amount) || Number(otp.length) < 6;
+   };
 
-   const handleToggleConfirm = () => setState({ ...state, isShowTransferConfirm: !isShowTransferConfirm })
+   const handleToggleConfirm = () =>
+      setState({ ...state, isShowTransferConfirm: !isShowTransferConfirm });
 
    const handleConfirm = () => {
       handleTransfer(receiver, amount, otp);
-   }
+   };
 
    const renderContent = () => {
       return (
@@ -78,8 +84,8 @@ export const ModalTransfer = ({ fixed, handleTransfer, balance, currency }: Moda
                disabled={isDisabled()}
             />
          </>
-      )
-   }
+      );
+   };
 
    const renderModalConfirm = () => {
       return (
@@ -91,13 +97,13 @@ export const ModalTransfer = ({ fixed, handleTransfer, balance, currency }: Moda
             total={Decimal.format(amount, fixed, ',')}
             onSubmit={handleConfirm}
          />
-      )
-   }
+      );
+   };
 
    return (
       <>
          {renderContent()}
          {renderModalConfirm()}
       </>
-   )
-}
+   );
+};

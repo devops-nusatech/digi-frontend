@@ -1,6 +1,4 @@
-import React, {
-   Component
-} from 'react';
+import React, { Component } from 'react';
 import { History } from 'history';
 import { injectIntl } from 'react-intl';
 import {
@@ -10,13 +8,8 @@ import {
 } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { IntlProps } from '../../../';
 import { isUsernameEnabled } from 'api';
-import {
-   Captcha,
-   FormRegister,
-   LayoutAuth
-} from 'components';
+import { Captcha, FormRegister, LayoutAuth } from 'components';
 import {
    EMAIL_REGEX,
    ERROR_INVALID_EMAIL,
@@ -27,7 +20,8 @@ import {
 } from 'helpers';
 import {
    Configs,
-   entropyPasswordFetch, GeetestCaptchaResponse,
+   entropyPasswordFetch,
+   GeetestCaptchaResponse,
    GeetestCaptchaV4Response,
    LanguageState,
    resetCaptchaState,
@@ -39,18 +33,22 @@ import {
    selectCurrentPasswordEntropy,
    selectGeetestCaptchaSuccess,
    selectRecaptchaSuccess,
-   selectSignUpError,
-   selectSignUpLoading,
-   selectSignUpRequireVerification,
-   signUp,
+   selectregisterError,
+   selectregisterLoading,
+   selectregisterRequireVerification,
+   register,
 } from 'modules';
+import { IntlProps } from '../../../';
 
 interface ReduxProps {
    configs: Configs;
    requireVerification?: boolean;
    loading?: boolean;
    currentPasswordEntropy: number;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
    reCaptchaSuccess: boolean;
    geetestCaptchaSuccess: boolean;
    isLoading: boolean;
@@ -58,7 +56,7 @@ interface ReduxProps {
 }
 
 interface DispatchProps {
-   signUp: typeof signUp;
+   register: typeof register;
    fetchCurrentPasswordEntropy: typeof entropyPasswordFetch;
    resetCaptchaState: typeof resetCaptchaState;
 }
@@ -71,13 +69,14 @@ interface RouterProps {
 }
 
 interface OwnProps {
-   signUpError: boolean;
+   registerError: boolean;
    i18n: LanguageState['lang'];
 }
 
 type Props = ReduxProps & DispatchProps & RouterProps & IntlProps & OwnProps;
 
-export const extractRefID = (props: RouterProps) => new URLSearchParams(props.location.search).get('refid');
+export const extractRefID = (props: RouterProps) =>
+   new URLSearchParams(props.location.search).get('refid');
 
 class RegisterClass extends Component<Props> {
    public constructor(props) {
@@ -124,9 +123,9 @@ class RegisterClass extends Component<Props> {
    }
 
    public renderCaptcha = () => {
-      // const { signUpError } = this.props;
+      // const { registerError } = this.props;
       // const { confirmationError, emailError } = this.state;
-      // const error = signUpError || confirmationError || emailError;
+      // const error = registerError || confirmationError || emailError;
       return <Captcha geetestCaptchaRef={this.geetestCaptchaRef} />;
    };
 
@@ -154,7 +153,7 @@ class RegisterClass extends Component<Props> {
          emailFocused,
          passwordFocused,
          confirmPasswordFocused,
-         refIdFocused
+         refIdFocused,
       } = this.state;
       return (
          <LayoutAuth
@@ -162,8 +161,7 @@ class RegisterClass extends Component<Props> {
             linkTo="/login"
             linkToTxt="Login"
             title="Register"
-            subTitle="Please fill in the data below with honest and accurate information."
-         >
+            subTitle="Please fill in the data below with honest and accurate information.">
             <FormRegister
                geetestCaptchaRef={this.geetestCaptchaRef}
                captchaType={configs.captcha_type}
@@ -173,57 +171,56 @@ class RegisterClass extends Component<Props> {
                isGeetestCaptchaSuccess={geetestCaptchaSuccess}
                hasConfirmed={hasConfirmed}
                isLoading={isLoading || captchaLoading}
-               onRegister={this.handleSignUp}
-               onLogin={this.handleSignIn}
+               onRegister={this.handleregister}
+               onLogin={this.handleLogin}
                validateForm={this.handleValidateForm}
                clickCheckBox={this.handleCheckboxClick}
-
                username={username}
                email={email}
                password={password}
                confirmPassword={confirmPassword}
                refid={refId}
-
                handleChangeUsername={this.handleChangeUsername}
                handleChangeEmail={this.handleChangeEmail}
                handleChangePassword={this.handleChangePassword}
                handleChangeConfirmPassword={this.handleChangeConfirmPassword}
                handleChangeRefId={this.handleChangeRefId}
-
                focusUsername={usernameFocused}
                focusEmail={emailFocused}
                focusPassword={passwordFocused}
                focusConfirmPassword={confirmPasswordFocused}
                focusRefId={refIdFocused}
-
                handleFocusUsername={this.handleFocusUsername}
                handleFocusEmail={this.handleFocusEmail}
                handleFocusPassword={this.handleFocusPassword}
                handleFocusConfirmPassword={this.handleFocusConfirmPassword}
                handleFocusRefId={this.handleFocusRefId}
-
                handleResetEmail={this.handleResetEmail}
-
-               usernameLabel={`Username`}
-               emailLabel={formatMessage({ id: 'page.header.signUp.email' })}
-               passwordLabel={formatMessage({ id: 'page.header.signUp.password' })}
-               confirmPasswordLabel={formatMessage({ id: 'page.header.signUp.confirmPassword' })}
-               refIdLabel={`${formatMessage({ id: 'page.header.signUp.referalCode' })} (optional)`}
-
+               usernameLabel="Username"
+               emailLabel={formatMessage({ id: 'page.header.register.email' })}
+               passwordLabel={formatMessage({
+                  id: 'page.header.register.password',
+               })}
+               confirmPasswordLabel={formatMessage({
+                  id: 'page.header.register.confirmPassword',
+               })}
+               refIdLabel={`${formatMessage({
+                  id: 'page.header.register.referalCode',
+               })} (optional)`}
                emailError={emailError}
                passwordError={passwordError}
                confirmPasswordError={confirmationError}
-
-               termsMessage={formatMessage({ id: 'page.header.signUp.terms' })}
-
+               termsMessage={formatMessage({
+                  id: 'page.header.register.terms',
+               })}
                translate={this.translate}
             />
          </LayoutAuth>
-      )
+      );
    }
 
-   private translate = (key: string) => this.props.intl.formatMessage({ id: key });
-
+   private translate = (key: string) =>
+      this.props.intl.formatMessage({ id: key });
 
    private handleCheckboxClick = () => {
       this.setState({
@@ -237,14 +234,25 @@ class RegisterClass extends Component<Props> {
       });
    };
 
-   private handleResetEmail = () => this.setState({ email: '', emailFocused: true, emailError: 'Email must be filled' });
+   private handleResetEmail = () =>
+      this.setState({
+         email: '',
+         emailFocused: true,
+         emailError: 'Email must be filled',
+      });
+
    private handleChangeEmail = (email: string) => {
       const isEmailValid = email.match(EMAIL_REGEX);
       this.setState({
          email,
-         emailError: !email.length ? 'Email must be filled' : (email.length && !isEmailValid) ? this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL }) : ''
+         emailError: !email.length
+            ? 'Email must be filled'
+            : email.length && !isEmailValid
+            ? this.props.intl.formatMessage({ id: ERROR_INVALID_EMAIL })
+            : '',
       });
    };
+
    private handleChangePassword = (password: string) => {
       this.setState({ password });
    };
@@ -291,18 +299,13 @@ class RegisterClass extends Component<Props> {
       });
    };
 
-   private handleSignIn = () => {
+   private handleLogin = () => {
       this.props.history.push('/login');
    };
 
-   private handleSignUp = () => {
-      const { configs, i18n, captcha_response, signUp } = this.props;
-      const {
-         username,
-         email,
-         password,
-         refId,
-      } = this.state;
+   private handleregister = () => {
+      const { configs, i18n, captcha_response, register } = this.props;
+      const { username, email, password, refId } = this.state;
       let payload: any = {
          email,
          password,
@@ -324,10 +327,10 @@ class RegisterClass extends Component<Props> {
          case 'geetest':
             payload = { ...payload, captcha_response };
 
-            signUp(payload);
+            register(payload);
             break;
          default:
-            signUp(payload);
+            register(payload);
             break;
       }
       this.props.resetCaptchaState();
@@ -335,7 +338,9 @@ class RegisterClass extends Component<Props> {
 
    private handleValidateForm = () => {
       const { email, password, confirmPassword } = this.state;
-      const { intl: { formatMessage } } = this.props;
+      const {
+         intl: { formatMessage },
+      } = this.props;
       const isEmailValid = email.match(EMAIL_REGEX);
       const isPasswordValid = password.match(PASSWORD_REGEX);
       const isConfirmPasswordValid = password === confirmPassword;
@@ -375,41 +380,45 @@ class RegisterClass extends Component<Props> {
 
       if (!isConfirmPasswordValid) {
          this.setState({
-            confirmationError: formatMessage({ id: ERROR_PASSWORD_CONFIRMATION }),
+            confirmationError: formatMessage({
+               id: ERROR_PASSWORD_CONFIRMATION,
+            }),
             emailError: '',
             passwordError: '',
             hasConfirmed: false,
          });
-
-         return;
       }
    };
 
-   private extractRefID = (url: string) => new URLSearchParams(url).get('refid');
+   private extractRefID = (url: string) =>
+      new URLSearchParams(url).get('refid');
 }
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    configs: selectConfigs(state),
    i18n: selectCurrentLanguage(state),
-   requireVerification: selectSignUpRequireVerification(state),
-   signUpError: selectSignUpError(state),
+   requireVerification: selectregisterRequireVerification(state),
+   registerError: selectregisterError(state),
    currentPasswordEntropy: selectCurrentPasswordEntropy(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
-   isLoading: selectSignUpLoading(state),
-   captchaLoading: selectCaptchaDataObjectLoading(state)
+   isLoading: selectregisterLoading(state),
+   captchaLoading: selectCaptchaDataObjectLoading(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
-   dispatch => ({
-      signUp: credentials => dispatch(signUp(credentials)),
-      fetchCurrentPasswordEntropy: payload => dispatch(entropyPasswordFetch(payload)),
-      resetCaptchaState: () => dispatch(resetCaptchaState()),
-   });
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   register: credentials => dispatch(register(credentials)),
+   fetchCurrentPasswordEntropy: payload =>
+      dispatch(entropyPasswordFetch(payload)),
+   resetCaptchaState: () => dispatch(resetCaptchaState()),
+});
 
 export const Register = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(RegisterClass) as React.ComponentClass;

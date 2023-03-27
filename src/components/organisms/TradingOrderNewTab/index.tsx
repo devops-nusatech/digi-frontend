@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Decimal, TradingOrderNewTabForm, Button, InputOrder, SliderPercent } from 'components';
+import {
+   Decimal,
+   TradingOrderNewTabForm,
+   Button,
+   InputOrder,
+   SliderPercent,
+} from 'components';
 import { FilterPrice } from 'filters';
 import { getAmount, getTotalPrice } from 'helpers';
 import { IcWallet } from 'assets';
@@ -106,12 +112,12 @@ interface State {
    price: number | string;
 }
 
-const defaultOrderTypes: DropdownElemNew[] = [
-   'Limit',
-   'Market',
-];
+const defaultOrderTypes: DropdownElemNew[] = ['Limit', 'Market'];
 
-export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, State> {
+export class TradingOrderNewTab extends React.Component<
+   OrderComponentPropsNew,
+   State
+> {
    constructor(props: OrderComponentPropsNew) {
       super(props);
       this.state = {
@@ -145,59 +151,78 @@ export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, 
       const { orderType, amountBuy, amountSell } = this.state;
       return (
          <>
-            <div className="relative mt-1 rounded p-4 bg-neutral8 dark:bg-shade2">
-               <div className="flex items-center mb-6 justify-between">
+            <div className="relative mt-1 rounded bg-neutral8 p-4 dark:bg-shade2">
+               <div className="mb-6 flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                      <div
                         onClick={() => this.handleGetOrderType('limit')}
-                        className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 ${orderType === 'limit' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} cursor-pointer transition ease-in-out duration-300`}
-                     >
-                        {translate('page.body.trade.header.newOrder.content.orderType.limit')}
+                        className={`flex rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                           orderType === 'limit'
+                              ? 'bg-neutral6 dark:bg-neutral3'
+                              : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
+                        } cursor-pointer transition duration-300 ease-in-out`}>
+                        {translate(
+                           'page.body.trade.header.newOrder.content.orderType.limit'
+                        )}
                      </div>
                      <div
                         onClick={() => this.handleGetOrderType('market')}
-                        className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 cursor-pointer ${orderType === 'market' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} transition ease-in-out duration-300`}
-                     >
-                        {translate('page.body.trade.header.newOrder.content.orderType.market')}
+                        className={`flex cursor-pointer rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                           orderType === 'market'
+                              ? 'bg-neutral6 dark:bg-neutral3'
+                              : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
+                        } transition duration-300 ease-in-out`}>
+                        {translate(
+                           'page.body.trade.header.newOrder.content.orderType.market'
+                        )}
                      </div>
                   </div>
-                  <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">
-                     <div className="">
-                        Crypto trading tutorial
-                     </div>
-                     <Link to="/" className="flex items-center group">
-                        <div className="ml-2 text-neutral2 dark:text-neutral6 group-hover:text-primary1 transition-all duration-300">
+                  <div className="flex items-center text-xs font-medium leading-custom1 text-neutral4">
+                     <div className="">Crypto trading tutorial</div>
+                     <Link
+                        to="/"
+                        className="group flex items-center">
+                        <div className="ml-2 text-neutral2 transition-all duration-300 group-hover:text-primary1 dark:text-neutral6">
                            Learn now
                         </div>
-                        <div className="w-5 h-5 flex items-center justify-center">
-                           <ChevronRightIcon className="w-4 h-4 stroke-neutral2 dark:stroke-neutral6 fill-neutral2 dark:fill-neutral6 group-hover:stroke-primary1 transition-all duration-300" />
+                        <div className="flex h-5 w-5 items-center justify-center">
+                           <ChevronRightIcon className="h-4 w-4 fill-neutral2 stroke-neutral2 transition-all duration-300 group-hover:stroke-primary1 dark:fill-neutral6 dark:stroke-neutral6" />
                         </div>
                      </Link>
                   </div>
                </div>
-               <div className="flex my-0 -mx-4">
-                  <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
-                     <div className="flex items-center justify-between mb-4">
-                        <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+               <div className="my-0 -mx-4 flex">
+                  <div className="my-0 mx-4 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
+                     <div className="mb-4 flex items-center justify-between">
+                        <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                            Buy {to.toUpperCase()}
                         </div>
                         <div className="flex items-center space-x-1">
                            <IcWallet />
                            <div className="text-xs font-semibold leading-custom1">
-                              {Decimal.format(availableQuote, currentMarketBidPrecision, ',')} {from.toUpperCase()}
+                              {Decimal.format(
+                                 availableQuote,
+                                 currentMarketBidPrecision,
+                                 ','
+                              )}{' '}
+                              {from.toUpperCase()}
                            </div>
                         </div>
                      </div>
                      <div className="flex flex-col space-y-3">
                         <InputOrder
-                           titleLeft={translate('page.body.trade.header.newOrder.content.price')}
+                           titleLeft={translate(
+                              'page.body.trade.header.newOrder.content.price'
+                           )}
                            titleRight={from.toUpperCase()}
                            value={orderType === 'market' ? '' : priceLimit}
                            placeholder={orderType === 'market' ? 'Market' : ''}
                            disabled={orderType === 'market'}
                         />
                         <InputOrder
-                           titleLeft={translate('page.body.trade.header.newOrder.content.amount')}
+                           titleLeft={translate(
+                              'page.body.trade.header.newOrder.content.amount'
+                           )}
                            titleRight={to.toUpperCase()}
                            value={amountBuy}
                            readOnly={orderType === 'limit'}
@@ -205,46 +230,57 @@ export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, 
                         <SliderPercent
                            range={{
                               min: 0,
-                              max: 100
+                              max: 100,
                            }}
                            start={20}
-                           onSlide={() => { }}
+                           onSlide={() => {}}
                         />
                         <InputOrder
-                           titleLeft={translate('page.body.trade.header.newOrder.content.total')}
+                           titleLeft={translate(
+                              'page.body.trade.header.newOrder.content.total'
+                           )}
                            titleRight={from.toUpperCase()}
                            value={amountBuy}
                            readOnly
                         />
                         <Button
-                           onClick={() => { }}
+                           onClick={() => {}}
                            text={`Buy ${from.toUpperCase()}`}
                            className="bg-primary5 hover:bg-primary5 hover:contrast-75"
                         />
                      </div>
                   </div>
-                  <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
-                     <div className="flex items-center justify-between mb-4">
-                        <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+                  <div className="my-0 mx-4 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
+                     <div className="mb-4 flex items-center justify-between">
+                        <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                            Sell {to.toUpperCase()}
                         </div>
                         <div className="flex items-center space-x-1">
                            <IcWallet />
                            <div className="text-xs font-semibold leading-custom1">
-                              {Decimal.format(availableBase, currentMarketAskPrecision, ',')} {to.toUpperCase()}
+                              {Decimal.format(
+                                 availableBase,
+                                 currentMarketAskPrecision,
+                                 ','
+                              )}{' '}
+                              {to.toUpperCase()}
                            </div>
                         </div>
                      </div>
                      <div className="flex flex-col space-y-3">
                         <InputOrder
-                           titleLeft={translate('page.body.trade.header.newOrder.content.price')}
+                           titleLeft={translate(
+                              'page.body.trade.header.newOrder.content.price'
+                           )}
                            titleRight={from.toUpperCase()}
                            value={orderType === 'limit' ? priceLimit : ''}
                            placeholder={orderType === 'market' ? 'Market' : ''}
                            disabled={orderType === 'market'}
                         />
                         <InputOrder
-                           titleLeft={translate('page.body.trade.header.newOrder.content.amount')}
+                           titleLeft={translate(
+                              'page.body.trade.header.newOrder.content.amount'
+                           )}
                            titleRight={to.toUpperCase()}
                            value={amountSell}
                            readOnly={orderType === 'market'}
@@ -252,13 +288,15 @@ export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, 
                         <SliderPercent
                            range={{
                               min: 0,
-                              max: 100
+                              max: 100,
                            }}
                            start={20}
-                           onSlide={() => { }}
+                           onSlide={() => {}}
                         />
                         <InputOrder
-                           titleLeft={translate('page.body.trade.header.newOrder.content.total')}
+                           titleLeft={translate(
+                              'page.body.trade.header.newOrder.content.total'
+                           )}
                            titleRight={from.toUpperCase()}
                            value={amountSell}
                         />
@@ -271,7 +309,8 @@ export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, 
                   </div>
                </div>
             </div>
-            {this.getPanel('buy')}{this.getPanel('sell')}
+            {this.getPanel('buy')}
+            {this.getPanel('sell')}
          </>
       );
    }
@@ -301,7 +340,9 @@ export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, 
 
       const proposals = this.isTypeSell(type) ? bids : asks;
       const available = this.isTypeSell(type) ? availableBase : availableQuote;
-      const priceMarket = this.isTypeSell(type) ? priceMarketSell : priceMarketBuy;
+      const priceMarket = this.isTypeSell(type)
+         ? priceMarketSell
+         : priceMarketBuy;
       const disabledData = this.isTypeSell(type) ? {} : { disabled };
       const amount = this.isTypeSell(type) ? amountSell : amountBuy;
       // const preLabel = this.isTypeSell(type) ? (
@@ -311,32 +352,35 @@ export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, 
       // );
       // const label = this.isTypeSell(type) ? 'Sell' : 'Buy';
 
-      return <TradingOrderNewTabForm
-         type={type}
-         from={from}
-         {...disabledData}
-         to={to}
-         available={available}
-         priceMarket={priceMarket}
-         priceLimit={priceLimit}
-         onSubmit={this.props.onSubmit}
-         orderTypes={orderTypes || defaultOrderTypes}
-         orderTypesIndex={orderTypesIndex || defaultOrderTypes}
-         currentMarketAskPrecision={currentMarketAskPrecision}
-         currentMarketBidPrecision={currentMarketBidPrecision}
-         totalPrice={getTotalPrice(amount, priceMarket, proposals)}
-         amount={amount}
-         listenInputPrice={listenInputPrice}
-         handleAmountChange={this.handleAmountChange}
-         handleChangeAmountByButton={this.handleChangeAmountByButton}
-         currentMarketFilters={currentMarketFilters}
-         isMobileDevice={isMobileDevice}
-         translate={translate}
-      />
+      return (
+         <TradingOrderNewTabForm
+            type={type}
+            from={from}
+            {...disabledData}
+            to={to}
+            available={available}
+            priceMarket={priceMarket}
+            priceLimit={priceLimit}
+            onSubmit={this.props.onSubmit}
+            orderTypes={orderTypes || defaultOrderTypes}
+            orderTypesIndex={orderTypesIndex || defaultOrderTypes}
+            currentMarketAskPrecision={currentMarketAskPrecision}
+            currentMarketBidPrecision={currentMarketBidPrecision}
+            totalPrice={getTotalPrice(amount, priceMarket, proposals)}
+            amount={amount}
+            listenInputPrice={listenInputPrice}
+            handleAmountChange={this.handleAmountChange}
+            handleChangeAmountByButton={this.handleChangeAmountByButton}
+            currentMarketFilters={currentMarketFilters}
+            isMobileDevice={isMobileDevice}
+            translate={translate}
+         />
+      );
    };
 
    //
-   private handleGetOrderType = (type: TOrderType) => this.setState({ orderType: type });
+   private handleGetOrderType = (type: TOrderType) =>
+      this.setState({ orderType: type });
    //
 
    private handleChangeTab = (index: number, label?: string) => {
@@ -367,15 +411,22 @@ export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, 
          case 'buy':
             switch (orderType) {
                case 'Limit':
-                  newAmount = available && +price ? (
-                     Decimal.format(available / +price * value, this.props.currentMarketAskPrecision)
-                  ) : '';
+                  newAmount =
+                     available && +price
+                        ? Decimal.format(
+                             (available / +price) * value,
+                             this.props.currentMarketAskPrecision
+                          )
+                        : '';
 
                   break;
                case 'Market':
-                  newAmount = available ? (
-                     Decimal.format(getAmount(Number(available), proposals, value), this.props.currentMarketAskPrecision)
-                  ) : '';
+                  newAmount = available
+                     ? Decimal.format(
+                          getAmount(Number(available), proposals, value),
+                          this.props.currentMarketAskPrecision
+                       )
+                     : '';
 
                   break;
                default:
@@ -383,9 +434,12 @@ export class TradingOrderNewTab extends React.Component<OrderComponentPropsNew, 
             }
             break;
          case 'sell':
-            newAmount = available ? (
-               Decimal.format(available * value, this.props.currentMarketAskPrecision)
-            ) : '';
+            newAmount = available
+               ? Decimal.format(
+                    available * value,
+                    this.props.currentMarketAskPrecision
+                 )
+               : '';
 
             break;
          default:

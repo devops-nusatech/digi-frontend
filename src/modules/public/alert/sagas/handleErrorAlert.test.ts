@@ -4,7 +4,7 @@ import createSagaMiddleware, { SagaMiddleware } from 'redux-saga';
 import { rootSaga } from '../../../';
 import { Cryptobase, defaultConfig } from '../../../../api';
 import { setupMockAxios, setupMockStore } from '../../../../helpers/jest';
-import { AUTH_SIGN_IN_REQUIRE_2FA } from '../../../user/auth/constants';
+import { AUTH_LOGIN_REQUIRE_2FA } from '../../../user/auth/constants';
 import { HISTORY_RESET } from '../../../user/history/constants';
 import { OPEN_ORDERS_RESET } from '../../../user/openOrders/constants';
 import { PROFILE_RESET_USER } from '../../../user/profile/constants';
@@ -53,7 +53,7 @@ describe('Alert error handler', () => {
     };
 
     const expectedUserRequire2FAReset = {
-        type: AUTH_SIGN_IN_REQUIRE_2FA,
+        type: AUTH_LOGIN_REQUIRE_2FA,
         payload: {
             require2fa: false,
         },

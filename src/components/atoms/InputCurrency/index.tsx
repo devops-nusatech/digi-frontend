@@ -42,8 +42,16 @@ export const InputCurrency: FC<InputOrder> = ({
 }): JSX.Element => {
    return (
       <div className="space-y-2.5">
-         <div className={`flex items-center px-4 py-0.5 rounded-xl ${withError ? 'ring-2 ring-primary4 ring-inset' : 'shadow-input dark:shadow-input-dark'} cursor-pointer ${disabled && 'bg-neutral7 dark:bg-shade1 pointer-events-none select-none'}`}>
-            <div className="font-medium text-neutral4 pointer-events-none">
+         <div
+            className={`flex items-center rounded-xl px-4 py-0.5 ${
+               withError
+                  ? 'ring-2 ring-inset ring-primary4'
+                  : 'shadow-input dark:shadow-input-dark'
+            } cursor-pointer ${
+               disabled &&
+               'pointer-events-none select-none bg-neutral7 dark:bg-shade1'
+            }`}>
+            <div className="pointer-events-none font-medium text-neutral4">
                {titleLeft}
             </div>
             <NumericFormat
@@ -54,27 +62,33 @@ export const InputCurrency: FC<InputOrder> = ({
                onFocus={onFocus}
                onKeyPress={onKeyPress}
                placeholder={placeholder}
-               className={`grow h-11.5 px-[10px] text-right font-medium outline-none m-0 border-none bg-neutral8 dark:bg-shade2 ${disabled && 'bg-neutral7 placeholder:text-center placeholder:text-neutral3 pointer-events-none select-none'} ${className}`}
+               className={`m-0 h-11.5 grow border-none bg-neutral8 px-[10px] text-right font-medium outline-none dark:bg-shade2 ${
+                  disabled &&
+                  'pointer-events-none select-none bg-neutral7 placeholder:text-center placeholder:text-neutral3'
+               } ${className}`}
                disabled={disabled}
                readOnly={readOnly}
                {...rest}
             />
-            <div className="font-medium text-neutral4 pointer-events-none">
+            <div className="pointer-events-none font-medium text-neutral4">
                {titleRight}
             </div>
          </div>
          {info && (
-            <div className={`${classNameInfo ? classNameInfo : ''} ${withError && 'text-primary4'} text-x leading-relaxed font-medium`}>
+            <div
+               className={`${classNameInfo ? classNameInfo : ''} ${
+                  withError && 'text-primary4'
+               } text-x font-medium leading-relaxed`}>
                {info}
             </div>
          )}
       </div>
-   )
-}
+   );
+};
 
 InputCurrency.defaultProps = {
    type: 'text',
    readOnly: false,
    disabled: false,
-   thousandSeparator: ','
-}
+   thousandSeparator: ',',
+};

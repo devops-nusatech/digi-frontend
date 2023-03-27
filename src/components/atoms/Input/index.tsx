@@ -14,7 +14,9 @@ export interface InputProps {
    onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
    readOnly?: boolean;
    id?: string;
-   handleClick?: ((event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void);
+   handleClick?: (
+      event: React.MouseEvent<HTMLInputElement, MouseEvent>
+   ) => void;
    isDisabled?: boolean;
    labelVisible?: boolean;
    autoComplete?: string;
@@ -57,21 +59,18 @@ export const Input = ({
 }: Props) => {
    const handleChangeValue = (e: OnChangeEvent) => {
       handleChangeInput && handleChangeInput(e.target.value);
-  };
+   };
    return (
       <div className="relative">
-         {
-            label && (
-               <div>
-                  <label
-                     className={`mb-3 text-xs text-[#B1B5C3] font-bold uppercase leading-[1] ${classNameLabel}`}
-                  >
-                     {/* {(labelVisible || inputValue) && (label || defaultLabel)} */}
-                     {label}
-                  </label>
-               </div>
-            )
-         }
+         {label && (
+            <div>
+               <label
+                  className={`mb-3 text-xs font-bold uppercase leading-[1] text-[#B1B5C3] ${classNameLabel}`}>
+                  {/* {(labelVisible || inputValue) && (label || defaultLabel)} */}
+                  {label}
+               </label>
+            </div>
+         )}
          <div className="relative">
             <input
                type={type}
@@ -88,15 +87,18 @@ export const Input = ({
                onKeyPress={onKeyPress}
                autoComplete={autoComplete}
                name={name}
-               className={`w-full rounded-xl border-2 border-solid border-[#E6E8EC] text-sm leading-[1.71429] font-medium text-[#23262F] appearance-none shadow-none h-12 py-0 px-4 outline-none focus:border-[#777e90] transition-colors duration-300 ${isIcon && 'pr-12'}`}
+               className={`h-12 w-full appearance-none rounded-xl border-2 border-solid border-[#E6E8EC] py-0 px-4 text-sm font-medium leading-[1.71429] text-[#23262F] shadow-none outline-none transition-colors duration-300 focus:border-[#777e90] ${
+                  isIcon && 'pr-12'
+               }`}
             />
-            {
-               isIcon && (
-                  <button onClick={handleViewPass} type="button" className="group absolute inset-y-0 right-0 w-12 cursor-default">
-                     {icRight}
-                  </button>
-               )
-            }
+            {isIcon && (
+               <button
+                  onClick={handleViewPass}
+                  type="button"
+                  className="group absolute inset-y-0 right-0 w-12 cursor-default">
+                  {icRight}
+               </button>
+            )}
          </div>
          {children}
       </div>

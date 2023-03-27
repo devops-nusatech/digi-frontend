@@ -5,7 +5,10 @@ import { useSelector } from 'react-redux';
 import { CustomInput } from '../';
 import { CloseIcon } from '../../assets/images/CloseIcon';
 import { EMAIL_REGEX } from '../../helpers';
-import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from '../../modules';
+import {
+   GeetestCaptchaResponse,
+   GeetestCaptchaV4Response,
+} from '../../modules';
 import { selectMobileDeviceState } from '../../modules/public/globalSettings';
 
 export interface EmailFormProps {
@@ -29,7 +32,10 @@ export interface EmailFormProps {
    renderCaptcha?: JSX.Element | null;
    reCaptchaSuccess?: boolean;
    geetestCaptchaSuccess?: boolean;
-   captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
 }
 
 const EmailForm = React.memo((props: EmailFormProps) => {
@@ -106,7 +112,9 @@ const EmailForm = React.memo((props: EmailFormProps) => {
                   <div className="cr-email-form__option">
                      <div className="cr-email-form__option-inner">
                         {title || 'Forgot password'}
-                        <div className="cr-email-form__cros-icon" onClick={handleCancel}>
+                        <div
+                           className="cr-email-form__cros-icon"
+                           onClick={handleCancel}>
                            <CloseIcon className="close-icon" />
                         </div>
                      </div>
@@ -128,7 +136,9 @@ const EmailForm = React.memo((props: EmailFormProps) => {
                      classNameInput="cr-email-form__input"
                      autoFocus={!isMobileDevice}
                   />
-                  {emailError && <div className="cr-email-form__error">{emailError}</div>}
+                  {emailError && (
+                     <div className="cr-email-form__error">{emailError}</div>
+                  )}
                </div>
                {props.renderCaptcha}
                <div className="cr-email-form__button-wrapper">
@@ -139,7 +149,11 @@ const EmailForm = React.memo((props: EmailFormProps) => {
                      onClick={e => handleClick(e as any)}
                      size="lg"
                      variant="primary">
-                     {isLoading ? 'Loading...' : buttonLabel ? buttonLabel : 'Send'}
+                     {isLoading
+                        ? 'Loading...'
+                        : buttonLabel
+                        ? buttonLabel
+                        : 'Send'}
                   </Button>
                </div>
             </div>

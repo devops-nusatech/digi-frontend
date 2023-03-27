@@ -1,16 +1,16 @@
-import { Button, ComboboxCurrency, GeetestCaptchaV3, InputGroup } from 'components';
+import { Button, ComboboxCurrency, GeetestCaptchaV3 } from 'components';
 // import { getRefObject } from 'helpers';
 import { useInitGT4 } from 'hooks/useInitGT4';
 import { GeetestCaptchaResponse, setGeetestCaptchaSuccess } from 'modules';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 export const Geetest = () => {
    const dispatch = useDispatch();
 
    const handleGeetestResponse = (captcha_response: GeetestCaptchaResponse) => {
-      dispatch(setGeetestCaptchaSuccess({ captcha_response }))
-   }
+      dispatch(setGeetestCaptchaSuccess({ captcha_response }));
+   };
 
    const buttonRef = useRef<HTMLButtonElement>(null);
    const gt3Ref = useRef<HTMLButtonElement>(null);
@@ -21,9 +21,7 @@ export const Geetest = () => {
    }, [response]);
    return (
       <>
-         <WithRef />
-         <WithState />
-         <div className="flex items-center justify-between h-screen">
+         <div className="flex h-screen items-center justify-between">
             {/* <div className="overflow-x-auto w-1/3 space-y-5">
                <div className="text-2xl font-bold">Geetest V4 Response</div>
                <table className="table-auto w-full lg2:w-69 divide-y divide-primary5 dark:divide-chart1">
@@ -58,46 +56,14 @@ export const Geetest = () => {
                buttonRef={gt3Ref}
                onSuccess={handleGeetestResponse}
             />
-            <Button text="GT 3" ref={gt3Ref} />
-
+            <Button
+               text="GT 3"
+               ref={gt3Ref}
+            />
          </div>
          <ComboboxCurrency
             onChange={currency => console.log('currency', currency)}
             filterNetwork={false}
-         />
-      </>
-   )
-}
-
-const WithRef = () => {
-   const emailRef = useRef<HTMLInputElement>(null);
-
-   return (
-      <>
-         <InputGroup ref={emailRef} />
-         <Button
-            text="Ref"
-            onClick={() => console.log('email', emailRef.current?.value)}
-         />
-      </>
-   );
-};
-
-const WithState = () => {
-   const [email, setEmail] = useState('');
-
-   const handleChangeEmail = useCallback((email: string) => {
-      setEmail(email);
-   }, [email]);
-
-   return (
-      <>
-         <InputGroup
-            value={email}
-            onChange={handleChangeEmail} />
-         <Button
-            text="State"
-            onClick={() => console.log('email', email)}
          />
       </>
    );

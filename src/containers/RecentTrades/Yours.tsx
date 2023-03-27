@@ -1,9 +1,7 @@
 import classnames from 'classnames';
 import * as React from 'react';
 import { Spinner } from 'react-bootstrap';
-import {
-   injectIntl,
-} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { compose } from 'redux';
 import { IntlProps } from '../../';
@@ -40,17 +38,29 @@ type Props = ReduxProps & DispatchProps & IntlProps;
 const timeFrom = String(Math.floor((Date.now() - 1000 * 60 * 60 * 24) / 1000));
 
 class RecentTradesYoursContainer extends React.Component<Props> {
-
    public componentDidMount() {
       const { currentMarket } = this.props;
       if (currentMarket) {
-         this.props.fetchHistory({ core: 'trades', page: 0, time_from: timeFrom, market: currentMarket.id } as any);
+         this.props.fetchHistory({
+            core: 'trades',
+            page: 0,
+            time_from: timeFrom,
+            market: currentMarket.id,
+         } as any);
       }
    }
 
    public componentWillReceiveProps(next: Props) {
-      if (next.currentMarket && this.props.currentMarket !== next.currentMarket) {
-         this.props.fetchHistory({ core: 'trades', page: 0, time_from: timeFrom, market: next.currentMarket.id });
+      if (
+         next.currentMarket &&
+         this.props.currentMarket !== next.currentMarket
+      ) {
+         this.props.fetchHistory({
+            core: 'trades',
+            page: 0,
+            time_from: timeFrom,
+            market: next.currentMarket.id,
+         });
       }
    }
 
@@ -61,12 +71,23 @@ class RecentTradesYoursContainer extends React.Component<Props> {
    public render() {
       const { fetching } = this.props;
       const className = classnames({
-         'cr-tab-content__noData': this.retrieveData()[0][1] === this.props.intl.formatMessage({ id: 'page.noDataToShow' }),
+         'cr-tab-content__noData':
+            this.retrieveData()[0][1] ===
+            this.props.intl.formatMessage({ id: 'page.noDataToShow' }),
       });
 
       return (
          <div className={className}>
-            {fetching ? <div className="cr-tab-content-loading"><Spinner animation="border" variant="primary" /></div> : this.renderContent()}
+            {fetching ? (
+               <div className="cr-tab-content-loading">
+                  <Spinner
+                     animation="border"
+                     variant="primary"
+                  />
+               </div>
+            ) : (
+               this.renderContent()
+            )}
          </div>
       );
    }
@@ -85,9 +106,15 @@ class RecentTradesYoursContainer extends React.Component<Props> {
 
    private getHeaders = () => {
       return [
-         this.props.intl.formatMessage({ id: 'page.body.trade.header.recentTrades.content.time' }),
-         this.props.intl.formatMessage({ id: 'page.body.trade.header.recentTrades.content.amount' }),
-         this.props.intl.formatMessage({ id: 'page.body.trade.header.recentTrades.content.price' }),
+         this.props.intl.formatMessage({
+            id: 'page.body.trade.header.recentTrades.content.time',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.trade.header.recentTrades.content.amount',
+         }),
+         this.props.intl.formatMessage({
+            id: 'page.body.trade.header.recentTrades.content.price',
+         }),
       ];
    };
 
@@ -108,15 +135,42 @@ class RecentTradesYoursContainer extends React.Component<Props> {
       const priceFixed = currentMarket ? currentMarket.price_precision : 0;
       const amountFixed = currentMarket ? currentMarket.amount_precision : 0;
       const orderSide = side === 'sell' ? 'sell' : 'buy';
-      const higlightedDate = handleHighlightValue(String(localeDate([...data][i - 1] ? [...data][i - 1].created_at : '', 'time')), String(localeDate(created_at, 'time')));
+      const higlightedDate = handleHighlightValue(
+         String(
+            localeDate(
+               [...data][i - 1] ? [...data][i - 1].created_at : '',
+               'time'
+            )
+         ),
+         String(localeDate(created_at, 'time'))
+      );
 
       return [
-         <span style={{ color: setTradesType(orderSide).color }} key={id}>{higlightedDate}</span>,
-         <span style={{ color: setTradesType(orderSide).color }} key={id}>
-            <Decimal key={id} fixed={amountFixed} thousSep=",">{amount}</Decimal>
+         <span
+            style={{ color: setTradesType(orderSide).color }}
+            key={id}>
+            {higlightedDate}
          </span>,
-         <span style={{ color: setTradesType(orderSide).color }} key={id}>
-            <Decimal key={id} fixed={priceFixed} thousSep="," prevValue={[...data][i - 1] ? [...data][i - 1].price : 0}>{price}</Decimal>
+         <span
+            style={{ color: setTradesType(orderSide).color }}
+            key={id}>
+            <Decimal
+               key={id}
+               fixed={amountFixed}
+               thousSep=",">
+               {amount}
+            </Decimal>
+         </span>,
+         <span
+            style={{ color: setTradesType(orderSide).color }}
+            key={id}>
+            <Decimal
+               key={id}
+               fixed={priceFixed}
+               thousSep=","
+               prevValue={[...data][i - 1] ? [...data][i - 1].price : 0}>
+               {price}
+            </Decimal>
          </span>,
       ];
    };
@@ -126,7 +180,9 @@ class RecentTradesYoursContainer extends React.Component<Props> {
       let lists;
       lists = list;
       const data: PrivateTrade[] = lists;
-      const priceToSet = list[Number(index)] ? Number(data[Number(index)].price) : 0;
+      const priceToSet = list[Number(index)]
+         ? Number(data[Number(index)].price)
+         : 0;
 
       if (currentPrice !== priceToSet) {
          this.props.setCurrentPrice(priceToSet);
@@ -141,13 +197,15 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    currentPrice: selectCurrentPrice(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
-   dispatch => ({
-      fetchHistory: params => dispatch(fetchHistory(params)),
-      setCurrentPrice: payload => dispatch(setCurrentPrice(payload)),
-   });
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
+   fetchHistory: params => dispatch(fetchHistory(params)),
+   setCurrentPrice: payload => dispatch(setCurrentPrice(payload)),
+});
 
 export const RecentTradesYours = compose(
    injectIntl,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(RecentTradesYoursContainer) as any; // tslint:disable-line

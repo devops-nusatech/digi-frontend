@@ -1,19 +1,12 @@
-import React, {
-   RefObject,
-   memo,
-   useEffect,
-   useMemo
-} from 'react'
-import {
-   FormChangePassword,
-   InputOtp,
-} from 'components';
-import { useCountdown } from 'hooks';
+import React, { RefObject, memo, useEffect, useMemo } from 'react';
+import { FormChangePassword, InputOtp } from 'components';
+import { useCounter } from 'hooks';
+import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from 'modules';
 
 type PasswordProps = {
    password: string;
    confirm_password: string;
-}
+};
 
 interface FormChangeNewPasswordProps {
    geetestCaptchaRef: RefObject<HTMLButtonElement>;
@@ -22,84 +15,103 @@ interface FormChangeNewPasswordProps {
    forgotPasswordRequested: boolean;
    handleChangeOTP(otpCode: string): void;
    handleChangeRendered(isRendered: 0 | 1): void;
-   changeForgotPasswordFetch({ password, confirm_password }: PasswordProps): void;
+   changeForgotPasswordFetch({
+      password,
+      confirm_password,
+   }: PasswordProps): void;
    translate(id: string): string;
    isDisabled: boolean;
    isLoading?: boolean;
    renderCaptcha: JSX.Element;
-   handleResendGenerateCode(): void
+   handleResendGenerateCode(): void;
+   captcha_response?:
+      | string
+      | GeetestCaptchaResponse
+      | GeetestCaptchaV4Response;
 }
 
-export const FormChangeNewPassword = memo(({
-   geetestCaptchaRef,
-   isRendered,
-   otpCode,
-   forgotPasswordRequested,
-   handleChangeOTP,
-   handleChangeRendered,
-   changeForgotPasswordFetch,
-   translate,
-   isDisabled,
-   isLoading,
-   renderCaptcha,
-   handleResendGenerateCode,
-}: FormChangeNewPasswordProps) => {
-   const { minutes, seconds } = useCountdown(5);
-
-   useEffect(() => {
-      if (otpCode.length === 6 && isRendered === 0)
-         return handleChangeRendered(1)
-   }, [otpCode]);
-
-   const renderInputOtp = useMemo(() => (
-      <form className="space-y-8">
-         <InputOtp
-            length={6}
-            className="flex -mx-2"
-            isNumberInput
-            onChangeOTP={handleChangeOTP}
-         />
-         <div className="text-center">
-            {renderCaptcha}
-            <button
-               type="button"
-               tabIndex={-1}
-               ref={geetestCaptchaRef}
-               className={`text-xs font-semibold text-primary1 hover:text-primary1/90 leading-normal ${minutes === 0 && seconds === 0 ? '' : 'hidden'}`}
-            >
-               Resend
-            </button>
-            {(minutes > 0 || seconds > 0) && (
-               <div className="text-center text-xs font-semibold text-primary1 hover:text-primary1/90 leading-normal">
-                  {minutes}: {seconds < 10 ? `0${seconds}` : seconds}
-               </div>
-            )}
-         </div>
-      </form >
-   ), [
-      otpCode,
-      handleChangeOTP,
-      renderCaptcha,
+export const FormChangeNewPassword = memo(
+   ({
       geetestCaptchaRef,
       isRendered,
-      minutes,
-      seconds
-   ]);
+      otpCode,
+      forgotPasswordRequested,
+      handleChangeOTP,
+      handleChangeRendered,
+      changeForgotPasswordFetch,
+      translate,
+      isDisabled,
+      isLoading,
+      renderCaptcha,
+      handleResendGenerateCode,
+      captcha_response,
+   }: FormChangeNewPasswordProps) => {
+      const { counter, setCounter } = useCounter();
 
-   if (isRendered === 0) return renderInputOtp;
+      useEffect(() => {
+         if (otpCode.length === 6 && isRendered === 0)
+            return handleChangeRendered(1);
+      }, [otpCode]);
 
-   return (
-      <div className="space-y-4">
-         <FormChangePassword
-            handleChangePassword={changeForgotPasswordFetch}
-            hideOldPassword
-            isLoading={isLoading}
-         />
-         <div
-            onClick={() => handleChangeRendered(0)}
-            className="text-center text-xs font-semibold text-primary1 hover:text-primary1/90 leading-normal">
-            Back
+      useEffect(() => {
+         if (!captcha_response) {
+            setCounter(60);
+         }
+      }, [captcha_response]);
+
+      const isReady = useMemo(() => counter < 1, [counter]);
+
+      const renderInputOtp = useMemo(
+         () => (
+            <form className="space-y-8">
+               <InputOtp
+                  length={6}
+                  className="-mx-2 flex"
+                  onChangeOTP={handleChangeOTP}
+               />
+               <div className="text-center">
+                  {renderCaptcha}
+                  <button
+                     type="button"
+                     tabIndex={-1}
+                     ref={geetestCaptchaRef}
+                     className={`cursor-pointer text-xs font-semibold leading-normal text-primary1 hover:text-primary1/90 ${
+                        isReady ? '' : 'hidden'
+                     }`}>
+                     Resend
+                  </button>
+                  {!isReady && (
+                     <div>00:{counter < 10 ? `0${counter}` : counter}</div>
+                  )}
+               </div>
+            </form>
+         ),
+         [
+            otpCode,
+            handleChangeOTP,
+            renderCaptcha,
+            geetestCaptchaRef,
+            isRendered,
+            counter,
+            isReady,
+         ]
+      );
+
+      if (isRendered === 0) return renderInputOtp;
+
+      return (
+         <div className="space-y-4">
+            <FormChangePassword
+               handleChangePassword={changeForgotPasswordFetch}
+               hideOldPassword
+               isLoading={isLoading}
+            />
+            <div
+               onClick={() => handleChangeRendered(0)}
+               className="cursor-pointer text-center text-xs font-semibold leading-normal text-primary1 hover:text-primary1/90">
+               Back
+            </div>
          </div>
-      </div>
-   )
-});
+      );
+   }
+);

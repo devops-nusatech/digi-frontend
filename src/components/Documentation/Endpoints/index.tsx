@@ -4,21 +4,23 @@ import { selectDocumentationData } from 'modules';
 import { DocumentationEndpointsItem } from './Item';
 
 export const DocumentationEndpoints: React.FC = () => {
-    const documentation = useSelector(selectDocumentationData);
+   const documentation = useSelector(selectDocumentationData);
 
-    if (documentation?.paths && Object.keys(documentation?.paths).length) {
-        return (
-            <div className="space-y-8" id="endpoints">
-                {Object.keys(documentation?.paths).map((key, index) => (
-                    <DocumentationEndpointsItem
-                        key={key}
-                        title={key}
-                        item={documentation?.paths[key]}
-                    />
-                ))}
-            </div>
-        );
-    }
+   if (documentation?.paths && Object.keys(documentation?.paths).length) {
+      return (
+         <div
+            className="space-y-8"
+            id="endpoints">
+            {Object.keys(documentation?.paths).map((key, index) => (
+               <DocumentationEndpointsItem
+                  key={key}
+                  title={key}
+                  item={documentation?.paths[key]}
+               />
+            ))}
+         </div>
+      );
+   }
 
-    return null;
+   return null;
 };

@@ -33,15 +33,16 @@ export const ModalDeposit: FC<ModalDepositProps> = ({
          info={`on ${protocol}`}
          zIndexBackdrop={1045}
          zIndexContent={1046}
-         onClick={close}
-      >
+         onClick={close}>
          {icon}
-         <div className="text-center space-y-3">
-            <div className="font-medium text-base leading-normal">
+         <div className="space-y-3 text-center">
+            <div className="text-base font-medium leading-normal">
                You need to generate a deposit address to make deposit {name}
             </div>
-            <div className="text-xs text-neutral4 leading-custom4">
-               Only send {protocol.toUpperCase()} to this address. Sending any other asset to this address may result in the loss of your deposit!
+            <div className="text-xs leading-custom4 text-neutral4">
+               Only send {protocol.toUpperCase()} to this address. Sending any
+               other asset to this address may result in the loss of your
+               deposit!
             </div>
          </div>
          <InputGroup
@@ -50,8 +51,7 @@ export const ModalDeposit: FC<ModalDepositProps> = ({
             icon={
                <svg
                   onClick={() => handleCopy(address, 'Address')}
-                  className="cursor-copy -translate-x-0.5 w-6 h-6 fill-neutral4 group-hover:fill-neutral2"
-               >
+                  className="h-6 w-6 -translate-x-0.5 cursor-copy fill-neutral4 group-hover:fill-neutral2">
                   <use xlinkHref="#icon-copy" />
                </svg>
             }
@@ -60,8 +60,8 @@ export const ModalDeposit: FC<ModalDepositProps> = ({
             infoAlt={`Confirmations ${min_confirmations}`}
             className="!bg-neutral7"
          />
-         <div className="flex justify-center items-center">
-            <div className="p-4 rounded-lg border-2 border-dashed border-primary1">
+         <div className="flex items-center justify-center">
+            <div className="rounded-lg border-2 border-dashed border-primary1 p-4">
                <QRCodeGenerator
                   value={address || ''}
                   size={128}
@@ -69,8 +69,9 @@ export const ModalDeposit: FC<ModalDepositProps> = ({
                />
             </div>
          </div>
-         <div className="text-x text-center leading-[1.6] font-medium text-neutral4">
-            Please be sure that the contract address is related to the tokens that you are depositing.
+         <div className="text-center text-x font-medium leading-[1.6] text-neutral4">
+            Please be sure that the contract address is related to the tokens
+            that you are depositing.
          </div>
       </Portal>
    );

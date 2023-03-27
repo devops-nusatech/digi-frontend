@@ -3,18 +3,9 @@ import useDebouncedCallback, {
    CallOptions,
    ControlFunctions,
    DebouncedState,
-   Options
+   Options,
 } from './useDebouncedCallback';
 import useThrottledCallback from './useThrottledCallback';
 
-export {
-   useDebounced,
-   useDebouncedCallback,
-   useThrottledCallback
-};
-export type {
-   CallOptions,
-   ControlFunctions,
-   DebouncedState,
-   Options
-};
+export { useDebounced, useDebouncedCallback, useThrottledCallback };
+export type { CallOptions, ControlFunctions, DebouncedState, Options };

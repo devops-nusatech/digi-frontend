@@ -10,23 +10,25 @@ export const useInitGT4 = (buttonRef: RefObject<HTMLButtonElement>) => {
       GT4Init();
 
       //  @ts-ignore
-      initGeetest4({
-         captchaId: 'c0034922a8c6cc91b2cf3afb30aeee40',
-         product: 'bind',
-         language: 'eng',
-         protocol: 'https://',
-         onError: (err: any) => toast.error(err.msg),
-      }, handlerForBind);
-
+      initGeetest4(
+         {
+            captchaId: 'c0034922a8c6cc91b2cf3afb30aeee40',
+            product: 'bind',
+            language: 'eng',
+            protocol: 'https://',
+            onError: (err: any) => toast.error(err.msg),
+         },
+         handlerForBind
+      );
    }, []);
 
    const removeElements = () => {
       removeElement('geetest_footer_right');
       removeElement('geetest_feedback');
       removeElement('geetest_close');
-   }
+   };
 
-   const handlerForBind = async (captchaObj) => {
+   const handlerForBind = async captchaObj => {
       const button = buttonRef.current;
       let isReady = false;
 
@@ -34,7 +36,7 @@ export const useInitGT4 = (buttonRef: RefObject<HTMLButtonElement>) => {
          console.log('Ready to display');
          isReady = true;
          removeElements();
-      })
+      });
 
       button?.addEventListener('click', () => {
          console.log('before ready: btn clicked');
@@ -49,24 +51,22 @@ export const useInitGT4 = (buttonRef: RefObject<HTMLButtonElement>) => {
       });
 
       captchaObj.onError(e => {
-         toast.error(e.msg)
+         toast.error(e.msg);
          captchaObj.reset();
       });
 
       captchaObj.onClose(() => {
-         toast.error("Captcha Closed!");
+         toast.error('Captcha Closed!');
          captchaObj.reset();
       });
 
       captchaObj.onFail(() => {
-         toast.error("Captcha Failed!");
+         toast.error('Captcha Failed!');
          captchaObj.reset();
       });
-
-   }
+   };
 
    return {
-      response
-   }
-
-}
+      response,
+   };
+};

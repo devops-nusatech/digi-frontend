@@ -5,17 +5,10 @@ import React, {
    useLayoutEffect,
    useRef,
 } from 'react';
-import {
-   Link,
-   useParams,
-   withRouter,
-} from 'react-router-dom';
+import { Link, useParams, withRouter } from 'react-router-dom';
 import { RouterProps } from 'react-router';
 import { compose } from 'redux';
-import {
-   connect,
-   MapDispatchToProps,
-} from 'react-redux';
+import { connect, MapDispatchToProps } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
    Badge,
@@ -29,7 +22,7 @@ import {
    Portal,
    PriceChart3,
    TableFinance,
-   WalletSidebar
+   WalletSidebar,
 } from 'components';
 // import {
 //    illusFaq,
@@ -73,9 +66,9 @@ import {
 } from 'modules';
 import { copyToClipboard, setDocumentTitle } from 'helpers';
 import { IntlProps } from 'index';
+import { useMarket } from 'hooks';
 import { defaultBeneficiary, Params } from './types';
 import { DEFAULT_CCY_PRECISION, DEFAULT_WALLET } from '../../constants';
-import { useMarket } from 'hooks';
 
 export interface WithdrawProps {
    amount: string;
@@ -88,10 +81,10 @@ interface ReduxProps {
    user: User;
    wallets: Wallet[];
    currencies: Currency[];
-   markets: Market[]
+   markets: Market[];
    marketTickers: {
-      [key: string]: Ticker
-   }
+      [key: string]: Ticker;
+   };
    withdrawSuccess: boolean;
    transferSuccess: boolean;
    transferLoading: boolean;
@@ -170,7 +163,6 @@ const WalletDetailsFC = ({
 
    history,
    intl,
-
 }: Props) => {
    const { id = '' } = useParams<Params>() || DEFAULT_WALLET.currency;
    const { push } = history;
@@ -201,7 +193,7 @@ const WalletDetailsFC = ({
       }
       if (currency) {
          fetchBeneficiaries({ currency_id: id });
-      };
+      }
    }, []);
 
    // useEffect(() => {
@@ -210,20 +202,30 @@ const WalletDetailsFC = ({
 
    useEffect(() => {
       fetchBeneficiaries({ currency_id: id });
-   }, [beneficiariesActivateSuccess, beneficiariesDeleteSuccess, beneficiariesAddSuccess]);
+   }, [
+      beneficiariesActivateSuccess,
+      beneficiariesDeleteSuccess,
+      beneficiariesAddSuccess,
+   ]);
 
    useLayoutEffect(() => {
       return () => clearWallets();
    }, []);
 
-   const combainBalances = (wallets: Array<object | any>, currencies: Array<object | any>) =>
+   const combainBalances = (
+      wallets: Array<object | any>,
+      currencies: Array<object | any>
+   ) =>
       wallets.map((wallet, i) => ({
          no: i + 1,
-         ...currencies.find(item => (item?.id === wallet?.currency) && item),
-         ...wallet
+         ...currencies.find(item => item?.id === wallet?.currency && item),
+         ...wallet,
       }));
    const balances = combainBalances(wallets, currencies);
-   const myBalance = balances.find(e => id === e.currency) || { min_confirmations: 6, deposit_enabled: false };
+   const myBalance = balances.find(e => id === e.currency) || {
+      min_confirmations: 6,
+      deposit_enabled: false,
+   };
    const {
       currency,
       name,
@@ -239,7 +241,7 @@ const WalletDetailsFC = ({
       // min_confirmations,
       fee,
       deposit_addresses,
-      icon_url
+      icon_url,
    } = myBalance;
 
    const addressPending = deposit_address?.state;
@@ -255,7 +257,12 @@ const WalletDetailsFC = ({
    // const walletAddress = deposit_address && deposit_address.address ? formatCCYAddress(currency, deposit_address.address) : '';
 
    const handleAction = () => {
-      if (!deposit_address && deposit_enabled && wallets.length && type !== 'fiat') {
+      if (
+         !deposit_address &&
+         deposit_enabled &&
+         wallets.length &&
+         type !== 'fiat'
+      ) {
          fetchAddress({ currency });
          fetchCurrencies();
       }
@@ -264,155 +271,185 @@ const WalletDetailsFC = ({
    const handleCopy = (url: string, type: string) => {
       copyToClipboard(url);
       fetchSuccess({ message: [`${type} Copied`], type: 'success' });
-   }
+   };
 
-   const handleShowAddress = (index: number) => setState({ ...myState, displayAddress: index, displayAddressShow: true });
+   const handleShowAddress = (index: number) =>
+      setState({ ...myState, displayAddress: index, displayAddressShow: true });
 
    const renderAvatarModal = () => {
       return (
          <div className="flex justify-center">
             <img
                src={icon_url}
-               className="w-20 h-20 text-center"
+               className="h-20 w-20 text-center"
                alt={name}
                title={name}
                style={{
-                  clipPath: 'polygon(50% 0, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%)',
+                  clipPath:
+                     'polygon(50% 0, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%)',
                }}
             />
          </div>
-      )
-   }
+      );
+   };
 
    const renderContentModalDeposit = () => {
       if (state === 'pending') {
          return (
-            <div className="flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-primary1">
-               <svg className="w-6 h-6 fill-neutral8 transition-colors duration-300">
-                  <use xlinkHref="#icon-wallet"></use>
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary1">
+               <svg className="h-6 w-6 fill-neutral8 transition-colors duration-300">
+                  <use xlinkHref="#icon-wallet" />
                </svg>
             </div>
-         )
+         );
       }
       if (!deposit_address || addressPending === 'pending') {
          return (
             <>
                {renderAvatarModal()}
                <div className="text-center text-base font-medium leading-normal">
-                  You need to generate a deposit address to make deposit {id.toUpperCase()}
+                  You need to generate a deposit address to make deposit{' '}
+                  {id.toUpperCase()}
                </div>
                <Button
                   text={
-                     state === 'pending' ? 'Go to verification'
-                        : !deposit_enabled ? 'Deposite SIDR'
-                           : !deposit_address ? 'Generate'
-                              : 'Processing...'
+                     state === 'pending'
+                        ? 'Go to verification'
+                        : !deposit_enabled
+                        ? 'Deposite SIDR'
+                        : !deposit_address
+                        ? 'Generate'
+                        : 'Processing...'
                   }
                   disabled={addressPending === 'pending'}
                   withLoading={addressPending === 'pending'}
                   onClick={handleAction}
                />
             </>
-         )
+         );
       }
       if (deposit_addresses && deposit_addresses.length) {
          return (
             <>
-               <div className="pt-10">
-                  {renderAvatarModal()}
-               </div>
-               <div className="text-center text-base leading-normal font-medium">
+               <div className="pt-10">{renderAvatarModal()}</div>
+               <div className="text-center text-base font-medium leading-normal">
                   Select a protocol to see the corresponding address.
                </div>
                <div className="space-y-2">
-                  {
-                     deposit_addresses && deposit_addresses.length && deposit_addresses.map(({ address, network }, index) => (
+                  {deposit_addresses &&
+                     deposit_addresses.length &&
+                     deposit_addresses.map(({ address, network }, index) => (
                         <Button
                            key={address}
-                           text={`Deposit On ${network && network.name || 'Protocol name'}`}
+                           text={`Deposit On ${
+                              (network && network.name) || 'Protocol name'
+                           }`}
                            onClick={() => handleShowAddress(index)}
                         />
-                     ))
-                  }
+                     ))}
                </div>
             </>
-         )
+         );
       }
-      return;
-   }
+      return null;
+   };
 
    const renderContentModalTFA = () => {
       if (user.state === 'pending') {
          return (
             <>
-               <div className="flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-primary4">
-                  <svg className="w-8 h-8 fill-neutral8 transition-colors duration-300">
-                     <use xlinkHref="#icon-lock"></use>
+               <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary4">
+                  <svg className="h-8 w-8 fill-neutral8 transition-colors duration-300">
+                     <use xlinkHref="#icon-lock" />
                   </svg>
                </div>
                <div className="text-center text-base font-medium leading-normal">
-                  Please verify your profile before make {showWithdraw && 'withdraw'} {showTransfer && 'transfer internal'} {id.toUpperCase()}
+                  Please verify your profile before make{' '}
+                  {showWithdraw && 'withdraw'}{' '}
+                  {showTransfer && 'transfer internal'} {id.toUpperCase()}
                </div>
                <Button
                   text="Go to verification"
                   onClick={handleWithdraw}
                />
             </>
-         )
+         );
       }
-      return !user?.otp && (
-         <>
-            <div className="flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-primary4">
-               <svg className="w-8 h-8 fill-neutral8 transition-colors duration-300">
-                  <use xlinkHref="#icon-lock"></use>
-               </svg>
-            </div>
-            <div className="text-center text-base font-medium leading-normal">
-               To {showWithdraw && 'withdraw'} {showTransfer && 'transfer internal'} {id.toUpperCase()} you have to enable 2FA
-            </div>
-            <Button
-               text="Enabled 2FA"
-               onClick={handleWithdraw}
-            />
-         </>
-      )
-   }
+      return (
+         !user?.otp && (
+            <>
+               <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary4">
+                  <svg className="h-8 w-8 fill-neutral8 transition-colors duration-300">
+                     <use xlinkHref="#icon-lock" />
+                  </svg>
+               </div>
+               <div className="text-center text-base font-medium leading-normal">
+                  To {showWithdraw && 'withdraw'}{' '}
+                  {showTransfer && 'transfer internal'} {id.toUpperCase()} you
+                  have to enable 2FA
+               </div>
+               <Button
+                  text="Enabled 2FA"
+                  onClick={handleWithdraw}
+               />
+            </>
+         )
+      );
+   };
 
-   const renderContentModalWithdrawal = () => (user && user.otp) && (
-      <ModalWithdraw
-         type={type}
-         name={name}
-         currency={currency}
-         locked={Decimal.format(locked, currency === 'idr' ? 0 : fixed, ',')}
-         minimum={Decimal.format(min_withdraw_amount, currency === 'idr' ? 0 : fixed, ',')}
-         fee={fee}
-         balance={Decimal.format(balance, currency === 'idr' ? 0 : fixed, ',')}
-         fixed={currency === 'idr' ? 0 : precision}
-         onClick={handleWithdraw}
-         twoFactorAuthRequired={isTwoFactorAuthRequired(user.level, user.otp)}
-      />
-   )
+   const renderContentModalWithdrawal = () =>
+      user &&
+      user.otp && (
+         <ModalWithdraw
+            type={type}
+            name={name}
+            currency={currency}
+            locked={Decimal.format(locked, currency === 'idr' ? 0 : fixed, ',')}
+            minimum={Decimal.format(
+               min_withdraw_amount,
+               currency === 'idr' ? 0 : fixed,
+               ','
+            )}
+            fee={fee}
+            balance={Decimal.format(
+               balance,
+               currency === 'idr' ? 0 : fixed,
+               ','
+            )}
+            fixed={currency === 'idr' ? 0 : precision}
+            onClick={handleWithdraw}
+            twoFactorAuthRequired={isTwoFactorAuthRequired(
+               user.level,
+               user.otp
+            )}
+         />
+      );
 
    // const renderWithdrawContent = () => {
 
    // }
 
-   const handleWithdraw = (amount?: string, total?: string, beneficiary?: Beneficiary, otpCode?: string) => {
+   const handleWithdraw = (
+      amount?: string,
+      total?: string,
+      beneficiary?: Beneficiary,
+      otpCode?: string
+   ) => {
       if (user.state === 'pending') {
-         return push('/email-verification')
-      } else {
-         if (user && !user.otp) {
-            return push('/2fa');
-         }
+         return push('/email-verification');
       }
+      if (user && !user.otp) {
+         return push('/2fa');
+      }
+
       if (user.level !== 3) {
          return push('/email-verification');
       }
       return setState((state: WalletDetailsFCState) => ({
          ...state,
          amount: amount || '',
-         beneficiary: beneficiary ? beneficiary : defaultBeneficiary,
-         otpCode: otpCode ? otpCode : '',
+         beneficiary: beneficiary || defaultBeneficiary,
+         otpCode: otpCode || '',
          withdrawConfirmModal: !state.withdrawConfirmModal,
          total: total || '',
          withdrawDone: false,
@@ -428,19 +465,32 @@ const WalletDetailsFC = ({
       }));
    };
 
-   const toggleConfirmModal = (amount?: string, total?: string, beneficiary?: Beneficiary, otpCode?: string) => {
+   const toggleConfirmModal = (
+      amount?: string,
+      total?: string,
+      beneficiary?: Beneficiary,
+      otpCode?: string
+   ) => {
       setState((state: WalletDetailsFCState) => ({
          ...myState,
          amount: amount || '',
-         beneficiary: beneficiary ? beneficiary : defaultBeneficiary,
-         otpCode: otpCode ? otpCode : '',
+         beneficiary: beneficiary || defaultBeneficiary,
+         otpCode: otpCode || '',
          withdrawConfirmModal: !state.withdrawConfirmModal,
          total: total || '',
          withdrawDone: false,
       }));
    };
 
-   const { amount, otpCode, beneficiary, withdrawConfirmModal, isModalSuccess, total, withdrawDone } = myState;
+   const {
+      amount,
+      otpCode,
+      beneficiary,
+      withdrawConfirmModal,
+      isModalSuccess,
+      total,
+      withdrawDone,
+   } = myState;
 
    const handleWithdrawOK = () => {
       const withdrawRequest = {
@@ -456,79 +506,90 @@ const WalletDetailsFC = ({
       }
    };
 
-   const isTwoFactorAuthRequired = (level: number, is2faEnabled: boolean) => level > 1 || (level === 1 && is2faEnabled);
+   const isTwoFactorAuthRequired = (level: number, is2faEnabled: boolean) =>
+      level > 1 || (level === 1 && is2faEnabled);
 
    let confirmationAddress = '';
    let precision = DEFAULT_CCY_PRECISION;
    if (myBalance) {
       precision = fixed;
-      confirmationAddress = type === 'fiat' ? (
-         beneficiary.name
-      ) : (
-         beneficiary.data ? (beneficiary.data.address as string) : ''
-      );
+      confirmationAddress =
+         type === 'fiat'
+            ? beneficiary.name
+            : beneficiary.data
+            ? (beneficiary.data.address as string)
+            : '';
    }
 
    // const title: string = translate('page.body.wallets.tabs.deposit.fiat.message1');
    // const description: string = translate('page.body.wallets.tabs.deposit.fiat.message2');
 
-   const renderContentTransfer = () => (user && user.otp) && (
-      <ModalTransfer
-         fixed={currency === 'idr' ? 0 : precision}
-         currency={currency}
-         balance={Decimal.format(balance, currency === 'idr' ? 0 : fixed, ',')}
-         handleTransfer={handleTransfer}
-      />
-   );
+   const renderContentTransfer = () =>
+      user &&
+      user.otp && (
+         <ModalTransfer
+            fixed={currency === 'idr' ? 0 : precision}
+            currency={currency}
+            balance={Decimal.format(
+               balance,
+               currency === 'idr' ? 0 : fixed,
+               ','
+            )}
+            handleTransfer={handleTransfer}
+         />
+      );
 
    const handleTransfer = (receiver: string, amount: string, otp: string) => {
       const sendRequest = {
          amount,
          currency,
          otp,
-         username_or_uid: receiver
-      }
+         username_or_uid: receiver,
+      };
       // walletsTransfer(sendRequest);
       transfer(sendRequest);
       // walletsTransferData();
       if (transferLoading) {
          setShowTransfer(!showTransfer);
       }
-   }
+   };
 
    const handleSlideRight = () => {
       if (SliderRef.current) {
          let scrollAmount = 0;
-         const clientWidth = Math.max(scrollAmount += SliderRef.current.clientWidth / 2);
+         const clientWidth = Math.max(
+            (scrollAmount += SliderRef.current.clientWidth / 2)
+         );
          SliderRef.current.scrollBy({
             top: 0,
             left: clientWidth,
-            behavior: 'smooth'
+            behavior: 'smooth',
          });
       }
-   }
+   };
 
-   const { marketsData } = useMarket();
-   const friendsMarket = marketsData.filter(market => market.quote_unit === 'usdt')
+   const marketsData = useMarket().markets;
+   const friendsMarket = marketsData.filter(
+      market => market.quote_unit === 'usdt'
+   );
 
    return (
       <>
-         <div className="block lg:flex pt-8 pb-4 px-4 lg:!p-1 bg-neutral7 dark:bg-neutral1">
+         <div className="block bg-neutral7 px-4 pt-8 pb-4 dark:bg-neutral1 lg:flex lg:!p-1">
             <WalletSidebar />
-            <div className="grow h-auto lg:h-[calc(100vh-88px)] pl-0 lg:pl-1 overflow-auto">
-               <div className="p-8 pb-0 rounded bg-neutral8 dark:bg-shade2">
-                  <div className="flex items-center mb-5">
-                     <div className="flex items-center mr-auto">
+            <div className="h-auto grow overflow-auto pl-0 lg:h-[calc(100vh-88px)] lg:pl-1">
+               <div className="rounded bg-neutral8 p-8 pb-0 dark:bg-shade2">
+                  <div className="mb-5 flex items-center">
+                     <div className="mr-auto flex items-center">
                         <Link
-                           className="mr-3 group"
+                           className="group mr-3"
                            to="/wallets"
-                           title="Back to Wallets"
-                        >
-                           <svg className="w-8 h-8 fill-neutral4 group-hover:fill-neutral1 group-hover:-translate-x-3 group-hover:scale-105 transition-transform duration-300">
+                           title="Back to Wallets">
+                           <svg className="h-8 w-8 fill-neutral4 transition-transform duration-300 group-hover:-translate-x-3 group-hover:scale-105 group-hover:fill-neutral1">
                               <use xlinkHref="#icon-arrow-left" />
                            </svg>
                         </Link>
-                        <div className="mr-auto text-3.5xl font-dm font-bold leading-tight tracking-custom1">
+                        <div className="mr-auto font-dm text-3.5xl font-bold leading-tight tracking-custom1">
                            {currency?.toUpperCase()}
                            <span className="ml-3 text-neutral5"> {name}</span>
                         </div>
@@ -551,18 +612,27 @@ const WalletDetailsFC = ({
                            text="Transfer"
                            size="normal"
                            variant="outline"
-                           onClick={() => push('/transfer', currencies.find(e => e.id === currency))}
-                        // disabled={Number(balance) < Number(min_withdraw_amount)}
+                           onClick={() =>
+                              push(
+                                 '/transfer',
+                                 currencies.find(e => e.id === currency)
+                              )
+                           }
+                           // disabled={Number(balance) < Number(min_withdraw_amount)}
                         />
                      </div>
                   </div>
                   <div className="relative">
-                     <div className="flex gap-10 justify-between">
+                     <div className="flex justify-between gap-10">
                         <div>
                            <div className="mb-1 font-medium">Total balance</div>
                            <div className="flex items-center space-x-2">
-                              <div className="text-2xl font-semibold tracking-custom1 leading-custom2">
-                                 {Decimal.format(balance, currency === 'idr' ? 0 : fixed, ',')}
+                              <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
+                                 {Decimal.format(
+                                    balance,
+                                    currency === 'idr' ? 0 : fixed,
+                                    ','
+                                 )}
                               </div>
                               <Badge
                                  variant="green"
@@ -570,50 +640,81 @@ const WalletDetailsFC = ({
                               />
                            </div>
                            <div className="text-base text-neutral4">
-                              {Decimal.format((Number(balance) * Number(5353)), 0, ',')}
+                              {Decimal.format(
+                                 Number(balance) * Number(5353),
+                                 0,
+                                 ','
+                              )}
                            </div>
                         </div>
-                        <div ref={SliderRef} className={`relative w-[668px] flex ${friendsMarket.length === 1 ? 'justify-end' : ''} gap-10 lg:gap-20 snap-x snap-mandatory overflow-x-auto pb-8 transition-transform duration-500`}>
-                           {friendsMarket.length ? friendsMarket.map(market => {
-                              const klinesData: number[] = market.kline;
-                              let labels: number[], data: number[];
-                              labels = klinesData.map(e => e[0]);
-                              data = klinesData.map(e => e[2]);
+                        <div
+                           ref={SliderRef}
+                           className={`relative flex w-[668px] ${
+                              friendsMarket.length === 1 ? 'justify-end' : ''
+                           } snap-x snap-mandatory gap-10 overflow-x-auto pb-8 transition-transform duration-500 lg:gap-20`}>
+                           {friendsMarket.length ? (
+                              friendsMarket.map(market => {
+                                 const klinesData: number[][] = market.kline!;
+                                 let labels: number[];
+                                 let data: number[];
+                                 labels = klinesData.map(e => e[0]);
+                                 data = klinesData.map(e => e[2]);
 
-                              const change = market.price_change_percent.includes('+')
-                              return (
-                                 <div key={market.id} className="snap-end shrink-0 first:pl-3 last:pr-3">
-                                    <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
-                                       <div className="flex items-center gap-3">
-                                          <div className="text-xs leading-custom4 text-neutral4 font-semibold uppercase">
-                                             {market.name}
+                                 const change =
+                                    market.price_change_percent.includes('+');
+                                 return (
+                                    <div
+                                       key={market.id}
+                                       className="shrink-0 snap-end first:pl-3 last:pr-3">
+                                       <div className="cursor-pointer rounded-xl p-6 transition-all duration-200 hover:shadow-lg dark:hover:bg-neutral2">
+                                          <div className="flex items-center gap-3">
+                                             <div className="text-xs font-semibold uppercase leading-custom4 text-neutral4">
+                                                {market.name}
+                                             </div>
+                                             <Badge
+                                                rounded="2xl"
+                                                variant={
+                                                   change ? 'green' : 'orange'
+                                                }
+                                                text={
+                                                   market.price_change_percent
+                                                }
+                                             />
                                           </div>
-                                          <Badge rounded="2xl" variant={change ? 'green' : 'orange'} text={market.price_change_percent} />
-                                       </div>
-                                       <div className="text-2xl font-semibold tracking-custom1 leading-custom2 mt-1 mb-4 uppercase">
-                                          {Decimal.format(market.last.includes(',') ? market?.last?.split(',')?.join('') : market.last, market.price_precision, ',')} {market.base_unit}
-                                       </div>
-                                       <div className="w-60 h-14">
-                                          <PriceChart3
-                                             id={market.id}
-                                             theme={change ? 'positive' : 'negative'}
-                                             labels={labels}
-                                             data={data}
-                                             maintainAspectRatio={false}
-                                             gradientOpacityTop={.5}
-                                             gradientOpacityBottom={.07}
-                                          />
+                                          <div className="mt-1 mb-4 text-2xl font-semibold uppercase leading-custom2 tracking-custom1">
+                                             {Decimal.format(
+                                                market.last.includes(',')
+                                                   ? market?.last
+                                                        ?.split(',')
+                                                        ?.join('')
+                                                   : market.last,
+                                                market.price_precision,
+                                                ','
+                                             )}{' '}
+                                             {market.base_unit}
+                                          </div>
+                                          <div className="h-14 w-60">
+                                             <PriceChart3
+                                                id={market.id}
+                                                theme={
+                                                   change
+                                                      ? 'positive'
+                                                      : 'negative'
+                                                }
+                                                labels={labels}
+                                                data={data}
+                                                maintainAspectRatio={false}
+                                                gradientOpacityTop={0.5}
+                                                gradientOpacityBottom={0.07}
+                                             />
+                                          </div>
                                        </div>
                                     </div>
-                                 </div>
-                              )
-                           }) : (
-                              <div className="">
-                                 Kosong
-                              </div>
-                           )
-
-                           }
+                                 );
+                              })
+                           ) : (
+                              <div className="">Kosong</div>
+                           )}
                            {/* <div className="snap-end shrink-0 first:pl-3 last:pr-3">
                               <div className="rounded-xl hover:shadow-lg dark:hover:bg-neutral2 p-6 cursor-pointer transition-all duration-200">
                                  <div className="flex items-center gap-3">
@@ -692,9 +793,8 @@ const WalletDetailsFC = ({
                         <div className="absolute top-[36%] right-0">
                            <div
                               onClick={handleSlideRight}
-                              className="group flex items-center justify-center bg-shade5 hover:bg-neutral6 dark:bg-neutral2 animate-right hover:animate-none shadow-card rounded-full w-10 h-10 cursor-pointer hover:scale-110 transition-all duration-300"
-                           >
-                              <svg className="w-6 h-6 fill-neutral4 group-hover:w-7 group-hover:h-7 transition-colors duration-300">
+                              className="group flex h-10 w-10 animate-right cursor-pointer items-center justify-center rounded-full bg-shade5 shadow-card transition-all duration-300 hover:scale-110 hover:animate-none hover:bg-neutral6 dark:bg-neutral2">
+                              <svg className="h-6 w-6 fill-neutral4 transition-colors duration-300 group-hover:h-7 group-hover:w-7">
                                  <use xlinkHref="#icon-arrow-right" />
                               </svg>
                            </div>
@@ -702,7 +802,7 @@ const WalletDetailsFC = ({
                      )}
                   </div>
                </div>
-               <div className="mt-1 bg-neutral8 dark:bg-shade2 p-8 rounded">
+               <div className="mt-1 rounded bg-neutral8 p-8 dark:bg-shade2">
                   <TableFinance
                      title="Finances"
                      hiddenCategory={[0, 4]}
@@ -846,14 +946,18 @@ const WalletDetailsFC = ({
 
          {/* Modal Deposite */}
          <Portal
-            title={state === 'pending' ? 'Deposit Locked' :
-               !deposit_enabled ? 'Deposit Disabled' :
-                  !deposit_address ? 'Generate Address' : ''
+            title={
+               state === 'pending'
+                  ? 'Deposit Locked'
+                  : !deposit_enabled
+                  ? 'Deposit Disabled'
+                  : !deposit_address
+                  ? 'Generate Address'
+                  : ''
             }
             // info={`${(deposit_address && deposit_address?.address) ? `on ${name}` : ''}`}
             close={() => setShowDeposit(!showDeposit)}
-            show={showDeposit}
-         >
+            show={showDeposit}>
             {
                // JSON.stringify(deposit_address)
             }
@@ -920,10 +1024,11 @@ const WalletDetailsFC = ({
 
          {/* Modal Withdraw */}
          <Portal
-            title={user.otp ? `Withdrawal ${id?.toUpperCase()}` : 'Withdraw Locked'}
+            title={
+               user.otp ? `Withdrawal ${id?.toUpperCase()}` : 'Withdraw Locked'
+            }
             close={() => setShowWithdraw(!showWithdraw)}
-            show={showWithdraw}
-         >
+            show={showWithdraw}>
             {renderContentModalTFA()}
             {renderContentModalWithdrawal()}
          </Portal>
@@ -932,20 +1037,32 @@ const WalletDetailsFC = ({
          <Portal
             title={user.otp ? 'Transfer Internal' : 'Transfer Locked'}
             close={() => setShowTransfer(!showTransfer)}
-            show={showTransfer}
-         >
+            show={showTransfer}>
             {renderContentModalTFA()}
             {renderContentTransfer()}
          </Portal>
          <ModalDeposit
             show={myState.displayAddressShow}
             close={() => setState({ ...myState, displayAddressShow: false })}
-            protocol={String(deposit_addresses && deposit_addresses.length && deposit_addresses[myState.displayAddress].network?.name)}
+            protocol={String(
+               deposit_addresses &&
+                  deposit_addresses.length &&
+                  deposit_addresses[myState.displayAddress].network?.name
+            )}
             name={name}
             icon={renderAvatarModal()}
-            address={String(deposit_addresses && deposit_addresses.length && deposit_addresses[myState.displayAddress].address)}
+            address={String(
+               deposit_addresses &&
+                  deposit_addresses.length &&
+                  deposit_addresses[myState.displayAddress].address
+            )}
             handleCopy={handleCopy}
-            min_confirmations={Number(deposit_addresses && deposit_addresses.length && deposit_addresses[myState.displayAddress].network?.min_confirmations)}
+            min_confirmations={Number(
+               deposit_addresses &&
+                  deposit_addresses.length &&
+                  deposit_addresses[myState.displayAddress].network
+                     ?.min_confirmations
+            )}
             min_deposit_amount={min_deposit_amount}
          />
          <ModalWithdrawConfirm
@@ -956,7 +1073,10 @@ const WalletDetailsFC = ({
             onSubmit={handleWithdrawOK}
             close={toggleConfirmModal}
          />
-         <ModalWithdrawDone show={isModalSuccess} close={toggleModalSuccess} />
+         <ModalWithdrawDone
+            show={isModalSuccess}
+            close={toggleModalSuccess}
+         />
       </>
    );
 };
@@ -994,10 +1114,8 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
 export const WalletDetails = compose(
    injectIntl,
    withRouter,
-   connect(mapStateToProps, mapDispatchToProps),
+   connect(mapStateToProps, mapDispatchToProps)
 )(WalletDetailsFC) as FunctionComponent;
-
-
 
 // import React, {
 //    useEffect,

@@ -29,7 +29,7 @@ import {
    selectWallets,
    setCurrentPrice,
    Wallet,
-   walletsFetch
+   walletsFetch,
 } from 'modules';
 import { IntlProps } from 'index';
 import { FilterPrice } from 'filters';
@@ -48,7 +48,7 @@ interface ReduxProps {
    marketTickers: {
       [key: string]: {
          last: string;
-      },
+      };
    };
    wallets: Wallet[];
 }
@@ -88,8 +88,8 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
          percentBid: 20,
 
          orderType: 'limit',
-      }
-      this.tradingOrderRef = createRef()
+      };
+      this.tradingOrderRef = createRef();
    }
    private tradingOrderRef;
 
@@ -108,7 +108,10 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
    }
 
    public componentDidUpdate() {
-      if (this.tradingOrderRef.current && this.state.width !== this.tradingOrderRef.current.clientWidth) {
+      if (
+         this.tradingOrderRef.current &&
+         this.state.width !== this.tradingOrderRef.current.clientWidth
+      ) {
          this.setState({
             width: this.tradingOrderRef.current.clientWidth,
          });
@@ -157,44 +160,52 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
       // console.log('defaultCurrentTicker', defaultCurrentTicker);
 
       return (
-         <div className="relative mt-1 rounded p-4 bg-neutral8 dark:bg-shade2" ref={this.tradingOrderRef}>
-            <div className="flex items-center mb-6 justify-between">
+         <div
+            className="relative mt-1 rounded bg-neutral8 p-4 dark:bg-shade2"
+            ref={this.tradingOrderRef}>
+            <div className="mb-6 flex items-center justify-between">
                <div className="flex items-center space-x-4">
                   <div
                      onClick={() => this.handleGetOrderType('limit')}
-                     className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 ${orderType === 'limit' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} cursor-pointer transition ease-in-out duration-300`}
-                  >
-                     {
-                        this.translate('page.body.trade.header.newOrder.content.orderType.limit')
-                     }
+                     className={`flex rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                        orderType === 'limit'
+                           ? 'bg-neutral6 dark:bg-neutral3'
+                           : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
+                     } cursor-pointer transition duration-300 ease-in-out`}>
+                     {this.translate(
+                        'page.body.trade.header.newOrder.content.orderType.limit'
+                     )}
                   </div>
                   <div
                      onClick={() => this.handleGetOrderType('market')}
-                     className={`flex py-1.5 px-3 rounded-1xl font-dm font-bold leading-custom3 cursor-pointer ${orderType === 'market' ? 'bg-neutral6 dark:bg-neutral3' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} transition ease-in-out duration-300`}
-                  >
-                     {
-                        this.translate('page.body.trade.header.newOrder.content.orderType.market')
-                     }
+                     className={`flex cursor-pointer rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                        orderType === 'market'
+                           ? 'bg-neutral6 dark:bg-neutral3'
+                           : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
+                     } transition duration-300 ease-in-out`}>
+                     {this.translate(
+                        'page.body.trade.header.newOrder.content.orderType.market'
+                     )}
                   </div>
                </div>
-               <div className="flex items-center text-xs text-neutral4 font-medium leading-custom1">
-                  <div className="">
-                     Crypto trading tutorial
-                  </div>
-                  <Link to="/" className="flex items-center group">
-                     <div className="ml-2 text-neutral2 dark:text-neutral6 group-hover:text-primary1 transition-all duration-300">
+               <div className="flex items-center text-xs font-medium leading-custom1 text-neutral4">
+                  <div className="">Crypto trading tutorial</div>
+                  <Link
+                     to="/"
+                     className="group flex items-center">
+                     <div className="ml-2 text-neutral2 transition-all duration-300 group-hover:text-primary1 dark:text-neutral6">
                         Learn now
                      </div>
-                     <div className="w-5 h-5 flex items-center justify-center">
-                        <ChevronRightIcon className="w-4 h-4 stroke-neutral2 dark:stroke-neutral6 fill-neutral2 dark:fill-neutral6 group-hover:stroke-primary1 transition-all duration-300" />
+                     <div className="flex h-5 w-5 items-center justify-center">
+                        <ChevronRightIcon className="h-4 w-4 fill-neutral2 stroke-neutral2 transition-all duration-300 group-hover:stroke-primary1 dark:fill-neutral6 dark:stroke-neutral6" />
                      </div>
                   </Link>
                </div>
             </div>
-            <div className="flex my-0 -mx-4">
-               <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
-                  <div className="flex items-center justify-between mb-4">
-                     <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+            <div className="my-0 -mx-4 flex">
+               <div className="my-0 mx-4 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
+                  <div className="mb-4 flex items-center justify-between">
+                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                         Buy BTC
                      </div>
                      <div className="flex items-center space-x-1">
@@ -218,7 +229,7 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
                         value={''}
                         readOnly
                      />
-                     <div className="relative h-6 z-20">
+                     <div className="relative z-20 h-6">
                         <Nouislider
                            range={{ min: 0, max: 100 }}
                            start={percentBid}
@@ -228,26 +239,26 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
                            onSlide={this.onSlideBid}
                            format={{
                               to(val) {
-                                 return `${val}%`
+                                 return `${val}%`;
                               },
                               from(val) {
                                  return Number(val);
-                              }
+                              },
                            }}
-                           className="!cursor-pointer !absolute !top-[12px] !inset-x-0 !border-none !bg-neutral6 dark:!bg-neutral3 !shadow-none !h-0.5"
+                           className="!absolute !inset-x-0 !top-[12px] !h-0.5 !cursor-pointer !border-none !bg-neutral6 !shadow-none dark:!bg-neutral3"
                         />
-                        <div className="absolute top-[10px] inset-x-0 flex justify-between pointer-events-none">
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
+                        <div className="pointer-events-none absolute inset-x-0 top-[10px] flex justify-between">
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
                         </div>
                      </div>
                      <InputOrder
@@ -263,9 +274,9 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
                      />
                   </div>
                </div>
-               <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
-                  <div className="flex items-center justify-between mb-4">
-                     <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+               <div className="my-0 mx-4 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
+                  <div className="mb-4 flex items-center justify-between">
+                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                         Sell BTC
                      </div>
                      <div className="flex items-center space-x-1">
@@ -288,7 +299,7 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
                         titleRight="BTC"
                         value={''}
                      />
-                     <div className="relative h-6 z-20">
+                     <div className="relative z-20 h-6">
                         <Nouislider
                            range={{ min: 0, max: 100 }}
                            start={percentAsk}
@@ -298,26 +309,26 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
                            onSlide={this.onSlideAsk}
                            format={{
                               to(val) {
-                                 return `${val}%`
+                                 return `${val}%`;
                               },
                               from(val) {
                                  return Number(val);
-                              }
+                              },
                            }}
-                           className="!cursor-pointer !absolute !top-[12px] !inset-x-0 !border-none !bg-neutral6 dark:!bg-neutral3 !shadow-none !h-0.5"
+                           className="!absolute !inset-x-0 !top-[12px] !h-0.5 !cursor-pointer !border-none !bg-neutral6 !shadow-none dark:!bg-neutral3"
                         />
-                        <div className="absolute top-[10px] inset-x-0 flex justify-between pointer-events-none">
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
-                           <span className="w-0.5 h-1.5 bg-neutral6 dark:bg-neutral3 rounded-[2px]" />
+                        <div className="pointer-events-none absolute inset-x-0 top-[10px] flex justify-between">
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
+                           <span className="h-1.5 w-0.5 rounded-[2px] bg-neutral6 dark:bg-neutral3" />
                         </div>
                      </div>
                      <InputOrder
@@ -325,21 +336,21 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
                         titleRight="BTC"
                         value={''}
                      />
-                     <Button text="Sell BTC" className="bg-primary4 hover:bg-primary4 hover:contrast-75" />
+                     <Button
+                        text="Sell BTC"
+                        className="bg-primary4 hover:bg-primary4 hover:contrast-75"
+                     />
                   </div>
                </div>
             </div>
-            {
-               !isLoggedIn && (
-                  <TradingOrderBackToLogin />
-               )
-            }
+            {!isLoggedIn && <TradingOrderBackToLogin />}
          </div>
       );
    }
 
    //
-   private handleGetOrderType = (type: TOrderType) => this.setState({ orderType: type });
+   private handleGetOrderType = (type: TOrderType) =>
+      this.setState({ orderType: type });
 
    private handleOrder = (order: OrderProps) => {
       console.log('amount', order.amount);
@@ -347,7 +358,7 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
       console.log('orderType', order.orderType);
       console.log('type', order.type);
       console.log('price', order.price);
-   }
+   };
    //
 
    // private handleSubmit = (value: OrderProps) => {
@@ -446,26 +457,25 @@ class TradingOrderComponent extends Component<Props, StoreProps> {
    //    }
    // };
 
-
    // private getWallet = (currency: string, wallets: Wallet[]) => {
    //    const currenyLower = currency.toLowerCase();
    //    return wallets.find(e => e.currency === currenyLower) as Wallet
    // }
 
-   private translate = (id: string, value?: any) => this.props.intl.formatMessage({ id }, { ...value });
+   private translate = (id: string, value?: any) =>
+      this.props.intl.formatMessage({ id }, { ...value });
 
    private onSlideBid = (render, handle, value, un, percent) => {
       this.setState({
          percentBid: percent[0],
       });
-   }
+   };
 
    private onSlideAsk = (render, handle, value, un, percent) => {
       this.setState({
          percentAsk: percent[0],
       });
-   }
-
+   };
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -480,7 +490,10 @@ const mapStateToProps = (state: RootState) => ({
    wallets: selectWallets(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    walletsFetch: () => dispatch(walletsFetch()),
    orderExecute: payload => dispatch(orderExecuteFetch(payload)),
    pushAlert: payload => dispatch(alertPush(payload)),
@@ -488,7 +501,5 @@ const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispat
 });
 
 export const TradingOrder = injectIntl(
-   connect(
-      mapStateToProps,
-      mapDispatchToProps
-   )(TradingOrderComponent as any)) as any;
+   connect(mapStateToProps, mapDispatchToProps)(TradingOrderComponent as any)
+) as any;

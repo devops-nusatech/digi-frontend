@@ -37,10 +37,13 @@ export interface OrderBookProps {
 }
 
 export const mapValues = (maxVolume?: number, data?: number[]) => {
-   const resultData = data && maxVolume && data.length ? data.map(currentVolume => {
-      // tslint:disable-next-line:no-magic-numbers
-      return { value: (currentVolume / maxVolume) * 100 };
-   }) : [];
+   const resultData =
+      data && maxVolume && data.length
+         ? data.map(currentVolume => {
+              // tslint:disable-next-line:no-magic-numbers
+              return { value: (currentVolume / maxVolume) * 100 };
+           })
+         : [];
 
    return resultData;
 };
@@ -72,7 +75,7 @@ export class OrderBook extends React.PureComponent<OrderBookProps> {
       };
 
       return (
-         <div className="cr-order-book" >
+         <div className="cr-order-book">
             <Table
                rowBackground={getRowWidth}
                data={data}

@@ -13,10 +13,11 @@ export interface CommonState {
 }
 
 export type OrderStatus = 'wait' | 'done' | 'cancel' | 'pending' | 'reject';
-export type OrderSide = 'sell' | 'buy';
+export type OrderSide = 'sell' | 'buy' | '';
 export type OrderType = 'limit' | 'market';
 export type OrderKind = 'bid' | 'ask';
 export type OrderBy = 'asc' | 'desc' | '';
+export type CaptchaType = 'recaptcha' | 'geetest' | 'none';
 
 export interface OrderCommon {
    price: string;

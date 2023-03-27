@@ -14,26 +14,31 @@ interface PasswordStrengthBarProps {
 }
 
 const renderPasswordStrengthMeter = (passwordStrengthMeterLength: number) => (
-   <div className="bar flex items-center h-2 py-0 px-px">
+   <div className="bar flex h-2 items-center py-0 px-px">
       <div
          className={`flex h-1.25 transition-all duration-300
-         ${passwordStrengthClassName(passwordStrengthMeterLength)}`
-         }></div>
+         ${passwordStrengthClassName(passwordStrengthMeterLength)}`}></div>
    </div>
 );
 
-const renderPasswordStrengthTip = (props: PasswordStrengthBarProps, passwordStrengthMeterLength: number) =>
+const renderPasswordStrengthTip = (
+   props: PasswordStrengthBarProps,
+   passwordStrengthMeterLength: number
+) =>
    props.passwordPopUp && (
-      <div className="rounded-lg shadow-2xl absolute w-full z-[6] bg-neutral7 dark:bg-neutral2 dark:shadow-primary1/40 py-4 px-2">
+      <div className="absolute z-[6] w-full rounded-lg bg-neutral7 py-4 px-2 shadow-2xl dark:bg-neutral2 dark:shadow-primary1/40">
          <div className="h-8">
-            <div className="text-neutral5 text-xs font-normal">
-               {props.translate('page.header.signUp.strength.password')}
+            <div className="text-xs font-normal text-neutral5">
+               {props.translate('page.header.register.strength.password')}
             </div>
             <div
                className={`pg-password-pop-up__strength-status ${passwordStrengthClassName(
                   passwordStrengthMeterLength
                )}`}>
-               {passwordStrengthStatus(passwordStrengthMeterLength, props.translate)}
+               {passwordStrengthStatus(
+                  passwordStrengthMeterLength,
+                  props.translate
+               )}
             </div>
          </div>
          <PasswordStrengthInfo
@@ -63,20 +68,30 @@ const passwordStrengthClassName = (passwordStrengthMeterLength: number) => {
    }
 };
 
-const passwordStrengthStatus = (passwordStrengthMeterLength: number, translate: any) => {
+const passwordStrengthStatus = (
+   passwordStrengthMeterLength: number,
+   translate: any
+) => {
    switch (passwordStrengthMeterLength) {
       case 0:
-         return translate('page.header.signUp.password.too.weak') || 'TOO WEAK';
+         return (
+            translate('page.header.register.password.too.weak') || 'TOO WEAK'
+         );
       case 1:
-         return translate('page.header.signUp.password.too.weak') || 'WEAK';
+         return translate('page.header.register.password.too.weak') || 'WEAK';
       case 2:
-         return translate('page.header.signUp.password.good') || 'GOOD';
+         return translate('page.header.register.password.good') || 'GOOD';
       case 3:
-         return translate('page.header.signUp.password.strong') || 'STRONG';
+         return translate('page.header.register.password.strong') || 'STRONG';
       case 4:
-         return translate('page.header.signUp.password.very.strong') || 'VERY STRONG';
+         return (
+            translate('page.header.register.password.very.strong') ||
+            'VERY STRONG'
+         );
       default:
-         return translate('page.header.signUp.password.too.weak') || 'TOO WEAK';
+         return (
+            translate('page.header.register.password.too.weak') || 'TOO WEAK'
+         );
    }
 };
 
@@ -87,11 +102,15 @@ export const PasswordStrengthBar: FC<PasswordStrengthBarProps> = memo(props => {
       passwordErrorThirdSolved,
       minPasswordEntropy,
       currentPasswordEntropy,
-      passwordExist
+      passwordExist,
    } = props;
-   const passwordComplite = passwordErrorSecondSolved && passwordErrorFirstSolved && passwordErrorThirdSolved;
+   const passwordComplite =
+      passwordErrorSecondSolved &&
+      passwordErrorFirstSolved &&
+      passwordErrorThirdSolved;
    const AVG_PASSWORD_ENTROPY = minPasswordEntropy + passwordEntropyStep();
-   const STRONG_PASSWORD_ENTROPY = minPasswordEntropy + passwordEntropyStep() * 2;
+   const STRONG_PASSWORD_ENTROPY =
+      minPasswordEntropy + passwordEntropyStep() * 2;
 
    let passwordStrengthMeterLength = -1;
 
@@ -99,16 +118,26 @@ export const PasswordStrengthBar: FC<PasswordStrengthBarProps> = memo(props => {
       passwordStrengthMeterLength = 0;
    }
 
-   if ((currentPasswordEntropy < minPasswordEntropy && passwordErrorFirstSolved) || passwordErrorFirstSolved) {
+   if (
+      (currentPasswordEntropy < minPasswordEntropy &&
+         passwordErrorFirstSolved) ||
+      passwordErrorFirstSolved
+   ) {
       passwordStrengthMeterLength = 1;
    }
 
    if (passwordComplite) {
-      if (currentPasswordEntropy >= minPasswordEntropy && currentPasswordEntropy < AVG_PASSWORD_ENTROPY) {
+      if (
+         currentPasswordEntropy >= minPasswordEntropy &&
+         currentPasswordEntropy < AVG_PASSWORD_ENTROPY
+      ) {
          passwordStrengthMeterLength = 2;
       }
 
-      if (currentPasswordEntropy >= AVG_PASSWORD_ENTROPY && currentPasswordEntropy < STRONG_PASSWORD_ENTROPY) {
+      if (
+         currentPasswordEntropy >= AVG_PASSWORD_ENTROPY &&
+         currentPasswordEntropy < STRONG_PASSWORD_ENTROPY
+      ) {
          passwordStrengthMeterLength = 3;
       }
 
@@ -119,7 +148,8 @@ export const PasswordStrengthBar: FC<PasswordStrengthBarProps> = memo(props => {
 
    return (
       <div className="relative">
-         {passwordExist && renderPasswordStrengthMeter(passwordStrengthMeterLength)}
+         {passwordExist &&
+            renderPasswordStrengthMeter(passwordStrengthMeterLength)}
          {renderPasswordStrengthTip(props, passwordStrengthMeterLength)}
       </div>
    );

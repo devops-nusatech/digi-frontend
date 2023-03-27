@@ -23,31 +23,31 @@ describe('Auth reducer', () => {
         expect(authReducer(initialStateAuth, actions.logoutError(error))).toEqual(expectedState);
     });
 
-    it('should handle SIGN_IN_ERROR', () => {
+    it('should handle LOGIN_ERROR', () => {
         const payload = {
             code: 500,
             message: ['Server error'],
         };
         const expectedState = { ...initialStateAuth, authError: payload };
-        expect(authReducer(initialStateAuth, actions.signInError(payload))).toEqual(expectedState);
+        expect(authReducer(initialStateAuth, actions.loginError(payload))).toEqual(expectedState);
     });
 
-    it('should handle SIGN_IN_REQUIRE_2FA', () => {
+    it('should handle LOGIN_REQUIRE_2FA', () => {
         const payload = { require2fa: true };
         const expectedState = { ...initialStateAuth, require2FA: payload.require2fa };
-        expect(authReducer(initialStateAuth, actions.signInRequire2FA(payload))).toEqual(expectedState);
+        expect(authReducer(initialStateAuth, actions.loginRequire2FA(payload))).toEqual(expectedState);
     });
 
-    it('should handle SIGN_UP_ERROR', () => {
+    it('should handle REGISTER_ERROR', () => {
         const payload = {
             code: 500,
             message: ['Server error'],
         };
-        const expectedState = { ...initialStateAuth, signUpError: payload };
-        expect(authReducer(initialStateAuth, actions.signUpError(payload))).toEqual(expectedState);
+        const expectedState = { ...initialStateAuth, registerError: payload };
+        expect(authReducer(initialStateAuth, actions.registerError(payload))).toEqual(expectedState);
     });
 
-    it('should handle SIGN_UP_REQUIRE_VERIFICATION', () => {
+    it('should handle REGISTER_REQUIRE_VERIFICATION', () => {
         const payload = {
             requireVerification: true,
         };
@@ -57,7 +57,7 @@ describe('Auth reducer', () => {
             requireVerification: true,
         };
 
-        expect(authReducer(initialStateAuth, actions.signUpRequireVerification(payload))).toEqual(expectedState);
+        expect(authReducer(initialStateAuth, actions.registerRequireVerification(payload))).toEqual(expectedState);
     });
 
     it('should handle VERIFICATION_FETCH', () => {

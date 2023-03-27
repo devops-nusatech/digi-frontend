@@ -6,7 +6,9 @@ interface ItemInterface {
    item: any;
    title: string;
 }
-export const DocumentationEndpointsItem: React.FC<ItemInterface> = (props: ItemInterface) => {
+export const DocumentationEndpointsItem: React.FC<ItemInterface> = (
+   props: ItemInterface
+) => {
    const { title, item } = props;
 
    return (
@@ -15,13 +17,15 @@ export const DocumentationEndpointsItem: React.FC<ItemInterface> = (props: ItemI
             text={title}
             className="!lowercase"
          />
-         {item && Object.keys(item).length ? Object.keys(item).map((key, index) => (
-            <RequestTypeItem
-               item={item[key]}
-               key={key}
-               title={key}
-            />
-         )) : null}
+         {item && Object.keys(item).length
+            ? Object.keys(item).map((key, index) => (
+                 <RequestTypeItem
+                    item={item[key]}
+                    key={key}
+                    title={key}
+                 />
+              ))
+            : null}
       </div>
    );
 };

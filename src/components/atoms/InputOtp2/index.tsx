@@ -119,7 +119,6 @@
 //    )
 // }
 
-
 import React, { useMemo } from 'react';
 
 const RE_DIGIT = new RegExp(/^\d+$/);
@@ -246,7 +245,7 @@ export const InputOtp2 = ({ value, valueLength, onChange }: Props) => {
    };
 
    return (
-      <div className="flex -mx-2">
+      <div className="-mx-2 flex">
          {valueItems.map((digit, idx) => (
             <>
                <input
@@ -256,15 +255,19 @@ export const InputOtp2 = ({ value, valueLength, onChange }: Props) => {
                   autoComplete="one-time-code"
                   pattern="\d{1}"
                   maxLength={valueLength}
-                  className="grow-0 shrink-0 basis-[calc(16.6667%-16px)] w-[calc(16.6667%-16px)] my-0 mx-2 h-16 text-center font-dm text-3.5xl font-semibold bg-neutral8 dark:bg-neutral1 outline-none transition-all duration-300"
+                  className="my-0 mx-2 h-16 w-[calc(16.6667%-16px)] shrink-0 grow-0 basis-[calc(16.6667%-16px)] bg-neutral8 text-center font-dm text-3.5xl font-semibold outline-none transition-all duration-300 dark:bg-neutral1"
                   value={digit}
-                  onChange={(e) => inputOnChange(e, idx)}
+                  onChange={e => inputOnChange(e, idx)}
                   onKeyDown={inputOnKeyDown}
                   onFocus={inputOnFocus}
                />
-               <div className={`w-full rounded-lg h-1 ${digit[idx] ? "bg-primary1" : "bg-primary1/30"}`} />
+               <div
+                  className={`h-1 w-full rounded-lg ${
+                     digit[idx] ? 'bg-primary1' : 'bg-primary1/30'
+                  }`}
+               />
             </>
          ))}
       </div>
    );
-}
+};

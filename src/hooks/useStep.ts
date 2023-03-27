@@ -3,15 +3,17 @@ import { ReactElement, useState } from 'react';
 export const useStep = (steps: ReactElement[]) => {
    const [currentStep, setCurrentStep] = useState(0);
 
-   const nextStep = () => setCurrentStep(index => {
-      if (index >= steps.length - 1) return index;
-      return index + 1;
-   });
+   const nextStep = () =>
+      setCurrentStep(index => {
+         if (index >= steps.length - 1) return index;
+         return index + 1;
+      });
 
-   const prevStep = () => setCurrentStep(index => {
-      if (index <= 0) return index;
-      return index - 1;
-   });
+   const prevStep = () =>
+      setCurrentStep(index => {
+         if (index <= 0) return index;
+         return index - 1;
+      });
 
    const goToStep = (index: number) => setCurrentStep(index);
 
@@ -24,8 +26,8 @@ export const useStep = (steps: ReactElement[]) => {
       nextStep,
       prevStep,
       goToStep,
-   }
-}
+   };
+};
 
 /**
  * Examples for

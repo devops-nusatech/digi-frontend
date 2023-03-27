@@ -27,7 +27,6 @@
 
 //     const wallet: Wallet = wallets.find(item => item.currency === currency) || DEFAULT_WALLET;
 
-
 //    //  const handleGenerateAddress = () => {
 //    //      if (!wallet.deposit_address && wallets.length && wallet.type !== 'fiat') {
 //    //          dispatch(walletsAddressFetch({ currency }));
@@ -60,10 +59,7 @@ import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import { useWalletsFetch } from '../../../hooks';
-import {
-   selectWallets,
-   Wallet,
-} from '../../../modules/user/wallets';
+import { selectWallets, Wallet } from '../../../modules/user/wallets';
 import { Subheader, WalletDepositBody, WalletHeader } from '../../components';
 import { DEFAULT_WALLET } from '../../../constants';
 
@@ -75,7 +71,8 @@ const WalletDeposit: React.FC = () => {
 
    useWalletsFetch();
 
-   const wallet: Wallet = wallets.find(item => item.currency === currency) || DEFAULT_WALLET;
+   const wallet: Wallet =
+      wallets.find(item => item.currency === currency) || DEFAULT_WALLET;
 
    return (
       <React.Fragment>
@@ -84,12 +81,13 @@ const WalletDeposit: React.FC = () => {
             backTitle={intl.formatMessage({ id: 'page.body.wallets.balance' })}
             onGoBack={() => history.push(`/wallets/${currency}/history`)}
          />
-         <WalletHeader currency={wallet.currency} name={wallet.name} />
+         <WalletHeader
+            currency={wallet.currency}
+            name={wallet.name}
+         />
          <WalletDepositBody wallet={wallet} />
       </React.Fragment>
    );
 };
 
-export {
-   WalletDeposit,
-};
+export { WalletDeposit };

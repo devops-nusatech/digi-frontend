@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, Portal } from 'components'
+import React from 'react';
+import { Button, Portal } from 'components';
 
 interface ModalConfirmLogoutProps {
    show: boolean;
@@ -8,12 +8,16 @@ interface ModalConfirmLogoutProps {
    isLoading: boolean;
 }
 
-export const ModalConfirmLogout = ({ show, close, handleLogout, isLoading }: ModalConfirmLogoutProps) => (
+export const ModalConfirmLogout = ({
+   show,
+   close,
+   handleLogout,
+   isLoading,
+}: ModalConfirmLogoutProps) => (
    <Portal
       title="Confirm Logout"
       show={show}
-      close={close}
-   >
+      close={close}>
       <div className="text-center text-base font-medium">
          Are you sure to logout ?
       </div>
@@ -23,4 +27,4 @@ export const ModalConfirmLogout = ({ show, close, handleLogout, isLoading }: Mod
          withLoading={isLoading}
       />
    </Portal>
-)
+);

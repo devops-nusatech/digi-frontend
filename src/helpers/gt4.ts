@@ -3,14 +3,14 @@
 // "v4.1.4 Geetest Inc.";
 
 export default function GT4Init() {
-   "use strict";
-   if (typeof window === "undefined") {
-      throw new Error("Geetest requires browser environment");
+   'use strict';
+   if (typeof window === 'undefined') {
+      throw new Error('Geetest requires browser environment');
    }
 
    var document = window.document;
    var Math = window.Math;
-   var head = document.getElementsByTagName("head")[0];
+   var head = document.getElementsByTagName('head')[0];
    var TIMEOUT = 10000;
 
    function _Object(obj) {
@@ -36,11 +36,11 @@ export default function GT4Init() {
    };
 
    var uuid = function () {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
          /[xy]/g,
          function (c) {
             var r = (Math.random() * 16) | 0;
-            var v = c === "x" ? r : (r & 0x3) | 0x8;
+            var v = c === 'x' ? r : (r & 0x3) | 0x8;
             return v.toString(16);
          }
       );
@@ -55,26 +55,26 @@ export default function GT4Init() {
 
    Config.prototype = {
       apiServers: [
-         "gcaptcha4.geetest.com",
-         "gcaptcha4.geevisit.com",
-         "gcaptcha4.gsensebot.com",
+         'gcaptcha4.geetest.com',
+         'gcaptcha4.geevisit.com',
+         'gcaptcha4.gsensebot.com',
       ],
       staticServers: [
-         "static.geetest.com",
-         "static.geevisit.com",
-         "dn-staticdown.qbox.me",
+         'static.geetest.com',
+         'static.geevisit.com',
+         'dn-staticdown.qbox.me',
       ],
-      protocol: "http://",
-      typePath: "/load",
+      protocol: 'http://',
+      typePath: '/load',
       fallback_config: {
          bypass: {
             staticServers: [
-               "static.geetest.com",
-               "static.geevisit.com",
-               "dn-staticdown.qbox.me",
+               'static.geetest.com',
+               'static.geevisit.com',
+               'dn-staticdown.qbox.me',
             ],
-            type: "bypass",
-            bypass: "/v4/bypass.js",
+            type: 'bypass',
+            bypass: '/v4/bypass.js',
          },
       },
       _get_fallback_config: function () {
@@ -93,19 +93,19 @@ export default function GT4Init() {
       },
    };
    var isNumber = function (value) {
-      return typeof value === "number";
+      return typeof value === 'number';
    };
    var isString = function (value) {
-      return typeof value === "string";
+      return typeof value === 'string';
    };
    var isBoolean = function (value) {
-      return typeof value === "boolean";
+      return typeof value === 'boolean';
    };
    var isObject = function (value) {
-      return typeof value === "object" && value !== null;
+      return typeof value === 'object' && value !== null;
    };
    var isFunction = function (value) {
-      return typeof value === "function";
+      return typeof value === 'function';
    };
    var MOBILE = /Mobi/i.test(navigator.userAgent);
 
@@ -119,7 +119,7 @@ export default function GT4Init() {
    // bind å‡½æ•°polify, ä¸å¸¦newåŠŸèƒ½çš„bind
 
    var bind = function (target, context) {
-      if (typeof target !== "function") {
+      if (typeof target !== 'function') {
          return;
       }
       var args = Array.prototype.slice.call(arguments, 2);
@@ -137,27 +137,27 @@ export default function GT4Init() {
    var toString = Object.prototype.toString;
 
    var _isFunction = function (obj) {
-      return typeof obj === "function";
+      return typeof obj === 'function';
    };
    var _isObject = function (obj) {
       return obj === Object(obj);
    };
    var _isArray = function (obj) {
-      return toString.call(obj) == "[object Array]";
+      return toString.call(obj) == '[object Array]';
    };
    var _isDate = function (obj) {
-      return toString.call(obj) == "[object Date]";
+      return toString.call(obj) == '[object Date]';
    };
    var _isRegExp = function (obj) {
-      return toString.call(obj) == "[object RegExp]";
+      return toString.call(obj) == '[object RegExp]';
    };
    var _isBoolean = function (obj) {
-      return toString.call(obj) == "[object Boolean]";
+      return toString.call(obj) == '[object Boolean]';
    };
 
    function resolveKey(input) {
       return input.replace(/(\S)(_([a-zA-Z]))/g, function (match, $1, $2, $3) {
-         return $1 + $3.toUpperCase() || "";
+         return $1 + $3.toUpperCase() || '';
       });
    }
 
@@ -189,13 +189,13 @@ export default function GT4Init() {
    }
 
    var loadScript = function (url, cb, timeout) {
-      var script = document.createElement("script");
-      script.charset = "UTF-8";
+      var script = document.createElement('script');
+      script.charset = 'UTF-8';
       script.async = true;
 
       // å¯¹geetestçš„é™æ€èµ„æºæ·»åŠ  crossOrigin
       if (/static\.geetest\.com/g.test(url)) {
-         script.crossOrigin = "anonymous";
+         script.crossOrigin = 'anonymous';
       }
 
       script.onerror = function () {
@@ -208,8 +208,8 @@ export default function GT4Init() {
          if (
             !loaded &&
             (!script.readyState ||
-               "loaded" === script.readyState ||
-               "complete" === script.readyState)
+               'loaded' === script.readyState ||
+               'complete' === script.readyState)
          ) {
             loaded = true;
             setTimeout(function () {
@@ -232,29 +232,34 @@ export default function GT4Init() {
    var normalizeDomain = function (domain) {
       // special domain: uems.sysu.edu.cn/jwxt/geetest/
       // return domain.replace(/^https?:\/\/|\/.*$/g, ''); uems.sysu.edu.cn
-      return domain.replace(/^https?:\/\/|\/$/g, ""); // uems.sysu.edu.cn/jwxt/geetest
+      return domain.replace(/^https?:\/\/|\/$/g, ''); // uems.sysu.edu.cn/jwxt/geetest
    };
    var normalizePath = function (path) {
-      path = path.replace(/\/+/g, "/");
-      if (path.indexOf("/") !== 0) {
-         path = "/" + path;
+      path = path.replace(/\/+/g, '/');
+      if (path.indexOf('/') !== 0) {
+         path = '/' + path;
       }
       return path;
    };
    var normalizeQuery = function (query) {
       if (!query) {
-         return "";
+         return '';
       }
-      var q = "?";
+      var q = '?';
       new _Object(query)._each(function (key, value) {
          if (isString(value) || isNumber(value) || isBoolean(value)) {
-            q = q + encodeURIComponent(key) + "=" + encodeURIComponent(value) + "&";
+            q =
+               q +
+               encodeURIComponent(key) +
+               '=' +
+               encodeURIComponent(value) +
+               '&';
          }
       });
-      if (q === "?") {
-         q = "";
+      if (q === '?') {
+         q = '';
       }
-      return q.replace(/&$/, "");
+      return q.replace(/&$/, '');
    };
    var makeURL = function (protocol, domain, path, query) {
       domain = normalizeDomain(domain);
@@ -271,7 +276,7 @@ export default function GT4Init() {
       var tryRequest = function (at) {
          // å¤„ç†jsonpå›žè°ƒï¼Œè¿™é‡Œä¸ºäº†ä¿è¯æ¯ä¸ªä¸åŒjsonpéƒ½æœ‰å”¯ä¸€çš„å›žè°ƒå‡½æ•°
          if (handleCb) {
-            var cbName = "geetest_" + random();
+            var cbName = 'geetest_' + random();
             // éœ€è¦ä¸Žé¢„å…ˆå®šä¹‰å¥½cbnameå‚æ•°ï¼Œåˆ é™¤å¯¹è±¡
             window[cbName] = bind(handleCb, null, cbName);
             query.callback = cbName;
@@ -287,7 +292,7 @@ export default function GT4Init() {
                         window[cbName] = function () {
                            window[cbName] = null;
                         };
-                     } catch (e) { }
+                     } catch (e) {}
                   }
 
                   if (at >= domains.length - 1) {
@@ -310,7 +315,7 @@ export default function GT4Init() {
       var handleCb = function (cbName, data) {
          // ä¿è¯åªæ‰§è¡Œä¸€æ¬¡ï¼Œå…¨éƒ¨è¶…æ—¶çš„æƒ…å†µä¸‹ä¸ä¼šå†è§¦å‘;
 
-         if (data.status == "success") {
+         if (data.status == 'success') {
             callback(data.data);
          } else if (!data.status) {
             callback(data);
@@ -321,7 +326,7 @@ export default function GT4Init() {
          window[cbName] = undefined;
          try {
             delete window[cbName];
-         } catch (e) { }
+         } catch (e) {}
       };
 
       load(
@@ -332,19 +337,19 @@ export default function GT4Init() {
          {
             captcha_id: config.captchaId,
             challenge: config.challenge || uuid(),
-            client_type: MOBILE ? "h5" : "web",
+            client_type: MOBILE ? 'h5' : 'web',
             risk_type: config.riskType,
             call_type: config.callType,
             lang: config.language
                ? config.language
-               : navigator.appName === "Netscape"
-                  ? navigator.language.toLowerCase()
-                  : navigator.userLanguage.toLowerCase(),
+               : navigator.appName === 'Netscape'
+               ? navigator.language.toLowerCase()
+               : navigator.userLanguage.toLowerCase(),
          },
          function (err) {
             // ç½‘ç»œé—®é¢˜æŽ¥å£æ²¡æœ‰è¿”å›žï¼Œç›´æŽ¥ä½¿ç”¨æœ¬åœ°éªŒè¯ç ï¼Œèµ°å®•æœºæ¨¡å¼
             // è¿™é‡Œå¯ä»¥æ·»åŠ ç”¨æˆ·çš„é€»è¾‘
-            if (err && typeof config.offlineCb === "function") {
+            if (err && typeof config.offlineCb === 'function') {
                // æ‰§è¡Œè‡ªå·±çš„å®•æœº
                config.offlineCb();
                return;
@@ -362,8 +367,8 @@ export default function GT4Init() {
       load(
          config,
          config.protocol,
-         ["monitor.geetest.com"],
-         "/monitor/send",
+         ['monitor.geetest.com'],
+         '/monitor/send',
          {
             time: Date.now().getTime(),
             captcha_id: config.gt,
@@ -371,16 +376,16 @@ export default function GT4Init() {
             exception_url: url,
             error_code: config.error_code,
          },
-         function (err) { }
+         function (err) {}
       );
    };
 
    var throwError = function (errorType, config, errObj) {
       var errors = {
-         networkError: "ç½‘ç»œé”™è¯¯",
-         gtTypeError: "gtå­—æ®µä¸æ˜¯å­—ç¬¦ä¸²ç±»åž‹",
+         networkError: 'ç½‘ç»œé”™è¯¯',
+         gtTypeError: 'gtå­—æ®µä¸æ˜¯å­—ç¬¦ä¸²ç±»åž‹',
       };
-      if (typeof config.onError === "function") {
+      if (typeof config.onError === 'function') {
          config.onError({
             desc: errObj.desc,
             msg: errObj.msg,
@@ -392,16 +397,16 @@ export default function GT4Init() {
    };
 
    var detect = function () {
-      return window.Geetest || document.getElementById("gt_lib");
+      return window.Geetest || document.getElementById('gt_lib');
    };
 
    if (detect()) {
-      status.slide = "loaded";
+      status.slide = 'loaded';
    }
    var GeetestIsLoad = function (fname) {
       var GeetestIsLoad = false;
-      var tags = { js: "script", css: "link" };
-      var tagname = tags[fname.split(".").pop()];
+      var tags = { js: 'script', css: 'link' };
+      var tagname = tags[fname.split('.').pop()];
       if (tagname !== undefined) {
          var elts = document.getElementsByTagName(tagname);
          for (var i in elts) {
@@ -418,9 +423,9 @@ export default function GT4Init() {
    window.initGeetest4 = function (userConfig, callback) {
       var config = new Config(userConfig);
       if (userConfig.https) {
-         config.protocol = "https://";
+         config.protocol = 'https://';
       } else if (!userConfig.protocol) {
-         config.protocol = window.location.protocol + "//";
+         config.protocol = window.location.protocol + '//';
       }
 
       if (isObject(userConfig.getType)) {
@@ -431,8 +436,8 @@ export default function GT4Init() {
          //é”™è¯¯æ•èŽ·ï¼Œç¬¬ä¸€ä¸ªloadè¯·æ±‚å¯èƒ½ç›´æŽ¥æŠ¥é”™
          var newConfig = camelizeKeys(newConfig);
 
-         if (newConfig.status === "error") {
-            return throwError("networkError", config, newConfig);
+         if (newConfig.status === 'error') {
+            return throwError('networkError', config, newConfig);
          }
 
          var type = newConfig.type;
@@ -447,9 +452,9 @@ export default function GT4Init() {
 
          callbacks[type] = callbacks[type] || [];
 
-         var s = status[type] || "init";
-         if (s === "init") {
-            status[type] = "loading";
+         var s = status[type] || 'init';
+         if (s === 'init') {
+            status[type] = 'loading';
 
             callbacks[type].push(init);
 
@@ -457,18 +462,18 @@ export default function GT4Init() {
                load(
                   config,
                   config.protocol,
-                  Object.hasOwnProperty.call(config, "staticServers")
+                  Object.hasOwnProperty.call(config, 'staticServers')
                      ? config.staticServers
                      : newConfig.staticServers || config.staticServers,
                   newConfig.gctPath,
                   null,
                   function (err) {
                      if (err) {
-                        throwError("networkError", config, {
-                           code: "60205",
-                           msg: "Network failure",
+                        throwError('networkError', config, {
+                           code: '60205',
+                           msg: 'Network failure',
                            desc: {
-                              detail: "gct resource load timeout",
+                              detail: 'gct resource load timeout',
                            },
                         });
                      }
@@ -479,23 +484,23 @@ export default function GT4Init() {
             load(
                config,
                config.protocol,
-               Object.hasOwnProperty.call(config, "staticServers")
+               Object.hasOwnProperty.call(config, 'staticServers')
                   ? config.staticServers
                   : newConfig.staticServers || config.staticServers,
                newConfig.bypass || newConfig.staticPath + newConfig.js,
                null,
                function (err) {
                   if (err) {
-                     status[type] = "fail";
-                     throwError("networkError", config, {
-                        code: "60204",
-                        msg: "Network failure",
+                     status[type] = 'fail';
+                     throwError('networkError', config, {
+                        code: '60204',
+                        msg: 'Network failure',
                         desc: {
-                           detail: "js resource load timeout",
+                           detail: 'js resource load timeout',
                         },
                      });
                   } else {
-                     status[type] = "loaded";
+                     status[type] = 'loaded';
                      var cbs = callbacks[type];
                      for (var i = 0, len = cbs.length; i < len; i = i + 1) {
                         var cb = cbs[i];
@@ -507,24 +512,24 @@ export default function GT4Init() {
                   }
                }
             );
-         } else if (s === "loaded") {
+         } else if (s === 'loaded') {
             // åˆ¤æ–­gctæ˜¯å¦éœ€è¦é‡æ–°åŠ è½½
             if (!GeetestIsLoad(newConfig.gctPath)) {
                load(
                   config,
                   config.protocol,
-                  Object.hasOwnProperty.call(config, "staticServers")
+                  Object.hasOwnProperty.call(config, 'staticServers')
                      ? config.staticServers
                      : newConfig.staticServers || config.staticServers,
                   newConfig.gctPath,
                   null,
                   function (err) {
                      if (err) {
-                        throwError("networkError", config, {
-                           code: "60205",
-                           msg: "Network failure",
+                        throwError('networkError', config, {
+                           code: '60205',
+                           msg: 'Network failure',
                            desc: {
-                              detail: "gct resource load timeout",
+                              detail: 'gct resource load timeout',
                            },
                         });
                      }
@@ -532,15 +537,15 @@ export default function GT4Init() {
                );
             }
             return init();
-         } else if (s === "fail") {
-            throwError("networkError", config, {
-               code: "60204",
-               msg: "Network failure",
+         } else if (s === 'fail') {
+            throwError('networkError', config, {
+               code: '60204',
+               msg: 'Network failure',
                desc: {
-                  detail: "js resource load timeout",
+                  detail: 'js resource load timeout',
                },
             });
-         } else if (s === "loading") {
+         } else if (s === 'loading') {
             callbacks[type].push(init);
          }
       });

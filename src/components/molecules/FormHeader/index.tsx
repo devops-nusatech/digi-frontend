@@ -5,10 +5,10 @@ interface FormHeaderProps {
    subTitle?: string;
 }
 
-export const FormHeader: FC<FormHeaderProps> = ({ title, subTitle, }) => {
+export const FormHeader: FC<FormHeaderProps> = ({ title, subTitle }) => {
    return (
-      <div className="pb-4 mb-8 border-b border-solid border-neutral6 dark:border-neutral3">
-         <div className="mb-8 text-center text-[40px] leading-[1.2] tracking-[-.01em] font-dm font-bold">
+      <div className="mb-8 border-b border-solid border-neutral6 pb-4 dark:border-neutral3">
+         <div className="mb-8 text-center font-dm text-[40px] font-bold leading-[1.2] tracking-[-.01em]">
             {title}
          </div>
          {subTitle && (
@@ -17,5 +17,5 @@ export const FormHeader: FC<FormHeaderProps> = ({ title, subTitle, }) => {
             </div>
          )}
       </div>
-   )
-}
+   );
+};

@@ -1,9 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC } from 'react';
 import { compose } from 'redux';
-import { connect, MapDispatchToPropsFunction } from 'react-redux'
-import { injectIntl } from 'react-intl'
-import { RootState } from 'modules'
-
+import { connect, MapDispatchToPropsFunction } from 'react-redux';
+import { injectIntl } from 'react-intl';
+import { RootState } from 'modules';
 
 interface NotificationsFC {
    q: string;
@@ -13,23 +12,23 @@ interface ReduxProps {
    type: string;
 }
 
-
 const NotificationsFC: FC<NotificationsFC> = ({ q }, { type }: ReduxProps) => {
-  return (
-    <div className="">
+   return (
+      <div className="">
          Coba
          {q}
          {type}
-    </div>
-  )
-}
+      </div>
+   );
+};
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState) => ({});
 
-})
-
-const mapDispatchToProps: MapDispatchToPropsFunction<ReduxProps, {}> = dispatch => ({
-   type: ''
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   ReduxProps,
+   {}
+> = dispatch => ({
+   type: '',
 });
 
 export const Notifications = compose(

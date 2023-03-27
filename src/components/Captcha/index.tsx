@@ -9,7 +9,7 @@ import {
 } from 'modules';
 import { GeetestCaptchaV3 } from 'components';
 
-export const CaptchaComponent = props => {
+const CaptchaComponent = props => {
    const dispatch = useDispatch();
    const configs = useSelector(selectConfigs);
 

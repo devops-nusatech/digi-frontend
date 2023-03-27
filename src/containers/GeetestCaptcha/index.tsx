@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-   connect,
-   MapStateToProps,
-} from 'react-redux';
+import { connect, MapStateToProps } from 'react-redux';
 import { initGeetest } from 'helpers/geetest';
 import {
    geetestCaptchaFetch,
@@ -44,21 +41,24 @@ class GeetestCaptchaComponent extends React.Component<Props> {
    }
 
    public componentWillReceiveProps(next: Props) {
-      if (this.props.geetestCaptchaKeys !== next.geetestCaptchaKeys && next.geetestCaptchaKeys !== undefined) {
-         const {
-            geetestCaptchaKeys,
-            lang,
-         } = next;
-         initGeetest({
-            gt: geetestCaptchaKeys.gt,
-            challenge: geetestCaptchaKeys.challenge,
-            offline: 0,
-            new_captcha: false,
-            product: 'popup',
-            width: '100%',
-            lang: lang,
-            https: true,
-         }, this.captchaComingHandler);
+      if (
+         this.props.geetestCaptchaKeys !== next.geetestCaptchaKeys &&
+         next.geetestCaptchaKeys !== undefined
+      ) {
+         const { geetestCaptchaKeys, lang } = next;
+         initGeetest(
+            {
+               gt: geetestCaptchaKeys.gt,
+               challenge: geetestCaptchaKeys.challenge,
+               offline: 0,
+               new_captcha: false,
+               product: 'popup',
+               width: '100%',
+               lang: lang,
+               https: true,
+            },
+            this.captchaComingHandler
+         );
       }
 
       if (!this.props.shouldCaptchaReset && next.shouldCaptchaReset) {
@@ -81,9 +81,11 @@ class GeetestCaptchaComponent extends React.Component<Props> {
    private captchaComingHandler = captcha => {
       this.captcha = captcha;
       this.captcha.appendTo(this.captchaContainerRef.current);
-      this.captcha.onReady(() => {
-         removeElement('geetest_copyright');
-      }).onSuccess(this.captchaSuccessHandler);
+      this.captcha
+         .onReady(() => {
+            removeElement('geetest_copyright');
+         })
+         .onSuccess(this.captchaSuccessHandler);
    };
 
    private captchaSuccessHandler = () => {
@@ -93,7 +95,9 @@ class GeetestCaptchaComponent extends React.Component<Props> {
    };
 }
 
-const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = (state: RootState): ReduxProps => ({
+const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = (
+   state: RootState
+): ReduxProps => ({
    lang: selectCurrentLanguage(state),
    geetestCaptchaKeys: selectCaptchaKeys(state),
 });
@@ -102,4 +106,7 @@ const mapDispatchProps = {
    geetestCaptchaFetch,
 };
 
-export const GeetestCaptcha = connect(mapStateToProps, mapDispatchProps)(GeetestCaptchaComponent);
+export const GeetestCaptcha = connect(
+   mapStateToProps,
+   mapDispatchProps
+)(GeetestCaptchaComponent);

@@ -15,6 +15,6 @@ export const useNewsFetch = (limit?: number, tag?: string) => {
 
    return {
       newsLoadig,
-      news
-   }
-}
+      news,
+   };
+};

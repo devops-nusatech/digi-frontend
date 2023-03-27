@@ -28,6 +28,10 @@ import icSUSHI from './sushi.svg';
 import icSAND from './sand.svg';
 import icAXS from './axs.svg';
 import ic1INCH from './1inch.svg';
+import icLtc from './ltc.svg';
+import icZil from './zil.svg';
+import icUSDD from './usdd.svg';
+import icBUSD from './busd.svg';
 
 export {
    icBitcoinCash,
@@ -60,4 +64,8 @@ export {
    icSAND,
    icAXS,
    ic1INCH,
+   icLtc,
+   icZil,
+   icUSDD,
+   icBUSD,
 };

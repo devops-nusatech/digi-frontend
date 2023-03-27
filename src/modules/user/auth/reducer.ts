@@ -7,15 +7,15 @@ import {
    AUTH_LOGOUT_FETCH,
    AUTH_LOGOUT_DATA,
    AUTH_LOGOUT_FAILURE,
-   AUTH_SIGN_IN_DATA,
-   AUTH_SIGN_IN_ERROR,
-   AUTH_SIGN_IN_FETCH,
-   AUTH_SIGN_IN_REQUIRE_2FA,
-   AUTH_SIGN_IN_REQUIRE_2FA_RESET,
-   AUTH_SIGN_UP_DATA,
-   AUTH_SIGN_UP_ERROR,
-   AUTH_SIGN_UP_FETCH,
-   AUTH_SIGN_UP_REQUIRE_VERIFICATION,
+   AUTH_LOGIN_DATA,
+   AUTH_LOGIN_ERROR,
+   AUTH_LOGIN_FETCH,
+   AUTH_LOGIN_REQUIRE_2FA,
+   AUTH_LOGIN_REQUIRE_2FA_RESET,
+   AUTH_REGISTER_DATA,
+   AUTH_REGISTER_ERROR,
+   AUTH_REGISTER_FETCH,
+   AUTH_REGISTER_REQUIRE_VERIFICATION,
    AUTH_VERIFICATION_FETCH,
    AUTH_VERIFICATION_SUCCESS,
 } from './constants';
@@ -25,10 +25,10 @@ export interface AuthState {
    requireVerification?: boolean;
    emailVerified: boolean;
    authError?: CommonError;
-   signUpError?: CommonError;
+   registerError?: CommonError;
    current_password_entropy: number;
-   signInLoading: boolean;
-   signUpLoading: boolean;
+   loginLoading: boolean;
+   registerLoading: boolean;
    logoutError?: CommonError;
    logoutLoading: boolean;
 }
@@ -38,25 +38,25 @@ export const initialStateAuth: AuthState = {
    requireVerification: false,
    emailVerified: false,
    current_password_entropy: 0,
-   signInLoading: false,
-   signUpLoading: false,
+   loginLoading: false,
+   registerLoading: false,
    logoutLoading: false,
 };
 
 export const authReducer = (state = initialStateAuth, action: AuthAction) => {
    switch (action.type) {
-      case AUTH_SIGN_IN_REQUIRE_2FA:
+      case AUTH_LOGIN_REQUIRE_2FA:
          return {
             ...state,
             require2FA: action.payload.require2fa,
          };
-      case AUTH_SIGN_IN_REQUIRE_2FA_RESET:
+      case AUTH_LOGIN_REQUIRE_2FA_RESET:
          return {
             ...state,
             require2FA: false,
-            signInLoading: false,
+            loginLoading: false,
          };
-      case AUTH_SIGN_UP_REQUIRE_VERIFICATION:
+      case AUTH_REGISTER_REQUIRE_VERIFICATION:
          return {
             ...state,
             requireVerification: action.payload.requireVerification,
@@ -65,18 +65,18 @@ export const authReducer = (state = initialStateAuth, action: AuthAction) => {
          return { ...state, emailVerified: false };
       case AUTH_VERIFICATION_SUCCESS:
          return { ...state, emailVerified: true };
-      case AUTH_SIGN_IN_FETCH:
-         return { ...state, signInLoading: true };
-      case AUTH_SIGN_IN_DATA:
-         return { ...state, signInLoading: false };
-      case AUTH_SIGN_IN_ERROR:
-         return { ...state, authError: action.error, signInLoading: false };
-      case AUTH_SIGN_UP_FETCH:
-         return { ...state, signUpLoading: true };
-      case AUTH_SIGN_UP_DATA:
-         return { ...state, signUpLoading: false };
-      case AUTH_SIGN_UP_ERROR:
-         return { ...state, signUpError: action.error, signUpLoading: false };
+      case AUTH_LOGIN_FETCH:
+         return { ...state, loginLoading: true };
+      case AUTH_LOGIN_DATA:
+         return { ...state, loginLoading: false };
+      case AUTH_LOGIN_ERROR:
+         return { ...state, authError: action.error, loginLoading: false };
+      case AUTH_REGISTER_FETCH:
+         return { ...state, registerLoading: true };
+      case AUTH_REGISTER_DATA:
+         return { ...state, registerLoading: false };
+      case AUTH_REGISTER_ERROR:
+         return { ...state, registerError: action.error, registerLoading: false };
       case AUTH_LOGOUT_FETCH:
          return { ...state, logoutLoading: true };
       case AUTH_LOGOUT_DATA:

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 export const useCoba = () => {
-  const [state, setState] = useState<string>('');
-  useEffect(() => {
-   setState('wkwk')
-  }, []);
-  return state;
-}
+   const [state, setState] = useState<string>('');
+   useEffect(() => {
+      setState('wkwk');
+   }, []);
+   return state;
+};

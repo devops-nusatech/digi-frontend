@@ -4,4 +4,4 @@ export const imageIsExists = (url: string) => {
    http.send(null);
 
    return http.status !== 404;
-}
+};

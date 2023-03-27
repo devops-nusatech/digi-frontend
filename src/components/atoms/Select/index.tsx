@@ -4,7 +4,7 @@ import React, {
    useState,
    useRef,
    FC,
-   ReactNode
+   ReactNode,
 } from 'react';
 
 interface SelectProps {
@@ -38,37 +38,49 @@ export const Select: FC<SelectProps> = ({
       if (selectWrapper && !selectWrapper.current?.contains(e.target)) {
          setToggle(!toggle);
       }
-   }
+   };
    useEffect(() => {
       window.addEventListener('mousedown', handleOutside);
       return () => window.removeEventListener('mousedown', handleOutside);
    }, []);
-   const selected: any = items.find((item: any) => item.props.value === value)
+   const selected: any = items.find((item: any) => item.props.value === value);
 
    return (
       <div
          ref={selectWrapper}
          onClick={handleToggle}
          className={label ? 'space-y-3' : ''}
-         key={name}
-      >
+         key={name}>
          {label && (
-            <div className="text-xs leading-none font-bold uppercase text-neutral5">
+            <div className="text-xs font-bold uppercase leading-none text-neutral5">
                {label}
             </div>
          )}
          <div className="relative">
-            <div className={`clear-both cursor-pointer block outline-none relative transition ease-in-out duration-200 select-none whitespace-nowrap float-none w-full h-12 pl-4 pr-12 shadow-input dark:shadow-border-dark bg-neutral8 dark:bg-neutral2 rounded-xl border-none opacity-100 font-medium leading-12 before:content-[''] before:absolute before:top-1/2 before:right-2 before:h-8 before:w-8 before:-translate-y-1/2 before:rounded-full before:transition-transform before:duration-200 before:icon-arrow ${toggle && name ? 'before:rotate-180' : ''}`} tabIndex={0}>
+            <div
+               className={`before:icon-arrow relative float-none clear-both block h-12 w-full cursor-pointer select-none whitespace-nowrap rounded-xl border-none bg-neutral8 pl-4 pr-12 font-medium leading-12 opacity-100 shadow-input outline-none transition duration-200 ease-in-out before:absolute before:top-1/2 before:right-2 before:h-8 before:w-8 before:-translate-y-1/2 before:rounded-full before:transition-transform before:duration-200 before:content-[''] dark:bg-neutral2 dark:shadow-border-dark ${
+                  toggle && name ? 'before:rotate-180' : ''
+               }`}
+               tabIndex={0}>
                <span className={value === '' ? 'text-gray-500' : ''}>
                   {selected.props.children ?? placeholder}
                </span>
-               <ul className={`absolute w-full left-0 right-0 ${toggle && name ? 'opacity-100 pointer-events-auto scale-100 translate-y-0' : 'opacity-0 pointer-events-none scale-75 -translate-y-5'} truncate transition-all duration-200 z-[9] mt-0.5 rounded-xl bg-neutral8 dark:bg-neutral1 border-2 border-neutral6 dark:border-neutral1 shadow-dropdown-2 dark:shadow-dropdown-3`} style={{ transformOrigin: '50% 0' }}>
+               <ul
+                  className={`absolute left-0 right-0 w-full ${
+                     toggle && name
+                        ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
+                        : 'pointer-events-none -translate-y-5 scale-75 opacity-0'
+                  } z-[9] mt-0.5 truncate rounded-xl border-2 border-neutral6 bg-neutral8 shadow-dropdown-2 transition-all duration-200 dark:border-neutral1 dark:bg-neutral1 dark:shadow-dropdown-3`}
+                  style={{ transformOrigin: '50% 0' }}>
                   {items.map((item: any, index) => (
                      <li
                         key={index}
-                        onClick={() => onClick({ target: { name, value: item.props.value } })}
-                        className="cursor-pointer min-h-auto px-3.5 py-2.5 leading-[1.4] font-medium hover:bg-neutral5 hover:dark:bg-neutral2 transition-all duration-200"
-                     >
+                        onClick={() =>
+                           onClick({
+                              target: { name, value: item.props.value },
+                           })
+                        }
+                        className="min-h-auto cursor-pointer px-3.5 py-2.5 font-medium leading-[1.4] transition-all duration-200 hover:bg-neutral5 hover:dark:bg-neutral2">
                         {item.props.children}
                      </li>
                   ))}
@@ -76,9 +88,9 @@ export const Select: FC<SelectProps> = ({
             </div>
          </div>
       </div>
-   )
-}
+   );
+};
 
 Select.defaultProps = {
-   width: 'w-[104px]'
-}
+   width: 'w-[104px]',
+};
