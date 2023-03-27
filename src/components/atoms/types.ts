@@ -54,7 +54,7 @@ export type Rounded =
    | 'full'
    | '20';
 
-export type Weight = 'normal' | 'medium' | 'semibold';
+export type Weight = 'normal' | 'medium' | 'semibold' | 'bold';
 
 export type AccordionData = {
    title: string;

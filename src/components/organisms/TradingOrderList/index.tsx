@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
-import { IntlProps } from '../../../';
 import { Decimal, Skeleton } from 'components';
 import {
    Market,
@@ -24,6 +23,7 @@ import {
 } from 'modules';
 import { OrderCommon } from 'modules/types';
 import { accumulateVolume, calcMaxVolume } from 'helpers';
+import { IntlProps } from '../../../';
 
 type TCurrentTab = 'all' | 'asks' | 'bids';
 
@@ -331,7 +331,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                                     )}
                                  </div>
                                  <div
-                                    className={`pointer-events-none absolute inset-y-0 right-0 z-0 bg-primary5 bg-opacity-20 transition ease-in-out dark:bg-chart1 dark:bg-opacity-30`}
+                                    className="pointer-events-none absolute inset-y-0 right-0 z-0 bg-primary5 bg-opacity-20 transition ease-in-out dark:bg-chart1 dark:bg-opacity-30"
                                     style={{ width: `${bgWidthBids[index]}%` }}
                                  />
                               </div>
@@ -420,7 +420,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                         ? 'rotate-0 fill-primary5'
                         : 'rotate-180 fill-primary4'
                   }`}>
-                  <use xlinkHref="#icon-arrow-top"></use>
+                  <use xlinkHref="#icon-arrow-top" />
                </svg>
                <div
                   className={`text-base font-medium leading-normal tracking-wider ${
@@ -436,20 +436,17 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                </div>
             </>
          );
-      } else {
-         return (
-            <>
-               <span className={'cr-combined-order-book__market-negative'}>
-                  0
-               </span>
-               <span>
-                  {this.props.intl.formatMessage({
-                     id: 'page.body.trade.orderbook.lastMarket',
-                  })}
-               </span>
-            </>
-         );
       }
+      return (
+         <>
+            <span className="cr-combined-order-book__market-negative">0</span>
+            <span>
+               {this.props.intl.formatMessage({
+                  id: 'page.body.trade.orderbook.lastMarket',
+               })}
+            </span>
+         </>
+      );
    }
 
    private mapValues = (maxVolume?: number, data?: number[]) =>

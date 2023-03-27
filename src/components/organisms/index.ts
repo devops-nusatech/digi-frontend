@@ -13,7 +13,6 @@ export * from './TradingOrderListCombined';
 export * from './TradingOrderListTable';
 export * from './TradingChart';
 export * from './TradingOrderLast';
-export * from './TradingOrder';
 export * from './TradingOrderV2';
 export * from './TradingOrderV3';
 export * from './TradingOrderNew';

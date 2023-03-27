@@ -70,6 +70,15 @@ const TradingFC: FC<TradingProps> = ({
    const translate = (id: string) => intl.formatMessage({ id });
 
    useEffect(() => {
+      document.body.classList.remove('bg-neutral8');
+      document.body.classList.add('bg-shade4');
+      return () => {
+         document.body.classList.remove('bg-shade4');
+         document.body.classList.add('bg-neutral8');
+      };
+   }, []);
+
+   useEffect(() => {
       if (!currentMarket) {
          setCurrentMarket(
             location.state && location.state?.pathname
@@ -88,7 +97,7 @@ const TradingFC: FC<TradingProps> = ({
    ]);
 
    return (
-      <div className="min-h-[calc(100vh-114px)] bg-shade4 p-4 pb-33 dark:bg-neutral1 lg:min-h-[calc(100vh-88px)] lg:p-1">
+      <div className="mx-auto min-h-c-screen-28.5 w-full max-w-hd bg-shade4 p-4 pb-33 dark:bg-neutral1 lg:min-h-c-screen-22.5 lg:p-1">
          <TradingHeader
             currentMarket={currentMarket}
             marketTickers={marketTickers}

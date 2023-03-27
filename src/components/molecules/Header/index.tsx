@@ -209,7 +209,7 @@ const HeaderFC = ({
    return (
       <>
          <header
-            className={`relative z-10 select-none px-0 pt-8 pb-6 shadow-none md:py-5 ${
+            className={`relative z-10 select-none bg-neutral8 px-0 pt-8 pb-6 shadow-none dark:bg-neutral1 md:py-5 ${
                shouldRenderHeaderFull || shouldNoRenderHeaderFull
                   ? 'md:shadow-header'
                   : ''

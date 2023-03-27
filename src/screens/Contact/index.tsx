@@ -8,6 +8,7 @@ import {
    InputGroup,
    Label,
    Nav,
+   Pick,
    Skeleton,
 } from 'components';
 import { useNews2Fetch, useScrollUp } from 'hooks';
@@ -81,16 +82,7 @@ export const Contact = () => {
       const message = encodeURIComponent(getRefObject(messageRef)?.value);
       const link = 'https://wa.me/62882005439488?text=';
       return `${link}Format%20Quesion%0A%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%3D%0A1.%20Topic%20%3D%20${topic}%0A2.%20Issue%20%3D%20${issue}%0A3.%20Issue2%20%3D%20${issue2}%0A4.%20Email%20%3D%20${email}%0A5.%20Subject%20%3D%20${subject}%0A6.%20Message%20%3D%20${message}`;
-   }, [
-      topic,
-      issue,
-      issue2,
-      emailRef,
-      subjectRef,
-      messageRef,
-      getRefObject,
-      setState,
-   ]);
+   }, [topic, issue, issue2, emailRef, subjectRef, messageRef]);
 
    const renderSocialIcon = (name: string, url: string) => (
       <AdibTooltip
@@ -254,44 +246,19 @@ export const Contact = () => {
                            Select a topic
                         </div>
                         <div className="-mx-2.5 flex">
-                           <label className="relative mx-2.5 w-c-1/2-5 shrink-0 grow-0 basis-c-1/2-5 cursor-pointer select-none">
-                              <input
-                                 onChange={() => handleChangeTopic('wallet')}
-                                 className="peer absolute top-0 left-0 opacity-0"
-                                 type="radio"
-                                 name="topic"
-                                 checked={topic === 'wallet'}
-                              />
-                              <span className="flex h-12 items-center justify-center space-x-3.5 rounded-lg bg-neutral8 p-3 transition-all duration-300 peer-checked:shadow-dropdown-primary dark:bg-neutral2 md:h-20">
-                                 <span className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary1 md:flex">
-                                    <svg className="2-5 h-5 fill-neutral8">
-                                       <use xlinkHref="#icon-wallet"></use>
-                                    </svg>
-                                 </span>
-                                 <span className="font-dm text-base font-bold leading-none">
-                                    Wallet
-                                 </span>
-                              </span>
-                           </label>
-                           <label className="relative mx-2.5 w-c-1/2-5 shrink-0 grow-0 basis-c-1/2-5 cursor-pointer select-none">
-                              <input
-                                 onChange={() => handleChangeTopic('exchange')}
-                                 className="peer absolute top-0 left-0 opacity-0"
-                                 type="radio"
-                                 name="topic"
-                                 checked={topic === 'exchange'}
-                              />
-                              <span className="flex h-12 items-center justify-center space-x-3.5 rounded-lg bg-neutral8 p-3 transition-all duration-300 peer-checked:shadow-dropdown-primary dark:bg-neutral2 md:h-20">
-                                 <span className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary3 md:flex">
-                                    <svg className="2-5 h-5 fill-neutral8">
-                                       <use xlinkHref="#icon-candlesticks"></use>
-                                    </svg>
-                                 </span>
-                                 <span className="font-dm text-base font-bold leading-none">
-                                    Exchange
-                                 </span>
-                              </span>
-                           </label>
+                           <Pick
+                              title="Wallet"
+                              xlinkHref="wallet"
+                              onChange={() => handleChangeTopic('wallet')}
+                              isActive={topic === 'wallet'}
+                           />
+                           <Pick
+                              title="Exchange"
+                              xlinkHref="candlesticks"
+                              onChange={() => handleChangeTopic('exchange')}
+                              isActive={topic === 'exchange'}
+                              variant="ungu"
+                           />
                         </div>
                      </div>
                      <AdibDropdown

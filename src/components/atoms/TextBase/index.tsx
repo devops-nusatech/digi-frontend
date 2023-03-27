@@ -7,6 +7,7 @@ const classes = {
       normal: 'font-normal',
       medium: 'font-medium',
       semibold: 'font-semibold',
+      bold: 'font-bold',
    },
 };
 
@@ -18,9 +19,7 @@ export const TextBase: FC<TextBaseProps> = ({ font, text, className }) => {
    return (
       <div
          className={classNames(
-            `text-base leading-normal ${font ? classes.font[font] : ''} ${
-               className || ''
-            }`
+            `text-base ${font ? classes.font[font] : ''} ${className || ''}`
          )}>
          {text}
       </div>

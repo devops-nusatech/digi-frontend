@@ -1,12 +1,12 @@
 import React, {
    forwardRef,
-   HTMLAttributes,
-   MouseEvent,
+   ButtonHTMLAttributes,
    ReactNode,
    useMemo,
+   useCallback,
 } from 'react';
 import { classNames } from 'helpers';
-import { ButtonType, Rounded, Size, Variant, Width, Color } from '../types';
+import { Rounded, Size, Variant, Width, Color, ButtonType } from '../types';
 
 const classes = {
    base: 'group inline-flex justify-center items-center leading-none cursor-pointer whitespace-nowrap transition ease-in-out duration-300',
@@ -51,24 +51,17 @@ const classes = {
    },
 };
 
-interface ButtonProps extends HTMLAttributes<HTMLElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+   text: ReactNode | string;
    type?: ButtonType;
    size?: Size;
    variant?: Variant;
    width?: Width;
-   text: ReactNode | string;
    color?: Color;
-   className?: string;
-   disabled?: boolean;
    rounded?: Rounded;
-   fontDM?: boolean;
-   onClick?: (e: any) => void;
-   onMouseOver?: (e: MouseEvent) => void;
-   onMouseLeave?: (e: MouseEvent) => void;
-   onFocus?: (e: any) => void;
    icLeft?: JSX.Element;
    icRight?: JSX.Element;
-   tabIndex?: number;
+   fontDM?: boolean;
    withLoading?: boolean;
 }
 
@@ -77,24 +70,20 @@ type Ref = HTMLButtonElement;
 export const Button = forwardRef<Ref, ButtonProps>(
    (
       {
+         text,
          type,
          size,
          variant,
          width,
-         text,
          className,
          color,
          disabled,
          rounded,
          fontDM,
          onClick,
-         onMouseOver,
-         onMouseLeave,
-         onFocus,
          children,
          icLeft,
          icRight,
-         tabIndex,
          withLoading,
       },
       ref
@@ -128,22 +117,24 @@ export const Button = forwardRef<Ref, ButtonProps>(
             ),
          [variant, withLoading]
       );
+
+      const handleOnClick = useCallback(
+         (e: any) => {
+            onClick && onClick(e);
+         },
+         [onClick]
+      );
       return (
          <button
             ref={ref}
             type={type}
-            onClick={onClick}
-            disabled={disabled}
-            onMouseOver={onMouseOver}
-            onMouseLeave={onMouseLeave}
-            tabIndex={tabIndex}
-            onFocus={onFocus}
+            onClick={handleOnClick}
             className={classNames(`
-               ${classes.base}
-               ${classes.size[String(size)]}
-               ${classes.variant[String(variant)]}
-               ${classes.width[String(width)]}
-               ${classes.color[String(color)]}
+               ${classes.base || ''}
+               ${classes.size[size!] || ''}
+               ${classes.variant[variant!] || ''}
+               ${classes.width[width!] || ''}
+               ${classes.color[color!] || ''}
                ${rounded ? classes.rounded[rounded] : ''}
                ${fontDM ? classes.fontDM : ''}
                ${disabled ? classes.disabled : ''}
