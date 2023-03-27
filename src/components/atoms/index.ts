@@ -60,3 +60,4 @@ export * from './Td';
 export * from './Th';
 export * from './Scan';
 export * from './Info';
+export * from './TextArea';
