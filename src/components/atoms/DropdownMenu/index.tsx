@@ -41,7 +41,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
       md:top-c-full+5
       md:left-1/2
       md-max:right-4
-      ${translateX ? translateX : 'md:-translate-x-1/2'}
+      ${translateX || 'md:-translate-x-1/2'}
       ${
          isOpen
             ? 'visible translate-y-0 scale-100 opacity-100'
@@ -49,7 +49,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
       }
       ${classNames(`
          ${width ? classes.width[String(width)] : ''}
-         ${className ? className : ''}
+         ${className || ''}
       `)}
       before:icon-dropdown
       before:dark:icon-dropdown-dark

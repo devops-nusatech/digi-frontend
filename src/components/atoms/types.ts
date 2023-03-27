@@ -71,7 +71,15 @@ export type TLabel = {
    label: string;
 };
 export type TClassName = {
-   className: string;
+   /**
+    * add class name in tag
+    * @type {string}
+    */
+   className?: string;
 };
 
-export type LabelProps = TLabel & TClassName;
+export type TChildren = {
+   children?: ReactNode;
+} & TClassName;
+
+export type LabelProps = TLabel & TClassName & TChildren;

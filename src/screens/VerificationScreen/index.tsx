@@ -55,7 +55,7 @@ class Verification extends React.Component<Props, IntlProps> {
    }
 
    public render() {
-      return <Redirect to={'/login'} />;
+      return <Redirect to="/login" />;
    }
 }
 

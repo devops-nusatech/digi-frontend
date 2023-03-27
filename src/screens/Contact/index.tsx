@@ -6,7 +6,6 @@ import {
    AdibTooltip,
    Button,
    InputGroup,
-   Label,
    Nav,
    Pick,
    Skeleton,

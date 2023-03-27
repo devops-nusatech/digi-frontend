@@ -230,12 +230,10 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
          isLoggedIn,
          isMobileDevice,
          userLoading,
-         // location,
          configsLoading,
          platformAccessStatus,
       } = this.props;
       const { isShownExpSessionModal } = this.state;
-      //   const tradingCls = location.pathname.includes('/trading') ? 'trading-layout' : '';
       toggleColorTheme(colorTheme);
 
       if (configsLoading && !platformAccessStatus.length) {

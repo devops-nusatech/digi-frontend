@@ -1,13 +1,29 @@
 import React from 'react';
-import { TextProps } from '../types';
+import { TextProps, Weight } from '../types';
 
-export const Text2xl = ({ text, className }: TextProps) => {
+const classes = {
+   font: {
+      normal: 'font-normal',
+      medium: 'font-medium',
+      semibold: 'font-semibold',
+   },
+};
+
+interface Text2xlProps extends TextProps {
+   font?: Weight;
+}
+
+export const Text2xl = ({ font, text, className }: Text2xlProps) => {
    return (
       <div
-         className={`text-2xl font-semibold leading-custom2 tracking-custom1 ${
-            className || ''
-         }`}>
+         className={`text-2xl ${
+            font ? classes.font[font!] : ''
+         } tracking-custom1 ${className || ''}`}>
          {text}
       </div>
    );
+};
+
+Text2xl.defaultProps = {
+   font: 'semibold',
 };

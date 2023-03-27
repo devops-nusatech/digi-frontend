@@ -1,12 +1,13 @@
 import React, { RefObject, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { initGeetest } from '../../../helpers/geetest';
 import {
    GeetestCaptchaResponse,
    geetestCaptchaFetch,
    selectCaptchaKeys,
    selectCurrentLanguage,
 } from 'modules';
+import { captchaLogin } from 'api';
+import { initGeetest } from '../../../helpers/geetest';
 
 interface GeetestProps {
    buttonRef: RefObject<HTMLButtonElement>;
@@ -20,23 +21,27 @@ export const GeetestCaptchaV3 = ({ buttonRef, onSuccess }: GeetestProps) => {
    const geetestCaptchaKeys = useSelector(selectCaptchaKeys);
 
    useEffect(() => {
-      dispatch(geetestCaptchaFetch());
+      if (captchaLogin() === true) {
+         dispatch(geetestCaptchaFetch());
+      }
    }, [dispatch]);
 
    useEffect(() => {
-      initGeetest(
-         {
-            gt: geetestCaptchaKeys && geetestCaptchaKeys?.gt,
-            challenge: geetestCaptchaKeys && geetestCaptchaKeys?.challenge,
-            offline: false,
-            new_captcha: false,
-            product: 'bind',
-            lang,
-            https: true,
-            hideClose: true,
-         },
-         handlerForBind
-      );
+      if (captchaLogin() === true) {
+         initGeetest(
+            {
+               gt: geetestCaptchaKeys && geetestCaptchaKeys?.gt,
+               challenge: geetestCaptchaKeys && geetestCaptchaKeys?.challenge,
+               offline: false,
+               new_captcha: false,
+               product: 'bind',
+               lang,
+               https: true,
+               hideClose: true,
+            },
+            handlerForBind
+         );
+      }
    }, [geetestCaptchaKeys]);
 
    const handlerForBind = useCallback(

@@ -301,6 +301,7 @@ import {
    GeetestCaptchaResponse,
    selectMobileDeviceState,
 } from 'modules';
+import { captchaLogin } from 'api';
 
 export interface LoginProps {
    geetestCaptchaRef: RefObject<HTMLButtonElement>;
@@ -435,7 +436,7 @@ export const FormLogin = memo(
          (e: KeyboardEvent<HTMLDivElement>) => {
             if (e.key === 'Enter') {
                e.preventDefault();
-               captchaType !== 'none'
+               captchaType !== 'none' && captchaLogin() === true
                   ? captcha_response && handleClick()
                   : handleClick();
             }
@@ -453,7 +454,10 @@ export const FormLogin = memo(
       );
 
       const handleLogin = useCallback(
-         (e: any) => captchaType === 'none' && handleClick(e as any),
+         (e: any) =>
+            captchaType === 'none' &&
+            captchaLogin() === false &&
+            handleClick(e as any),
          [captchaType, handleClick]
       );
 

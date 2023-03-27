@@ -1,11 +1,37 @@
 import React from 'react';
-import { TextProps } from '../types';
+import { classNames } from 'helpers';
+import { TextProps, Weight } from '../types';
 
-export const TextXs = ({ text, className }: TextProps) => {
+const classes = {
+   font: {
+      normal: 'font-normal',
+      medium: 'font-medium',
+      semibold: 'font-semibold',
+   },
+};
+
+type TextXsProps = TextProps & {
+   font?: Weight;
+   withColorDefault?: boolean;
+};
+
+export const TextXs = ({
+   font,
+   text,
+   className,
+   withColorDefault,
+}: TextXsProps) => {
    return (
       <div
-         className={`text-xs leading-custom4 text-neutral4 ${className || ''}`}>
+         className={classNames(`
+         text-xs  ${font ? classes.font[font] : ''} ${
+            withColorDefault ? 'text-neutral4' : ''
+         } ${className || ''}`)}>
          {text}
       </div>
    );
+};
+TextXs.defaultProps = {
+   withColorDefault: true,
+   font: 'normal',
 };
