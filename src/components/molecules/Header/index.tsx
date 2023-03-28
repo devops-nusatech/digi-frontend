@@ -110,8 +110,11 @@ export const Header = withRouter(({ history }) => {
       [dataMode, handleSwitch]
    );
    const handleSelectDropDownFlag = useCallback(
-      (value: string, type?: string) =>
-         type === 'lang' ? dispatch(changeLanguage(value)) : null,
+      (value: string, type?: string) => {
+         if (type === 'lang') {
+            dispatch(changeLanguage(value));
+         }
+      },
       [dispatch]
    );
    const handleSwithTheme = useCallback(

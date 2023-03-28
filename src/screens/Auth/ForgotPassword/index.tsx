@@ -14,18 +14,16 @@ import {
 import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { IntlProps } from '../../..';
+import { IntlProps } from 'index';
 import { Captcha, FormForgotPassword, LayoutAuth } from 'components';
 import { EMAIL_REGEX, ERROR_INVALID_EMAIL } from 'helpers';
 import {
-   Configs,
    forgotPassword,
    GeetestCaptchaResponse,
    GeetestCaptchaV4Response,
    resetCaptchaState,
    RootState,
    selectCaptchaResponse,
-   selectConfigs,
    selectForgotPasswordError,
    selectForgotPasswordSuccess,
    selectGeetestCaptchaSuccess,
@@ -33,11 +31,11 @@ import {
 } from 'modules';
 import { CommonError } from 'modules/types';
 import { useDocumentTitle } from 'hooks';
+import { captchaType } from 'api';
 
 interface ReduxProps {
    success: boolean;
    error?: CommonError;
-   configs: Configs;
    captcha_response?:
       | string
       | GeetestCaptchaResponse
@@ -62,7 +60,6 @@ type Props = RouterProps & ReduxProps & DispatchProps & IntlProps;
 const ForgotPasswordFC: FC<Props> = ({
    success,
    error,
-   configs,
    captcha_response,
    reCaptchaSuccess,
    geetestCaptchaSuccess,
@@ -83,7 +80,7 @@ const ForgotPasswordFC: FC<Props> = ({
    const translate = (id: string) => intl.formatMessage({ id });
 
    const handleChangePassword = () => {
-      switch (configs.captcha_type) {
+      switch (captchaType()) {
          case 'recaptcha':
          case 'geetest':
             forgotPassword({ email, captcha_response });
@@ -157,7 +154,7 @@ const ForgotPasswordFC: FC<Props> = ({
             placeholder={translate('page.header.login.email')}
             validateForm={validateForm}
             handleChangeEmail={handleInputEmail}
-            captchaType={configs.captcha_type}
+            captchaType={captchaType()}
             renderCaptcha={renderCaptcha()}
             reCaptchaSuccess={reCaptchaSuccess}
             geetestCaptchaSuccess={geetestCaptchaSuccess}
@@ -171,7 +168,6 @@ const ForgotPasswordFC: FC<Props> = ({
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    success: selectForgotPasswordSuccess(state),
    error: selectForgotPasswordError(state),
-   configs: selectConfigs(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),

@@ -1,4 +1,3 @@
-export * from './ChangeForgottenPasswordScreen';
 export * from './ConfirmScreen';
 export * from './EmailVerificationScreen';
 export * from './ForgotPassword';
@@ -8,7 +7,6 @@ export * from './Profile';
 export * from './ProfileAccountActivity';
 export * from './ProfileApiKeys';
 export * from './ProfileAuth';
-export * from './ProfileChangePassword';
 export * from './ProfileColorTheme';
 export * from './ProfileLanguage';
 export * from './ProfileVerificationScreen';

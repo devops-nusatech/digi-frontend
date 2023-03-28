@@ -1,4 +1,3 @@
-export * from './ChangeForgottenPasswordScreen';
 export * from './ConfirmScreen';
 export * from './DocumentationScreen';
 export * from './EmailVerification';
@@ -7,7 +6,6 @@ export * from './History';
 export * from './LandingScreen';
 export * from './MagicLinkScreen';
 export * from './OrdersTabScreen';
-export * from './ProfileScreen';
 export * from './ProfileTwoFactorAuthScreen';
 export * from './LoginScreen';
 export * from './RegisterScreen';

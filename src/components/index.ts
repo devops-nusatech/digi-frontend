@@ -1,7 +1,6 @@
 export * from './Beneficiaries';
 export * from './Blur';
 export * from './Captcha';
-export * from './ChangePassword';
 export * from './CombinedOrderBook';
 export * from './CopyableTextField';
 export * from './CurrencyInfo';

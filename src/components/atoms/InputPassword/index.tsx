@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { InputGroup, PasswordStrengthBar } from 'components';
@@ -7,11 +7,8 @@ import {
    passwordErrorSecondSolution,
    passwordErrorThirdSolution,
 } from 'helpers';
-import {
-   entropyPasswordFetch,
-   selectConfigs,
-   selectCurrentPasswordEntropy,
-} from 'modules';
+import { entropyPasswordFetch, selectCurrentPasswordEntropy } from 'modules';
+import { passwordMinEntropy } from 'api';
 
 interface InputPasswordProps {
    /**
@@ -36,7 +33,6 @@ export const InputPassword = ({
 }: InputPasswordProps): ReactElement => {
    const intl = useIntl();
    const dispatch = useDispatch();
-   const configs = useSelector(selectConfigs);
    const currentPasswordEntropy = useSelector(selectCurrentPasswordEntropy);
 
    const [password, setPassword] = useState('');
@@ -48,73 +44,74 @@ export const InputPassword = ({
       useState(false);
    const [passwordPopUp, setPasswordPopUp] = useState(false);
 
-   const handleShowStrength = () => setPasswordPopUp(!passwordPopUp);
+   const handleShowStrength = useCallback(
+      () => setPasswordPopUp(!passwordPopUp),
+      [passwordPopUp]
+   );
 
-   const handleChangePassword = (password: string) => {
-      if (passwordErrorFirstSolution(password) && !passwordErrorFirstSolved) {
-         setPasswordErrorFirstSolved(true);
-      } else if (
-         !passwordErrorFirstSolution(password) &&
-         passwordErrorFirstSolved
-      ) {
-         setPasswordErrorFirstSolved(false);
-      }
+   const handleChangePassword = useCallback(
+      (password: string) => {
+         if (
+            passwordErrorFirstSolution(password) &&
+            !passwordErrorFirstSolved
+         ) {
+            setPasswordErrorFirstSolved(true);
+         } else if (
+            !passwordErrorFirstSolution(password) &&
+            passwordErrorFirstSolved
+         ) {
+            setPasswordErrorFirstSolved(false);
+         }
 
-      if (passwordErrorSecondSolution(password) && !passwordErrorSecondSolved) {
-         setPasswordErrorSecondSolved(true);
-      } else if (
-         !passwordErrorSecondSolution(password) &&
-         passwordErrorSecondSolved
-      ) {
-         setPasswordErrorSecondSolved(false);
-      }
+         if (
+            passwordErrorSecondSolution(password) &&
+            !passwordErrorSecondSolved
+         ) {
+            setPasswordErrorSecondSolved(true);
+         } else if (
+            !passwordErrorSecondSolution(password) &&
+            passwordErrorSecondSolved
+         ) {
+            setPasswordErrorSecondSolved(false);
+         }
 
-      if (passwordErrorThirdSolution(password) && !passwordErrorThirdSolved) {
-         setPasswordErrorThirdSolved(true);
-      } else if (
-         !passwordErrorThirdSolution(password) &&
-         passwordErrorThirdSolved
-      ) {
-         setPasswordErrorThirdSolved(false);
-      }
+         if (
+            passwordErrorThirdSolution(password) &&
+            !passwordErrorThirdSolved
+         ) {
+            setPasswordErrorThirdSolved(true);
+         } else if (
+            !passwordErrorThirdSolution(password) &&
+            passwordErrorThirdSolved
+         ) {
+            setPasswordErrorThirdSolved(false);
+         }
 
-      setPassword(password);
-      onChange(password);
-      setTimeout(() => {
-         dispatch(entropyPasswordFetch({ password }));
-      }, 500);
-   };
+         setPassword(password);
+         onChange(password);
+         setTimeout(() => {
+            dispatch(entropyPasswordFetch({ password }));
+         }, 500);
+      },
+      [
+         dispatch,
+         onChange,
+         passwordErrorFirstSolved,
+         passwordErrorSecondSolved,
+         passwordErrorThirdSolved,
+      ]
+   );
 
-   const translate = (id: string) => intl.formatMessage({ id });
+   const translate = useCallback(
+      (id: string) => intl.formatMessage({ id }),
+      [intl]
+   );
 
-   return (
-      <div>
-         <InputGroup
-            id="password"
-            autoFocus={autoFocus}
-            label={
-               label
-                  ? label
-                  : translate(
-                       'page.body.profile.header.account.content.password.new'
-                    )
-            }
-            placeholder={
-               label
-                  ? label
-                  : translate(
-                       'page.body.profile.header.account.content.password.new'
-                    )
-            }
-            value={password}
-            onChange={handleChangePassword}
-            onFocus={handleShowStrength}
-            onBlur={handleShowStrength}
-            withIconPassword
-         />
-         {password && (
+   const renderPasswordEntropy = useMemo(() => {
+      return (
+         password && (
             <PasswordStrengthBar
-               minPasswordEntropy={configs.password_min_entropy}
+               minPasswordEntropy={passwordMinEntropy()}
                currentPasswordEntropy={currentPasswordEntropy}
                passwordExist={password !== ''}
                passwordErrorFirstSolved={passwordErrorFirstSolved}
@@ -123,7 +120,42 @@ export const InputPassword = ({
                passwordPopUp={passwordPopUp}
                translate={translate}
             />
-         )}
+         )
+      );
+   }, [
+      currentPasswordEntropy,
+      password,
+      passwordErrorFirstSolved,
+      passwordErrorSecondSolved,
+      passwordErrorThirdSolved,
+      passwordPopUp,
+      translate,
+   ]);
+
+   return (
+      <div>
+         <InputGroup
+            id="password"
+            autoFocus={autoFocus}
+            label={
+               label ||
+               translate(
+                  'page.body.profile.header.account.content.password.new'
+               )
+            }
+            placeholder={
+               label ||
+               translate(
+                  'page.body.profile.header.account.content.password.new'
+               )
+            }
+            value={password}
+            onChange={handleChangePassword}
+            onFocus={handleShowStrength}
+            onBlur={handleShowStrength}
+            withIconPassword
+         />
+         {renderPasswordEntropy}
       </div>
    );
 };

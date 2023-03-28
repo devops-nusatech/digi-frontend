@@ -8,7 +8,7 @@ import {
 } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { isUsernameEnabled } from 'api';
+import { captchaType, isUsernameEnabled } from 'api';
 import { Captcha, FormRegister, LayoutAuth } from 'components';
 import {
    EMAIL_REGEX,
@@ -19,7 +19,6 @@ import {
    setDocumentTitle,
 } from 'helpers';
 import {
-   Configs,
    entropyPasswordFetch,
    GeetestCaptchaResponse,
    GeetestCaptchaV4Response,
@@ -28,7 +27,6 @@ import {
    RootState,
    selectCaptchaDataObjectLoading,
    selectCaptchaResponse,
-   selectConfigs,
    selectCurrentLanguage,
    selectCurrentPasswordEntropy,
    selectGeetestCaptchaSuccess,
@@ -41,7 +39,6 @@ import {
 import { IntlProps } from '../../../';
 
 interface ReduxProps {
-   configs: Configs;
    requireVerification?: boolean;
    loading?: boolean;
    currentPasswordEntropy: number;
@@ -131,7 +128,6 @@ class RegisterClass extends Component<Props> {
 
    public render() {
       const {
-         configs,
          isLoading,
          captcha_response,
          reCaptchaSuccess,
@@ -164,7 +160,7 @@ class RegisterClass extends Component<Props> {
             subTitle="Please fill in the data below with honest and accurate information.">
             <FormRegister
                geetestCaptchaRef={this.geetestCaptchaRef}
-               captchaType={configs.captcha_type}
+               captchaType={captchaType()}
                renderCaptcha={this.renderCaptcha()}
                captcha_response={captcha_response}
                isReCaptchaSuccess={reCaptchaSuccess}
@@ -304,7 +300,7 @@ class RegisterClass extends Component<Props> {
    };
 
    private handleregister = () => {
-      const { configs, i18n, captcha_response, register } = this.props;
+      const { i18n, captcha_response, register } = this.props;
       const { username, email, password, refId } = this.state;
       let payload: any = {
          email,
@@ -322,7 +318,7 @@ class RegisterClass extends Component<Props> {
          payload = { ...payload, refid: refId };
       }
 
-      switch (configs.captcha_type) {
+      switch (captchaType()) {
          case 'recaptcha':
          case 'geetest':
             payload = { ...payload, captcha_response };
@@ -395,7 +391,6 @@ class RegisterClass extends Component<Props> {
 }
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
-   configs: selectConfigs(state),
    i18n: selectCurrentLanguage(state),
    requireVerification: selectregisterRequireVerification(state),
    registerError: selectregisterError(state),

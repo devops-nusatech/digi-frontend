@@ -16,14 +16,12 @@ import { IntlProps } from 'index';
 import { Button, LayoutAuth, InputOtp, Captcha } from 'components';
 import { EMAIL_REGEX, setDocumentTitle } from 'helpers';
 import {
-   Configs,
    verificationFetch,
    emailVerificationFetch,
    GeetestCaptchaResponse,
    resetCaptchaState,
    RootState,
    selectCaptchaResponse,
-   selectConfigs,
    selectCurrentLanguage,
    selectGeetestCaptchaSuccess,
    selectMobileDeviceState,
@@ -39,6 +37,7 @@ import {
 } from 'modules';
 import type { CommonError } from 'modules/types';
 import { useCounter } from 'hooks';
+import { captchaType } from 'api';
 
 interface OwnProps {
    history: History;
@@ -62,7 +61,6 @@ interface ReduxProps {
    emailVerificationLoading: boolean;
    emailVerified: boolean;
    isMobileDevice: boolean;
-   configs: Configs;
    captcha_response?:
       | string
       | GeetestCaptchaResponse
@@ -86,7 +84,6 @@ const EmailVerificationComponent: FC<Props> = ({
    emailVerificationLoading,
    emailVerified,
    isMobileDevice,
-   configs: { captcha_type },
    captcha_response,
    reCaptchaSuccess,
    geetestCaptchaSuccess,
@@ -137,7 +134,7 @@ const EmailVerificationComponent: FC<Props> = ({
    );
 
    const handleResendCode = useCallback(() => {
-      switch (captcha_type) {
+      switch (captchaType()) {
          case 'recaptcha':
          case 'geetest':
             emailVerificationFetch({
@@ -164,8 +161,8 @@ const EmailVerificationComponent: FC<Props> = ({
    }, [captcha_response]);
 
    const handleClick = useCallback(
-      (e: any) => captcha_type === 'none' && handleResendCode(),
-      [handleResendCode, captcha_type]
+      (e: any) => captchaType() === 'none' && handleResendCode(),
+      [handleResendCode, captchaType()]
    );
 
    const handleVerification = useCallback(() => {
@@ -229,7 +226,6 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    emailVerified: selectEmailVerified(state),
    i18n: selectCurrentLanguage(state),
    isMobileDevice: selectMobileDeviceState(state),
-   configs: selectConfigs(state),
    error: selectSendEmailVerificationError(state),
    success: selectSendEmailVerificationSuccess(state),
    captcha_response: selectCaptchaResponse(state),

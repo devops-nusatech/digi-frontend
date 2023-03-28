@@ -9,16 +9,14 @@ import {
 import { injectIntl } from 'react-intl';
 // import { RouterProps } from 'react-router';
 import { compose } from 'redux';
-import { copyToClipboard, setDocumentTitle } from '../../helpers';
+import { copyToClipboard, setDocumentTitle } from 'helpers';
 import {
    alertPush,
    changePasswordError,
    changePasswordFetch,
-   Configs,
    entropyPasswordFetch,
    RootState,
    selectChangePasswordSuccess,
-   selectConfigs,
    selectCurrentPasswordEntropy,
    selectUserInfo,
    toggle2faFetch,
@@ -31,7 +29,6 @@ import { useModal } from 'hooks';
 interface ReduxProps {
    user: User;
    passwordChangeSuccess?: boolean;
-   configs: Configs;
    currentPasswordEntropy: number;
 }
 
@@ -234,7 +231,6 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
    passwordChangeSuccess: selectChangePasswordSuccess(state),
    currentPasswordEntropy: selectCurrentPasswordEntropy(state),
-   configs: selectConfigs(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<

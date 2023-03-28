@@ -10,7 +10,7 @@ import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { IntlProps } from '../..';
-import { captchaLogin } from '../../api';
+import { captchaLogin, captchaType } from '../../api';
 import { Captcha, LoginComponent, TwoFactorAuth } from '../../components';
 import {
    EMAIL_REGEX,
@@ -19,14 +19,12 @@ import {
    setDocumentTitle,
 } from '../../helpers';
 import {
-   Configs,
    GeetestCaptchaResponse,
    GeetestCaptchaV4Response,
    resetCaptchaState,
    RootState,
    selectAlertState,
    selectCaptchaResponse,
-   selectConfigs,
    selectGeetestCaptchaSuccess,
    selectRecaptchaSuccess,
    selectLoginError,
@@ -47,7 +45,6 @@ interface ReduxProps {
    loading?: boolean;
    require2FA?: boolean;
    requireEmailVerification?: boolean;
-   configs: Configs;
    captcha_response?:
       | string
       | GeetestCaptchaResponse
@@ -102,11 +99,11 @@ class Login extends React.Component<Props, LoginState> {
 
       if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
          this.props.resetCaptchaState();
-         this.props.history.push('/wallets', { email: email });
+         this.props.history.push('/wallets', { email });
       }
 
       if (nextProps.requireEmailVerification) {
-         this.props.history.push('/email-verification', { email: email });
+         this.props.history.push('/email-verification', { email });
       }
    }
 
@@ -136,7 +133,6 @@ class Login extends React.Component<Props, LoginState> {
 
    private renderLoginForm = () => {
       const {
-         configs,
          loading,
          captcha_response,
          reCaptchaSuccess,
@@ -192,7 +188,7 @@ class Login extends React.Component<Props, LoginState> {
             refreshError={this.refreshError}
             changeEmail={this.handleChangeEmailValue}
             changePassword={this.handleChangePasswordValue}
-            captchaType={configs.captcha_type}
+            captchaType={captchaType()}
             renderCaptcha={this.renderCaptcha()}
             reCaptchaSuccess={reCaptchaSuccess}
             geetestCaptchaSuccess={geetestCaptchaSuccess}
@@ -245,12 +241,9 @@ class Login extends React.Component<Props, LoginState> {
 
    private handleLogin = () => {
       const { email, password } = this.state;
-      const {
-         configs: { captcha_type },
-         captcha_response,
-      } = this.props;
+      const { captcha_response } = this.props;
 
-      if (captcha_type !== 'none' && captchaLogin()) {
+      if (captchaType() !== 'none' && captchaLogin()) {
          this.props.login({ email, password, captcha_response });
       } else {
          this.props.login({ email, password });
@@ -259,26 +252,21 @@ class Login extends React.Component<Props, LoginState> {
 
    private handle2FALogin = () => {
       const { email, password, otpCode } = this.state;
-      const {
-         configs: { captcha_type },
-         captcha_response,
-      } = this.props;
+      const { captcha_response } = this.props;
 
       if (!otpCode) {
          this.setState({
             error2fa: 'Please enter 2fa code',
          });
+      } else if (captchaType() !== 'none' && captchaLogin()) {
+         this.props.login({
+            email,
+            password,
+            captcha_response,
+            otp_code: otpCode,
+         });
       } else {
-         if (captcha_type !== 'none' && captchaLogin()) {
-            this.props.login({
-               email,
-               password,
-               captcha_response,
-               otp_code: otpCode,
-            });
-         } else {
-            this.props.login({ email, password, otp_code: otpCode });
-         }
+         this.props.login({ email, password, otp_code: otpCode });
       }
    };
 
@@ -363,7 +351,6 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    loading: selectUserFetching(state),
    require2FA: selectLoginRequire2FA(state),
    requireEmailVerification: selectregisterRequireVerification(state),
-   configs: selectConfigs(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),
