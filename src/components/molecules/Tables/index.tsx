@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 /** Helpers */
 
@@ -43,35 +43,44 @@ interface TableProps<T extends MinTableItem> {
    customRenderers?: CustomRenderers<T>;
 }
 
-export default function Tables<T extends MinTableItem>(props: TableProps<T>) {
-   function renderRow(item: T) {
-      return (
-         <tr>
-            {objectKeys(item).map(itemProperty => {
-               const customRenderer = props.customRenderers?.[itemProperty];
+export const Tables = <T extends MinTableItem>({
+   headers,
+   items,
+   customRenderers,
+}: TableProps<T>) => {
+   const renderRow = useCallback(
+      (item: T) => {
+         return (
+            <tr>
+               {objectKeys(item).map((itemProperty, index) => {
+                  const customRenderer = customRenderers?.[itemProperty];
 
-               if (customRenderer) {
-                  return <td>{customRenderer(item)}</td>;
-               }
+                  if (customRenderer) {
+                     return <td key={index}>{customRenderer(item)}</td>;
+                  }
 
-               return (
-                  <td>
-                     {isPrimitive(item[itemProperty]) ? item[itemProperty] : ''}
-                  </td>
-               );
-            })}
-         </tr>
-      );
-   }
+                  return (
+                     <td key={index}>
+                        {isPrimitive(item[itemProperty])
+                           ? item[itemProperty]
+                           : ''}
+                     </td>
+                  );
+               })}
+            </tr>
+         );
+      },
+      [customRenderers]
+   );
 
    return (
       <table>
          <thead>
-            {objectValues(props.headers).map(headerValue => (
-               <th>{headerValue}</th>
+            {objectValues(headers).map((headerValue, index) => (
+               <th key={index}>{headerValue}</th>
             ))}
          </thead>
-         <tbody>{props.items.map(renderRow)}</tbody>
+         <tbody>{items.map(renderRow)}</tbody>
       </table>
    );
-}
+};

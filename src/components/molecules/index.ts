@@ -1,4 +1,4 @@
-import Tables from './Tables';
+export * from './Tables';
 export { NewTickerTable } from './NewTickerTable';
 export { Header } from './Header';
 export { HeaderBefore } from './HeaderBefore';
@@ -42,4 +42,3 @@ export * from './LayoutProfile';
 export * from './ComboboxCurrency';
 export * from './ComboboxMarket';
 export * from './AdibDropdown';
-export { Tables };

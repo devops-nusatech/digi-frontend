@@ -1,4 +1,5 @@
 import { Button, ComboboxCurrency, GeetestCaptchaV3 } from 'components';
+import { AdibTable } from 'components/molecules/AdibTable';
 import { useInitGT4 } from 'hooks/useInitGT4';
 import { GeetestCaptchaResponse, setGeetestCaptchaSuccess } from 'modules';
 import React, { useEffect, useRef } from 'react';
@@ -18,8 +19,24 @@ export const Geetest = () => {
    useEffect(() => {
       console.log('response :>> ', response);
    }, [response]);
+
+   const data = [
+      {
+         name: 'Adib',
+         umur: '20',
+      },
+      {
+         name: 'Zazuk',
+         umur: '19',
+      },
+   ];
+
    return (
       <>
+         <AdibTable
+            columns={['name', 'umur']}
+            data={data}
+         />
          <div className="flex h-screen items-center justify-between">
             {/* <div className="overflow-x-auto w-1/3 space-y-5">
                <div className="text-2xl font-bold">Geetest V4 Response</div>
