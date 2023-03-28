@@ -12,6 +12,7 @@ export * from './InputGroup';
 export * from './InputPhone';
 export * from './Switch';
 export * from './Nav';
+export * from './Navlink';
 export * from './SVGSprites';
 export * from './ListDropdown';
 export * from './Badge';

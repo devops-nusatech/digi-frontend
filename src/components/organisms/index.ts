@@ -30,6 +30,7 @@ export * from './DropdownListBuyCrypto';
 export * from './DropdownListFlag';
 export * from './DropdownListNotification';
 export * from './DropdownListProfile';
+export * from './DropdownListEvent';
 export * from './ModalConfirmLogout';
 export * from './ModalRequired';
 export * from './TutorialAlt';

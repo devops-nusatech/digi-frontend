@@ -25,6 +25,7 @@ const classes = {
          'bg-primary4 text-neutral8 hover:bg-my-orange-h hover:shadow-xl disabled:hover:bg-primary4',
       outline:
          'bg-none shadow-border hover:text-neutral8 hover:shadow-input-dark hover:bg-neutral2 hover:-translate-y-0.5 dark:hover:bg-neutral3 dark:hover:border-none dark:shadow-border-dark disabled:translate-y-0',
+      dark: 'bg-neutral2 text-neutral8 dark:bg-neutral3',
    },
    color: {
       orange: 'text-primary4',

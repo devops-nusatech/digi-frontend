@@ -7,6 +7,7 @@ export type Variant =
    | 'green'
    | 'orange'
    | 'outline'
+   | 'dark'
    | 'ungu'
    | 'yellow';
 
