@@ -13,7 +13,6 @@ import {
    logoutFetch,
    RootState,
    selectConfigsLoading,
-   selectConfigsSuccess,
    selectCurrentColorTheme,
    selectCurrentMarket,
    selectMobileDeviceState,
@@ -34,26 +33,17 @@ import {
 } from 'modules/public/customization';
 import { rangerConnectFetch, selectRanger } from 'modules/public/ranger';
 import {
-   //  ChangeForgottenPasswordScreen,
    ConfirmScreen,
-   // DocumentationScreen,
-   //  EmailVerificationScreen,
-   //  ForgotPasswordScreen,
    HistoryScreen,
-   LandingScreen,
+   Home,
    Login,
    Register,
    ForgotPassword,
    MagicLink,
    MaintenanceScreen,
    OrdersTabScreen,
-   // ProfileScreen,
    ProfileTwoFactorAuthScreen,
    RestrictedScreen,
-   // LoginScreen,
-   // RegisterScreen,
-   VerificationScreen,
-   // WalletsScreen,
    ChangeForgotPassword,
    EmailVerification,
    WalletOverview,
@@ -77,13 +67,12 @@ import {
    WalletTrade,
    Withdrawal,
    Deposit,
-   Contact,
+   FAQ,
    Beneficiaries,
    WithdrawalStep,
    WalletFinance,
    Exchange,
    WalletOrder,
-   // RegisterKu,
    Geetest,
    Notifications,
 } from 'screens';
@@ -285,12 +274,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
-                  path="/accounts/confirmation"
-                  component={VerificationScreen}
-               />
-               <PublicRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
                   path="/forgot_password"
                   component={ForgotPassword}
                />
@@ -308,7 +291,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                />
                <Route
                   path="/faq"
-                  component={Contact}
+                  component={FAQ}
                />
                <Route
                   path="/404"
@@ -351,7 +334,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   <Route
                      exact
                      path="/"
-                     component={LandingScreen}
+                     component={Home}
                   />
                )}
                <PrivateRoute
@@ -633,7 +616,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    colorTheme: selectCurrentColorTheme(state),
    configsLoading: selectConfigsLoading(state),
-   configsSuccess: selectConfigsSuccess(state),
    currentMarket: selectCurrentMarket(state),
    customization: selectCustomizationData(state),
    isLoggedIn: selectUserLoggedIn(state),

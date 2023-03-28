@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import classnames from 'classnames';
 import * as React from 'react';
 import { CloseIcon } from '../../../assets/images/CloseIcon';

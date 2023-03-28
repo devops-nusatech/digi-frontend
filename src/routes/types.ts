@@ -28,7 +28,6 @@ export interface RouteProps extends RProps {
 export interface ReduxProps {
    colorTheme: string;
    configsLoading: boolean;
-   configsSuccess: boolean;
    currentMarket?: Market;
    customization?: CustomizationDataInterface;
    isLoggedIn: boolean;

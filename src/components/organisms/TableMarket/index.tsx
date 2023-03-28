@@ -2,9 +2,21 @@ import React, { memo } from 'react';
 import { useIntl } from 'react-intl';
 import { renderCurrencyIcon } from 'helpers';
 import { useMarket } from 'hooks';
-import { Nav, Button, PriceChart, Th, Td } from 'components';
+import {
+   Nav,
+   Button,
+   PriceChart3,
+   Th,
+   Td,
+   Heading2,
+   Container,
+   Section,
+} from 'components';
+import { Push } from 'types';
 
-export const TableMarket = memo(() => {
+interface TableMarketProps extends Push {}
+
+export const TableMarket = memo(({ push }: TableMarketProps) => {
    const { formatMessage } = useIntl();
 
    const {
@@ -16,17 +28,18 @@ export const TableMarket = memo(() => {
    } = useMarket();
 
    return (
-      <section className="relative lg:mb-28 lg2:mb-34">
-         <div className="mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
+      <Section>
+         <Container>
             <div className="mb-10 flex justify-between">
-               <div className="whitespace-normal font-dm text-4.5xl font-bold md:text-5xl">
-                  Market trend
-               </div>
-               <div className="inline-flex h-12 cursor-pointer items-center justify-center whitespace-nowrap rounded-3xl bg-none py-0 px-6 font-dm text-base shadow-border transition-all duration-300 hover:-translate-y-1 hover:bg-neutral2 hover:text-neutral8 hover:shadow-sm dark:border-2 dark:border-solid  dark:border-neutral4 dark:text-neutral8 dark:shadow-none">
-                  View more
-               </div>
+               <Heading2 text="Market trend" />
+               <Button
+                  text="View more"
+                  variant="outline"
+                  width="noFull"
+                  onClick={() => push('/markets')}
+               />
             </div>
-            <div className="mb-[70px] flex items-start space-x-6">
+            <div className="mb-[70px] flex items-start gap-6">
                {currentBidUnitsList
                   ?.splice(1, currentBidUnitsList.length)
                   ?.map((item, index) => (
@@ -58,117 +71,119 @@ export const TableMarket = memo(() => {
                   </thead>
                   <tbody>
                      {filterMarkets?.length > 0 ? (
-                        filterMarkets?.map(
-                           (
-                              {
-                                 no,
-                                 id,
-                                 fullname,
-                                 logo_url,
-                                 last,
-                                 change,
-                                 price_change_percent,
-                                 kline,
-                                 base_unit,
-                              },
-                              index
-                           ) => {
-                              const klinesData: number[][] = kline!;
-                              let labels: number[];
-                              let data: number[];
-                              labels = klinesData?.map(e => e[0]);
-                              data = klinesData?.map(e => e[2]);
+                        filterMarkets
+                           ?.slice(0, 10)
+                           ?.map(
+                              (
+                                 {
+                                    no,
+                                    id,
+                                    fullname,
+                                    logo_url,
+                                    last,
+                                    change,
+                                    price_change_percent,
+                                    kline,
+                                    base_unit,
+                                 },
+                                 index
+                              ) => {
+                                 const klinesData: number[][] = kline!;
+                                 let labels: number[];
+                                 let data: number[];
+                                 labels = klinesData?.map(e => e[0]);
+                                 data = klinesData?.map(e => e[2]);
 
-                              return (
-                                 <tr
-                                    key={index}
-                                    className="transition-background group duration-200">
-                                    <Td
-                                       text={no}
-                                       className="text-neutral4 group-hover:first:rounded-l-xl"
-                                    />
-                                    <Td
-                                       text={
-                                          <div className="flex items-center space-x-5">
-                                             <div className="w-10 shrink-0">
-                                                <img
-                                                   src={renderCurrencyIcon(
-                                                      base_unit,
-                                                      logo_url
-                                                   )}
-                                                   className={`w-full ${
-                                                      renderCurrencyIcon(
+                                 return (
+                                    <tr
+                                       key={index}
+                                       className="transition-background group duration-200">
+                                       <Td
+                                          text={no}
+                                          className="text-neutral4 group-hover:first:rounded-l-xl"
+                                       />
+                                       <Td
+                                          text={
+                                             <div className="flex items-center space-x-5">
+                                                <div className="w-10 shrink-0">
+                                                   <img
+                                                      src={renderCurrencyIcon(
                                                          base_unit,
                                                          logo_url
-                                                      ).includes('http')
-                                                         ? 'polygon bg-neutral8'
-                                                         : ''
-                                                   }`}
-                                                   alt={fullname}
-                                                   title={fullname}
+                                                      )}
+                                                      className={`w-full ${
+                                                         renderCurrencyIcon(
+                                                            base_unit,
+                                                            logo_url
+                                                         ).includes('http')
+                                                            ? 'polygon bg-neutral8'
+                                                            : ''
+                                                      }`}
+                                                      alt={fullname}
+                                                      title={fullname}
+                                                   />
+                                                </div>
+                                                <div className="flex space-x-3">
+                                                   <div className="capitalize">
+                                                      {fullname}
+                                                   </div>
+                                                   <div className="uppercase text-neutral5">
+                                                      {base_unit}
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          }
+                                       />
+                                       <Td text={last} />
+                                       <Td
+                                          text={
+                                             <span
+                                                className={
+                                                   +(change || 0) < 0
+                                                      ? 'text-primary4'
+                                                      : 'text-chart1'
+                                                }>
+                                                {price_change_percent}
+                                             </span>
+                                          }
+                                       />
+                                       <Td
+                                          text={
+                                             <div className="w-24">
+                                                <PriceChart3
+                                                   id={base_unit}
+                                                   theme={
+                                                      price_change_percent.includes(
+                                                         '+'
+                                                      )
+                                                         ? 'positive'
+                                                         : 'negative'
+                                                   }
+                                                   labels={labels}
+                                                   data={data}
                                                 />
                                              </div>
-                                             <div className="flex space-x-3">
-                                                <div className="capitalize">
-                                                   {fullname}
-                                                </div>
-                                                <div className="uppercase text-neutral5">
-                                                   {base_unit}
-                                                </div>
-                                             </div>
-                                          </div>
-                                       }
-                                    />
-                                    <Td text={last} />
-                                    <Td
-                                       text={
-                                          <span
-                                             className={
-                                                +(change || 0) < 0
-                                                   ? 'text-primary4'
-                                                   : 'text-chart1'
-                                             }>
-                                             {price_change_percent}
-                                          </span>
-                                       }
-                                    />
-                                    <Td
-                                       text={
-                                          <div className="w-24">
-                                             <PriceChart
-                                                id={base_unit}
-                                                theme={
-                                                   price_change_percent.includes(
-                                                      '+'
-                                                   )
-                                                      ? 'positive'
-                                                      : 'negative'
+                                          }
+                                          className="!py-4.25"
+                                       />
+                                       <Td
+                                          text={
+                                             <Button
+                                                onClick={() =>
+                                                   handleRedirectToTrading(id)
                                                 }
-                                                labels={labels}
-                                                data={data}
+                                                text="Trade"
+                                                size="normal"
+                                                variant="outline"
+                                                width="noFull"
                                              />
-                                          </div>
-                                       }
-                                       className="!py-4.25"
-                                    />
-                                    <Td
-                                       text={
-                                          <Button
-                                             onClick={() =>
-                                                handleRedirectToTrading(id)
-                                             }
-                                             text="Trade"
-                                             size="normal"
-                                             variant="outline"
-                                             width="noFull"
-                                          />
-                                       }
-                                       className="group-hover:last:rounded-r-xl"
-                                    />
-                                 </tr>
-                              );
-                           }
-                        )
+                                          }
+                                          className="group-hover:last:rounded-r-xl"
+                                       />
+                                    </tr>
+                                 );
+                              }
+                           )
                      ) : (
                         <tr>
                            <td>
@@ -179,7 +194,7 @@ export const TableMarket = memo(() => {
                   </tbody>
                </table>
             </div>
-         </div>
-      </section>
+         </Container>
+      </Section>
    );
 });

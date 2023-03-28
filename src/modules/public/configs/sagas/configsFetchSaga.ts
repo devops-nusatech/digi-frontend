@@ -1,28 +1,32 @@
-import { marketsData } from './../../markets/actions';
-import { currenciesData } from './../../currencies/actions';
 import { call, put } from 'redux-saga/effects';
-import { sendError, tradingFeesData, withdrawLimitsData } from '../../../';
-import { API, RequestOptions } from '../../../../api';
-import { setBlocklistStatus } from '../../blocklistAccess';
-import { configsData, configsError, ConfigsFetch } from '../actions';
+import {
+   marketsData,
+   currenciesData,
+   tradingFeesData,
+   withdrawLimitsData,
+   setBlocklistStatus,
+   sendError,
+   blockchainsData
+} from 'modules';
+import { API, RequestOptions } from 'api';
+import { configsData, configsError } from '../actions';
 
 const configsOptions: RequestOptions = {
-   apiVersion: 'barong',
-};
-
-const configsOtherOptions: RequestOptions = {
    apiVersion: 'peatio',
 };
 
-export function* configsFetchSaga(action: ConfigsFetch) {
+export function* configsFetchSaga() {
    try {
-      const { withdraw_limits, trading_fees, currencies, markets } = yield call(API.get(configsOtherOptions), '/public/config');
-      const configs = yield call(API.get(configsOptions), '/identity/configs');
+      const { currencies, markets, trading_fees, withdraw_limits, blockchains } = yield call(
+         API.get(configsOptions),
+         '/public/config'
+      );
       yield put(currenciesData(currencies));
       yield put(marketsData(markets));
       yield put(withdrawLimitsData(withdraw_limits));
       yield put(tradingFeesData(trading_fees));
-      yield put(configsData(configs));
+      yield put(blockchainsData(blockchains));
+      yield put(configsData());
       yield put(setBlocklistStatus({ status: 'allowed' }));
    } catch (error) {
       yield put(sendError({

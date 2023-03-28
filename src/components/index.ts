@@ -1,7 +1,5 @@
 export * from './Beneficiaries';
-export * from './Blur';
 export * from './Captcha';
-export * from './CombinedOrderBook';
 export * from './CopyableTextField';
 export * from './CurrencyInfo';
 export * from './CustomInput';
@@ -20,9 +18,7 @@ export * from './MarketDepths';
 export * from './Markets';
 export * from './Modal';
 export * from './OpenOrders';
-export * from './Order';
 export * from './OrderBook';
-export * from './OrderForm';
 export * from './OrderInput';
 export * from './Pagination';
 export * from './PasswordStrengthMeter';

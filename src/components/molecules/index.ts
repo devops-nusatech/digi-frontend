@@ -1,7 +1,6 @@
 export * from './Tables';
 export { NewTickerTable } from './NewTickerTable';
 export { Header } from './Header';
-export { HeaderBefore } from './HeaderBefore';
 export { Footer } from './Footer';
 export { MyTab } from './MyTab';
 export { MyMarketsTable } from './MyMarketsTable';

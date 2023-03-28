@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { FlexCenter } from '../FlexCenter';
 
 export type IRowItem = {
-   left: string;
-   right: string;
-   icRight?: string;
+   left: ReactNode;
+   right: ReactNode;
+   icRight?: ReactNode;
 };
 
 type RowDetailProps = {
@@ -20,7 +21,7 @@ export const RowDetail = ({ items }: RowDetailProps) => {
                <div className="text-neutral4">
                   {typeof item.left !== 'undefined' ? item.left : ''}
                </div>
-               <div className="flex items-center gap-3">
+               <FlexCenter className="gap-3">
                   <div className="font-medium">
                      {typeof item.right !== 'undefined' ? item.right : ''}
                   </div>
@@ -29,7 +30,7 @@ export const RowDetail = ({ items }: RowDetailProps) => {
                         <use xlinkHref={`#icon-${item.icRight}`} />
                      </svg>
                   )}
-               </div>
+               </FlexCenter>
             </div>
          ))}
       </div>

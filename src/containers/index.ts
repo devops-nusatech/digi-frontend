@@ -16,8 +16,6 @@ export * from './ModalWithdrawConfirmation';
 export * from './ModalWithdrawSubmit';
 export * from './NavBar';
 export * from './OpenOrders';
-export * from './Order';
-export * from './OrderBook';
 export * from './OrdersElement';
 export * from './ProfileAccountActivity';
 export * from './ProfileApiKeys';

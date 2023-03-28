@@ -14,7 +14,11 @@ const requestOptions: RequestOptions = {
 
 export function* blocklistAccessFetchSaga(action: SendAccessTokenFetch) {
     try {
-        yield call(API.post(requestOptions), '/identity/users/access', action.payload);
+      yield call(
+         API.post(requestOptions),
+         '/identity/users/access',
+         action.payload
+      );
         yield put(sendAccessTokenData());
         yield put(setBlocklistStatus({ status: 'allowed' }));
     } catch (error) {

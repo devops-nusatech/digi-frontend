@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { alertReducer } from './public/alert';
+import { blockchainsReducer } from './public/blockchains';
 import { blocklistAccessReducer } from './public/blocklistAccess';
 import { configsReducer } from './public/configs';
 import { currenciesReducer } from './public/currencies';
@@ -47,6 +48,7 @@ import { withdrawLimitReducer } from './user/withdrawLimit';
 
 export const publicReducer = combineReducers({
    alerts: alertReducer,
+   blockchains: blockchainsReducer,
    blocklistAccess: blocklistAccessReducer,
    colorTheme: changeColorThemeReducer,
    configs: configsReducer,
