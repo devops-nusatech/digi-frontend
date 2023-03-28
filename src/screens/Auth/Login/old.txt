@@ -281,7 +281,7 @@
 //    private handleClose = () =>
 //       this.props.loginRequire2FA({ require2fa: false });
 
-//    private forgotPassword = () => this.props.history.push('/forgot_password');
+//    private forgotPassword = () => this.props.history.push('/forgot-password');
 
 //    private handleregister = () => this.props.history.push('/register');
 

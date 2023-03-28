@@ -1,6 +1,5 @@
 import { History } from 'history';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-// import { Button, Spinner } from 'react-bootstrap';
 import { injectIntl } from 'react-intl';
 import { connect, MapStateToProps } from 'react-redux';
 import { withRouter } from 'react-router-dom';

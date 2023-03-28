@@ -160,7 +160,7 @@ const ChangeForgotPasswordFC = ({
          }
          resetCaptchaState();
       } else {
-         history.push('/forgot_password');
+         history.push('/forgot-password');
       }
    };
 

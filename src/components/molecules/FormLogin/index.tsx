@@ -247,7 +247,7 @@
 //                            info={passwordError}
 //                         />
 //                         <Link
-//                            to="/forgot_password"
+//                            to="/forgot-password"
 //                            className="float-right mt-4 text-xs font-semibold leading-custom4 text-primary1 transition-colors duration-300 hover:text-primary2">
 //                            Forgot password?
 //                         </Link>
@@ -546,7 +546,7 @@ export const FormLogin = memo(
                         autoComplete="off"
                      />
                      <Link
-                        to="/forgot_password"
+                        to="/forgot-password"
                         className="float-right mt-4 text-xs font-semibold leading-custom4 text-primary1 transition-colors duration-300 hover:text-primary2">
                         Forgot password?
                      </Link>

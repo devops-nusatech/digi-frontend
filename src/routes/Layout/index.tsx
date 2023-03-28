@@ -5,7 +5,8 @@ import { Route, Switch } from 'react-router';
 import { Redirect, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { minutesUntilAutoLogout, sessionCheckInterval, showLanding } from 'api';
-import { ModalExpiredSession, Loader, ScreenMobile } from 'components';
+import { ModalExpiredSession, Loader } from 'components';
+import { Redirect as RedirectMobile } from 'mobile';
 import { WalletsFetch } from 'containers';
 import { toggleColorTheme } from 'helpers';
 import {
@@ -33,16 +34,12 @@ import {
 } from 'modules/public/customization';
 import { rangerConnectFetch, selectRanger } from 'modules/public/ranger';
 import {
-   ConfirmScreen,
-   HistoryScreen,
    Home,
    Login,
    Register,
    ForgotPassword,
    MagicLink,
    MaintenanceScreen,
-   OrdersTabScreen,
-   ProfileTwoFactorAuthScreen,
    RestrictedScreen,
    ChangeForgotPassword,
    EmailVerification,
@@ -237,7 +234,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                      <Route
                         exact
                         path="/"
-                        component={ScreenMobile}
+                        component={RedirectMobile}
                      />
                   )}
                   <Route path="**">
@@ -274,7 +271,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
-                  path="/forgot_password"
+                  path="/forgot-password"
                   component={ForgotPassword}
                />
                <PublicRoute
@@ -352,26 +349,8 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <PrivateRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
-                  path="/orderss"
-                  component={OrdersTabScreen}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/history"
-                  component={HistoryScreen}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
                   path="/trades"
                   component={WalletTrade}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/confirm"
-                  component={ConfirmScreen}
                />
                <PrivateRoute
                   loading={userLoading}
@@ -507,12 +486,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   isLogged={isLoggedIn}
                   path="/activity"
                   component={Activity}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/security/2fa"
-                  component={ProfileTwoFactorAuthScreen}
                />
                <Route path="**">
                   <Redirect to="/trading/" />

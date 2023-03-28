@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button } from 'components';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Modal } from '../../mobile/components/Modal';
@@ -44,13 +44,10 @@ const BeneficiariesFailAddModalComponent: React.FC<Props> = (props: Props) => {
             <div className="cr-email-form__button-wrapper">
                <Link to="/confirm">
                   <Button
-                     size="lg"
-                     variant="primary"
-                     className="cr-email-form__button-wrapper__btn">
-                     {formatMessage({
+                     text={formatMessage({
                         id: 'page.body.wallets.beneficiaries.failAddModal.button',
                      })}
-                  </Button>
+                  />
                </Link>
             </div>
          </div>

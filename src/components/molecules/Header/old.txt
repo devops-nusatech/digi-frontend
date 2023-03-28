@@ -39,7 +39,7 @@
 //    '/500',
 //    '/login',
 //    '/register',
-//    '/forgot_password',
+//    '/forgot-password',
 //    '/accounts/password_reset',
 //    '/email-verification',
 //    '/geetest',

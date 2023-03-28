@@ -1,5 +1,5 @@
+/* eslint-disable react/no-unused-state */
 import * as React from 'react';
-import { Spinner } from 'react-bootstrap';
 import {
    connect,
    MapDispatchToPropsFunction,
@@ -7,12 +7,13 @@ import {
 } from 'react-redux';
 import { RouterProps, withRouter } from 'react-router';
 import { compose } from 'redux';
+import { Loader } from 'components';
 import {
    RootState,
    selectBlocklistAccessLoading,
    selectBlocklistAccessSuccess,
    sendAccessToken,
-} from '../../modules';
+} from 'modules';
 
 interface LocationProps extends RouterProps {
    location: {
@@ -65,14 +66,7 @@ class MagicLinkScreen extends React.Component<MagicLinkProps, MagicLinkState> {
       const { loading } = this.props;
 
       if (loading) {
-         return (
-            <div className="pg-loader-container">
-               <Spinner
-                  animation="border"
-                  variant="primary"
-               />
-            </div>
-         );
+         return <Loader />;
       }
 
       return null;

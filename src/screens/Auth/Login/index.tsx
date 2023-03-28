@@ -166,7 +166,7 @@ export const Login = () => {
    }, [push]);
 
    const forgotPassword = useCallback(() => {
-      push('/forgot_password');
+      push('/forgot-password');
    }, [push]);
 
    const handleFieldFocus = useCallback(

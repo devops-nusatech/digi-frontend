@@ -14,21 +14,9 @@ type ChartPeriode = '1M' | '5M' | '15M' | '30M';
 type Resolution = 1 | 5 | 15 | 30;
 
 export const TradingChart: FC = (): ReactElement => {
-   // const intl = useIntl();
    const currentMarket = useSelector(selectCurrentMarket);
    const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);
    const [chartPeriode, setChartPeriode] = useState<ChartPeriode>('15M');
-
-   // const renderTabs = () => [
-   //    {
-   //       content: currentTabIndex === 0 && <Chart />,
-   //       label: intl.formatMessage({ id: 'page.body.charts.tabs.chart' })
-   //    },
-   //    {
-   //       content: currentTabIndex === 1 && <MarketDepthsComponent />,
-   //       label: intl.formatMessage({ id: 'page.body.charts.tabs.depth' })
-   //    }
-   // ]
 
    const dispatch = useDispatch();
 
@@ -137,9 +125,6 @@ export const TradingChart: FC = (): ReactElement => {
                   }`}>
                   <MarketDepthsComponent />
                </div>
-               {/* <div className={`!h-[492px] -m-px ${currentTabIndex !== 2 ? 'hidden' : ''}`}>
-                  <Depth />
-               </div> */}
             </div>
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                <img
