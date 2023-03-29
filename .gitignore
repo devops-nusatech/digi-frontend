@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+src/output.min.css
 
 # testing
 /coverage
@@ -33,4 +34,3 @@ public/config/
 webpack
 
 /src/index.css
-/src/output.min.css
