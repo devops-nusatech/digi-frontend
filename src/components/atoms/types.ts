@@ -7,6 +7,7 @@ export type Variant =
    | 'green'
    | 'orange'
    | 'outline'
+   | 'dark'
    | 'ungu'
    | 'yellow';
 
@@ -54,7 +55,7 @@ export type Rounded =
    | 'full'
    | '20';
 
-export type Weight = 'normal' | 'medium' | 'semibold';
+export type Weight = 'normal' | 'medium' | 'semibold' | 'bold';
 
 export type AccordionData = {
    title: string;
@@ -71,7 +72,15 @@ export type TLabel = {
    label: string;
 };
 export type TClassName = {
-   className: string;
+   /**
+    * add class name in tag
+    * @type {string}
+    */
+   className?: string;
 };
 
-export type LabelProps = TLabel & TClassName;
+export type TChildren = {
+   children?: ReactNode;
+} & TClassName;
+
+export type LabelProps = TLabel & TClassName & TChildren;

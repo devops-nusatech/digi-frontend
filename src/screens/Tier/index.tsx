@@ -1,21 +1,35 @@
 import React, { FunctionComponent } from 'react';
-import { History } from 'history'
+import { History } from 'history';
 import { withRouter } from 'react-router-dom';
-import { Button, LayoutProfile, ModalRequired, ProfileSidebar } from 'components';
+import {
+   Button,
+   LayoutProfile,
+   ModalRequired,
+   ProfileSidebar,
+} from 'components';
 import { injectIntl } from 'react-intl';
-// import { RouterProps } from 'react-router';
 import { compose } from 'redux';
-import { copyToClipboard } from '../../helpers';
-import { alertPush, changePasswordError, changePasswordFetch, Configs, entropyPasswordFetch, RootState, selectChangePasswordSuccess, selectConfigs, selectCurrentPasswordEntropy, selectUserInfo, toggle2faFetch, User } from 'modules';
+import {
+   alertPush,
+   changePasswordError,
+   changePasswordFetch,
+   entropyPasswordFetch,
+   RootState,
+   selectChangePasswordSuccess,
+   selectCurrentPasswordEntropy,
+   selectUserInfo,
+   toggle2faFetch,
+   User,
+} from 'modules';
 import { IntlProps } from 'index';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { useDocumentTitle, useModal, useMyTierFetch } from 'hooks';
 import { IcBronze } from 'assets';
+import { copyToClipboard } from '../../helpers';
 
 interface ReduxProps {
    user: User;
    passwordChangeSuccess?: boolean;
-   configs: Configs;
    currentPasswordEntropy: number;
 }
 
@@ -48,18 +62,20 @@ interface State {
    code2FAFocus: boolean;
 }
 
-type Props = ReduxProps & DispatchProps & RouterProps & ProfileProps & IntlProps & OnChangeEvent;
+type Props = ReduxProps &
+   DispatchProps &
+   RouterProps &
+   ProfileProps &
+   IntlProps &
+   OnChangeEvent;
 
-const TierFC = ({
-   user,
-   fetchSuccess,
-   history: { push }
-}: Props, { code2FA }: State) => {
-   useDocumentTitle('Profile')
-   const {
-      tier
-   } = useMyTierFetch();
-   const { profiles, } = user;
+const TierFC = (
+   { user, fetchSuccess, history: { push } }: Props,
+   { code2FA }: State
+) => {
+   useDocumentTitle('Profile');
+   const { tier } = useMyTierFetch();
+   const { profiles } = user;
    const { isShow, toggle } = useModal();
    const level = user.level;
    const referralLink = `${window.document.location.origin}/register?refid=${user.uid}`;
@@ -70,10 +86,10 @@ const TierFC = ({
    };
 
    const renderIconCheck = () => (
-      <svg className="w-6 h-6 fill-primary1 transition-colors duration-300">
+      <svg className="h-6 w-6 fill-primary1 transition-colors duration-300">
          <use xlinkHref="#icon-check" />
       </svg>
-   )
+   );
 
    return (
       <>
@@ -83,18 +99,19 @@ const TierFC = ({
                display: 'Home',
                href: '/',
                active: 'Profile',
-            }}
-         >
+            }}>
             <ProfileSidebar />
-            <div className="grow p-4 md:px-8 md:py-10 lg:p-10 shadow-card2 rounded-2xl bg-neutral8 dark:bg-shade1 space-y-12" style={{ animationDuration: '100ms' }}>
-               <div className="flex justify-between mb-5">
+            <div
+               className="grow space-y-12 rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 md:py-10 lg:p-10"
+               style={{ animationDuration: '100ms' }}>
+               <div className="mb-5 flex justify-between">
                   <div className="space-y-3">
-                     <div className="text-2xl leading-custom2 font-semibold tracking-custom1">
+                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                         {user.username ?? profiles[0]?.first_name ?? ''}
                      </div>
-                     <div className="flex space-x-3 items-center">
+                     <div className="flex items-center space-x-3">
                         <IcBronze />
-                        <div className="font-medium text-member-bronze capitalize">
+                        <div className="font-medium capitalize text-member-bronze">
                            {tier.tier} Member
                         </div>
                      </div>
@@ -102,15 +119,14 @@ const TierFC = ({
                         {user.email}
                      </div>
                      <div className="flex items-center space-x-3">
-                        <div className="font-medium text-neutral4 select-none">
+                        <div className="select-none font-medium text-neutral4">
                            {referralLink}
                         </div>
                         <button
-                           className="cursor-copy group"
+                           className="group cursor-copy"
                            onClick={() => handleCopy(referralLink, 'Refferal')}
-                           title="Copy referral"
-                        >
-                           <svg className="w-6 h-6 group-hover:scale-110 fill-neutral4 group-hover:fill-neutral3 dark:group-hover:fill-neutral5 transition-transform duration-200">
+                           title="Copy referral">
+                           <svg className="h-6 w-6 fill-neutral4 transition-transform duration-200 group-hover:scale-110 group-hover:fill-neutral3 dark:group-hover:fill-neutral5">
                               <use xlinkHref="#icon-copy" />
                            </svg>
                         </button>
@@ -121,7 +137,13 @@ const TierFC = ({
                      size="small"
                      variant="outline"
                      width="noFull"
-                     color={user.level === 1 ? 'orange' : user.level === 2 ? 'yellow' : 'primary'}
+                     color={
+                        user.level === 1
+                           ? 'orange'
+                           : user.level === 2
+                           ? 'yellow'
+                           : 'primary'
+                     }
                      className="pointer-events-none select-none"
                   />
                </div>
@@ -130,7 +152,10 @@ const TierFC = ({
                      Tier membership list
                   </div>
                   <div className="space-y-6">
-                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level >= 1 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
+                     <div
+                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
+                           level >= 1 ? 'text-primary1' : 'text-primary4'
+                        } text-xs font-bold uppercase leading-none`}>
                         <div>level 1</div>
                         <div>{level >= 1 ? 'Verified' : 'Unverified'}</div>
                      </div>
@@ -148,11 +173,16 @@ const TierFC = ({
                      </div>
                      <div className="flex items-center justify-between">
                         <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">5,000 USDT /Day</div>
+                        <div className="text-right text-neutral4">
+                           5,000 USDT /Day
+                        </div>
                      </div>
                   </div>
                   <div className="space-y-6">
-                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level >= 2 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
+                     <div
+                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
+                           level >= 2 ? 'text-primary1' : 'text-primary4'
+                        } text-xs font-bold uppercase leading-none`}>
                         <div>level 2</div>
                         <div>{level >= 2 ? 'Verified' : 'Unverified'}</div>
                      </div>
@@ -162,11 +192,16 @@ const TierFC = ({
                      </div>
                      <div className="flex items-center justify-between">
                         <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">10,000 USDT /Day</div>
+                        <div className="text-right text-neutral4">
+                           10,000 USDT /Day
+                        </div>
                      </div>
                   </div>
                   <div className="space-y-6">
-                     <div className={`flex justify-between pb-6 border-b border-neutral6 dark:border-neutral3 ${level >= 3 ? 'text-primary1' : 'text-primary4'} text-xs leading-none font-bold uppercase`}>
+                     <div
+                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
+                           level >= 3 ? 'text-primary1' : 'text-primary4'
+                        } text-xs font-bold uppercase leading-none`}>
                         <div>level 3</div>
                         <div>{level >= 3 ? 'Verified' : 'Unverified'}</div>
                      </div>
@@ -176,7 +211,9 @@ const TierFC = ({
                      </div>
                      <div className="flex items-center justify-between">
                         <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">50,000 USDT /Day</div>
+                        <div className="text-right text-neutral4">
+                           50,000 USDT /Day
+                        </div>
                      </div>
                   </div>
                </div>
@@ -196,23 +233,29 @@ const TierFC = ({
             close={toggle}
          />
       </>
-   )
-}
+   );
+};
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
    passwordChangeSuccess: selectChangePasswordSuccess(state),
    currentPasswordEntropy: selectCurrentPasswordEntropy(state),
-   configs: selectConfigs(state),
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> = dispatch => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<
+   DispatchProps,
+   {}
+> = dispatch => ({
    changePassword: ({ old_password, new_password, confirm_password }) =>
-      dispatch(changePasswordFetch({ old_password, new_password, confirm_password })),
+      dispatch(
+         changePasswordFetch({ old_password, new_password, confirm_password })
+      ),
    toggle2fa: ({ code, enable }) => dispatch(toggle2faFetch({ code, enable })),
-   fetchCurrentPasswordEntropy: payload => dispatch(entropyPasswordFetch(payload)),
+   fetchCurrentPasswordEntropy: payload =>
+      dispatch(entropyPasswordFetch(payload)),
    fetchSuccess: payload => dispatch(alertPush(payload)),
-   clearPasswordChangeError: () => dispatch(changePasswordError({ code: 0, message: [] }))
+   clearPasswordChangeError: () =>
+      dispatch(changePasswordError({ code: 0, message: [] })),
 });
 
 export const Tier = compose(

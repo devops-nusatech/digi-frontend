@@ -5,7 +5,8 @@ import { Route, Switch } from 'react-router';
 import { Redirect, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { minutesUntilAutoLogout, sessionCheckInterval, showLanding } from 'api';
-import { ModalExpiredSession, Loader, ScreenMobile } from 'components';
+import { ModalExpiredSession, Loader } from 'components';
+import { Redirect as RedirectMobile } from 'mobile';
 import { WalletsFetch } from 'containers';
 import { toggleColorTheme } from 'helpers';
 import {
@@ -13,7 +14,6 @@ import {
    logoutFetch,
    RootState,
    selectConfigsLoading,
-   selectConfigsSuccess,
    selectCurrentColorTheme,
    selectCurrentMarket,
    selectMobileDeviceState,
@@ -35,26 +35,13 @@ import {
 } from 'modules/public/customization';
 import { rangerConnectFetch, selectRanger } from 'modules/public/ranger';
 import {
-   //  ChangeForgottenPasswordScreen,
-   ConfirmScreen,
-   // DocumentationScreen,
-   //  EmailVerificationScreen,
-   //  ForgotPasswordScreen,
-   HistoryScreen,
-   LandingScreen,
+   Home,
    Login,
    Register,
    ForgotPassword,
    MagicLink,
    MaintenanceScreen,
-   OrdersTabScreen,
-   // ProfileScreen,
-   ProfileTwoFactorAuthScreen,
    RestrictedScreen,
-   // LoginScreen,
-   // RegisterScreen,
-   VerificationScreen,
-   // WalletsScreen,
    ChangeForgotPassword,
    EmailVerification,
    WalletOverview,
@@ -78,13 +65,12 @@ import {
    WalletTrade,
    Withdrawal,
    Deposit,
-   Contact,
+   FAQ,
    Beneficiaries,
    WithdrawalStep,
    WalletFinance,
    Exchange,
    WalletOrder,
-   // RegisterKu,
    Geetest,
    Notifications,
    Membership,
@@ -235,12 +221,10 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
          isLoggedIn,
          isMobileDevice,
          userLoading,
-         // location,
          configsLoading,
          platformAccessStatus,
       } = this.props;
       const { isShownExpSessionModal } = this.state;
-      //   const tradingCls = location.pathname.includes('/trading') ? 'trading-layout' : '';
       toggleColorTheme(colorTheme);
 
       if (configsLoading && !platformAccessStatus.length) {
@@ -255,7 +239,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                      <Route
                         exact
                         path="/"
-                        component={ScreenMobile}
+                        component={RedirectMobile}
                      />
                   )}
                   <Route path="**">
@@ -277,12 +261,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   path="/magic-link"
                   component={MagicLink}
                />
-               {/* <PublicRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/login"
-                  component={LoginScreen}
-               /> */}
                <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
@@ -295,28 +273,10 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   path="/register"
                   component={Register}
                />
-               {/* <PublicRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/registerku"
-                  component={RegisterKu}
-               /> */}
                <PublicRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
-                  path="/accounts/confirmation"
-                  component={VerificationScreen}
-               />
-               {/* <PublicRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/register"
-                  component={RegisterScreen}
-               /> */}
-               <PublicRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/forgot_password"
+                  path="/forgot-password"
                   component={ForgotPassword}
                />
                <PublicRoute
@@ -333,7 +293,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                />
                <Route
                   path="/faq"
-                  component={Contact}
+                  component={FAQ}
                />
                <Route
                   path="/404"
@@ -384,7 +344,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   <Route
                      exact
                      path="/"
-                     component={LandingScreen}
+                     component={Home}
                   />
                )}
                <PrivateRoute
@@ -408,26 +368,8 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <PrivateRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
-                  path="/orderss"
-                  component={OrdersTabScreen}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/history"
-                  component={HistoryScreen}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
                   path="/trades"
                   component={WalletTrade}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/confirm"
-                  component={ConfirmScreen}
                />
                <PrivateRoute
                   loading={userLoading}
@@ -564,12 +506,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   path="/activity"
                   component={Activity}
                />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/security/2fa"
-                  component={ProfileTwoFactorAuthScreen}
-               />
                <Route path="**">
                   <Redirect to="/trading/" />
                </Route>
@@ -672,7 +608,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    colorTheme: selectCurrentColorTheme(state),
    configsLoading: selectConfigsLoading(state),
-   configsSuccess: selectConfigsSuccess(state),
    currentMarket: selectCurrentMarket(state),
    customization: selectCustomizationData(state),
    isLoggedIn: selectUserLoggedIn(state),

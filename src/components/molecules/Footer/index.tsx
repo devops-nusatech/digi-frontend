@@ -1,17 +1,28 @@
 import React, { FC, FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { icLogoDark, icLogoLight, IcArrowRight, Logo } from 'assets';
+
 import { RouterProps, withRouter } from 'react-router';
-import { IntlProps } from 'index';
+
 import { connect, MapStateToProps, useSelector } from 'react-redux';
+
+import { compose } from 'redux';
+import { injectIntl } from 'react-intl';
+
 import {
    RootState,
    selectConfigsLoading,
    selectCurrentColorTheme,
 } from 'modules';
-import { compose } from 'redux';
-import { injectIntl } from 'react-intl';
-import { SVGSprites } from 'components/atoms';
+import { IntlProps } from 'index';
+import { icLogoDark, icLogoLight, IcArrowRight, Logo } from 'assets';
+import {
+   Container,
+   FlexCenter,
+   Section,
+   SVG,
+   SVGSprites,
+   TextXs,
+} from 'components';
 
 const noFooterRoutes = [
    '/confirm',
@@ -22,14 +33,11 @@ const noFooterRoutes = [
    '/trading',
    '/trading',
    '/wallets',
-   '/forgot_password',
-   '/accounts/password_reset',
+   '/forgot-password',
+   '/accounts/password-reset',
    '/email-verification',
    '/geetest',
    '/chart',
-   '/exchange',
-   '/orders',
-   '/trades',
 ];
 
 const withFooter = [
@@ -65,8 +73,10 @@ const FooterFC: FC<FooterProps> = ({ configsLoading, history, intl }) => {
    return (
       <>
          <footer className="border-t border-neutral6 dark:border-neutral2">
-            <div className="relative pt-8 md:pt-0">
-               <div className="mx-auto block w-full max-w-7xl px-8 md:flex md:px-10 lg:px-20">
+            <Section
+               withMb={false}
+               className="pt-8 md:pt-0">
+               <Container mdBlock>
                   <div className="block shrink-0 grow-0 basis-[32%] border-b border-neutral6 pl-0 pt-16 pr-8 pb-12 dark:border-neutral2 md:flex md:border-b-0 lg:pt-20 lg:pr-16 lg:pb-16 lg2:basis-[39%] 1xl:pr-22">
                      <div
                         onClick={handleScrollTop}
@@ -86,23 +96,32 @@ const FooterFC: FC<FooterProps> = ({ configsLoading, history, intl }) => {
                      <div>
                         <div className="mb-0 flex items-center text-xs font-medium uppercase leading-none md:mb-10.05 md:hidden md:items-start">
                            footer nav
-                           <svg className="ml-auto h-6 w-6 fill-neutral4 transition-transform duration-200">
-                              <use xlinkHref="#icon-arrow-down" />
-                           </svg>
+                           <SVG
+                              className="ml-auto h-6 w-6 fill-neutral4 transition-transform duration-200"
+                              xlinkHref="arrow-down"
+                           />
                         </div>
-                        <div className="hidden flex-col items-start space-y-6 pt-10 font-dm font-bold text-neutral4 md:flex md:pt-0">
+                        <div className="hidden flex-col items-start space-y-6 pt-10 font-dm text-neutral4 md:flex md:pt-0">
                            <Link
                               to="/trading"
                               className="leading-custom3 transition-colors duration-300 hover:text-neutral2 dark:hover:text-neutral8">
                               Exchange
                            </Link>
-                           {/* <Link to="/buy-crypto" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Buy crypto</Link> */}
+                           <Link
+                              to="/p2p/trade"
+                              className="leading-custom3 transition-colors duration-300 hover:text-neutral2 dark:hover:text-neutral8">
+                              Buy crypto
+                           </Link>
                            <Link
                               to="/markets"
                               className="leading-custom3 transition-colors duration-300 hover:text-neutral2 dark:hover:text-neutral8">
-                              Market
+                              Markets
                            </Link>
-                           {/* <Link to="/learn-crypto" className="hover:text-neutral2 dark:hover:text-neutral8 leading-custom3 transition-colors duration-300">Learn crypto</Link> */}
+                           {/* <Link
+                              to="/learn-crypto"
+                              className="leading-custom3 transition-colors duration-300 hover:text-neutral2 dark:hover:text-neutral8">
+                              Learn crypto
+                           </Link> */}
                            <Link
                               to="/faq"
                               className="leading-custom3 transition-colors duration-300 hover:text-neutral2 dark:hover:text-neutral8">
@@ -148,41 +167,49 @@ const FooterFC: FC<FooterProps> = ({ configsLoading, history, intl }) => {
                         </form>
                      </div>
                   </div>
-               </div>
-            </div>
-            <div className="border-t border-neutral6 py-6 pb-5 dark:border-neutral3">
-               <div className="mx-auto block w-full max-w-7xl px-6 md:flex md:px-10 lg:px-20">
-                  <div className="mr-auto text-xs leading-custom1 text-neutral4">
-                     Copyright © 2022 {translate('pagy.body.footer.powered_by')}{' '}
-                     digiassetindo.com. All rights reserved
-                  </div>
-                  <div className="flex items-center space-x-6">
+               </Container>
+            </Section>
+            <div className="border-t border-neutral6 pt-14 pb-12 dark:border-neutral3 md:pt-6.25 md:pb-5">
+               <Container mdBlock>
+                  <TextXs
+                     text={`Copyright © 2023 ${translate(
+                        'pagy.body.footer.powered_by'
+                     )} digiassetindo.com. All rights reserved`}
+                     className="md:mr-auto md-max:mb-6"
+                  />
+                  <FlexCenter className="space-x-6">
                      <a
-                        href="#"
+                        href="https://www.facebook.com/Digiassetindo"
                         rel="noopener noreferrer"
+                        target="_blank"
                         className="flex h-5 w-5 shrink-0 items-center justify-center">
-                        <svg className="h-4 w-4 fill-neutral4 transition-all duration-300">
-                           <use xlinkHref="#icon-facebook"></use>
-                        </svg>
+                        <SVG
+                           className="h-4 w-4 fill-neutral4 transition-all duration-300"
+                           xlinkHref="facebook"
+                        />
                      </a>
                      <a
-                        href="#"
+                        href="https://twitter.com/Digiasset_indo"
                         rel="noopener noreferrer"
+                        target="_blank"
                         className="flex h-5 w-5 shrink-0 items-center justify-center">
-                        <svg className="h-4 w-4 fill-neutral4 transition-all duration-300">
-                           <use xlinkHref="#icon-twitter"></use>
-                        </svg>
+                        <SVG
+                           className="h-4 w-4 fill-neutral4 transition-all duration-300"
+                           xlinkHref="twitter"
+                        />
                      </a>
                      <a
-                        href="#"
+                        href="https://www.instagram.com/digiassetindo"
                         rel="noopener noreferrer"
+                        target="_blank"
                         className="flex h-5 w-5 shrink-0 items-center justify-center">
-                        <svg className="h-4 w-4 fill-neutral4 transition-all duration-300">
-                           <use xlinkHref="#icon-instagram"></use>
-                        </svg>
+                        <SVG
+                           className="h-4 w-4 fill-neutral4 transition-all duration-300"
+                           xlinkHref="instagram"
+                        />
                      </a>
-                  </div>
-               </div>
+                  </FlexCenter>
+               </Container>
             </div>
          </footer>
          <SVGSprites />

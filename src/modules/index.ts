@@ -3,6 +3,7 @@ import { all, call } from 'redux-saga/effects';
 import { publicReducer, userReducer } from './app';
 import { AirdropsState, rootAirdropsSaga } from './public/airdrops';
 import { AlertState, rootHandleAlertSaga } from './public/alert';
+import { BlockchainsState } from './public/blockchains';
 import { BlocklistAccessState, rootBlocklistAccessSaga } from './public/blocklistAccess';
 import { ConfigsState, rootConfigsSaga } from './public/configs';
 import { CurrenciesState, rootCurrenciesSaga } from './public/currencies';
@@ -51,6 +52,7 @@ import { rootWithdrawLimitSaga, WithdrawLimitState } from './user/withdrawLimit'
 
 export * from './public/airdrops';
 export * from './public/alert';
+export * from './public/blockchains';
 export * from './public/blocklistAccess';
 export * from './public/configs';
 export * from './public/currencies';
@@ -96,6 +98,7 @@ export interface RootState {
    public: {
       airdrops: AirdropsState;
       alerts: AlertState;
+      blockchains: BlockchainsState;
       blocklistAccess: BlocklistAccessState;
       colorTheme: ColorThemeState;
       configs: ConfigsState;

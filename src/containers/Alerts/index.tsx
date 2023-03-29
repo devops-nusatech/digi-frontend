@@ -1,7 +1,7 @@
 import React, { Component, FunctionComponent } from 'react';
 import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
-import { IntlProps } from '../../';
+import { IntlProps } from 'index';
 import {
    alertDelete,
    alertDeleteByIndex,

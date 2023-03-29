@@ -1,12 +1,8 @@
-// import classnames from 'classnames';
 import * as React from 'react';
-// import { Spinner } from 'react-bootstrap';
 import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { compose } from 'redux';
 import { IntlProps } from 'index';
-// import { Decimal } from 'components';
-// import { localeDate, setTradesType } from 'helpers';
 import {
    fetchHistory,
    Market,
@@ -22,8 +18,6 @@ import {
 import { localeDate } from 'helpers';
 import { Decimal } from 'components/Decimal';
 import { IcEmty } from 'assets';
-// import { IcShorting } from 'assets';
-// import { handleHighlightValue } from '../../../containers/RecentTrades/Market';
 
 interface ReduxProps {
    list: WalletHistoryList;
@@ -84,33 +78,21 @@ class TradingTradeMyRecentContainer extends React.Component<Props> {
                   <div className="table-cell p-1.5 pb-[10px] pl-0 text-xs font-semibold leading-relaxed text-neutral4">
                      <div className="relative inline-block cursor-pointer pr-4">
                         Time
-                        {/* <div className="absolute top-0 -right-2">
-                           <IcShorting />
-                        </div> */}
                      </div>
                   </div>
                   <div className="table-cell p-1.5 pb-[10px] text-xs font-semibold leading-relaxed text-neutral4">
                      <div className="relative inline-block cursor-pointer pr-4">
                         Price (USDT)
-                        {/* <div className="absolute top-0 -right-2">
-                           <IcShorting />
-                        </div> */}
                      </div>
                   </div>
                   <div className="table-cell p-1.5 pb-[10px] text-xs font-semibold leading-relaxed text-neutral4">
                      <div className="relative inline-block cursor-pointer pr-4">
                         Amount (BTC)
-                        {/* <div className="absolute top-0 -right-2">
-                           <IcShorting />
-                        </div> */}
                      </div>
                   </div>
                   <div className="table-cell p-1.5 pb-[10px] pr-0 text-right text-xs font-semibold leading-relaxed text-neutral4">
                      <div className="relative inline-block cursor-pointer pr-4">
                         Total (USDT)
-                        {/* <div className="absolute top-0 -right-2">
-                           <IcShorting />
-                        </div> */}
                      </div>
                   </div>
                </div>
@@ -233,4 +215,4 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
 export const TradingTradeMyRecent = compose(
    injectIntl,
    connect(mapStateToProps, mapDispatchToProps)
-)(TradingTradeMyRecentContainer) as any; // tslint:disable-line
+)(TradingTradeMyRecentContainer) as any;

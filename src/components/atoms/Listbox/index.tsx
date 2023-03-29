@@ -45,8 +45,7 @@ export const Listbox = <T extends ObjectKey>({
                </span>
             </List.Button>
             {info && (
-               <div
-                  className={`text-x font-medium leading-relaxed text-primary4`}>
+               <div className="text-x font-medium leading-relaxed text-primary4">
                   {info}
                </div>
             )}

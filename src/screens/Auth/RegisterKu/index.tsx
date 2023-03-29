@@ -9,14 +9,12 @@ import {
 } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
-   Configs,
    GeetestCaptchaResponse,
    LanguageState,
    RootState,
    registerFetch,
    resetCaptchaState,
    selectCaptchaResponse,
-   selectConfigs,
    selectGeetestCaptchaSuccess,
    selectRecaptchaSuccess,
    selectregisterLoading,
@@ -34,7 +32,7 @@ import {
    setDocumentTitle,
 } from 'helpers';
 import { Captcha, FormRegisterKu, LayoutAuth } from 'components';
-import { isUsernameEnabled } from 'api';
+import { captchaType, isUsernameEnabled } from 'api';
 
 type RegisterState = {
    username: string;
@@ -61,7 +59,6 @@ type OwnProps = {
 };
 
 type ReduxProps = {
-   configs: Configs;
    requireVerification?: boolean;
    loading?: boolean;
    captcha_response?: string | GeetestCaptchaResponse;
@@ -84,7 +81,6 @@ type DispatchProps = {
 type Props = ReduxProps & RouterProps & DispatchProps & IntlProps & OwnProps;
 
 const RegisterKuFC = ({
-   configs,
    registerError,
    i18n,
    requireVerification,
@@ -216,7 +212,7 @@ const RegisterKuFC = ({
          }),
          ...(isUsernameEnabled() && { username }),
          ...(refId && { refid: refId }),
-         ...(configs.captcha_type !== 'none' && { captcha_response }),
+         ...(captchaType() !== 'none' && { captcha_response }),
       };
       register(payload);
       resetCaptchaState();
@@ -285,7 +281,7 @@ const RegisterKuFC = ({
          title="Register"
          subTitle="Please fill in the data below with honest and accurate information.">
          <FormRegisterKu
-            captchaType={configs.captcha_type}
+            captchaType={captchaType()}
             renderCaptcha={renderCaptcha()}
             captcha_response={captcha_response}
             isReCaptchaSuccess={reCaptchaSuccess}
@@ -335,7 +331,6 @@ const RegisterKuFC = ({
 };
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
-   configs: selectConfigs(state),
    requireVerification: selectregisterRequireVerification(state),
    loading: selectregisterLoading(state),
    captcha_response: selectCaptchaResponse(state),

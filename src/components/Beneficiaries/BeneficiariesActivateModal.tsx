@@ -2,8 +2,6 @@ import classnames from 'classnames';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { LetterIcon } from '../../assets/images/LetterIcon';
-import { Modal } from '../../mobile/components/Modal';
 import { InputGroup, Button, Portal } from 'components';
 import {
    beneficiariesActivate,
@@ -11,6 +9,8 @@ import {
    Beneficiary,
    selectMobileDeviceState,
 } from 'modules';
+import { LetterIcon } from '../../assets/images/LetterIcon';
+import { Modal } from '../../mobile/components/Modal';
 
 interface Props {
    beneficiariesAddData: Beneficiary;
@@ -98,7 +98,7 @@ const BeneficiariesActivateModalComponent: React.FC<Props> = (props: Props) => {
                className={focusedClass}>
                <InputGroup
                   type="text"
-                  autoFocus={true}
+                  autoFocus
                   label={formatMessage({
                      id: `page.body.wallets.beneficiaries.confirmationModal.body.${field}`,
                   })}

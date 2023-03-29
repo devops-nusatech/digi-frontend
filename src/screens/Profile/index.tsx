@@ -7,10 +7,20 @@ import {
    ProfileSidebar,
 } from 'components';
 import { injectIntl } from 'react-intl';
-// import { RouterProps } from 'react-router';
 import { compose } from 'redux';
-import { copyToClipboard } from '../../helpers';
-import { alertPush, changePasswordError, changePasswordFetch, Configs, entropyPasswordFetch, RootState, selectChangePasswordSuccess, selectConfigs, selectCurrentPasswordEntropy, selectUserInfo, toggle2faFetch, User } from 'modules';
+import { copyToClipboard } from 'helpers';
+import {
+   alertPush,
+   changePasswordError,
+   changePasswordFetch,
+   entropyPasswordFetch,
+   RootState,
+   selectChangePasswordSuccess,
+   selectCurrentPasswordEntropy,
+   selectUserInfo,
+   toggle2faFetch,
+   User,
+} from 'modules';
 import { IntlProps } from 'index';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { useDocumentTitle, useModal, useMyTierFetch } from 'hooks';
@@ -19,7 +29,6 @@ import { IcBronze } from 'assets';
 interface ReduxProps {
    user: User;
    passwordChangeSuccess?: boolean;
-   configs: Configs;
    currentPasswordEntropy: number;
 }
 
@@ -59,15 +68,10 @@ type Props = ReduxProps &
    IntlProps &
    OnChangeEvent;
 
-const ProfileFC = ({
-   user,
-   fetchSuccess
-}: Props, { code2FA }: State) => {
-   useDocumentTitle('Profile')
-   const {
-      tier
-   } = useMyTierFetch();
-   const { profiles, } = user;
+const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
+   useDocumentTitle('Profile');
+   const { tier } = useMyTierFetch();
+   const { profiles } = user;
    const { isShow, toggle } = useModal();
    const level = user.level;
    const referralLink = `${window.document.location.origin}/register?refid=${user.uid}`;
@@ -101,9 +105,9 @@ const ProfileFC = ({
                      <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                         {user.username ?? profiles[0]?.first_name ?? ''}
                      </div>
-                     <div className="flex space-x-3 items-center">
+                     <div className="flex items-center space-x-3">
                         <IcBronze />
-                        <div className="font-medium text-member-bronze capitalize">
+                        <div className="font-medium capitalize text-member-bronze">
                            {tier.tier} Member
                         </div>
                      </div>
@@ -232,7 +236,6 @@ const mapStateToProps = (state: RootState): ReduxProps => ({
    user: selectUserInfo(state),
    passwordChangeSuccess: selectChangePasswordSuccess(state),
    currentPasswordEntropy: selectCurrentPasswordEntropy(state),
-   configs: selectConfigs(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<

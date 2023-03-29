@@ -361,7 +361,7 @@ const WithdrawalFC = memo(
          });
 
       const handleConfirmActivate = () =>
-         activateBeneficiary({ id: id ? id : beneficiary.id, pin });
+         activateBeneficiary({ id: id || beneficiary.id, pin });
 
       const translate = (id: string) => intl.formatMessage({ id });
 
@@ -466,8 +466,7 @@ const WithdrawalFC = memo(
             setState({
                ...state,
                amount: convertedValue,
-               amountError:
-                  Number(balance) < Number(convertedValue) ? true : false,
+               amountError: Number(balance) < Number(convertedValue),
                total: Number(total) > 0 ? total : (0).toFixed(fixed),
             });
          }
@@ -568,7 +567,7 @@ const WithdrawalFC = memo(
                                  <td className="rounded-l-xl p-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                                     <div className="flex items-center space-x-2">
                                        <svg className="h-4 w-4 fill-neutral4 transition-all duration-300 hover:fill-secondary3">
-                                          <use xlinkHref="#icon-star-outline"></use>
+                                          <use xlinkHref="#icon-star-outline" />
                                        </svg>
                                        <div>{index + 1}</div>
                                     </div>
@@ -706,11 +705,7 @@ const WithdrawalFC = memo(
                            }
                            theme="grey"
                            className="px-5"
-                           isActive={
-                              networkActive === network.blockchain_key
-                                 ? true
-                                 : false
-                           }
+                           isActive={networkActive === network.blockchain_key}
                         />
                      ))}
                   </div>
@@ -902,7 +897,7 @@ const WithdrawalFC = memo(
                      type="button"
                      className="group flex items-center text-2xl font-semibold leading-custom2 tracking-custom1">
                      <svg className="mr-4 h-3.5 w-3.5 fill-neutral4 transition-all duration-300 group-hover:-translate-x-1">
-                        <use xlinkHref="#icon-arrow-prev"></use>
+                        <use xlinkHref="#icon-arrow-prev" />
                      </svg>
                      Withdraw info
                   </button>
@@ -934,7 +929,7 @@ const WithdrawalFC = memo(
                         <div className="flex space-x-2.5">
                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary3">
                               <svg className="h-5 w-5 fill-neutral8">
-                                 <use xlinkHref="#icon-wallet"></use>
+                                 <use xlinkHref="#icon-wallet" />
                               </svg>
                            </div>
                            <div>
@@ -956,7 +951,7 @@ const WithdrawalFC = memo(
                         <div className="flex space-x-2.5">
                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary5 dark:bg-chart1">
                               <svg className="h-5 w-5 fill-neutral8">
-                                 <use xlinkHref="#icon-lock"></use>
+                                 <use xlinkHref="#icon-lock" />
                               </svg>
                            </div>
                            <div>
@@ -1147,7 +1142,7 @@ const WithdrawalFC = memo(
             );
             if (availableNetwork) {
                const valid = validate(value, currency, networkType);
-               setCoinAddressValid(valid ? false : true);
+               setCoinAddressValid(!valid);
             }
          },
          [selectedNetwork]

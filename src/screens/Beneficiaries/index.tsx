@@ -55,10 +55,9 @@ import {
    selectBeneficiariesActivateSuccess,
    selectBeneficiariesResendPinLoading,
 } from 'modules';
+import { validate, getCurrencies } from 'multicoin-address-validator';
 import { DEFAULT_WALLET } from '../../constants';
 // import { validateBeneficiaryAddress } from 'helpers/validateBeneficiaryAddress';
-
-import { validate, getCurrencies } from 'multicoin-address-validator';
 
 type ModalType = 'fiat' | 'coin' | '';
 
@@ -263,7 +262,7 @@ const BeneficiariesFC = ({
          );
          if (availableNetwork) {
             const valid = validate(value, currency, networkType);
-            setCoinAddressValid(valid ? false : true);
+            setCoinAddressValid(!valid);
          }
       },
       [selectedNetwork]
@@ -454,7 +453,7 @@ const BeneficiariesFC = ({
                />
                <Listbox
                   label="Bank"
-                  objectKey={'name'}
+                  objectKey="name"
                   list={selected}
                   lists={people}
                   onChange={setSelected}
@@ -497,7 +496,7 @@ const BeneficiariesFC = ({
                } (require)`}
             />
          )}
-         <div className="rounded bg-neutral7 py-5 px-6 text-center dark:bg-neutral3">
+         <div className="rounded bg-neutral7 px-6 py-5 text-center dark:bg-neutral3">
             <div className="text-base font-medium leading-normal">
                Attention
             </div>

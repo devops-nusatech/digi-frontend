@@ -5,7 +5,7 @@ import { IntlProvider } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { Router } from 'react-router';
 import { gaTrackerKey } from './api';
-import { ErrorWrapper } from './containers';
+import { ErrorBoundary } from './containers';
 import { useSetMobileDevice } from './hooks';
 import * as mobileTranslations from './mobile/translations';
 import { selectCurrentLanguage, selectMobileDeviceState } from './modules';
@@ -22,18 +22,8 @@ if (gaKey) {
    });
 }
 
-/* Mobile components */
-// const MobileFooter = React.lazy(() => import('./mobile/components/Footer').then(({ Footer }) => ({ default: Footer })));
-// const MobileHeader = React.lazy(() => import('./mobile/components/Header').then(({ Header }) => ({ default: Header })));
-
-/* Desktop components */
 const AlertsContainer = React.lazy(() =>
    import('./containers/Alerts').then(({ Alerts }) => ({ default: Alerts }))
-);
-const CustomizationContainer = React.lazy(() =>
-   import('./containers/Customization').then(({ Customization }) => ({
-      default: Customization,
-   }))
 );
 const HeaderContainer = React.lazy(() =>
    import('./components/molecules/Header').then(({ Header }) => ({
@@ -45,7 +35,6 @@ const FooterContainer = React.lazy(() =>
       default: Footer,
    }))
 );
-// const SidebarContainer = React.lazy(() => import('./containers/Sidebar').then(({ Sidebar }) => ({ default: Sidebar })));
 const LayoutContainer = React.lazy(() =>
    import('./routes').then(({ Layout }) => ({ default: Layout }))
 );
@@ -57,7 +46,6 @@ const getTranslations = (lang: string, isMobileDevice: boolean) => {
          ...mobileTranslations[lang],
       };
    }
-
    return languageMap[lang];
 };
 
@@ -67,11 +55,8 @@ const RenderDeviceContainers = () => {
    if (isMobileDevice) {
       return (
          <>
-            {/* <div className="pg-mobile-app"> */}
-            {/* <MobileHeader /> */}
             <AlertsContainer />
             <LayoutContainer />
-            {/* <MobileFooter /> */}
          </>
       );
    }
@@ -80,7 +65,6 @@ const RenderDeviceContainers = () => {
       <>
          <HeaderContainer />
          <main className="flex grow flex-col">
-            <CustomizationContainer />
             <LayoutContainer />
          </main>
          <FooterContainer />
@@ -100,11 +84,11 @@ export default () => {
          messages={getTranslations(lang, isMobileDevice)}
          key={lang}>
          <Router history={browserHistory}>
-            <ErrorWrapper>
+            <ErrorBoundary>
                <React.Suspense fallback={null}>
                   <RenderDeviceContainers />
                </React.Suspense>
-            </ErrorWrapper>
+            </ErrorBoundary>
          </Router>
       </IntlProvider>
    );

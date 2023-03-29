@@ -1,13 +1,18 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button } from 'components';
 import { Modal, ModalProps } from './';
 
 const defaults: ModalProps = {
    show: true,
    header: <div>Title</div>,
    content: <div>Some content</div>,
-   footer: <Button onClick={jest.fn()} />,
+   footer: (
+      <Button
+         text="Click"
+         onClick={jest.fn()}
+      />
+   ),
 };
 
 const setup = (props: Partial<ModalProps> = {}) =>

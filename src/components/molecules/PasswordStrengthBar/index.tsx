@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { FC, memo } from 'react';
 import { passwordEntropyStep } from 'api';
 import { PasswordStrengthInfo } from 'components';
@@ -17,7 +18,8 @@ const renderPasswordStrengthMeter = (passwordStrengthMeterLength: number) => (
    <div className="bar flex h-2 items-center py-0 px-px">
       <div
          className={`flex h-1.25 transition-all duration-300
-         ${passwordStrengthClassName(passwordStrengthMeterLength)}`}></div>
+         ${passwordStrengthClassName(passwordStrengthMeterLength)}`}
+      />
    </div>
 );
 

@@ -20,7 +20,6 @@ import { truncateMiddle } from 'helpers';
 import {
    changeForgotPasswordFetch,
    CommonError,
-   Configs,
    forgotPassword,
    GeetestCaptchaResponse,
    GeetestCaptchaV4Response,
@@ -29,13 +28,13 @@ import {
    selectCaptchaResponse,
    selectChangeForgotPasswordLoading,
    selectChangeForgotPasswordSuccess,
-   selectConfigs,
    selectForgotPasswordError,
    selectForgotPasswordSuccess,
    selectGeetestCaptchaSuccess,
    selectRecaptchaSuccess,
 } from 'modules';
 import { useDocumentTitle, useShowGeetestCaptcha } from 'hooks';
+import { captchaType } from 'api';
 
 type State = {
    isRendered: 0 | 1;
@@ -46,7 +45,6 @@ type State = {
 interface ReduxProps {
    forgotPasswordRequested: boolean;
    forgotPasswordChanged: boolean;
-   configs: Configs;
    captcha_response?:
       | string
       | GeetestCaptchaResponse
@@ -82,7 +80,6 @@ type Props = RouterProps & DispatchProps & OwnProps & ReduxProps & IntlProps;
 const ChangeForgotPasswordFC = ({
    forgotPasswordRequested,
    forgotPasswordChanged,
-   configs,
    captcha_response,
    history,
    location,
@@ -110,7 +107,7 @@ const ChangeForgotPasswordFC = ({
          history.push('/login', { email: location.state?.email, password });
    }, [forgotPasswordChanged]);
    useEffect(() => {
-      if (configs.captcha_type !== 'none') {
+      if (captchaType() !== 'none') {
          if (reCaptchaSuccess || geetestCaptchaSuccess) {
             handleResendGenerateCode();
          }
@@ -149,7 +146,7 @@ const ChangeForgotPasswordFC = ({
 
    const handleResendGenerateCode = () => {
       if (location.state?.email && isRendered === 0) {
-         switch (configs.captcha_type) {
+         switch (captchaType()) {
             case 'recaptcha':
             case 'geetest':
                fetchForgotPassword({
@@ -163,7 +160,7 @@ const ChangeForgotPasswordFC = ({
          }
          resetCaptchaState();
       } else {
-         history.push('/forgot_password');
+         history.push('/forgot-password');
       }
    };
 
@@ -229,7 +226,7 @@ const ChangeForgotPasswordFC = ({
             translate={translate}
             renderCaptcha={renderCaptcha()}
             handleResendGenerateCode={
-               configs.captcha_type !== 'none'
+               captchaType() !== 'none'
                   ? useShowGeetestCaptcha
                   : handleResendGenerateCode
             }
@@ -242,7 +239,6 @@ const ChangeForgotPasswordFC = ({
 const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    forgotPasswordRequested: selectForgotPasswordSuccess(state),
    forgotPasswordChanged: selectChangeForgotPasswordSuccess(state),
-   configs: selectConfigs(state),
    captcha_response: selectCaptchaResponse(state),
    reCaptchaSuccess: selectRecaptchaSuccess(state),
    geetestCaptchaSuccess: selectGeetestCaptchaSuccess(state),

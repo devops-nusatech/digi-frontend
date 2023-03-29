@@ -1,84 +1,70 @@
 import React from 'react';
 import { icApple, icGp, illusDownloadApp11, illusDownloadApp12 } from 'assets';
+import {
+   Section,
+   Container,
+   Heading2,
+   TextBase,
+   Text2xl,
+   Anchor,
+} from 'components';
+
+const dataDownload = [
+   {
+      icon: icApple,
+      title: 'Download from',
+      subTitle: 'Appstore',
+      link: 'https://play.google.com/store/apps/details?id=mobile.digiassetindo.com',
+   },
+   {
+      icon: icGp,
+      title: 'Download from',
+      subTitle: 'Google Play',
+      link: 'https://play.google.com/store/apps/details?id=mobile.digiassetindo.com',
+   },
+   {
+      icon: icApple,
+      title: 'Download from',
+      subTitle: 'Mac OS',
+      link: 'https://play.google.com/store/apps/details?id=mobile.digiassetindo.com',
+   },
+];
 
 export const Download = () => (
-   <section className="flex items-center py-16 md:min-h-908 lg:py-28 lg2:py-34">
-      <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
+   <Section className="flex items-center py-16 md:min-h-908 lg:py-28 lg2:py-34">
+      <Container className="relative">
          <div className="grid grid-cols-2">
             <div className="col-span-2 select-none md:col-span-1">
-               <div className="whitespace-normal font-dm text-4.5xl font-bold leading-custom1 tracking-custom md:text-5xl">
-                  Trade anywhere
-               </div>
-               <div className="mt-4 mb-16 text-base text-neutral4">
-                  Anytime, anywhere. Trade crypto on your terms.
-               </div>
-               <div className="flex flex-col lg:max-w-sm">
-                  <div className="group relative mb-4 flex cursor-pointer items-center space-x-6 border-b border-neutral6 pb-4 dark:border-neutral3 md:mb-8 md:pb-8">
-                     <div className="download__icon relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-neutral2 group-hover:after:visible group-hover:after:opacity-100">
-                        <img
-                           className="max-w-[1.5rem]"
-                           src={icApple}
-                           alt="Logo"
+               <Heading2 text="Trade anywhere" />
+               <TextBase
+                  text="Anytime, anywhere. Trade crypto on your terms."
+                  className="mt-4 mb-16 text-neutral4"
+               />
+               <div className="space-y-4 divide-y divide-neutral6 dark:divide-neutral3 md:space-y-8 lg:max-w-sm">
+                  {dataDownload.map((e, i) => (
+                     <div
+                        key={i}
+                        className="group relative flex cursor-pointer items-center space-x-6 pt-4 md:pt-8">
+                        <div className="download__icon relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-neutral2 group-hover:after:visible group-hover:after:opacity-100">
+                           <img
+                              className="max-w-6"
+                              src={e.icon}
+                              alt="Logo"
+                           />
+                        </div>
+                        <div className="grow">
+                           <div className="text-neutral4">{e.title}</div>
+                           <Text2xl
+                              font="normal"
+                              text={e.subTitle}
+                           />
+                        </div>
+                        <Anchor
+                           href={e.link}
+                           title="Download app"
                         />
                      </div>
-                     <div className="grow">
-                        <div className="text-neutral4">Download from</div>
-                        <div className="text-2xl leading-custom2 tracking-custom1">
-                           Appstore
-                        </div>
-                     </div>
-                     <a
-                        href="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="absolute inset-0"
-                        title="Download app"
-                     />
-                  </div>
-                  <div className="group relative mb-4 flex cursor-pointer items-center space-x-6 border-b border-neutral6 pb-4 dark:border-neutral3 md:mb-8 md:pb-8">
-                     <div className="download__icon relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-neutral2 group-hover:after:visible group-hover:after:opacity-100">
-                        <img
-                           className="max-w-[1.5rem]"
-                           src={icGp}
-                           alt="Google Play"
-                        />
-                     </div>
-                     <div className="grow">
-                        <div className="text-neutral4">Download from</div>
-                        <div className="text-2xl leading-custom2 tracking-custom1">
-                           Google play
-                        </div>
-                     </div>
-                     <a
-                        href="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="absolute inset-0"
-                        title="Download app"
-                     />
-                  </div>
-                  <div className="group relative flex cursor-pointer items-center space-x-6">
-                     <div className="download__icon relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-neutral2 group-hover:after:visible group-hover:after:opacity-100">
-                        <img
-                           className="max-w-[1.5rem]"
-                           src={icApple}
-                           alt="Logo"
-                        />
-                     </div>
-                     <div className="grow">
-                        <div className="text-neutral4">Download from</div>
-                        <div className="text-2xl leading-custom2 tracking-custom1">
-                           Mac OS
-                        </div>
-                     </div>
-                     <a
-                        href="https://play.google.com/store/apps/details?id=mobile.digiassetindo.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="absolute inset-0"
-                        title="Download app"
-                     />
-                  </div>
+                  ))}
                </div>
             </div>
             <div className="col-span-2 md:col-span-1">
@@ -92,6 +78,6 @@ export const Download = () => (
                </div>
             </div>
          </div>
-      </div>
-   </section>
+      </Container>
+   </Section>
 );

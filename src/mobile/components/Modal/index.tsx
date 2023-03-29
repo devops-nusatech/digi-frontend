@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import classnames from 'classnames';
 import * as React from 'react';
+import { SVG } from 'components';
 import { CloseIcon } from '../../../assets/images/CloseIcon';
-import { ArrowIcon } from '../../../containers/ToolBar/icons/ArrowIcon';
 
 const ModalComponent = props => {
    const [shouldAnimate, setShouldAnimate] = React.useState(false);
@@ -46,10 +47,13 @@ const ModalComponent = props => {
             className="cr-mobile-modal__header-back"
             onClick={handleOnBack}>
             {props.backTitle ? (
-               <React.Fragment>
-                  <ArrowIcon />
+               <>
+                  <SVG
+                     className="h-4 w-4 fill-neutral4 transition-all duration-300"
+                     xlinkHref="arrow-right"
+                  />
                   <span>{props.backTitle}</span>
-               </React.Fragment>
+               </>
             ) : null}
          </div>
          <div className="cr-mobile-modal__header-title">{props.title}</div>

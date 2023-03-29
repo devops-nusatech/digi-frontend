@@ -6,8 +6,8 @@ import {
    selectCaptchaKeys,
    selectCurrentLanguage,
 } from 'modules';
-import { initGeetest } from '../../../helpers/geetest';
 import { captchaLogin } from 'api';
+import { initGeetest } from '../../../helpers/geetest';
 
 interface GeetestProps {
    buttonRef: RefObject<HTMLButtonElement>;
