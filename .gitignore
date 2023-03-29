@@ -31,3 +31,5 @@ public/config/
 
 # 4 / 2 / 2023
 webpack
+
+/src/output.min.css
