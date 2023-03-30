@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { MembershipCard, Skeleton } from 'components';
+import { MembershipCard, TextXs } from 'components';
 import {
+   IcEmty,
    TierMembershipSVG,
    TierMembershipSVG2,
    TierMembershipSVG3,
@@ -8,15 +9,15 @@ import {
    TierMembershipSVG5,
    TierMembershipSVG6,
 } from 'assets';
-import { useMembershipsFetch } from 'hooks';
-import { Membership } from 'modules';
+import { Membership, selectMemberships } from 'modules';
+import { useReduxSelector } from 'hooks';
 
 interface MembershipListProps {
    onClick: (membership: Membership) => void;
 }
 
 export const MembershipList = ({ onClick }: MembershipListProps) => {
-   const { memberships, membershipsLoading } = useMembershipsFetch();
+   const memberships = useReduxSelector(selectMemberships);
    // const { airdrops } = useAirdropsFetch();
    // const { airdrop } = useAirdropFetch('0908e49c-34c7-495f-bb99-56225be74992');
 
@@ -50,43 +51,27 @@ export const MembershipList = ({ onClick }: MembershipListProps) => {
 
    return (
       <div className="relative mt-10 flex max-w-full snap-x snap-mandatory gap-6 overflow-x-auto pb-12 transition-transform duration-500 lg:gap-8.5">
-         {membershipsLoading ? (
-            <>
-               <Skeleton
-                  className="shrink-0 snap-start first:pl-3 last:pr-3"
-                  width={339}
-                  height={350}
-               />
-               <Skeleton
-                  className="shrink-0 snap-start first:pl-3 last:pr-3"
-                  width={339}
-                  height={350}
-               />
-               <Skeleton
-                  className="shrink-0 snap-start first:pl-3 last:pr-3"
-                  width={339}
-                  height={350}
-               />
-               <Skeleton
-                  className="shrink-0 snap-start first:pl-3 last:pr-3"
-                  width={339}
-                  height={350}
-               />
-            </>
-         ) : memberships.length > 0 ? (
+         {memberships.length > 0 ? (
             memberships.map(member => (
                <MembershipCard
                   key={member.tier}
                   banner={renderTierBanner(member.tier)}
-                  directReff={member.benefits.direct_reff}
+                  directReff={member.benefit.direct_reff}
                   tier={member.tier}
-                  subReff={member.benefits.sub_reff}
-                  withdrawLimit1H={member.benefits.withdraw_limit_24}
+                  subReff={member.benefit.sub_reff}
+                  withdrawLimit1H={member.benefit.withdraw_limit_24}
                   onClick={() => onClick(member)}
                />
             ))
          ) : (
-            <div className="">Memberships null</div>
+            <div className="flex min-h-96 w-full flex-col items-center justify-center space-y-3">
+               <IcEmty />
+               <TextXs
+                  text="Memberships null"
+                  font="semibold"
+                  className="text-xs text-neutral4"
+               />
+            </div>
          )}
       </div>
    );

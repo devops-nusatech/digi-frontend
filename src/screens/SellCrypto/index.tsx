@@ -175,31 +175,31 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                />
                <button
                   type="button"
-                  className="absolute top-0 right-0 flex h-12 w-12 items-center justify-center bg-none">
+                  className="absolute right-0 top-0 flex h-12 w-12 items-center justify-center bg-none">
                   <SearchIcon className="h-5 w-5 stroke-neutral4 transition-all duration-300" />
                </button>
             </form>
             <div className="table w-full">
                <div className="table-row">
-                  <div className="table-cell p-4 pt-0 pl-0 pb-6 text-xs font-medium leading-custom4 text-neutral4">
+                  <div className="table-cell p-4 pb-6 pl-0 pt-0 text-xs font-medium leading-custom4 text-neutral4">
                      <div className="group flex cursor-pointer items-center space-x-1">
                         <div>#</div>
                         <IcShorting />
                      </div>
                   </div>
-                  <div className="table-cell p-4 pt-0 pb-6 text-xs font-medium leading-custom4 text-neutral4">
+                  <div className="table-cell p-4 pb-6 pt-0 text-xs font-medium leading-custom4 text-neutral4">
                      <div className="group flex cursor-pointer items-center space-x-1">
                         <div>Name</div>
                         <IcShorting />
                      </div>
                   </div>
-                  <div className="table-cell p-4 pt-0  pb-6 text-xs font-medium leading-custom4 text-neutral4">
+                  <div className="table-cell p-4 pb-6  pt-0 text-xs font-medium leading-custom4 text-neutral4">
                      <div className="group flex cursor-pointer items-center justify-end space-x-1">
                         <div>Price</div>
                         <IcShorting />
                      </div>
                   </div>
-                  <div className="table-cell p-4 pt-0 pr-0 pb-6 text-right text-xs font-medium leading-custom4 text-neutral4">
+                  <div className="table-cell p-4 pb-6 pr-0 pt-0 text-right text-xs font-medium leading-custom4 text-neutral4">
                      <div className="group flex cursor-pointer items-center justify-end space-x-1">
                         <div>24h %</div>
                         <IcShorting />
@@ -344,7 +344,7 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                         allowLeadingZeros
                         thousandSeparator=","
                         type="text"
-                        className="absolute top-0 left-0 h-full w-full appearance-none border-none bg-transparent bg-none text-center text-right font-dm text-8xl font-bold tracking-custom shadow-none outline-none"
+                        className="absolute left-0 top-0 h-full w-full appearance-none border-none bg-transparent bg-none text-center text-right font-dm text-8xl font-bold tracking-custom shadow-none outline-none"
                      />
                   </div>
                   <div className="relative top-2 font-dm text-3.5xl font-bold leading-tight tracking-custom1">
@@ -395,7 +395,7 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                </div>
             </div>
             <div className="space-y-12">
-               <div className="flex justify-between rounded-2xl bg-neutral7 py-6 px-9 dark:bg-neutral2">
+               <div className="flex justify-between rounded-2xl bg-neutral7 px-9 py-6 dark:bg-neutral2">
                   <div className="flex space-x-2.5">
                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary3">
                         <svg className="h-5 w-5 fill-neutral8">
@@ -479,7 +479,7 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
       <>
          <div>
             <div className="py-10">
-               <div className="my-0 mx-auto flex w-full max-w-7xl items-center px-6 md:px-10 lg:px-20">
+               <div className="mx-auto my-0 flex w-full max-w-7xl items-center px-6 md:px-10 lg:px-20">
                   <div className="mr-auto font-dm text-5xl font-bold leading-custom1 tracking-custom">
                      Sell crypto
                   </div>
@@ -499,24 +499,24 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                </div>
             </div>
             <div className="bg-shade5 py-20 pb-34 dark:bg-neutral1 dark:bg-none dark:shadow-body">
-               <div className="my-0 mx-auto flex w-full max-w-7xl px-6 md:px-10 lg:px-20">
+               <div className="mx-auto my-0 flex w-full max-w-7xl px-6 md:px-10 lg:px-20">
                   <div className="mr-auto w-54 shrink-0 space-y-6">
                      <div
-                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:top-full after:left-5.75 after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
+                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
                            (stepActive === 2 || stepActive === 3) &&
                            'bg-neutral8 shadow-step dark:bg-neutral2 dark:after:border-neutral4'
                         }`}>
                         <div
                            className={`relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary5 ${
                               (stepActive === 2 || stepActive === 3) &&
-                              'bidding__number'
-                           } transition-all duration-300 after:absolute after:top-0 after:left-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
+                              'after:bidding__number after:bidding__number_dark'
+                           } transition-all duration-300 after:absolute after:left-0 after:top-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
                            1
                         </div>
                         <div>Select crypto</div>
                      </div>
                      <div
-                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:top-full after:left-5.75 after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
+                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
                            stepActive === 1 && 'text-neutral4'
                         } ${
                            stepActive === 3 &&
@@ -528,8 +528,9 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                                  ? 'border-primary5'
                                  : 'border-neutral6 dark:border-neutral4'
                            } ${
-                              stepActive === 3 && 'bidding__number'
-                           } transition-all duration-300 after:absolute after:top-0 after:left-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
+                              stepActive === 3 &&
+                              'after:bidding__number after:bidding__number_dark'
+                           } transition-all duration-300 after:absolute after:left-0 after:top-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
                            2
                         </div>
                         <div>Enter amount</div>

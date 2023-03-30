@@ -21,7 +21,7 @@ import { LanguageState } from './public/i18n';
 import { KlineState, rootKlineFetchSaga } from './public/kline';
 import { MarketsState, rootMarketsSaga } from './public/markets';
 import { MemberLevelsState, rootMemberLevelsSaga } from './public/memberLevels';
-import { MembershipsState, rootMembershipsSaga } from './public/memberships';
+import { MembershipsState } from './public/memberships';
 import { NewsState, rootNewsSaga } from './public/news';
 import { News2State, rootNews2Saga } from './public/news2';
 import {
@@ -205,7 +205,6 @@ export function* rootSaga() {
       call(rootLabelSaga),
       call(rootMarketsSaga),
       call(rootMemberLevelsSaga),
-      call(rootMembershipsSaga),
       call(rootNewsSaga),
       call(rootNews2Saga),
       call(rootOpenOrdersSaga),

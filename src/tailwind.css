@@ -40,7 +40,7 @@
 }
 
 .download__icon::after {
-   @apply invisible absolute top-0 left-0 h-full w-full rounded-full bg-no-repeat opacity-0 transition-all duration-300 content-[''];
+   @apply invisible absolute left-0 top-0 h-full w-full rounded-full bg-no-repeat opacity-0 transition-all duration-300 content-[''];
    background: #3772ff
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' fill='none' viewBox='0 0 14 9'%3E%3Cpath fill-rule='evenodd' d='M9.091.265a1 1 0 0 1 1.413.057l3.231 3.5a1 1 0 0 1 0 1.357l-3.231 3.5a1 1 0 0 1-1.47-1.357L10.716 5.5H1a1 1 0 1 1 0-2h9.716L9.034 1.678A1 1 0 0 1 9.091.265z' fill='%23fcfcfd'/%3E%3C/svg%3E")
       no-repeat 50% 50%/14px auto;
@@ -160,6 +160,19 @@
       );
       clip-path: polygon(50% 0px, 5% 25%, 5% 75%, 50% 100%, 95% 75%, 95% 25%);
    }
+
+   /* Step */
+   .bidding__number {
+      background: #58bd7d
+         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.667 2.667L12 5.333' stroke='%23fcfcfd' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+         no-repeat 50% 50%/16px auto;
+   }
+   [data-mode="dark"] .bidding__number_dark {
+      background: #00c076
+         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.667 2.667L12 5.333' stroke='%23fcfcfd' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+         no-repeat 50% 50%/16px auto;
+   }
+   /* End Step */
 }
 
 @layer base {
@@ -177,7 +190,25 @@
    }
    td,
    th {
-      @apply px-0;
+      text-align: left;
+      padding-left: 0px;
+      padding-right: 0px;
+   }
+   div,
+   input,
+   textarea,
+   select,
+   button,
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   h6,
+   a,
+   span,
+   a:focus {
+      outline: none;
    }
 }
 
@@ -276,21 +307,6 @@ textarea {
    -webkit-appearance: none;
    box-shadow: none;
 }
-
-/* Step */
-.bidding__number::after {
-   /* @apply bg-primary5 dark:bg-chart1'; */
-   background: #58bd7d
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.667 2.667L12 5.333' stroke='%23fcfcfd' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-      no-repeat 50% 50%/16px auto;
-}
-[data-mode="dark"] .bidding__number_dark::after {
-   /* @apply bg-primary5 dark:bg-chart1'; */
-   background: #00c076
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath d='M4 8l2.667 2.667L12 5.333' stroke='%23fcfcfd' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-      no-repeat 50% 50%/16px auto;
-}
-/* End Step */
 
 /* Phone input */
 .react-tel-input {
@@ -721,7 +737,7 @@ input[type="password"]:not(:placeholder-shown) {
 }
 .react-datepicker__month-read-view--down-arrow,
 .react-datepicker__year-read-view--down-arrow {
-   @apply h-1.5 w-1.5 border-t-2 border-r-2;
+   @apply h-1.5 w-1.5 border-r-2 border-t-2;
 }
 
 .react-datepicker__year-dropdown,

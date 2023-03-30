@@ -30,7 +30,6 @@ export * from './useShowGeetestCaptcha';
 export * from './useRedux';
 export * from './useClickOutside';
 export * from './useMemberLevelFetch';
-export * from './useMembershipsFetch';
 export * from './useStep';
 export * from './useDebounce';
 export * from './useIntersection';

@@ -3,10 +3,13 @@ import {
    Accordion,
    AccordionData,
    Button,
+   Container,
    Heading2,
    Heading3,
    Hero,
    MembershipList,
+   Section,
+   TextBase,
 } from 'components';
 import { membershipStep1, membershipStep2, membershipStep3 } from 'assets';
 import { useHistory, withRouter } from 'react-router';
@@ -38,7 +41,9 @@ const MembershipFC = () => {
       },
    ];
 
-   const requirement = membership?.requirements;
+   const requirement = membership && membership?.requirement;
+
+   console.log('membership :>> ', membership);
 
    return (
       <>
@@ -54,46 +59,56 @@ const MembershipFC = () => {
             }}
             scrollTo="list"
          />
-         <section
-            className="relative mb-6 -mt-24 md:mb-10"
+         <Section
+            className="-mt-24 mb-6 md:mb-10"
             id="list">
-            <div className="mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
-               <Heading2 text="Digiasset Tier Membership List" />
+            <Container>
+               <Heading2 text="Tier Memberships" />
                <MembershipList onClick={setMembership} />
-               <div className="space-y-6">
-                  <Heading3 text="Tier Requirement" />
-                  <div className="space-y-2.5">
-                     <div className="text-base leading-normal text-neutral3 dark:text-neutral5">
-                        Diamond Tier Requirements:
+               {membership && (
+                  <div className="space-y-6">
+                     <Heading3 text="Tier Requirement" />
+                     <div className="space-y-2.5">
+                        <TextBase
+                           font="normal"
+                           text={`${membership?.tier
+                              .split('')
+                              .shift()
+                              ?.toUpperCase()}${membership?.tier.slice(
+                              1
+                           )} Tier Requirements:`}
+                           className="text-neutral3 dark:text-neutral5"
+                        />
+                        <ul className="list-outside list-decimal pl-3 text-neutral4">
+                           <li>
+                              Minimum KYC Must be{' '}
+                              <span className="text-primary1">
+                                 Level {requirement?.kyc}
+                              </span>
+                           </li>
+                           <li>
+                              The minimum number of referrals that must be owned
+                              is{' '}
+                              <span className="text-primary1">
+                                 {requirement?.reff} active referrals
+                              </span>
+                           </li>
+                           <li>
+                              Minimum trading volume that must be owned is{' '}
+                              {numberFormat(+requirement?.trx_vol!)} USDT and
+                              have a good trade history
+                           </li>
+                           <li>
+                              After you have achieved all the requirements,
+                              every time you level up you will get a reward that
+                              you can claim 1X every time you level up
+                           </li>
+                        </ul>
                      </div>
-                     <ul className="list-outside list-decimal pl-3 text-neutral4">
-                        <li>
-                           Minimum KYC Must be{' '}
-                           <span className="text-primary1">
-                              Level {requirement?.kyc}
-                           </span>
-                        </li>
-                        <li>
-                           The minimum number of referrals that must be owned is{' '}
-                           <span className="text-primary1">
-                              {requirement?.reff} active referrals
-                           </span>
-                        </li>
-                        <li>
-                           Minimum trading volume that must be owned is{' '}
-                           {numberFormat(requirement?.trx_vol)} USDT and have a
-                           good trade history
-                        </li>
-                        <li>
-                           After you have achieved all the requirements, every
-                           time you level up you will get a reward that you can
-                           claim 1X every time you level up
-                        </li>
-                     </ul>
                   </div>
-               </div>
-            </div>
-         </section>
+               )}
+            </Container>
+         </Section>
          <section className="relative bg-neutral7 py-8 dark:bg-shade1">
             <div className="mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
                <div className="space-y-12">
@@ -119,7 +134,7 @@ const MembershipFC = () => {
          </section>
          <section className="relative py-16 lg:py-28 lg2:py-34">
             <div className="mx-auto w-full max-w-7xl px-6 md:px-10 lg:px-20">
-               <div className="mx-auto mt-0 mb-12 max-w-[455px] space-y-5 md:mb-16 md:text-center">
+               <div className="mx-auto mb-12 mt-0 max-w-[455px] space-y-5 md:mb-16 md:text-center">
                   <Heading2 text="How To Get Commision Easly" />
                   <div className="text-base text-neutral4">
                      A creative agency that lead and inspire.
@@ -128,7 +143,7 @@ const MembershipFC = () => {
                <div className="mx-auto max-w-4xl">
                   <div className="grid grid-cols-3 gap-8">
                      <div className="relative col-span-3 cursor-pointer text-center transition-all duration-500 md:col-span-1">
-                        <div className="relative mx-auto mt-0 mb-20 flex h-24 w-24 items-center justify-center">
+                        <div className="relative mx-auto mb-20 mt-0 flex h-24 w-24 items-center justify-center">
                            <img
                               className="w-full object-none"
                               src={membershipStep1}
@@ -147,7 +162,7 @@ const MembershipFC = () => {
                         </div>
                      </div>
                      <div className="relative col-span-3 cursor-pointer text-center transition-all duration-500 md:col-span-1">
-                        <div className="relative mx-auto mt-0 mb-20 flex h-24 w-24 items-center justify-center">
+                        <div className="relative mx-auto mb-20 mt-0 flex h-24 w-24 items-center justify-center">
                            <img
                               className="w-full object-none"
                               src={membershipStep2}
@@ -166,7 +181,7 @@ const MembershipFC = () => {
                         </div>
                      </div>
                      <div className="relative col-span-3 cursor-pointer text-center transition-all duration-500 md:col-span-1">
-                        <div className="relative mx-auto mt-0 mb-20 flex h-24 w-24 items-center justify-center">
+                        <div className="relative mx-auto mb-20 mt-0 flex h-24 w-24 items-center justify-center">
                            <img
                               className="w-full object-none"
                               src={membershipStep3}
@@ -201,7 +216,7 @@ const MembershipFC = () => {
                   <Accordion items={accordionItems} />
                   <svg
                      onClick={handleSetExpandFaq}
-                     className="absolute right-0 -top-4 h-4 w-4 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8">
+                     className="absolute -top-4 right-0 h-4 w-4 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8">
                      <use xlinkHref="#icon-full-screen-outline" />
                   </svg>
                </div>

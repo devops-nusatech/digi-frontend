@@ -6,7 +6,8 @@ import {
    withdrawLimitsData,
    setBlocklistStatus,
    sendError,
-   blockchainsData
+   blockchainsData,
+   membershipsData
 } from 'modules';
 import { API, RequestOptions } from 'api';
 import { configsData, configsError } from '../actions';
@@ -17,7 +18,7 @@ const configsOptions: RequestOptions = {
 
 export function* configsFetchSaga() {
    try {
-      const { currencies, markets, trading_fees, withdraw_limits, blockchains } = yield call(
+      const { currencies, markets, trading_fees, tier_fees, withdraw_limits, blockchains } = yield call(
          API.get(configsOptions),
          '/public/config'
       );
@@ -25,6 +26,7 @@ export function* configsFetchSaga() {
       yield put(marketsData(markets));
       yield put(withdrawLimitsData(withdraw_limits));
       yield put(tradingFeesData(trading_fees));
+      yield put(membershipsData(tier_fees));
       yield put(blockchainsData(blockchains));
       yield put(configsData());
       yield put(setBlocklistStatus({ status: 'allowed' }));

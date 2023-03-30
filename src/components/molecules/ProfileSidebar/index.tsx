@@ -62,7 +62,7 @@ export const ProfileSidebar = () => {
             {/* <div className={`${isSticky ? 'fixed top-20' : ''}lg-max:relative lg-max:z-[5]`}> */}
             <div
                onClick={toggle}
-               className={`lg-max:after:icon-arrow hidden lg-max:relative lg-max:flex lg-max:h-12 lg-max:select-none lg-max:items-center lg-max:rounded-3xl lg-max:bg-neutral8 lg-max:pr-16 lg-max:pl-4 lg-max:font-dm lg-max:leading-custom3 lg-max:after:absolute lg-max:after:top-1/2 lg-max:after:right-4 lg-max:after:h-6 lg-max:after:w-6 lg-max:after:-translate-y-1/2 lg-max:after:content-[''] lg-max:dark:bg-neutral2 ${
+               className={`lg-max:after:icon-arrow hidden lg-max:relative lg-max:flex lg-max:h-12 lg-max:select-none lg-max:items-center lg-max:rounded-3xl lg-max:bg-neutral8 lg-max:pl-4 lg-max:pr-16 lg-max:font-dm lg-max:leading-custom3 lg-max:after:absolute lg-max:after:right-4 lg-max:after:top-1/2 lg-max:after:h-6 lg-max:after:w-6 lg-max:after:-translate-y-1/2 lg-max:after:content-[''] lg-max:dark:bg-neutral2 ${
                   isShow ? 'lg-max:after:rotate-180' : ''
                } lg-max:after:transition-transform lg-max:after:duration-200`}>
                <svg className="lg-max:mr-2 lg-max:h-6 lg-max:w-6 lg-max:fill-neutral2 lg-max:transition-colors lg-max:duration-200 lg-max:dark:fill-neutral8">
@@ -71,7 +71,7 @@ export const ProfileSidebar = () => {
                {renderNameDisplayed()}
             </div>
             <div
-               className={`lg-max:absolute lg-max:top-c-full+1 lg-max:left-0 lg-max:right-0 lg-max:z-2 lg-max:rounded-3xl lg-max:bg-neutral8 lg-max:p-4 lg-max:shadow-sidebar-dropdown lg-max:dark:bg-neutral2 ${
+               className={`lg-max:absolute lg-max:left-0 lg-max:right-0 lg-max:top-c-full+1 lg-max:z-2 lg-max:rounded-3xl lg-max:bg-neutral8 lg-max:p-4 lg-max:shadow-sidebar-dropdown lg-max:dark:bg-neutral2 ${
                   isShow
                      ? 'lg-max:visible lg-max:translate-y-0 lg-max:opacity-100'
                      : 'lg-max:invisible lg-max:-translate-y-10 lg-max:opacity-0'
@@ -89,7 +89,7 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-user"></use>
+                     <use xlinkHref="#icon-user" />
                   </svg>
                   <div>Profile</div>
                </Link>
@@ -106,7 +106,7 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-share"></use>
+                     <use xlinkHref="#icon-share" />
                   </svg>
                   <div>Referrals</div>
                </Link>
@@ -123,7 +123,7 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-keyboard"></use>
+                     <use xlinkHref="#icon-keyboard" />
                   </svg>
                   <div>API keys</div>
                </Link>
@@ -140,7 +140,7 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-beneficiary"></use>
+                     <use xlinkHref="#icon-beneficiary" />
                   </svg>
                   <div>Beneficiaries</div>
                </Link>
@@ -157,9 +157,9 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-membership"></use>
+                     <use xlinkHref="#icon-membership" />
                   </svg>
-                  <div>Tier membership</div>
+                  <div>Membership</div>
                </Link>
                <div className="h-[1px] bg-neutral6 dark:bg-neutral3" />
                <Link
@@ -175,7 +175,7 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-laptop"></use>
+                     <use xlinkHref="#icon-laptop" />
                   </svg>
                   <div>Sessions history</div>
                </Link>
@@ -192,7 +192,7 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-barcode"></use>
+                     <use xlinkHref="#icon-barcode" />
                   </svg>
                   <div>2FA</div>
                </Link>
@@ -209,7 +209,7 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-lock"></use>
+                     <use xlinkHref="#icon-lock" />
                   </svg>
                   <div>Change password</div>
                </Link>
@@ -226,7 +226,7 @@ export const ProfileSidebar = () => {
                            ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
                            : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
                      }`}>
-                     <use xlinkHref="#icon-candlesticks"></use>
+                     <use xlinkHref="#icon-candlesticks" />
                   </svg>
                   <div>API docs</div>
                </Link>

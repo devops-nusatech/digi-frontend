@@ -248,7 +248,7 @@ const WithdrawalFC = memo(
                   />
                   <button
                      type="button"
-                     className="absolute top-0 right-0 flex h-12 w-12 items-center justify-center bg-none">
+                     className="absolute right-0 top-0 flex h-12 w-12 items-center justify-center bg-none">
                      <SearchIcon className="h-5 w-5 stroke-neutral4 transition-all duration-300" />
                   </button>
                </form>
@@ -384,7 +384,7 @@ const WithdrawalFC = memo(
                   />
                   <button
                      type="button"
-                     className="absolute top-0 right-0 flex h-12 w-12 items-center justify-center bg-none">
+                     className="absolute right-0 top-0 flex h-12 w-12 items-center justify-center bg-none">
                      <SearchIcon className="h-5 w-5 stroke-neutral4 transition-all duration-300" />
                   </button>
                </form>
@@ -755,7 +755,7 @@ const WithdrawalFC = memo(
                   </div>
                </div>
                <div className="space-y-12">
-                  <div className="flex rounded-2xl bg-neutral7 py-6 px-9 dark:bg-neutral2">
+                  <div className="flex rounded-2xl bg-neutral7 px-9 py-6 dark:bg-neutral2">
                      <div className="w-1/2">
                         <div className="flex space-x-2.5">
                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary3">
@@ -991,7 +991,7 @@ const WithdrawalFC = memo(
                                        open
                                           ? 'shadow-dropdown-1'
                                           : 'dark:shadow-border-dark'
-                                    } before:icon-arrow rounded-xl border-none bg-neutral8 text-left font-medium leading-12 transition-shadow duration-200 before:absolute before:top-1/2 before:right-2 before:h-6 before:w-6 before:-translate-y-1/2 before:rounded-full before:transition-transform before:duration-200 before:content-[''] dark:bg-neutral2 ${
+                                    } before:icon-arrow rounded-xl border-none bg-neutral8 text-left font-medium leading-12 transition-shadow duration-200 before:absolute before:right-2 before:top-1/2 before:h-6 before:w-6 before:-translate-y-1/2 before:rounded-full before:transition-transform before:duration-200 before:content-[''] dark:bg-neutral2 ${
                                        open ? 'before:rotate-180' : ''
                                     }`
                                  }>
@@ -1072,7 +1072,7 @@ const WithdrawalFC = memo(
                      placeholder="Enter destination tag (optional)"
                   />
                )}
-               <div className="rounded bg-neutral7 py-5 px-6 text-center dark:bg-neutral3">
+               <div className="rounded bg-neutral7 px-6 py-5 text-center dark:bg-neutral3">
                   <div className="text-base font-medium leading-normal">
                      Attention
                   </div>
@@ -1130,21 +1130,21 @@ const WithdrawalFC = memo(
                }}>
                <div className="mr-8 w-full shrink-0 space-y-6 lg:w-56 lg2:mr-12 lg2:w-72 1xl:mr-20 md-max:mb-6 lg-max:mb-8 lg-max:hidden">
                   <div
-                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:top-full after:left-5.75 after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
+                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
                         (stepActive === 2 || stepActive === 3) &&
                         'bg-neutral8 shadow-step dark:bg-neutral2 dark:after:border-neutral4'
                      }`}>
                      <div
                         className={`relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary5 dark:border-chart1 ${
                            (stepActive === 2 || stepActive === 3) &&
-                           'bidding__number bidding__number_dark'
-                        } transition-all duration-300 after:absolute after:top-0 after:left-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
+                           'after:bidding__number after:bidding__number_dark'
+                        } transition-all duration-300 after:absolute after:left-0 after:top-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
                         1
                      </div>
                      <div>Select asset</div>
                   </div>
                   <div
-                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:top-full after:left-5.75 after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
+                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
                         stepActive === 1 && 'text-neutral4'
                      } ${
                         stepActive === 3 &&
@@ -1157,8 +1157,8 @@ const WithdrawalFC = memo(
                               : 'border-neutral6 dark:border-neutral4'
                         } ${
                            stepActive === 3 &&
-                           'bidding__number bidding__number_dark'
-                        } transition-all duration-300 after:absolute after:top-0 after:left-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
+                           'after:bidding__number after:bidding__number_dark'
+                        } transition-all duration-300 after:absolute after:left-0 after:top-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
                         2
                      </div>
                      <div>Select beneficiary</div>

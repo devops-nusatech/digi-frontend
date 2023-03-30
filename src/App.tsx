@@ -75,12 +75,15 @@ const RenderDeviceContainers = () => {
 
 export default () => {
    useSetMobileDevice();
-   const lang = useSelector(selectCurrentLanguage);
+   const lang =
+      useSelector(selectCurrentLanguage) === null
+         ? 'en'
+         : useSelector(selectCurrentLanguage);
    const isMobileDevice = useSelector(selectMobileDeviceState);
 
    return (
       <IntlProvider
-         locale={lang}
+         locale={lang || 'en'}
          messages={getTranslations(lang, isMobileDevice)}
          key={lang}>
          <Router history={browserHistory}>
