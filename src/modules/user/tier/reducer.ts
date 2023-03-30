@@ -6,21 +6,21 @@ import {
    TIER_ERROR,
    TIER_CLAIM_FETCH,
    TIER_CLAIM_DATA,
-   TIER_CLAIM_ERROR
+   TIER_CLAIM_ERROR,
 } from './constants';
 import { Tier } from './types';
 
 export type TierState = CommonState & {
    list: Tier;
-}
+};
 
 export const defaultTier: Tier = {
    tier: '',
    lates_claim: 0,
    monthly_trx: 0,
    reff: 0,
-   tier_id: 0
-}
+   tier_id: 0,
+};
 
 export const initialTierState: TierState = {
    list: defaultTier,
@@ -43,7 +43,7 @@ export const tierReducer = (state = initialTierState, action: TierAction) => {
          return {
             ...state,
             loading: false,
-            error: action.error
+            error: action.error,
          };
       case TIER_CLAIM_FETCH:
          return {
@@ -60,7 +60,7 @@ export const tierReducer = (state = initialTierState, action: TierAction) => {
          return {
             ...state,
             loading: false,
-            error: action.error
+            error: action.error,
          };
       default:
          return state;

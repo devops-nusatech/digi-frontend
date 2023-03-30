@@ -76,7 +76,11 @@ export const authReducer = (state = initialStateAuth, action: AuthAction) => {
       case AUTH_REGISTER_DATA:
          return { ...state, registerLoading: false };
       case AUTH_REGISTER_ERROR:
-         return { ...state, registerError: action.error, registerLoading: false };
+         return {
+            ...state,
+            registerError: action.error,
+            registerLoading: false,
+         };
       case AUTH_LOGOUT_FETCH:
          return { ...state, logoutLoading: true };
       case AUTH_LOGOUT_DATA:

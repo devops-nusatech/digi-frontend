@@ -33,7 +33,7 @@ export const ScrollLine = ({ target }: ScrollLineProps) => {
          href={`#${target}`}
          onClick={e => handleScroll(e, target)}
          className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border-2 border-neutral6 transition-colors duration-300 hover:border-neutral2 dark:border-neutral3 dark:hover:border-neutral6">
-         <div className="-translate-y-6.75 group flex animate-down flex-col space-y-8">
+         <div className="group flex -translate-y-6.75 animate-down flex-col space-y-8">
             {renderIconArrowButtom}
             {renderIconArrowButtom}
          </div>

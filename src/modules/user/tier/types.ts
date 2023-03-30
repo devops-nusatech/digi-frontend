@@ -6,4 +6,4 @@ export type Tier = {
    lates_claim: number | null;
    monthly_trx: number;
    reff: number;
-}
+};

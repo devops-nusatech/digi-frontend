@@ -7,17 +7,21 @@ export const IcBronze = (props: React.SVGProps<SVGSVGElement>) => (
       width={24}
       height={38}
       fill="none"
-      {...props}
-   >
-      <path fill="url(#a)" d="M0 0h24v38H0z" />
+      {...props}>
+      <path
+         fill="url(#a)"
+         d="M0 0h24v38H0z"
+      />
       <defs>
          <pattern
             id="a"
             patternContentUnits="objectBoundingBox"
             width={1}
-            height={1}
-         >
-            <use xlinkHref="#b" transform="matrix(.0092 0 0 .00581 -.039 0)" />
+            height={1}>
+            <use
+               xlinkHref="#b"
+               transform="matrix(.0092 0 0 .00581 -.039 0)"
+            />
          </pattern>
          <image
             id="b"
@@ -27,4 +31,4 @@ export const IcBronze = (props: React.SVGProps<SVGSVGElement>) => (
          />
       </defs>
    </svg>
-)
+);

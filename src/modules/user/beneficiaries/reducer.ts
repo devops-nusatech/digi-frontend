@@ -29,7 +29,7 @@ const defaultBeneficiary: Beneficiary = {
       address: '',
    },
    blockchain_key: '',
-   blockchain_name: ''
+   blockchain_name: '',
 };
 
 export interface BeneficiariesState {
@@ -54,7 +54,7 @@ export interface BeneficiariesState {
    delete: {
       data: {
          id: number;
-      }
+      };
       fetching: boolean;
       success: boolean;
       error?: CommonError;
@@ -62,7 +62,7 @@ export interface BeneficiariesState {
    resendPin: {
       data: {
          id: number;
-      }
+      };
       fetching: boolean;
       success: boolean;
       error?: CommonError;
@@ -101,7 +101,10 @@ export const initialBeneficiariesState: BeneficiariesState = {
    },
 };
 
-export const beneficiariesFetchReducer = (state: BeneficiariesState['fetch'], action: BeneficiariesActions) => {
+export const beneficiariesFetchReducer = (
+   state: BeneficiariesState['fetch'],
+   action: BeneficiariesActions
+) => {
    switch (action.type) {
       case BENEFICIARIES_FETCH:
          return {
@@ -120,7 +123,9 @@ export const beneficiariesFetchReducer = (state: BeneficiariesState['fetch'], ac
          };
       case BENEFICIARIES_DATA_UPDATE:
          const updatedData: Beneficiary[] = [...state.data];
-         const updateItemIndex = updatedData.findIndex(item => action.payload && action.payload.id === item.id);
+         const updateItemIndex = updatedData.findIndex(
+            item => action.payload && action.payload.id === item.id
+         );
 
          if (updateItemIndex > -1) {
             updatedData[updateItemIndex] = action.payload;
@@ -147,7 +152,10 @@ export const beneficiariesFetchReducer = (state: BeneficiariesState['fetch'], ac
    }
 };
 
-const beneficiariesActivateReducer = (state: BeneficiariesState['activate'], action: BeneficiariesActions) => {
+const beneficiariesActivateReducer = (
+   state: BeneficiariesState['activate'],
+   action: BeneficiariesActions
+) => {
    switch (action.type) {
       case BENEFICIARIES_ACTIVATE:
          return {
@@ -176,7 +184,10 @@ const beneficiariesActivateReducer = (state: BeneficiariesState['activate'], act
    }
 };
 
-const beneficiariesCreateReducer = (state: BeneficiariesState['create'], action: BeneficiariesActions) => {
+const beneficiariesCreateReducer = (
+   state: BeneficiariesState['create'],
+   action: BeneficiariesActions
+) => {
    switch (action.type) {
       case BENEFICIARIES_CREATE:
          return {
@@ -205,7 +216,10 @@ const beneficiariesCreateReducer = (state: BeneficiariesState['create'], action:
    }
 };
 
-const beneficiariesDeleteReducer = (state: BeneficiariesState['delete'], action: BeneficiariesActions) => {
+const beneficiariesDeleteReducer = (
+   state: BeneficiariesState['delete'],
+   action: BeneficiariesActions
+) => {
    switch (action.type) {
       case BENEFICIARIES_DELETE:
          return {
@@ -234,7 +248,10 @@ const beneficiariesDeleteReducer = (state: BeneficiariesState['delete'], action:
    }
 };
 
-const beneficiariesResendPinReducer = (state: BeneficiariesState['resendPin'], action: BeneficiariesActions) => {
+const beneficiariesResendPinReducer = (
+   state: BeneficiariesState['resendPin'],
+   action: BeneficiariesActions
+) => {
    switch (action.type) {
       case BENEFICIARIES_RESEND_PIN:
          return {
@@ -263,7 +280,10 @@ const beneficiariesResendPinReducer = (state: BeneficiariesState['resendPin'], a
    }
 };
 
-export const beneficiariesReducer = (state = initialBeneficiariesState, action: BeneficiariesActions) => {
+export const beneficiariesReducer = (
+   state = initialBeneficiariesState,
+   action: BeneficiariesActions
+) => {
    switch (action.type) {
       case BENEFICIARIES_ACTIVATE:
       case BENEFICIARIES_ACTIVATE_DATA:
@@ -272,7 +292,10 @@ export const beneficiariesReducer = (state = initialBeneficiariesState, action: 
 
          return {
             ...state,
-            activate: beneficiariesActivateReducer(beneficiariesActivateState, action),
+            activate: beneficiariesActivateReducer(
+               beneficiariesActivateState,
+               action
+            ),
          };
       case BENEFICIARIES_FETCH:
       case BENEFICIARIES_DATA:
@@ -291,7 +314,10 @@ export const beneficiariesReducer = (state = initialBeneficiariesState, action: 
 
          return {
             ...state,
-            create: beneficiariesCreateReducer(beneficiariesCreateState, action),
+            create: beneficiariesCreateReducer(
+               beneficiariesCreateState,
+               action
+            ),
          };
       case BENEFICIARIES_DELETE:
       case BENEFICIARIES_DELETE_DATA:
@@ -300,7 +326,10 @@ export const beneficiariesReducer = (state = initialBeneficiariesState, action: 
 
          return {
             ...state,
-            delete: beneficiariesDeleteReducer(beneficiariesDeleteState, action),
+            delete: beneficiariesDeleteReducer(
+               beneficiariesDeleteState,
+               action
+            ),
          };
       case BENEFICIARIES_RESEND_PIN:
       case BENEFICIARIES_RESEND_PIN_DATA:
@@ -309,7 +338,10 @@ export const beneficiariesReducer = (state = initialBeneficiariesState, action: 
 
          return {
             ...state,
-            resendPin: beneficiariesResendPinReducer(beneficiariesResendPinState, action),
+            resendPin: beneficiariesResendPinReducer(
+               beneficiariesResendPinState,
+               action
+            ),
          };
       default:
          return state;

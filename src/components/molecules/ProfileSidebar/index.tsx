@@ -146,9 +146,17 @@ export const ProfileSidebar = () => {
                </Link>
                <Link
                   to="/tier"
-                  className={`group flex space-x-2 items-center h-10 px-0 lg2:px-4 font-dm leading-custom3 ${pathname.includes('/tier') ? '' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} transition-colors duration-300`}
-               >
-                  <svg className={`w-6 h-6 ${pathname.includes('/tier') ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8' : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'}`}>
+                  className={`group flex h-10 items-center space-x-2 px-0 font-dm leading-custom3 lg2:px-4 ${
+                     pathname.includes('/tier')
+                        ? ''
+                        : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
+                  } transition-colors duration-300`}>
+                  <svg
+                     className={`h-6 w-6 ${
+                        pathname.includes('/tier')
+                           ? 'dark:fill-neutral8 dark:group-hover:fill-neutral8'
+                           : 'fill-neutral4 group-hover:fill-neutral2 dark:group-hover:fill-neutral8'
+                     }`}>
                      <use xlinkHref="#icon-membership"></use>
                   </svg>
                   <div>Tier membership</div>

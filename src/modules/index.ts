@@ -4,10 +4,16 @@ import { publicReducer, userReducer } from './app';
 import { AirdropsState, rootAirdropsSaga } from './public/airdrops';
 import { AlertState, rootHandleAlertSaga } from './public/alert';
 import { BlockchainsState } from './public/blockchains';
-import { BlocklistAccessState, rootBlocklistAccessSaga } from './public/blocklistAccess';
+import {
+   BlocklistAccessState,
+   rootBlocklistAccessSaga,
+} from './public/blocklistAccess';
 import { ConfigsState, rootConfigsSaga } from './public/configs';
 import { CurrenciesState, rootCurrenciesSaga } from './public/currencies';
-import { CustomizationState, rootCustomizationSaga } from './public/customization';
+import {
+   CustomizationState,
+   rootCustomizationSaga,
+} from './public/customization';
 import { ErrorHandlerState, rootErrorHandlerSaga } from './public/errorHandler';
 import { ColorThemeState } from './public/globalSettings';
 import { GridLayoutState } from './public/gridLayout';
@@ -18,7 +24,12 @@ import { MemberLevelsState, rootMemberLevelsSaga } from './public/memberLevels';
 import { MembershipsState, rootMembershipsSaga } from './public/memberships';
 import { NewsState, rootNewsSaga } from './public/news';
 import { News2State, rootNews2Saga } from './public/news2';
-import { DepthIncrementState, DepthState, OrderBookState, rootOrderBookSaga } from './public/orderBook';
+import {
+   DepthIncrementState,
+   DepthState,
+   OrderBookState,
+   rootOrderBookSaga,
+} from './public/orderBook';
 import { RangerState } from './public/ranger/reducer';
 import { RecentTradesState, rootRecentTradesSaga } from './public/recentTrades';
 import { TradingFeesState } from './public/tradingFees';
@@ -26,11 +37,23 @@ import { WithdrawLimitsState } from './public/withdrawLimits';
 import { ApiKeysState } from './user/apiKeys';
 import { rootApiKeysSaga } from './user/apiKeys/sagas';
 import { AuthState, rootAuthSaga } from './user/auth';
-import { BeneficiariesState, rootBeneficiariesSaga } from './user/beneficiaries';
+import {
+   BeneficiariesState,
+   rootBeneficiariesSaga,
+} from './user/beneficiaries';
 import { GeetestCaptchaState, rootGeetestCaptchaSaga } from './user/captcha';
-import { CustomizationUpdateState, rootCustomizationUpdateSaga } from './user/customization';
-import { DocumentationState, rootDocumentationSaga } from './user/documentation';
-import { EmailVerificationState, rootEmailVerificationSaga } from './user/emailVerification';
+import {
+   CustomizationUpdateState,
+   rootCustomizationUpdateSaga,
+} from './user/customization';
+import {
+   DocumentationState,
+   rootDocumentationSaga,
+} from './user/documentation';
+import {
+   EmailVerificationState,
+   rootEmailVerificationSaga,
+} from './user/emailVerification';
 import { GroupMemberState, rootMemberGroupSaga } from './user/groupMember';
 import { HistoryState, rootHistorySaga } from './user/history';
 import { AddressesState, rootSendAddressesSaga } from './user/kyc/addresses';
@@ -40,7 +63,10 @@ import { LabelState, rootLabelSaga } from './user/kyc/label';
 import { PhoneState, rootSendCodeSaga } from './user/kyc/phone';
 import { OpenOrdersState, rootOpenOrdersSaga } from './user/openOrders';
 import { OrdersState, rootOrdersSaga } from './user/orders';
-import { OrdersHistoryState, rootOrdersHistorySaga } from './user/ordersHistory';
+import {
+   OrdersHistoryState,
+   rootOrdersHistorySaga,
+} from './user/ordersHistory';
 import { PasswordState, rootPasswordSaga } from './user/password';
 import { ProfileState, rootProfileSaga } from './user/profile';
 import { TierState, rootTierSaga } from './user/tier';
@@ -48,7 +74,10 @@ import { TransactionsState, rootTransactionsSaga } from './user/transactions';
 import { TransferState, rootTransferSaga } from './user/transfers';
 import { rootUserActivitySaga, UserActivityState } from './user/userActivity';
 import { rootWalletsSaga, WalletsState } from './user/wallets';
-import { rootWithdrawLimitSaga, WithdrawLimitState } from './user/withdrawLimit';
+import {
+   rootWithdrawLimitSaga,
+   WithdrawLimitState,
+} from './user/withdrawLimit';
 
 export * from './public/airdrops';
 export * from './public/alert';

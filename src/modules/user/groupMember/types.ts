@@ -4,4 +4,11 @@ export interface GroupMember {
    group: Group;
 }
 
-type Group = 'vip-0' | 'vip-1' | 'vip-2' | 'vip-3' | 'any' | 'bot' | 'temporary';
+type Group =
+   | 'vip-0'
+   | 'vip-1'
+   | 'vip-2'
+   | 'vip-3'
+   | 'any'
+   | 'bot'
+   | 'temporary';

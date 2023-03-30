@@ -1,6 +1,10 @@
 import { CommonError } from '../../types';
 import { EmailVerificationAction } from './actions';
-import { EMAIL_VERIFICATION_DATA, EMAIL_VERIFICATION_ERROR, EMAIL_VERIFICATION_FETCH } from './constants';
+import {
+   EMAIL_VERIFICATION_DATA,
+   EMAIL_VERIFICATION_ERROR,
+   EMAIL_VERIFICATION_FETCH,
+} from './constants';
 
 export interface EmailVerificationState {
    loading: boolean;
@@ -13,7 +17,10 @@ export const initialState: EmailVerificationState = {
    success: false,
 };
 
-export const sendEmailVerificationReducer = (state = initialState, action: EmailVerificationAction) => {
+export const sendEmailVerificationReducer = (
+   state = initialState,
+   action: EmailVerificationAction
+) => {
    switch (action.type) {
       case EMAIL_VERIFICATION_FETCH:
          return {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { MembershipCard, Skeleton } from 'components';
 import {
    TierMembershipSVG,
@@ -15,13 +15,8 @@ interface MembershipListProps {
    onClick: (membership: Membership) => void;
 }
 
-export const MembershipList = ({
-   onClick
-}: MembershipListProps) => {
-   const {
-      memberships,
-      membershipsLoading,
-   } = useMembershipsFetch();
+export const MembershipList = ({ onClick }: MembershipListProps) => {
+   const { memberships, membershipsLoading } = useMembershipsFetch();
    // const { airdrops } = useAirdropsFetch();
    // const { airdrop } = useAirdropFetch('0908e49c-34c7-495f-bb99-56225be74992');
 
@@ -51,32 +46,48 @@ export const MembershipList = ({
          default:
             return;
       }
-   }
+   };
 
    return (
-      <div className="mt-10 relative max-w-full flex gap-6 lg:gap-8.5 snap-x snap-mandatory overflow-x-auto pb-12 transition-transform duration-500">
+      <div className="relative mt-10 flex max-w-full snap-x snap-mandatory gap-6 overflow-x-auto pb-12 transition-transform duration-500 lg:gap-8.5">
          {membershipsLoading ? (
             <>
-               <Skeleton className="snap-start shrink-0 first:pl-3 last:pr-3" width={339} height={350} />
-               <Skeleton className="snap-start shrink-0 first:pl-3 last:pr-3" width={339} height={350} />
-               <Skeleton className="snap-start shrink-0 first:pl-3 last:pr-3" width={339} height={350} />
-               <Skeleton className="snap-start shrink-0 first:pl-3 last:pr-3" width={339} height={350} />
+               <Skeleton
+                  className="shrink-0 snap-start first:pl-3 last:pr-3"
+                  width={339}
+                  height={350}
+               />
+               <Skeleton
+                  className="shrink-0 snap-start first:pl-3 last:pr-3"
+                  width={339}
+                  height={350}
+               />
+               <Skeleton
+                  className="shrink-0 snap-start first:pl-3 last:pr-3"
+                  width={339}
+                  height={350}
+               />
+               <Skeleton
+                  className="shrink-0 snap-start first:pl-3 last:pr-3"
+                  width={339}
+                  height={350}
+               />
             </>
-         ) : memberships.length > 0 ? memberships.map(member => (
-            <MembershipCard
-               key={member.tier}
-               banner={renderTierBanner(member.tier)}
-               directReff={member.benefits.direct_reff}
-               tier={member.tier}
-               subReff={member.benefits.sub_reff}
-               withdrawLimit1H={member.benefits.withdraw_limit_24}
-               onClick={() => onClick(member)}
-            />
-         )) : (
-            <div className="">
-               Memberships null
-            </div>
+         ) : memberships.length > 0 ? (
+            memberships.map(member => (
+               <MembershipCard
+                  key={member.tier}
+                  banner={renderTierBanner(member.tier)}
+                  directReff={member.benefits.direct_reff}
+                  tier={member.tier}
+                  subReff={member.benefits.sub_reff}
+                  withdrawLimit1H={member.benefits.withdraw_limit_24}
+                  onClick={() => onClick(member)}
+               />
+            ))
+         ) : (
+            <div className="">Memberships null</div>
          )}
       </div>
-   )
-}
+   );
+};

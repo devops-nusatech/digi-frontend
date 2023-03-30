@@ -13,5 +13,5 @@ export const useAirdropFetch = (id: string) => {
    return {
       airdrop,
       airdropLoading,
-   }
+   };
 };

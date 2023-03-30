@@ -1,6 +1,10 @@
 import { CommonError } from './../../types';
 import { ConfigUpdateDataType } from './types';
-import { CONFIG_UPDATE_FETCH, CONFIG_UPDATE_DATA, CONFIG_UPDATE_ERROR } from './constants';
+import {
+   CONFIG_UPDATE_FETCH,
+   CONFIG_UPDATE_DATA,
+   CONFIG_UPDATE_ERROR,
+} from './constants';
 
 export interface ConfigUpdateFetch {
    type: typeof CONFIG_UPDATE_FETCH;
@@ -15,17 +19,24 @@ export interface ConfigUpdateError {
    error: CommonError;
 }
 
-export type ConfigUpdateAction = ConfigUpdateFetch | ConfigUpdateData | ConfigUpdateError;
+export type ConfigUpdateAction =
+   | ConfigUpdateFetch
+   | ConfigUpdateData
+   | ConfigUpdateError;
 
-export const configUpdateFetch = (payload: ConfigUpdateFetch['payload']): ConfigUpdateFetch => ({
+export const configUpdateFetch = (
+   payload: ConfigUpdateFetch['payload']
+): ConfigUpdateFetch => ({
    type: CONFIG_UPDATE_FETCH,
-   payload
+   payload,
 });
-export const configUpdateData = (payload: ConfigUpdateData['payload']): ConfigUpdateData => ({
+export const configUpdateData = (
+   payload: ConfigUpdateData['payload']
+): ConfigUpdateData => ({
    type: CONFIG_UPDATE_DATA,
-   payload
+   payload,
 });
 export const configUpdateError = (error: CommonError): ConfigUpdateError => ({
    type: CONFIG_UPDATE_ERROR,
-   error
+   error,
 });

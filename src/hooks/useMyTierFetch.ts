@@ -13,5 +13,5 @@ export const useMyTierFetch = () => {
    return {
       tier,
       tierLoading,
-   }
+   };
 };

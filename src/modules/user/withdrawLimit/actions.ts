@@ -1,5 +1,9 @@
 import { CommonError } from '../../types';
-import { WITHDRAW_LIMIT_DATA, WITHDRAW_LIMIT_ERROR, WITHDRAW_LIMIT_FETCH } from './constants';
+import {
+   WITHDRAW_LIMIT_DATA,
+   WITHDRAW_LIMIT_ERROR,
+   WITHDRAW_LIMIT_FETCH,
+} from './constants';
 import { WithdrawLimit } from './types';
 
 export interface WithdrawLimitFetch {
@@ -16,7 +20,8 @@ export interface WithdrawLimitError {
    error: CommonError;
 }
 
-export type withdrawLimitAction = WithdrawLimitFetch
+export type withdrawLimitAction =
+   | WithdrawLimitFetch
    | WithdrawLimitData
    | WithdrawLimitError;
 
@@ -24,7 +29,9 @@ export const withdrawLimitFetch = (): WithdrawLimitFetch => ({
    type: WITHDRAW_LIMIT_FETCH,
 });
 
-export const withdrawLimitData = (payload: WithdrawLimitData['payload']): WithdrawLimitData => ({
+export const withdrawLimitData = (
+   payload: WithdrawLimitData['payload']
+): WithdrawLimitData => ({
    type: WITHDRAW_LIMIT_DATA,
    payload,
 });

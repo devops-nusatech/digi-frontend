@@ -5,7 +5,7 @@ import {
    TIER_ERROR,
    TIER_CLAIM_FETCH,
    TIER_CLAIM_DATA,
-   TIER_CLAIM_ERROR
+   TIER_CLAIM_ERROR,
 } from './constants';
 import { Tier } from './types';
 
@@ -30,7 +30,7 @@ export interface TierClaimFetch {
 export interface TierClaimData {
    type: typeof TIER_CLAIM_DATA;
    payload: {
-      tier: number
+      tier: number;
    };
 }
 
@@ -40,7 +40,7 @@ export interface TierClaimError {
 }
 
 export type TierAction =
-   TierFetch
+   | TierFetch
    | TierData
    | TierError
    | TierClaimFetch
@@ -65,7 +65,9 @@ export const tierClaimFetch = (): TierClaimFetch => ({
    type: TIER_CLAIM_FETCH,
 });
 
-export const tierClaimData = (payload: TierClaimData['payload']): TierClaimData => ({
+export const tierClaimData = (
+   payload: TierClaimData['payload']
+): TierClaimData => ({
    type: TIER_CLAIM_DATA,
    payload,
 });

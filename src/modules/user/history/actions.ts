@@ -9,7 +9,12 @@ import {
 } from './constants';
 import { PrivateTradeEvent, WalletHistoryList } from './types';
 
-export type Core = 'transactions' | 'deposits' | 'withdraws' | 'transfers' | 'trades';
+export type Core =
+   | 'transactions'
+   | 'deposits'
+   | 'withdraws'
+   | 'transfers'
+   | 'trades';
 
 export interface HistoryFetchPayload {
    currency?: string;
@@ -62,20 +67,21 @@ export interface HistoryPush {
 }
 
 export type HistoryActions =
-   HistoryFetch
+   | HistoryFetch
    | HistoryData
    | HistoryError
    | HistoryReset
    | HistoryPush
    | HistoryPushFinish;
 
-
 export const fetchHistory = (payload: HistoryFetchPayload): HistoryFetch => ({
    type: HISTORY_FETCH,
    payload,
 });
 
-export const successHistory = (payload: HistorySuccessPayload): HistoryData => ({
+export const successHistory = (
+   payload: HistorySuccessPayload
+): HistoryData => ({
    type: HISTORY_DATA,
    payload,
 });
@@ -94,7 +100,9 @@ export const pushHistoryEmit = (payload: PrivateTradeEvent): HistoryPush => ({
    payload,
 });
 
-export const pushHistoryFinish = (payload: WalletHistoryList): HistoryPushFinish => ({
+export const pushHistoryFinish = (
+   payload: WalletHistoryList
+): HistoryPushFinish => ({
    type: HISTORY_PUSH_FINISH,
    payload,
 });

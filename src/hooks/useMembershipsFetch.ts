@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { membershipsFetch, selectMemberships, selectMembershipsLoading, selectShouldFetchMemberships } from '../modules';
+import {
+   membershipsFetch,
+   selectMemberships,
+   selectMembershipsLoading,
+   selectShouldFetchMemberships,
+} from '../modules';
 
 export const useMembershipsFetch = () => {
    const shouldDispatch = useSelector(selectShouldFetchMemberships);
@@ -16,5 +21,5 @@ export const useMembershipsFetch = () => {
    return {
       memberships,
       membershipsLoading,
-   }
+   };
 };

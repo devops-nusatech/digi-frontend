@@ -2,10 +2,10 @@ import { CommonError, CommonState } from '../../types';
 import {
    TRANSACTIONS_FETCH,
    TRANSACTIONS_DATA,
-   TRANSACTIONS_ERROR
+   TRANSACTIONS_ERROR,
 } from './constants';
-import { Transaction } from './types'
-import { TransactionAction } from './actions'
+import { Transaction } from './types';
+import { TransactionAction } from './actions';
 
 export interface TransactionsState extends CommonState {
    list: Transaction[];
@@ -18,7 +18,10 @@ export const initialTransactionsState: TransactionsState = {
    loading: false,
 };
 
-export const transactionsReducer = (state = initialTransactionsState, action: TransactionAction) => {
+export const transactionsReducer = (
+   state = initialTransactionsState,
+   action: TransactionAction
+) => {
    switch (action.type) {
       case TRANSACTIONS_FETCH:
          return {
@@ -35,7 +38,7 @@ export const transactionsReducer = (state = initialTransactionsState, action: Tr
          return {
             ...state,
             loading: false,
-            error: action.error
+            error: action.error,
          };
       default:
          return state;

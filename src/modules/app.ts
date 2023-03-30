@@ -16,7 +16,11 @@ import { memberLevelsReducer } from './public/memberLevels';
 import { membershipsReducer } from './public/memberships';
 import { newsReducer } from './public/news';
 import { news2Reducer } from './public/news2';
-import { depthReducer, incrementDepthReducer, orderBookReducer } from './public/orderBook';
+import {
+   depthReducer,
+   incrementDepthReducer,
+   orderBookReducer,
+} from './public/orderBook';
 import { rangerReducer } from './public/ranger/reducer';
 import { recentTradesReducer } from './public/recentTrades';
 import { tradingFeesReducer } from './public/tradingFees';

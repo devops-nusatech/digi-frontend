@@ -11,5 +11,6 @@ export const selectWithdrawLimitLoading = (state: RootState): boolean =>
 export const selectWithdrawLimitSuccess = (state: RootState): boolean =>
    state.user.withdrawLimit.success;
 
-export const selectWithdrawLimitError = (state: RootState): CommonError | undefined =>
-   state.user.withdrawLimit.error;
+export const selectWithdrawLimitError = (
+   state: RootState
+): CommonError | undefined => state.user.withdrawLimit.error;

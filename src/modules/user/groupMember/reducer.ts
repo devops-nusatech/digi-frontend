@@ -15,11 +15,14 @@ const initialGroupMemberState: GroupMemberState = {
    data: {
       uid: '',
       email: '',
-      group: 'any'
-   }
+      group: 'any',
+   },
 };
 
-export const groupMemberReducer = (state = initialGroupMemberState, action: GroupMemberAction) => {
+export const groupMemberReducer = (
+   state = initialGroupMemberState,
+   action: GroupMemberAction
+) => {
    switch (action.type) {
       case PROFILE_GROUP_FETCH:
          return {

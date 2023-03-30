@@ -52,19 +52,23 @@ const ifUserIsLoggedIn = () => {
    return true;
 };
 
-
-export const defaultUser = {
-   username: '',
+export const defaultUser: User = {
    email: '',
+   uid: '',
+   role: '',
    level: 0,
    otp: false,
-   role: '',
    state: '',
-   uid: '',
-   profiles: [],
-   referal_uid: '',
+   referral_id: [],
+   referral_uid: '',
+   data: '',
+   tier: '',
+   alltime_trx: '',
+   username: '',
    labels: [],
-   phone: [],
+   phones: [],
+   profiles: [],
+   data_storages: [],
    created_at: '',
    updated_at: '',
 };
@@ -84,7 +88,10 @@ export const initialStateProfile: ProfileState = {
    },
 };
 
-const passwordChangeReducer = (state: ProfileState['passwordChange'], action: ProfileAction) => {
+const passwordChangeReducer = (
+   state: ProfileState['passwordChange'],
+   action: ProfileAction
+) => {
    switch (action.type) {
       case PROFILE_CHANGE_PASSWORD_FETCH:
          return {
@@ -111,7 +118,10 @@ const passwordChangeReducer = (state: ProfileState['passwordChange'], action: Pr
    }
 };
 
-const twoAuthReducer = (state: ProfileState['twoFactorAuth'], action: ProfileAction) => {
+const twoAuthReducer = (
+   state: ProfileState['twoFactorAuth'],
+   action: ProfileAction
+) => {
    switch (action.type) {
       case PROFILE_GENERATE_2FA_QRCODE_FETCH:
          return {
@@ -159,7 +169,10 @@ const twoAuthReducer = (state: ProfileState['twoFactorAuth'], action: ProfileAct
    }
 };
 
-export const userReducer = (state: ProfileState['userData'], action: ProfileAction) => {
+export const userReducer = (
+   state: ProfileState['userData'],
+   action: ProfileAction
+) => {
    switch (action.type) {
       case PROFILE_USER_FETCH:
          return {
@@ -209,7 +222,11 @@ export const userReducer = (state: ProfileState['userData'], action: ProfileActi
             ...state,
             user: {
                ...state.user,
-               data: (action.payload && action.payload.user && action.payload.user.data) || state.user.data,
+               data:
+                  (action.payload &&
+                     action.payload.user &&
+                     action.payload.user.data) ||
+                  state.user.data,
             },
             success: true,
          };
@@ -223,7 +240,10 @@ export const userReducer = (state: ProfileState['userData'], action: ProfileActi
    }
 };
 
-export const profileReducer = (state = initialStateProfile, action: ProfileAction) => {
+export const profileReducer = (
+   state = initialStateProfile,
+   action: ProfileAction
+) => {
    switch (action.type) {
       case PROFILE_CHANGE_PASSWORD_FETCH:
       case PROFILE_CHANGE_PASSWORD_DATA:

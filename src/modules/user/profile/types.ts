@@ -20,43 +20,41 @@ export interface Phone {
    validated_at: string | null;
 }
 
-export type User = {
-   username?: string;
+export type ReferralID = {
+   uid: string;
+   username: string;
    email: string;
    level: number;
-   otp: boolean;
-   role: string;
-   state: string;
+   tier: string;
+   p2p_tier: string;
+};
+
+export type TierCuk =
+   | 'bronze'
+   | 'silver'
+   | 'gold'
+   | 'platinum'
+   | 'diamond'
+   | 'influencer'
+   | '';
+
+export type User = {
+   email: string;
    uid: string;
-   profiles: Profile[];
-   csrf_token?: string;
-   data?: string;
-   referal_uid: string | null;
+   role: string;
+   level: number;
+   otp: boolean;
+   state: string;
+   referral_id: ReferralID[];
+   referral_uid: string;
+   data: string;
+   tier: TierCuk;
+   alltime_trx: string;
+   username: string;
    labels: Label[];
-   phone: Phone[];
-   group?: string;
+   phones: Phone[];
+   profiles: Profile[];
+   data_storages: any[];
    created_at: string;
    updated_at: string;
-}
-
-
-// export interface User {
-//     uid: string;
-//     username?: string;
-//     email: string;
-//     level: number;
-//     otp: boolean;
-//     state: string;
-//     referal_uid: string | null;
-//     //  referral_uid: string | null;
-//     csrf_token?: string;
-//     role: string;
-//     data?: string;
-//     profiles: Profile[];
-//     labels: Label[];
-//     phone: Phone[];
-//    //  phone: Phone[];
-//     data_storages?: any[];
-//     created_at: string;
-//     updated_at: string;
-// }
+};

@@ -74,12 +74,12 @@ export type Balance = {
    deposit_addresses?: WalletAddress[];
    locked: string;
    virtual_account?: VirtualAccount[];
-}
+};
 
 export type VirtualAccount = {
    currency_id: string;
    bank: string;
-   number: string,
+   number: string;
    merchant_code: number;
    name: string;
-}
+};

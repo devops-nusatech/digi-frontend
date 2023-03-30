@@ -16,12 +16,14 @@ export function* tierFetchSaga() {
       const tier: Tier = yield call(fetchTier);
       yield put(tierData(tier));
    } catch (error) {
-      yield put(sendError({
-         error,
-         processingType: 'alert',
-         extraOptions: {
-            actionError: tierError,
-         },
-      }));
+      yield put(
+         sendError({
+            error,
+            processingType: 'alert',
+            extraOptions: {
+               actionError: tierError,
+            },
+         })
+      );
    }
 }

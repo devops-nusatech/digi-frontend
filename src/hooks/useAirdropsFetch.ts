@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
-import {
-   useDispatch,
-   useSelector
-} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
    airdropsFetch,
    selectAirdrops,
    selectAirdropsLoading,
-   selectShouldFetchAirdrops
+   selectShouldFetchAirdrops,
 } from 'modules';
 
 export const useAirdropsFetch = () => {
@@ -24,5 +21,5 @@ export const useAirdropsFetch = () => {
    return {
       airdrops,
       airdropsLoading,
-   }
+   };
 };

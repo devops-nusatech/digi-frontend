@@ -1,6 +1,10 @@
 import { CommonError } from '../../types';
 import { withdrawLimitAction } from './actions';
-import { WITHDRAW_LIMIT_DATA, WITHDRAW_LIMIT_ERROR, WITHDRAW_LIMIT_FETCH } from './constants';
+import {
+   WITHDRAW_LIMIT_DATA,
+   WITHDRAW_LIMIT_ERROR,
+   WITHDRAW_LIMIT_FETCH,
+} from './constants';
 import { WithdrawLimit } from './types';
 
 export interface WithdrawLimitState {
@@ -13,13 +17,16 @@ export interface WithdrawLimitState {
 export const initialWithdrawLimitState: WithdrawLimitState = {
    data: {
       last_24_hours: '',
-      last_1_month: ''
+      last_1_month: '',
    },
    loading: false,
    success: false,
 };
 
-export const withdrawLimitReducer = (state = initialWithdrawLimitState, action: withdrawLimitAction): WithdrawLimitState => {
+export const withdrawLimitReducer = (
+   state = initialWithdrawLimitState,
+   action: withdrawLimitAction
+): WithdrawLimitState => {
    switch (action.type) {
       case WITHDRAW_LIMIT_FETCH:
          return {
