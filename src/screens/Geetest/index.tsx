@@ -41,13 +41,11 @@ export const Geetest = () => {
 
    return (
       <>
-         <div className="bg-shade4">
+         <div className="bg-neutral3">
             <StepLine
                titles={['One', 'Two', 'Three', 'Four']}
                currentStep={currentStep}
-               // prevActive={false}
-               // isActive={false}
-               // nextActive
+               isVertical={false}
             />
             <Col2>
                <Button
