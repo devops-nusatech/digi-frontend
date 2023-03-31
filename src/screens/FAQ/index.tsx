@@ -12,7 +12,6 @@ import {
    Label,
    Nav,
    Pick,
-   SVG,
    Section,
    Skeleton,
    TextBase,
@@ -104,11 +103,11 @@ export const FAQ = () => {
                </div>
             }
             followCursorProps={false}>
-            <SVG
+            <svg
                onClick={() => openInNewTab(url)}
-               className="h-4 w-4 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8"
-               xlinkHref={name}
-            />
+               className="h-4 w-4 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8">
+               <use xlinkHref={`#icon-${name}`} />
+            </svg>
          </Tooltip>
       ),
       []
@@ -214,11 +213,11 @@ export const FAQ = () => {
                            </div>
                         }
                         followCursorProps={false}>
-                        <SVG
+                        <svg
                            onClick={handleChangeFull}
-                           className="absolute bottom-0 right-0 h-6 w-6 cursor-pointer fill-neutral4 outline-none transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8"
-                           xlinkHref="full-screen"
-                        />
+                           className="absolute bottom-0 right-0 h-6 w-6 cursor-pointer fill-neutral4 outline-none transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8">
+                           <use xlinkHref="#icon-full-screen" />
+                        </svg>
                      </Tooltip>
                   </div>
                </div>

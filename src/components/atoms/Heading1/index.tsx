@@ -12,3 +12,7 @@ export const Heading1 = ({ text, className, withDark }: TextProps) => (
       {text}
    </div>
 );
+
+Heading1.defaultProps = {
+   withDark: true,
+};
