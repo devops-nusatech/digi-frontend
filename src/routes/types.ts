@@ -8,7 +8,6 @@ import {
    logoutFetch,
    Market,
    memberLevelsFetch,
-   tierFetch,
    toggleChartRebuild,
    User,
    userFetch,
@@ -47,7 +46,6 @@ export interface DispatchProps {
    logout: typeof logoutFetch;
    rangerConnect: typeof rangerConnectFetch;
    groupFetch: typeof groupFetch;
-   tierFetch: typeof tierFetch;
    walletsReset: typeof walletsReset;
 }
 

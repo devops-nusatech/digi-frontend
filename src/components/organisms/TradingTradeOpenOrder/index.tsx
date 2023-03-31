@@ -139,7 +139,7 @@ const TradingTradeOpenOrderContainer = (props: Props) => {
       <>
          <div className="float-right -mt-11">
             <div
-               className="flex cursor-pointer rounded-1xl bg-neutral6 py-1.5 px-3 font-dm font-bold leading-custom3 outline-none transition-all duration-300 hover:bg-neutral7 dark:bg-neutral3"
+               className="flex cursor-pointer rounded-1xl bg-neutral6 px-3 py-1.5 font-dm leading-custom3 outline-none transition-all duration-300 hover:bg-neutral7 dark:bg-neutral3"
                onClick={handleCancelAll}>
                <FormattedMessage id="page.body.openOrders.header.button.cancelAll" />
             </div>

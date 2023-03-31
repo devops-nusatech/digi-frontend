@@ -55,7 +55,7 @@ export const FormChangePassword = memo((props: any) => {
          onKeyPress={handleEnterPress}
          className="mx-auto w-full space-y-8 sm:w-84">
          {props.title && (
-            <div className="text-center font-dm text-4.5xl font-bold leading-[1.2] tracking-custom1">
+            <div className="text-center font-dm text-4.5xl leading-[1.2] tracking-custom1">
                {props.title}
             </div>
          )}

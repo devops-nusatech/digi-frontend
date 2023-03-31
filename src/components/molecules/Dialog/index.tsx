@@ -44,13 +44,13 @@ export const Dialog = React.forwardRef<HTMLDivElement, IDialogProps>(
                            {title && (
                               <Modal.Title
                                  as="h3"
-                                 className="font-dm text-3.5xl font-bold capitalize leading-tight tracking-custom1">
+                                 className="font-dm text-3.5xl capitalize leading-tight tracking-custom1">
                                  {title}
                               </Modal.Title>
                            )}
                            <div
                               onClick={setIsOpen}
-                              className="group absolute top-0 right-8 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-neutral6 leading-none opacity-100 transition-all duration-300 dark:border-neutral3 dark:hover:border-neutral8">
+                              className="group absolute right-8 top-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-neutral6 leading-none opacity-100 transition-all duration-300 dark:border-neutral3 dark:hover:border-neutral8">
                               <svg className="h-6 w-6 fill-neutral2 transition duration-300 ease-in-out group-hover:scale-110 dark:fill-neutral8">
                                  <use xlinkHref="#icon-close" />
                               </svg>

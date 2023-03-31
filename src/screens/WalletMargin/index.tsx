@@ -136,11 +136,11 @@ const WalletMarginFC = memo((props: Props, state: State) => {
    const [q, setQ] = useState<string>('');
 
    return (
-      <div className="block bg-neutral7 px-4 pt-8 pb-4 dark:bg-neutral1 lg:flex lg:!p-1">
+      <div className="block bg-neutral7 px-4 pb-4 pt-8 dark:bg-neutral1 lg:flex lg:!p-1">
          <WalletSidebar />
          <div className="h-auto grow overflow-auto pl-0 lg:h-[calc(100vh-88px)] lg:pl-1">
             <div className="rounded bg-neutral8 p-8 dark:bg-shade2">
-               <div className="mb-5 font-dm text-3.5xl font-bold leading-tight tracking-custom1">
+               <div className="mb-5 font-dm text-3.5xl leading-tight tracking-custom1">
                   Margin
                </div>
                <div className="flex items-start justify-between">
@@ -191,7 +191,7 @@ const WalletMarginFC = memo((props: Props, state: State) => {
             </div>
             <div>
                <div>
-                  <div className="px-8 pt-5 pb-2 text-xs font-medium leading-relaxed text-neutral4">
+                  <div className="px-8 pb-2 pt-5 text-xs font-medium leading-relaxed text-neutral4">
                      Funds
                   </div>
                   <div className="overflow-hidden rounded bg-neutral8 dark:bg-shade2">
@@ -200,14 +200,14 @@ const WalletMarginFC = memo((props: Props, state: State) => {
                            <div className="relative mr-auto w-64">
                               <input
                                  type="text"
-                                 className="h-10 w-full rounded-3xl border-2 border-neutral6 pt-0 pr-12 pb-0 pl-3.5 text-xs outline-none focus:border-neutral4 dark:border-neutral3 dark:bg-transparent dark:focus:border-neutral4"
+                                 className="h-10 w-full rounded-3xl border-2 border-neutral6 pb-0 pl-3.5 pr-12 pt-0 text-xs outline-none focus:border-neutral4 dark:border-neutral3 dark:bg-transparent dark:focus:border-neutral4"
                                  style={{ transition: 'border-color .2s' }}
                                  placeholder="Search coins"
                                  onChange={e => setQ(e.target.value)}
                               />
                               <button
                                  type="button"
-                                 className="absolute top-0 right-0 flex h-10 w-10 items-center justify-center bg-none">
+                                 className="absolute right-0 top-0 flex h-10 w-10 items-center justify-center bg-none">
                                  <SearchIcon className="h-5 w-5 stroke-neutral4 transition-all duration-300" />
                               </button>
                            </div>
@@ -290,7 +290,7 @@ const WalletMarginFC = memo((props: Props, state: State) => {
                                           </div>
                                        </div>
                                        <div className="table-cell border-b border-neutral6 p-4 dark:border-neutral3">
-                                          <div className="inline-block rounded bg-primary5 px-2 pt-2 pb-1.5 text-xs font-bold uppercase text-neutral8">
+                                          <div className="inline-block rounded bg-primary5 px-2 pb-1.5 pt-2 text-xs font-bold uppercase text-neutral8">
                                              7.46% APR
                                           </div>
                                        </div>

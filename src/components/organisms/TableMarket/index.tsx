@@ -5,12 +5,13 @@ import { useMarket } from 'hooks';
 import {
    Nav,
    Button,
-   PriceChart3,
+   PriceChart2,
    Th,
    Td,
    Heading2,
    Container,
    Section,
+   FlexCenter,
 } from 'components';
 import { Push } from 'types';
 
@@ -39,7 +40,7 @@ export const TableMarket = memo(({ push }: TableMarketProps) => {
                   onClick={() => push('/markets')}
                />
             </div>
-            <div className="mb-[70px] flex items-start gap-6">
+            <FlexCenter className="mb-16 gap-6">
                {currentBidUnitsList
                   ?.splice(1, currentBidUnitsList.length)
                   ?.map((item, index) => (
@@ -56,7 +57,7 @@ export const TableMarket = memo(({ push }: TableMarketProps) => {
                         isActive={item === currentBidUnit}
                      />
                   ))}
-            </div>
+            </FlexCenter>
             <div className="overflow-x-auto whitespace-nowrap">
                <table className="w-full table-auto">
                   <thead className="shadow-header dark:shadow-none">
@@ -97,7 +98,7 @@ export const TableMarket = memo(({ push }: TableMarketProps) => {
                                  return (
                                     <tr
                                        key={index}
-                                       className="transition-background group duration-200">
+                                       className="group transition-background duration-200">
                                        <Td
                                           text={no}
                                           className="text-neutral4 group-hover:first:rounded-l-xl"
@@ -150,7 +151,7 @@ export const TableMarket = memo(({ push }: TableMarketProps) => {
                                        <Td
                                           text={
                                              <div className="w-24">
-                                                <PriceChart3
+                                                <PriceChart2
                                                    id={base_unit}
                                                    theme={
                                                       price_change_percent.includes(

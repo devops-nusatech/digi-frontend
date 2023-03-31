@@ -31,7 +31,7 @@ export const Nav: FC<NavProps> = ({
    <button
       type="button"
       onClick={onClick}
-      className={`flex rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+      className={`flex rounded-1xl px-3 py-1.5 font-dm leading-custom3 ${
          isActive && theme === 'black'
             ? 'bg-neutral3 text-neutral8'
             : isActive && theme === 'grey'

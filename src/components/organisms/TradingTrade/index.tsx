@@ -10,7 +10,7 @@ export const TradingTrade = () => {
             <List className="mb-4 flex items-center space-x-4">
                <Tab
                   className={({ selected }) =>
-                     `flex rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 outline-none transition-all duration-300  ${
+                     `flex rounded-1xl px-3 py-1.5 font-dm leading-custom3 outline-none transition-all duration-300  ${
                         selected
                            ? 'bg-neutral6 dark:bg-neutral3'
                            : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
@@ -20,7 +20,7 @@ export const TradingTrade = () => {
                </Tab>
                <Tab
                   className={({ selected }) =>
-                     `flex rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 outline-none transition-all duration-300  ${
+                     `flex rounded-1xl px-3 py-1.5 font-dm leading-custom3 outline-none transition-all duration-300  ${
                         selected
                            ? 'bg-neutral6 dark:bg-neutral3'
                            : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'

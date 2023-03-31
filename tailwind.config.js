@@ -978,6 +978,7 @@ module.exports = {
          '184': '11.5rem',
          'vh': 'var(--vh)',
          '500': '31.25rem',
+         ...theme('spacing'),
          ...breakpoints(theme('screens')),
       }),
       objectPosition: {
@@ -1187,6 +1188,8 @@ module.exports = {
          opacity: 'opacity',
          shadow: 'box-shadow',
          transform: 'transform',
+         background: 'background',
+         height: 'height',
       },
       transitionTimingFunction: {
          'DEFAULT': 'cubic-bezier(0.4, 0, 0.2, 1)',

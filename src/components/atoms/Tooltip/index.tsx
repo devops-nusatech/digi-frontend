@@ -7,7 +7,7 @@ interface TooltipProps extends TippyProps {
    followCursorProps?: boolean;
 }
 
-export const AdibTooltip = ({
+export const Tooltip = ({
    followCursorProps,
    content,
    children,
@@ -30,6 +30,6 @@ export const AdibTooltip = ({
    </Tippy>
 );
 
-AdibTooltip.defaultProps = {
+Tooltip.defaultProps = {
    followCursorProps: true,
 };

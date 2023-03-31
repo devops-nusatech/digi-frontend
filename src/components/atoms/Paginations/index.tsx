@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-restricted-globals */
 import React, { useMemo } from 'react';
+import { SVG, PageLink } from 'components';
 import { getPaginationItems } from 'helpers';
-import { SVG } from 'components';
-import { PageLink } from '../PageLink';
 
 export type PaginationsProps = {
    currentPage: number;

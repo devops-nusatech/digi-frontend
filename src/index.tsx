@@ -4,11 +4,13 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { WrappedComponentProps } from 'react-intl';
 import { Provider } from 'react-redux';
-import { sentryEnabled } from 'api';
-import App from './App';
+import { sentryEnabled } from './api/config';
 
-import './main.css';
-import './output.min.css';
+import './assets/styles/root.css';
+import './assets/styles/tailwind.css';
+import './assets/styles/output.min.css';
+
+import App from './App';
 
 import { rootSaga } from './modules';
 import { rangerSagas } from './modules/public/ranger';

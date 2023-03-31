@@ -36,3 +36,4 @@ export * from './TableWallets';
 export * from './TableMarketTrades';
 export * from './StaticticCurrency';
 export * from './TableMarket';
+export * from './TableMarkets';

@@ -64,6 +64,13 @@ export const defaultUser: User = {
    data: '',
    tier: '',
    alltime_trx: '',
+   p2p_tier: {
+      id: 0,
+      name: '',
+      maker_fee: '',
+      taker_fee: '',
+      max_transaction: '',
+   },
    username: '',
    labels: [],
    phones: [],

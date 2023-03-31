@@ -30,7 +30,6 @@ export * from './Deposit';
 export * from './Notifications';
 export * from './FAQ';
 export * from './Beneficiaries';
-export * from './WithdrawalStep';
 export * from './WalletFinance';
 export * from './WalletOrder';
 export * from './Exchange';

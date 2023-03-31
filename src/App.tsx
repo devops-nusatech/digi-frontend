@@ -10,6 +10,7 @@ import { useSetMobileDevice } from './hooks';
 import * as mobileTranslations from './mobile/translations';
 import { selectCurrentLanguage, selectMobileDeviceState } from './modules';
 import { languageMap } from './translations';
+import { Loader } from 'components';
 
 const gaKey = gaTrackerKey();
 const browserHistory = createBrowserHistory();
@@ -88,7 +89,7 @@ export default () => {
          key={lang}>
          <Router history={browserHistory}>
             <ErrorBoundary>
-               <React.Suspense fallback={null}>
+               <React.Suspense fallback={<Loader />}>
                   <RenderDeviceContainers />
                </React.Suspense>
             </ErrorBoundary>

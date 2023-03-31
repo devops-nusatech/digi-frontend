@@ -23,7 +23,6 @@ import {
    selectUserLoggedIn,
    toggleChartRebuild,
    userFetch,
-   tierFetch,
    walletsReset,
    groupFetch,
    memberLevelsFetch,
@@ -67,7 +66,6 @@ import {
    Deposit,
    FAQ,
    Beneficiaries,
-   WithdrawalStep,
    WalletFinance,
    Exchange,
    WalletOrder,
@@ -138,7 +136,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                if (token) {
                   this.props.userFetch();
                   this.props.groupFetch();
-                  this.props.tierFetch();
                   this.props.fetchMemberLevel();
                   this.initInterval();
                   this.checkSession();
@@ -441,12 +438,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                      <PrivateRoute
                         loading={userLoading}
                         isLogged={isLoggedIn}
-                        path="/wallets/withdrawal"
-                        component={WithdrawalStep}
-                     />
-                     <PrivateRoute
-                        loading={userLoading}
-                        isLogged={isLoggedIn}
                         path="/wallets/transfer"
                         component={Transfer}
                      />
@@ -621,7 +612,6 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
    fetchConfigs: () => dispatch(configsFetch()),
    userFetch: () => dispatch(userFetch()),
-   tierFetch: () => dispatch(tierFetch()),
    fetchMemberLevel: () => dispatch(memberLevelsFetch()),
    fetchCustomization: () => dispatch(customizationFetch()),
    logout: () => dispatch(logoutFetch()),

@@ -336,7 +336,7 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
             <div>
                <div className="flex items-center justify-center space-x-2">
                   <div className="relative">
-                     <div className="min-h-24 min-w-72 max-w-4xl pr-1.25 text-right font-dm text-8xl font-bold tracking-custom opacity-0">
+                     <div className="min-h-24 min-w-72 max-w-4xl pr-1.25 text-right font-dm text-8xl tracking-custom opacity-0">
                         2,000,000
                      </div>
                      <NumericFormat
@@ -344,10 +344,10 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                         allowLeadingZeros
                         thousandSeparator=","
                         type="text"
-                        className="absolute left-0 top-0 h-full w-full appearance-none border-none bg-transparent bg-none text-center text-right font-dm text-8xl font-bold tracking-custom shadow-none outline-none"
+                        className="absolute left-0 top-0 h-full w-full appearance-none border-none bg-transparent bg-none text-center text-right font-dm text-8xl tracking-custom shadow-none outline-none"
                      />
                   </div>
-                  <div className="relative top-2 font-dm text-3.5xl font-bold leading-tight tracking-custom1">
+                  <div className="relative top-2 font-dm text-3.5xl leading-tight tracking-custom1">
                      {coinActive?.id?.toUpperCase()}
                   </div>
                </div>
@@ -502,7 +502,7 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                <div className="mx-auto my-0 flex w-full max-w-7xl px-6 md:px-10 lg:px-20">
                   <div className="mr-auto w-54 shrink-0 space-y-6">
                      <div
-                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
+                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
                            (stepActive === 2 || stepActive === 3) &&
                            'bg-neutral8 shadow-step dark:bg-neutral2 dark:after:border-neutral4'
                         }`}>
@@ -516,7 +516,7 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                         <div>Select crypto</div>
                      </div>
                      <div
-                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
+                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
                            stepActive === 1 && 'text-neutral4'
                         } ${
                            stepActive === 3 &&
@@ -536,7 +536,7 @@ const SellCryptoFC: FC<Props> = memo(({ userData, isLoggedIn, isLoading }) => {
                         <div>Enter amount</div>
                      </div>
                      <div
-                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold ${
+                        className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm ${
                            stepActive !== 3 && 'text-neutral4'
                         } leading-custom3 transition-all duration-300`}>
                         <div

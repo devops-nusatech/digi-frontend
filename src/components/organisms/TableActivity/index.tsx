@@ -7,7 +7,7 @@ import {
    Image,
    Direction,
    State,
-   AdibTooltip,
+   Tooltip,
 } from 'components';
 import {
    arrayFilter,
@@ -179,7 +179,7 @@ export const TableActivity = memo(
             case 'transactions':
                return (
                   <tr>
-                     <th className="border-b border-neutral6 pr-4 pb-6 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pr-4 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div className="flex cursor-pointer items-center space-x-1">
                            <div>#</div>
                            <IcShorting className="fill-neutral4" />
@@ -215,7 +215,7 @@ export const TableActivity = memo(
                            <IcShorting className="fill-neutral4" />
                         </div>
                      </th>
-                     <th className="border-b border-neutral6 pl-4 pb-6 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pl-4 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div>Date</div>
                      </th>
                   </tr>
@@ -223,7 +223,7 @@ export const TableActivity = memo(
             case 'deposits':
                return (
                   <tr>
-                     <th className="border-b border-neutral6 pr-4 pb-6 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pr-4 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div className="flex cursor-pointer items-center space-x-1">
                            <div>#</div>
                            <IcShorting className="fill-neutral4" />
@@ -253,7 +253,7 @@ export const TableActivity = memo(
                            <IcShorting className="fill-neutral4" />
                         </div>
                      </th>
-                     <th className="border-b border-neutral6 pl-4 pb-6 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pl-4 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div>Date</div>
                      </th>
                   </tr>
@@ -261,7 +261,7 @@ export const TableActivity = memo(
             case 'withdraws':
                return (
                   <tr>
-                     <th className="border-b border-neutral6 pr-4 pb-6 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pr-4 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div className="flex cursor-pointer items-center space-x-1">
                            <div>#</div>
                            <IcShorting className="fill-neutral4" />
@@ -297,7 +297,7 @@ export const TableActivity = memo(
                            <IcShorting className="fill-neutral4" />
                         </div>
                      </th>
-                     <th className="border-b border-neutral6 pl-4 pb-6 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pl-4 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div>Date</div>
                      </th>
                   </tr>
@@ -305,7 +305,7 @@ export const TableActivity = memo(
             case 'transfers':
                return (
                   <tr>
-                     <th className="border-b border-neutral6 pr-4 pb-6 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pr-4 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div className="flex cursor-pointer items-center space-x-1">
                            <div>#</div>
                            <IcShorting className="fill-neutral4" />
@@ -347,7 +347,7 @@ export const TableActivity = memo(
                            <IcShorting className="fill-neutral4" />
                         </div>
                      </th>
-                     <th className="border-b border-neutral6 pl-4 pb-6 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pl-4 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div>Date</div>
                      </th>
                   </tr>
@@ -355,7 +355,7 @@ export const TableActivity = memo(
             case 'trades':
                return (
                   <tr>
-                     <th className="border-b border-neutral6 pr-4 pb-6 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pr-4 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div className="flex cursor-pointer items-center space-x-1">
                            <div>#</div>
                            <IcShorting className="fill-neutral4" />
@@ -391,7 +391,7 @@ export const TableActivity = memo(
                            <IcShorting className="fill-neutral4" />
                         </div>
                      </th>
-                     <th className="border-b border-neutral6 pl-4 pb-6 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                     <th className="border-b border-neutral6 pb-6 pl-4 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                         <div>Date</div>
                      </th>
                   </tr>
@@ -462,7 +462,7 @@ export const TableActivity = memo(
                         <td className="rounded-l-xl py-5 pr-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>{index + 1}.</div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <Badge
                               text={type}
                               variant={
@@ -474,7 +474,7 @@ export const TableActivity = memo(
                               }
                            />
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="flex items-center space-x-3">
                               <div className="w-8 shrink-0">
                                  <Image
@@ -496,7 +496,7 @@ export const TableActivity = memo(
                               <div>{assetName || currency}</div>
                            </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>
                               <div>
                                  {wallet &&
@@ -509,19 +509,19 @@ export const TableActivity = memo(
                               </div>
                            </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
-                           <AdibTooltip
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                           <Tooltip
                               content={
                                  <div className="font-pop text-xs font-medium leading-none">
                                     {address}
                                  </div>
                               }>
                               <div>{truncateMiddle(address, 20)}</div>
-                           </AdibTooltip>
+                           </Tooltip>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="flex items-center">
-                              <AdibTooltip
+                              <Tooltip
                                  content={
                                     <div className="font-pop text-xs font-medium leading-none">
                                        {txid}
@@ -530,8 +530,8 @@ export const TableActivity = memo(
                                  <div className="text-neutral4">
                                     {truncateMiddle(txid, 20)}
                                  </div>
-                              </AdibTooltip>
-                              <AdibTooltip
+                              </Tooltip>
+                              <Tooltip
                                  content={
                                     <div className="font-pop text-xs font-medium leading-none">
                                        Copy to clipboard
@@ -544,7 +544,7 @@ export const TableActivity = memo(
                                        <use xlinkHref="#icon-copy" />
                                     </svg>
                                  </div>
-                              </AdibTooltip>
+                              </Tooltip>
                            </div>
                         </td>
                         <td className="rounded-r-xl py-5 pl-4 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
@@ -635,13 +635,13 @@ export const TableActivity = memo(
                         <td className="rounded-l-xl py-5 pr-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>{index + 1} .</div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <Badge
                               text={stateType()}
                               variant={stateVariant()}
                            />
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="flex items-center space-x-3">
                               <div className="w-8 shrink-0">
                                  <Image
@@ -663,16 +663,16 @@ export const TableActivity = memo(
                               <div>{assetName || currency}</div>
                            </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>
                               {wallet &&
                                  Decimal.format(amount, wallet.fixed, ',')}{' '}
                               {String(currency)?.toUpperCase()}
                            </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="flex items-center">
-                              <AdibTooltip
+                              <Tooltip
                                  content={
                                     <div className="font-pop text-xs font-medium leading-none">
                                        {txid}
@@ -685,9 +685,9 @@ export const TableActivity = memo(
                                     className="hover:text-primary1 hover:underline">
                                     {truncateMiddle(txid, 20)}
                                  </a>
-                              </AdibTooltip>
+                              </Tooltip>
                               {txid && (
-                                 <AdibTooltip
+                                 <Tooltip
                                     content={
                                        <div className="font-pop text-xs font-medium leading-none">
                                           Copy to clipboard
@@ -700,7 +700,7 @@ export const TableActivity = memo(
                                           <use xlinkHref="#icon-copy" />
                                        </svg>
                                     </div>
-                                 </AdibTooltip>
+                                 </Tooltip>
                               )}
                            </div>
                         </td>
@@ -794,13 +794,13 @@ export const TableActivity = memo(
                         <td className="rounded-l-xl py-5 pr-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>{index + 1}. </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <Badge
                               text={stateType()}
                               variant={stateVariant()}
                            />
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="flex items-center space-x-3">
                               <div className="w-8 shrink-0">
                                  <Image
@@ -822,7 +822,7 @@ export const TableActivity = memo(
                               <div>{assetName || currency}</div>
                            </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>
                               {wallet &&
                                  Decimal.format(
@@ -833,8 +833,8 @@ export const TableActivity = memo(
                               {String(currency)?.toUpperCase()}
                            </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
-                           <AdibTooltip
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                           <Tooltip
                               content={
                                  <div className="font-pop text-xs font-medium leading-none">
                                     {rid}
@@ -849,11 +849,11 @@ export const TableActivity = memo(
                                     {truncateMiddle(rid, 20)}
                                  </a>
                               </div>
-                           </AdibTooltip>
+                           </Tooltip>
                         </td>
-                        <td className="py-5 px-4 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="flex items-center">
-                              <AdibTooltip
+                              <Tooltip
                                  content={
                                     <div className="font-pop text-xs font-medium leading-none">
                                        {blockchain_txid}
@@ -867,9 +867,9 @@ export const TableActivity = memo(
                                     className="hover:text-primary1 hover:underline">
                                     {truncateMiddle(blockchain_txid, 20)}
                                  </a>
-                              </AdibTooltip>
+                              </Tooltip>
                               {blockchain_txid && (
-                                 <AdibTooltip
+                                 <Tooltip
                                     content={
                                        <div className="font-pop text-xs font-medium leading-none">
                                           Copy to clipboard
@@ -885,7 +885,7 @@ export const TableActivity = memo(
                                           <use xlinkHref="#icon-copy" />
                                        </svg>
                                     </div>
-                                 </AdibTooltip>
+                                 </Tooltip>
                               )}
                            </div>
                         </td>
@@ -971,13 +971,13 @@ export const TableActivity = memo(
                         <td className="rounded-l-xl py-5 pr-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>{index + 1} .</div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <Badge
                               text={stateType()}
                               variant={stateVariant()}
                            />
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="flex items-center space-x-3">
                               <div className="w-8 shrink-0">
                                  <Image
@@ -999,7 +999,7 @@ export const TableActivity = memo(
                               <div>{assetName || currency}</div>
                            </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>
                               {wallet &&
                                  Decimal.format(
@@ -1010,8 +1010,8 @@ export const TableActivity = memo(
                               {String(currency)?.toUpperCase()}
                            </div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
-                           <AdibTooltip
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                           <Tooltip
                               content={
                                  <div className="font-pop text-xs font-medium leading-none">
                                     {sender_username}
@@ -1019,10 +1019,10 @@ export const TableActivity = memo(
                               }
                               followCursorProps={false}>
                               <div>{sender_uid}</div>
-                           </AdibTooltip>
+                           </Tooltip>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
-                           <AdibTooltip
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                           <Tooltip
                               content={
                                  <div className="font-pop text-xs font-medium leading-none">
                                     {receiver_username}
@@ -1030,9 +1030,9 @@ export const TableActivity = memo(
                               }
                               followCursorProps={false}>
                               <div>{receiver_uid}</div>
-                           </AdibTooltip>
+                           </Tooltip>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div
                               className={`${
                                  direction === 'in'
@@ -1079,13 +1079,13 @@ export const TableActivity = memo(
                         <td className="rounded-l-xl py-5 pr-4 align-middle text-xs font-semibold leading-custom4 text-neutral4 transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div>{index + 1} .</div>
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <Badge
                               text={sideText}
                               variant={side === 'buy' ? 'green' : 'orange'}
                            />
                         </td>
-                        <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="flex items-center space-x-3">
                               <div className="w-8 shrink-0">
                                  <Image
@@ -1121,21 +1121,21 @@ export const TableActivity = memo(
                               </div>
                            </div>
                         </td>
-                        <td className="py-5 px-4 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            {Decimal.format(
                               price,
                               marketToDisplay.price_precision,
                               ','
                            )}
                         </td>
-                        <td className="py-5 px-4 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            {Decimal.format(
                               amount,
                               marketToDisplay.amount_precision,
                               ','
                            )}
                         </td>
-                        <td className="py-5 px-4 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+                        <td className="px-4 py-5 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                            <div className="text-neutral4">{total}</div>
                         </td>
                         <td className="rounded-r-xl py-5 pl-4 text-right align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">

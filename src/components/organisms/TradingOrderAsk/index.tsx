@@ -258,7 +258,7 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
 
    return (
       <>
-         <div className="my-0 mx-4 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
+         <div className="mx-4 my-0 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
             <div className="mb-4 flex items-center justify-between">
                <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                   Sell {to}
@@ -346,7 +346,7 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
                <div className="text-center font-medium leading-normal">
                   You get
                </div>
-               <div className="text-center font-dm text-3.5xl font-bold uppercase leading-tight tracking-custom1">
+               <div className="text-center font-dm text-3.5xl uppercase leading-tight tracking-custom1">
                   &asymp;{' '}
                   {Decimal.format(
                      orderType === 'market'

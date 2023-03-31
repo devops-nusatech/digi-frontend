@@ -1,6 +1,7 @@
+import { Membership } from 'modules';
 import { Label } from '../kyc';
 
-export interface Profile {
+interface Profile {
    first_name: string;
    last_name: string;
    dob: string;
@@ -14,13 +15,21 @@ export interface Profile {
    metadata?: string;
 }
 
-export interface Phone {
+interface Phone {
    country: string;
    number: string;
    validated_at: string | null;
 }
 
-export type ReferralID = {
+type P2PTier = {
+   id: number;
+   name: string;
+   maker_fee: string;
+   taker_fee: string;
+   max_transaction: string;
+};
+
+type ReferralID = {
    uid: string;
    username: string;
    email: string;
@@ -28,15 +37,6 @@ export type ReferralID = {
    tier: string;
    p2p_tier: string;
 };
-
-export type TierCuk =
-   | 'bronze'
-   | 'silver'
-   | 'gold'
-   | 'platinum'
-   | 'diamond'
-   | 'influencer'
-   | '';
 
 export type User = {
    email: string;
@@ -48,8 +48,9 @@ export type User = {
    referral_id: ReferralID[];
    referral_uid: string;
    data: string;
-   tier: TierCuk;
+   tier: Membership['tier'];
    alltime_trx: string;
+   p2p_tier: P2PTier;
    username: string;
    labels: Label[];
    phones: Phone[];

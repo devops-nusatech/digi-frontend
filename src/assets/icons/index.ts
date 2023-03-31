@@ -77,4 +77,8 @@ export * from './IcMasterCard';
 export * from './IcVisa';
 export * from './LogoAlt';
 export * from './IcEmty';
+export * from './IcSilver';
+export * from './IcGold';
+export * from './IcPlatinum';
+export * from './IcDiamond';
 export * from './IcBronze';

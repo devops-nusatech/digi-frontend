@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import React, {
    Children,
    useEffect,
@@ -58,7 +59,7 @@ export const Select: FC<SelectProps> = ({
          )}
          <div className="relative">
             <div
-               className={`before:icon-arrow relative float-none clear-both block h-12 w-full cursor-pointer select-none whitespace-nowrap rounded-xl border-none bg-neutral8 pl-4 pr-12 font-medium leading-12 opacity-100 shadow-input outline-none transition duration-200 ease-in-out before:absolute before:top-1/2 before:right-2 before:h-8 before:w-8 before:-translate-y-1/2 before:rounded-full before:transition-transform before:duration-200 before:content-[''] dark:bg-neutral2 dark:shadow-border-dark ${
+               className={`before:icon-arrow relative float-none clear-both block h-12 w-full cursor-pointer select-none whitespace-nowrap rounded-xl border-none bg-neutral8 pl-4 pr-12 font-medium leading-12 opacity-100 shadow-input outline-none transition duration-200 ease-in-out before:absolute before:right-2 before:top-1/2 before:h-8 before:w-8 before:-translate-y-1/2 before:rounded-full before:transition-transform before:duration-200 before:content-[''] dark:bg-neutral2 dark:shadow-border-dark ${
                   toggle && name ? 'before:rotate-180' : ''
                }`}
                tabIndex={0}>

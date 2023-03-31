@@ -8,13 +8,10 @@ type IconCopyProps = {
 };
 
 export const IconCopy = memo(({ value, title }: IconCopyProps) => {
-   const handleCopy = useCallback(
-      (url: string, type: string) => {
-         copyToClipboard(url);
-         toast.success(`${type} Copied`);
-      },
-      [copyToClipboard, toast.success]
-   );
+   const handleCopy = useCallback((url: string, type: string) => {
+      copyToClipboard(url);
+      toast.success(`${type} Copied`);
+   }, []);
 
    return (
       <svg

@@ -11,7 +11,6 @@ export * from './PasswordStrengthBar';
 export * from './PasswordStrengthInfo';
 export * from './FormChangeNewPassword';
 export * from './TFA';
-export * from './FormHeader';
 export * from './WalletSidebar';
 export * from './ProfileSidebar';
 export * from './Portal';

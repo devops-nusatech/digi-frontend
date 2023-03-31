@@ -1,4 +1,4 @@
-import { AdibTooltip, Skeleton } from 'components';
+import { Tooltip, Skeleton } from 'components';
 import { Decimal } from 'components/Decimal';
 import { localeDate } from 'helpers';
 import {
@@ -109,7 +109,7 @@ const TableMarketTradesFC = ({
             </>
          ) : recentTrades.length ? (
             recentTrades?.map(e => (
-               <AdibTooltip
+               <Tooltip
                   key={e.id}
                   content={
                      <div className="flex flex-col space-y-1 text-xs tracking-wider">
@@ -152,7 +152,7 @@ const TableMarketTradesFC = ({
                         {localeDate(e.created_at, 'time')}
                      </td>
                   </tr>
-               </AdibTooltip>
+               </Tooltip>
             ))
          ) : (
             <div className="">Kosong</div>
@@ -164,15 +164,15 @@ const TableMarketTradesFC = ({
       <table className="w-full table-auto">
          <thead>
             <tr>
-               <th className="sticky top-0 bg-neutral8 pt-0.5 pr-1 pb-3 text-left align-top text-xs font-semibold leading-custom4 text-neutral4 dark:bg-shade2">
+               <th className="sticky top-0 bg-neutral8 pb-3 pr-1 pt-0.5 text-left align-top text-xs font-semibold leading-custom4 text-neutral4 dark:bg-shade2">
                   Price (
                   {currentMarket && currentMarket.quote_unit.toUpperCase()})
                </th>
-               <th className="sticky top-0 bg-neutral8 pt-0.5 pr-3 pb-3 pl-1 text-right align-top text-xs font-semibold leading-custom4 text-neutral4 dark:bg-shade2">
+               <th className="sticky top-0 bg-neutral8 pb-3 pl-1 pr-3 pt-0.5 text-right align-top text-xs font-semibold leading-custom4 text-neutral4 dark:bg-shade2">
                   Amount (
                   {currentMarket && currentMarket.base_unit.toUpperCase()})
                </th>
-               <th className="sticky top-0 bg-neutral8 pt-0.5 pb-3 pl-1 text-right align-top text-xs font-semibold leading-custom4 text-neutral4 dark:bg-shade2">
+               <th className="sticky top-0 bg-neutral8 pb-3 pl-1 pt-0.5 text-right align-top text-xs font-semibold leading-custom4 text-neutral4 dark:bg-shade2">
                   Time
                </th>
             </tr>

@@ -8,7 +8,7 @@ import {
    Badge,
    Button,
    Decimal,
-   PriceChart3,
+   PriceChart2,
    TableFinance,
    WalletSidebar,
 } from 'components';
@@ -93,7 +93,7 @@ const WalletDetailsFC = memo(
 
       return (
          <>
-            <div className="block bg-neutral7 px-4 pt-8 pb-4 dark:bg-neutral1 lg:flex lg:!p-1">
+            <div className="block bg-neutral7 px-4 pb-4 pt-8 dark:bg-neutral1 lg:flex lg:!p-1">
                <WalletSidebar />
                <div className="h-auto grow overflow-auto pl-0 lg:h-[calc(100vh-88px)] lg:pl-1">
                   <div
@@ -110,7 +110,7 @@ const WalletDetailsFC = memo(
                                  <use xlinkHref="#icon-arrow-left" />
                               </svg>
                            </Link>
-                           <div className="mr-auto font-dm text-3.5xl font-bold leading-tight tracking-custom1">
+                           <div className="mr-auto font-dm text-3.5xl leading-tight tracking-custom1">
                               {currency?.toUpperCase()}
                               <span className="ml-3 text-neutral5">
                                  {' '}
@@ -239,7 +239,7 @@ const WalletDetailsFC = memo(
                                                       }
                                                    />
                                                 </div>
-                                                <div className="mt-1 mb-4 text-2xl font-semibold uppercase leading-custom2 tracking-custom1">
+                                                <div className="mb-4 mt-1 text-2xl font-semibold uppercase leading-custom2 tracking-custom1">
                                                    {Decimal.format(
                                                       market.last.includes(',')
                                                          ? market?.last
@@ -252,7 +252,7 @@ const WalletDetailsFC = memo(
                                                    {market.base_unit}
                                                 </div>
                                                 <div className="h-14 w-60">
-                                                   <PriceChart3
+                                                   <PriceChart2
                                                       id={market.id}
                                                       theme={
                                                          change
@@ -278,7 +278,7 @@ const WalletDetailsFC = memo(
                            )}
                         </div>
                         {friendsMarket.length > 2 && (
-                           <div className="absolute top-[36%] right-0">
+                           <div className="absolute right-0 top-[36%]">
                               <div
                                  onClick={handleSlideRight}
                                  className="group flex h-10 w-10 animate-right cursor-pointer items-center justify-center rounded-full bg-shade5 shadow-card transition-all duration-300 hover:scale-110 hover:animate-none hover:bg-neutral6 dark:bg-neutral2">

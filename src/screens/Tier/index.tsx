@@ -1,100 +1,64 @@
-import React, { FunctionComponent } from 'react';
-import { History } from 'history';
-import { withRouter } from 'react-router-dom';
+import React, { useCallback, useMemo } from 'react';
+import { withRouter } from 'react-router';
 import {
    Button,
    LayoutProfile,
    ModalRequired,
    ProfileSidebar,
 } from 'components';
-import { injectIntl } from 'react-intl';
-import { compose } from 'redux';
-import {
-   alertPush,
-   changePasswordError,
-   changePasswordFetch,
-   entropyPasswordFetch,
-   RootState,
-   selectChangePasswordSuccess,
-   selectCurrentPasswordEntropy,
-   selectUserInfo,
-   toggle2faFetch,
-   User,
-} from 'modules';
-import { IntlProps } from 'index';
-import { connect, MapDispatchToPropsFunction } from 'react-redux';
-import { useDocumentTitle, useModal, useMyTierFetch } from 'hooks';
-import { IcBronze } from 'assets';
-import { copyToClipboard } from '../../helpers';
+import { selectUserInfo } from 'modules';
+import { useDocumentTitle, useModal, useReduxSelector } from 'hooks';
+import { IcBronze, IcDiamond, IcGold, IcPlatinum, IcSilver } from 'assets';
+import { toast } from 'react-toastify';
+import { copyToClipboard } from 'helpers';
 
-interface ReduxProps {
-   user: User;
-   passwordChangeSuccess?: boolean;
-   currentPasswordEntropy: number;
-}
-
-interface RouterProps {
-   history: History;
-}
-
-interface OnChangeEvent {
-   target: {
-      value: string;
-   };
-}
-
-interface DispatchProps {
-   changePassword: typeof changePasswordFetch;
-   clearPasswordChangeError: () => void;
-   toggle2fa: typeof toggle2faFetch;
-   fetchCurrentPasswordEntropy: typeof entropyPasswordFetch;
-   fetchSuccess: typeof alertPush;
-}
-
-interface ProfileProps {
-   showModal: boolean;
-}
-
-interface State {
-   showChangeModal: boolean;
-   showModal: boolean;
-   code2FA: string;
-   code2FAFocus: boolean;
-}
-
-type Props = ReduxProps &
-   DispatchProps &
-   RouterProps &
-   ProfileProps &
-   IntlProps &
-   OnChangeEvent;
-
-const TierFC = (
-   { user, fetchSuccess, history: { push } }: Props,
-   { code2FA }: State
-) => {
-   useDocumentTitle('Profile');
-   const { tier } = useMyTierFetch();
-   const { profiles } = user;
+export const Tier = withRouter(({ history }) => {
+   useDocumentTitle('Memberships');
+   const { uid, username, profiles, tier, email, level } =
+      useReduxSelector(selectUserInfo);
    const { isShow, toggle } = useModal();
-   const level = user.level;
-   const referralLink = `${window.document.location.origin}/register?refid=${user.uid}`;
 
-   const handleCopy = (url: string, type: string) => {
-      copyToClipboard(url);
-      fetchSuccess({ message: [`${type} Copied`], type: 'success' });
-   };
-
-   const renderIconCheck = () => (
-      <svg className="h-6 w-6 fill-primary1 transition-colors duration-300">
-         <use xlinkHref="#icon-check" />
-      </svg>
+   const referralLink = useMemo(
+      () => `${window.document.location.origin}/register?refid=${uid}`,
+      [uid]
    );
+
+   const handleCopy = useCallback((url: string, type: string) => {
+      copyToClipboard(url);
+      toast.success(`${type} Copied`);
+   }, []);
+
+   const renderIconCheck = useMemo(
+      () => (
+         <svg className="h-6 w-6 fill-primary1 transition-colors duration-300">
+            <use xlinkHref="#icon-check" />
+         </svg>
+      ),
+      []
+   );
+
+   const renderIconMember = useMemo(() => {
+      switch (tier) {
+         case 'silver':
+            return <IcSilver />;
+         case 'gold':
+            return <IcGold />;
+         case 'platinum':
+            return <IcPlatinum />;
+         case 'diamond':
+            return <IcDiamond />;
+         case 'bronze':
+            return <IcBronze />;
+
+         default:
+            return null;
+      }
+   }, [tier]);
 
    return (
       <>
          <LayoutProfile
-            title="Withdraw"
+            title="Memberships"
             withBreadcrumbs={{
                display: 'Home',
                href: '/',
@@ -107,17 +71,15 @@ const TierFC = (
                <div className="mb-5 flex justify-between">
                   <div className="space-y-3">
                      <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
-                        {user.username ?? profiles[0]?.first_name ?? ''}
+                        {username ?? profiles?.shift()?.first_name ?? ''}
                      </div>
                      <div className="flex items-center space-x-3">
-                        <IcBronze />
+                        {renderIconMember}
                         <div className="font-medium capitalize text-member-bronze">
-                           {tier.tier} Member
+                           {tier} Member
                         </div>
                      </div>
-                     <div className="font-medium text-neutral4">
-                        {user.email}
-                     </div>
+                     <div className="font-medium text-neutral4">{email}</div>
                      <div className="flex items-center space-x-3">
                         <div className="select-none font-medium text-neutral4">
                            {referralLink}
@@ -133,14 +95,14 @@ const TierFC = (
                      </div>
                   </div>
                   <Button
-                     text={`Level ${user.level} verified`}
+                     text={`Level ${level} verified`}
                      size="small"
                      variant="outline"
                      width="noFull"
                      color={
-                        user.level === 1
+                        level === 1
                            ? 'orange'
-                           : user.level === 2
+                           : level === 2
                            ? 'yellow'
                            : 'primary'
                      }
@@ -161,15 +123,15 @@ const TierFC = (
                      </div>
                      <div className="flex items-center justify-between">
                         <div>Deposit assets</div>
-                        {renderIconCheck()}
+                        {renderIconCheck}
                      </div>
                      <div className="flex items-center justify-between">
                         <div>Withdraw assets</div>
-                        {renderIconCheck()}
+                        {renderIconCheck}
                      </div>
                      <div className="flex items-center justify-between">
                         <div>Transactions</div>
-                        {renderIconCheck()}
+                        {renderIconCheck}
                      </div>
                      <div className="flex items-center justify-between">
                         <div>USDT withdrawals</div>
@@ -188,7 +150,7 @@ const TierFC = (
                      </div>
                      <div className="flex items-center justify-between">
                         <div>Internal transfer</div>
-                        {renderIconCheck()}
+                        {renderIconCheck}
                      </div>
                      <div className="flex items-center justify-between">
                         <div>USDT withdrawals</div>
@@ -207,7 +169,7 @@ const TierFC = (
                      </div>
                      <div className="flex items-center justify-between">
                         <div>IDR Transaction</div>
-                        {renderIconCheck()}
+                        {renderIconCheck}
                      </div>
                      <div className="flex items-center justify-between">
                         <div>USDT withdrawals</div>
@@ -217,12 +179,12 @@ const TierFC = (
                      </div>
                   </div>
                </div>
-               {tier.tier !== 'influencer' && (
+               {tier !== 'influencer' && (
                   <div className="mt-10 text-right">
                      <Button
                         text="Verify your identity"
                         width="noFull"
-                        onClick={() => push('/memberships')}
+                        onClick={() => history.push('/memberships')}
                      />
                   </div>
                )}
@@ -234,32 +196,4 @@ const TierFC = (
          />
       </>
    );
-};
-
-const mapStateToProps = (state: RootState): ReduxProps => ({
-   user: selectUserInfo(state),
-   passwordChangeSuccess: selectChangePasswordSuccess(state),
-   currentPasswordEntropy: selectCurrentPasswordEntropy(state),
 });
-
-const mapDispatchToProps: MapDispatchToPropsFunction<
-   DispatchProps,
-   {}
-> = dispatch => ({
-   changePassword: ({ old_password, new_password, confirm_password }) =>
-      dispatch(
-         changePasswordFetch({ old_password, new_password, confirm_password })
-      ),
-   toggle2fa: ({ code, enable }) => dispatch(toggle2faFetch({ code, enable })),
-   fetchCurrentPasswordEntropy: payload =>
-      dispatch(entropyPasswordFetch(payload)),
-   fetchSuccess: payload => dispatch(alertPush(payload)),
-   clearPasswordChangeError: () =>
-      dispatch(changePasswordError({ code: 0, message: [] })),
-});
-
-export const Tier = compose(
-   injectIntl,
-   withRouter,
-   connect(mapStateToProps, mapDispatchToProps)
-)(TierFC) as FunctionComponent;

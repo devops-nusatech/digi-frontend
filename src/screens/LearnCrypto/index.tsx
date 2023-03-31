@@ -43,7 +43,7 @@ export const LearnCrypto = memo(() => {
                      src={illusDiscover}
                      alt="Video"
                   />
-                  <button className="group absolute top-1/2 left-1/2 z-3 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-neutral8 shadow-play">
+                  <button className="group absolute left-1/2 top-1/2 z-3 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-neutral8 shadow-play">
                      <svg className="h-6 w-6 fill-neutral4 transition-all duration-300 group-hover:scale-125 group-hover:fill-primary1">
                         <use xlinkHref="#icon-play" />
                      </svg>
@@ -62,7 +62,7 @@ export const LearnCrypto = memo(() => {
                      Our Blog
                   </div>
                   <div className="ml-auto w-full shrink-0 lg:w-500 lg2:w-640">
-                     <div className="mb-5 font-dm text-4.5xl font-bold leading-1.2 tracking-custom1 md:text-5xl md:leading-custom1 md:tracking-custom">
+                     <div className="mb-5 font-dm text-4.5xl leading-1.2 tracking-custom1 md:text-5xl md:leading-custom1 md:tracking-custom">
                         Latest Releases
                      </div>
                      <div className="mb-16 max-w-md-2 text-base leading-normal text-neutral3 dark:text-neutral6">
@@ -104,10 +104,10 @@ export const LearnCrypto = memo(() => {
                               />
                            </div>
                            <div className="flex w-auto flex-col items-start pr-0 lg:pr-32 lg2:w-82 lg2:pr-0">
-                              <div className="mb-auto inline-block rounded bg-primary4 px-2 pt-2 pb-1.5 text-xs font-bold uppercase leading-none text-neutral8">
+                              <div className="mb-auto inline-block rounded bg-primary4 px-2 pb-1.5 pt-2 text-xs font-bold uppercase leading-none text-neutral8">
                                  New
                               </div>
-                              <div className="mt-4 mb-2 font-dm text-3.5xl font-bold leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
+                              <div className="mb-2 mt-4 font-dm text-3.5xl leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
                                  A Beginner's Guide to TradingView
                               </div>
                               <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
@@ -119,7 +119,7 @@ export const LearnCrypto = memo(() => {
                                  editable.
                               </div>
                            </div>
-                           <div className="static top-[calc(100%+14px)] left-0 mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
+                           <div className="static left-0 top-[calc(100%+14px)] mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
                               <svg className="h-3.5 w-3.5 fill-neutral4 transition-all duration-1000 group-hover:translate-x-4">
                                  <use xlinkHref="#icon-arrow-next" />
                               </svg>
@@ -137,10 +137,10 @@ export const LearnCrypto = memo(() => {
                               />
                            </div>
                            <div className="flex w-auto flex-col items-start pr-0 lg:pr-32 lg2:w-82 lg2:pr-0">
-                              <div className="mb-auto inline-block rounded bg-primary5 px-2 pt-2 pb-1.5 text-xs font-bold uppercase leading-none text-neutral8">
+                              <div className="mb-auto inline-block rounded bg-primary5 px-2 pb-1.5 pt-2 text-xs font-bold uppercase leading-none text-neutral8">
                                  Beginner
                               </div>
-                              <div className="mt-4 mb-2 font-dm text-3.5xl font-bold leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
+                              <div className="mb-2 mt-4 font-dm text-3.5xl leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
                                  What Is Crypto Market Sentiment?
                               </div>
                               <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
@@ -152,7 +152,7 @@ export const LearnCrypto = memo(() => {
                                  editable.
                               </div>
                            </div>
-                           <div className="static top-[calc(100%+14px)] left-0 mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
+                           <div className="static left-0 top-[calc(100%+14px)] mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
                               <svg className="h-3.5 w-3.5 fill-neutral4 transition-all duration-1000 group-hover:translate-x-4">
                                  <use xlinkHref="#icon-arrow-next" />
                               </svg>
@@ -170,10 +170,10 @@ export const LearnCrypto = memo(() => {
                               />
                            </div>
                            <div className="flex w-auto flex-col items-start pr-0 lg:pr-32 lg2:w-82 lg2:pr-0">
-                              <div className="mb-auto inline-block rounded bg-primary4 px-2 pt-2 pb-1.5 text-xs font-bold uppercase leading-none text-neutral8">
+                              <div className="mb-auto inline-block rounded bg-primary4 px-2 pb-1.5 pt-2 text-xs font-bold uppercase leading-none text-neutral8">
                                  New
                               </div>
-                              <div className="mt-4 mb-2 font-dm text-3.5xl font-bold leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
+                              <div className="mb-2 mt-4 font-dm text-3.5xl leading-tight tracking-custom1 transition-all duration-300 group-hover:text-primary1 lg:mt-6">
                                  What Is the Ethereum Hard Fork?
                               </div>
                               <div className="mb-5 text-base leading-normal text-neutral3 dark:text-neutral5">
@@ -185,7 +185,7 @@ export const LearnCrypto = memo(() => {
                                  editable.
                               </div>
                            </div>
-                           <div className="static top-[calc(100%+14px)] left-0 mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
+                           <div className="static left-0 top-[calc(100%+14px)] mt-4 h-6 w-6 transition-transform duration-300 lg:absolute lg:mt-0">
                               <svg className="h-3.5 w-3.5 fill-neutral4 transition-all duration-1000 group-hover:translate-x-4">
                                  <use xlinkHref="#icon-arrow-next" />
                               </svg>

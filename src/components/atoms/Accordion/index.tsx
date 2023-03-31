@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { AccordionData } from '../types';
 import { Item } from './Item';
 
@@ -9,8 +9,10 @@ type AccordionProps = {
 
 export const Accordion = ({ items, withNumber }: AccordionProps) => {
    const [currentIndex, setCurrentIndex] = useState(-1);
-   const handleOpen = (index: number) =>
+
+   const handleOpen = useCallback((index: number) => {
       setCurrentIndex(currentValue => (currentValue !== index ? index : -1));
+   }, []);
 
    return (
       <ul>
