@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getRefObject } from 'helpers';
 import { AccordionData } from '../types';
+import { SVG } from 'components';
 
 interface ItemProps {
    data: AccordionData;
@@ -41,12 +42,12 @@ export const Item = ({
             )}
             <div className="grow">{title}</div>
             <div className="ml-4 flex w-6 shrink-0 items-center justify-center">
-               <svg
-                  className={`h-6 w-6 fill-neutral4 transition-all duration-200 ${
+               <SVG
+                  xlinkHref="arrow-down"
+                  className={`h-6 w-6 fill-neutral4 ${
                      isOpen ? 'rotate-180' : ''
-                  }`}>
-                  <use xlinkHref={`#icon-arrow-down`} />
-               </svg>
+                  } transition-all duration-200`}
+               />
             </div>
          </div>
          <div
@@ -54,7 +55,7 @@ export const Item = ({
             style={{ height }}>
             <div
                ref={contentRef}
-               className="pt-6 pl-10 text-neutral4">
+               className="pl-10 pt-6 text-neutral4">
                {content}
             </div>
          </div>

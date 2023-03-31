@@ -1248,7 +1248,7 @@ const WithdrawalFC = memo(
 
       const renderModalDetail = () => (
          <div className="mt-10 space-y-8">
-            <div className="text-center font-dm text-5xl font-bold leading-custom1 tracking-custom">
+            <div className="text-center font-dm text-5xl leading-custom1 tracking-custom">
                Yay! 🎉
             </div>
             <div className="mx-auto max-w-71.25 text-center text-base font-medium leading-normal">
@@ -1372,7 +1372,7 @@ const WithdrawalFC = memo(
                }}>
                <div className="mr-8 w-full shrink-0 space-y-6 lg:w-56 lg2:mr-12 lg2:w-72 1xl:mr-20 md-max:mb-6 lg-max:mb-8 lg-max:hidden">
                   <div
-                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
+                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
                         (stepActive === 2 || stepActive === 3) &&
                         'bg-neutral8 shadow-step dark:bg-neutral2 dark:after:border-neutral4'
                      }`}>
@@ -1386,7 +1386,7 @@ const WithdrawalFC = memo(
                      <div>Select asset</div>
                   </div>
                   <div
-                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
+                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
                         stepActive === 1 && 'text-neutral4'
                      } ${
                         stepActive === 3 &&
@@ -1406,7 +1406,7 @@ const WithdrawalFC = memo(
                      <div>Select beneficiary</div>
                   </div>
                   <div
-                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold ${
+                     className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm ${
                         stepActive !== 3 && 'text-neutral4'
                      } leading-custom3 transition-all duration-300`}>
                      <div
@@ -1458,7 +1458,7 @@ const WithdrawalFC = memo(
                   <div className="text-center font-medium leading-normal">
                      Receive amount
                   </div>
-                  <div className="text-center font-dm text-3.5xl font-bold leading-tight tracking-custom1">
+                  <div className="text-center font-dm text-3.5xl leading-tight tracking-custom1">
                      {Decimal.format(state.total, userWallets[0]?.fixed, '')}{' '}
                      {state.total
                         ? userWallets[0]?.currency?.toUpperCase()

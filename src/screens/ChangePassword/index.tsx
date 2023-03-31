@@ -59,10 +59,10 @@ const ChangePasswordFC = ({
             style={{ animationDuration: '100ms' }}>
             {passwordChangeSuccess ? (
                <div className="mx-auto w-full sm:w-84">
-                  <div className="text-center font-dm text-4.5xl font-bold leading-[1.2] tracking-custom1">
+                  <div className="text-center font-dm text-4.5xl leading-[1.2] tracking-custom1">
                      New password
                   </div>
-                  <div className="mt-2 mb-8 text-center text-base leading-normal">
+                  <div className="mb-8 mt-2 text-center text-base leading-normal">
                      Your new password has been set
                   </div>
                   <div className="text-center">

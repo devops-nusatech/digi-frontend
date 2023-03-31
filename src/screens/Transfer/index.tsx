@@ -424,7 +424,7 @@ export const TransferFC = ({
                                  <Combobox.Options className="absolute z-[9] mt-0.5 max-h-60 w-full overflow-auto rounded-xl border-2 border-neutral6 bg-neutral8 shadow-dropdown-2 outline-none dark:border-neutral3 dark:bg-neutral1 dark:shadow-dropdown-3">
                                     {filteredCurrencies.length === 0 &&
                                     query !== '' ? (
-                                       <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
+                                       <div className="relative cursor-default select-none px-4 py-2 text-neutral4">
                                           Nothing found.
                                        </div>
                                     ) : (
@@ -567,7 +567,7 @@ export const TransferFC = ({
                <div className="text-center font-medium leading-normal">
                   {translate('transfer')}
                </div>
-               <div className="text-center font-dm text-3.5xl font-bold leading-tight tracking-custom1">
+               <div className="text-center font-dm text-3.5xl leading-tight tracking-custom1">
                   {Decimal.format(amount, Number(myWallet?.fixed), ',') || 0}{' '}
                   {amount ? myWallet?.currency?.toUpperCase() : ''}
                </div>

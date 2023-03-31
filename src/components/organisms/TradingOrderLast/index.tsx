@@ -386,7 +386,7 @@ const TradingOrderLastFunc = (props: Props) => {
                   <div className="flex items-center space-x-4">
                      <div
                         onClick={() => handleSetOrderType('limit')}
-                        className={`flex rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                        className={`flex rounded-1xl px-3 py-1.5 font-dm leading-custom3 ${
                            orderType === 'limit'
                               ? 'bg-neutral6 dark:bg-neutral3'
                               : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
@@ -397,7 +397,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      </div>
                      <div
                         onClick={() => handleSetOrderType('market')}
-                        className={`flex cursor-pointer rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                        className={`flex cursor-pointer rounded-1xl px-3 py-1.5 font-dm leading-custom3 ${
                            orderType === 'market'
                               ? 'bg-neutral6 dark:bg-neutral3'
                               : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
@@ -433,7 +433,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      </a>
                   </div> */}
                </div>
-               <div className="my-0 -mx-4 flex">
+               <div className="-mx-4 my-0 flex">
                   {/* <div className="lg:block flex w-[calc(50%-32px)] shrink-0 grow-0 my-0 mx-4">
                <div className="flex items-center justify-between mb-4">
                   <div className="text-2xl leading-custom2 font-semibold tracking-custom1">

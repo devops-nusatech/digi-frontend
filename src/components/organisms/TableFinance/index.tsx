@@ -509,7 +509,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
             </div>
          </div>
          <div className="mb-10.5 flex items-center justify-between">
-            <div className="font-dm text-3.5xl font-bold leading-tight tracking-custom1">
+            <div className="font-dm text-3.5xl leading-tight tracking-custom1">
                {title}
             </div>
             <Button
@@ -552,7 +552,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                            scrollableYearDropdown
                            scrollableMonthYearDropdown
                         />
-                        <button className="absolute top-3 right-3.5 -z-2">
+                        <button className="absolute right-3.5 top-3 -z-2">
                            <svg className="h-6 w-6 fill-neutral4 transition-all duration-300">
                               <use xlinkHref="#icon-calendar" />
                            </svg>
@@ -571,7 +571,7 @@ const TableFinanceFC: FC<TableFinanceProps> = ({
                            scrollableYearDropdown
                            scrollableMonthYearDropdown
                         />
-                        <button className="absolute top-3 right-3.5 -z-2">
+                        <button className="absolute right-3.5 top-3 -z-2">
                            <svg className="h-6 w-6 fill-neutral4 transition-all duration-300">
                               <use xlinkHref="#icon-calendar" />
                            </svg>

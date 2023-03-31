@@ -80,32 +80,29 @@ interface OwnProps {
 
 type Props = RouterProps & ReduxProps & DispatchProps & OwnProps & IntlProps;
 
-const WalletOverviewFC: FC<Props> = memo(
-   (
-      {
-         user,
-         wallets,
-         currencies,
-         withdrawSuccess,
-         walletsLoading,
-         historyList,
-         beneficiariesActivateSuccess,
-         beneficiariesDeleteSuccess,
-         beneficiariesAddSuccess,
-         isLoggedIn,
-         walletsError: { message },
-         fetchBeneficiaries,
-         fetchAddress,
-         fetchWallets,
-         fetchCurrencies,
-         walletsWithdrawCcy,
-         fetchSuccess,
-         clearWallets,
-         history,
-         intl,
-      },
-      state: State
-   ) => {
+const WalletOverviewFC = memo(
+   ({
+      user,
+      wallets,
+      currencies,
+      withdrawSuccess,
+      walletsLoading,
+      historyList,
+      beneficiariesActivateSuccess,
+      beneficiariesDeleteSuccess,
+      beneficiariesAddSuccess,
+      isLoggedIn,
+      walletsError: { message },
+      fetchBeneficiaries,
+      fetchAddress,
+      fetchWallets,
+      fetchCurrencies,
+      walletsWithdrawCcy,
+      fetchSuccess,
+      clearWallets,
+      history,
+      intl,
+   }: Props) => {
       const [q, setQ] = useState<string>('');
       useEffect(() => {
          if (!wallets.length && !currencies.length) {
@@ -120,7 +117,7 @@ const WalletOverviewFC: FC<Props> = memo(
             <div className="h-auto grow overflow-auto pl-0 lg:h-[calc(100vh-88px)] lg:pl-1">
                <div className="rounded bg-neutral8 p-8 dark:bg-shade2">
                   <div className="mb-5 flex items-center">
-                     <div className="mr-auto font-dm text-3.5xl font-bold leading-tight tracking-custom1">
+                     <div className="mr-auto font-dm text-3.5xl leading-tight tracking-custom1">
                         Overview
                      </div>
                      <div className="flex items-center space-x-2">
@@ -199,7 +196,7 @@ const WalletOverviewFC: FC<Props> = memo(
                         <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                            {/* {Decimal.format(selected?.balance, selected?.amount_precision, ',')} */}
                         </div>
-                        <Badge text={'Coin'} />
+                        <Badge text="Coin" />
                      </div>
                      <div className="text-base text-neutral4">$10,098.36</div>
                   </div>
@@ -270,7 +267,7 @@ const WalletOverviewFC: FC<Props> = memo(
                                  </div>
                               </div>
                               <div className="py-5 px-8">
-                                 <div className="inline-block py-2 px-4 shadow-input dark:shadow-border-dark rounded-2xl font-dm font-bold text-primary5 leading-custom3">
+                                 <div className="inline-block py-2 px-4 shadow-input dark:shadow-border-dark rounded-2xl font-dm text-primary5 leading-custom3">
                                     Coming soon
                                  </div>
                               </div>
@@ -283,7 +280,7 @@ const WalletOverviewFC: FC<Props> = memo(
                                  </div>
                               </div>
                               <div className="py-5 px-8">
-                                 <div className="inline-block py-2 px-4 shadow-input dark:shadow-border-dark rounded-2xl font-dm font-bold text-primary5 leading-custom3">
+                                 <div className="inline-block py-2 px-4 shadow-input dark:shadow-border-dark rounded-2xl font-dm text-primary5 leading-custom3">
                                     Coming soon
                                  </div>
                               </div>

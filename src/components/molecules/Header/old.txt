@@ -230,7 +230,7 @@
 //                         />
 //                      </Link>
 //                      <div className="h-[content] border-r border-neutral6 dark:border-neutral3 1xl-max:hidden" />
-//                      <div className="hidden items-center space-x-0 whitespace-nowrap font-dm font-bold text-neutral4 md:flex md:space-x-2 lg:space-x-5 lg2:space-x-8">
+//                      <div className="hidden items-center space-x-0 whitespace-nowrap font-dm text-neutral4 md:flex md:space-x-2 lg:space-x-5 lg2:space-x-8">
 //                         <Link
 //                            to={`/trading/${currentMarket?.id}`}
 //                            className={`cursor-pointer ${
@@ -288,7 +288,7 @@
 //                         <div
 //                            className="group flex cursor-pointer items-center space-x-1"
 //                            onClick={handleSetDropDwonFlag}>
-//                            <div className="whitespace-nowrap font-dm font-bold text-neutral2 transition-colors duration-300 dark:text-neutral8">
+//                            <div className="whitespace-nowrap font-dm text-neutral2 transition-colors duration-300 dark:text-neutral8">
 //                               {lang.toUpperCase()}/USD
 //                            </div>
 //                            <svg

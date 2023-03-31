@@ -117,7 +117,7 @@ const TradingListMarketFC: FC<Props> = ({
       <div className="w-64 shrink-0 lg:!block lg2:float-left">
          <div className="relative max-h-[957px] overflow-y-scroll rounded bg-neutral8 p-4 dark:bg-shade2">
             <div
-               className="absolute top-4.5 right-1.5"
+               className="absolute right-1.5 top-4.5"
                onClick={handleNextBtnClick}>
                <svg className="h-6 w-6 cursor-pointer fill-neutral4 transition-all duration-300">
                   <use xlinkHref="#icon-arrow-right" />
@@ -150,7 +150,7 @@ const TradingListMarketFC: FC<Props> = ({
                ))}
                <div
                   onClick={() => setTabMarket(0)}
-                  className={`flex cursor-pointer rounded-1xl py-1.5 px-3 font-dm font-bold  leading-custom3 ${
+                  className={`flex cursor-pointer rounded-1xl px-3 py-1.5 font-dm  leading-custom3 ${
                      tabMarket === 0
                         ? 'bg-neutral6 dark:bg-neutral3'
                         : ' text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
@@ -159,7 +159,7 @@ const TradingListMarketFC: FC<Props> = ({
                </div>
                <div
                   onClick={() => setTabMarket(1)}
-                  className={`flex cursor-pointer rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                  className={`flex cursor-pointer rounded-1xl px-3 py-1.5 font-dm leading-custom3 ${
                      tabMarket === 1
                         ? 'bg-neutral6 dark:bg-neutral3'
                         : ' text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
@@ -168,7 +168,7 @@ const TradingListMarketFC: FC<Props> = ({
                </div>
                <div
                   onClick={() => setTabMarket(2)}
-                  className={`flex cursor-pointer rounded-1xl py-1.5 px-3 font-dm font-bold leading-custom3 ${
+                  className={`flex cursor-pointer rounded-1xl px-3 py-1.5 font-dm leading-custom3 ${
                      tabMarket === 2
                         ? 'bg-neutral6 dark:bg-neutral3'
                         : ' text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
@@ -196,7 +196,7 @@ const TradingListMarketFC: FC<Props> = ({
                         {formatMessage({
                            id: 'page.body.trade.header.markets.content.pair',
                         })}
-                        <div className="absolute top-0 -right-2">
+                        <div className="absolute -right-2 top-0">
                            <IcShorting />
                         </div>
                      </div>
@@ -206,7 +206,7 @@ const TradingListMarketFC: FC<Props> = ({
                         {formatMessage({
                            id: 'page.body.trade.header.markets.content.price',
                         })}
-                        <div className="absolute top-0 -right-2">
+                        <div className="absolute -right-2 top-0">
                            <IcShorting />
                         </div>
                      </div>
@@ -216,7 +216,7 @@ const TradingListMarketFC: FC<Props> = ({
                         {formatMessage({
                            id: 'page.body.trade.header.markets.content.change',
                         })}
-                        <div className="absolute top-0 -right-2">
+                        <div className="absolute -right-2 top-0">
                            <IcShorting />
                         </div>
                      </div>

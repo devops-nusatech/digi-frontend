@@ -201,7 +201,7 @@ const TableOrder = ({
                   variant={side === 'buy' ? 'green' : 'orange'}
                />
             </td>
-            <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+            <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                <div className="flex items-center space-x-3">
                   <div className="w-8 shrink-0">
                      <Image
@@ -237,7 +237,7 @@ const TableOrder = ({
                   </div>
                </div>
             </td>
-            <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+            <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                <div className="text-right">
                   {Decimal.format(
                      actualPrice,
@@ -246,7 +246,7 @@ const TableOrder = ({
                   )}
                </div>
             </td>
-            <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+            <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                <div className="text-right">
                   {Decimal.format(
                      origin_volume,
@@ -255,7 +255,7 @@ const TableOrder = ({
                   )}
                </div>
             </td>
-            <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+            <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                <div className="text-right">
                   {formatDecimal(
                      executed_volume,
@@ -263,7 +263,7 @@ const TableOrder = ({
                   )}
                </div>
             </td>
-            <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+            <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                <div className="text-right">
                   {formatDecimal(
                      remaining_volume,
@@ -271,7 +271,7 @@ const TableOrder = ({
                   )}
                </div>
             </td>
-            <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+            <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                <div className="text-right">
                   {formatDecimal(
                      String(costRemaining),
@@ -279,10 +279,10 @@ const TableOrder = ({
                   )}
                </div>
             </td>
-            <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+            <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                <div className="whitespace-nowrap">{status}</div>
             </td>
-            <td className="py-5 px-4 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
+            <td className="px-4 py-5 align-middle font-medium transition-all duration-300 group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                <div className="whitespace-nowrap text-right text-neutral4">
                   {date}
                </div>
@@ -358,7 +358,7 @@ const TableOrder = ({
          <table className="w-full table-auto">
             <thead>
                <tr>
-                  <th className="border-b border-neutral6 pr-4 pb-6 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
+                  <th className="border-b border-neutral6 pb-6 pr-4 text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3">
                      <div className="flex cursor-pointer items-center space-x-1">
                         <div>
                            {translate(
@@ -434,7 +434,7 @@ const TableOrder = ({
                         <IcShorting className="fill-neutral4" />
                      </div>
                   </th>
-                  <th className="border-b border-neutral6 pl-4 pb-6 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3" />
+                  <th className="border-b border-neutral6 pb-6 pl-4 text-right text-xs font-semibold leading-custom4 text-neutral4 dark:border-neutral3" />
                </tr>
             </thead>
             <tbody>
@@ -487,7 +487,7 @@ const TableOrder = ({
                <div className="text-center font-medium leading-normal">
                   {detailId?.side}
                </div>
-               <div className="text-center font-dm text-3.5xl font-bold uppercase leading-tight tracking-custom1">
+               <div className="text-center font-dm text-3.5xl uppercase leading-tight tracking-custom1">
                   {Decimal.format(
                      detailId?.price,
                      Number(

@@ -91,17 +91,17 @@ export const Portal: FC<PortalProps> = ({
             unmountOnExit>
             <>
                <div
-                  className="alert fixed top-0 left-0 h-full w-full select-none overflow-hidden bg-[#14141680] opacity-100 backdrop-blur-sm transition-all duration-200 ease-out"
+                  className="alert fixed left-0 top-0 h-full w-full select-none overflow-hidden bg-[#14141680] opacity-100 backdrop-blur-sm transition-all duration-200 ease-out"
                   style={{ zIndex: zIndexBackdrop }}
                />
                <Bounce bottom>
                   <div
                      onClick={close}
-                     className="alert fixed top-0 left-0 h-full w-full overflow-y-auto overflow-x-hidden"
+                     className="alert fixed left-0 top-0 h-full w-full overflow-y-auto overflow-x-hidden"
                      style={{ zIndex: zIndexContent }}
                      tabIndex={-1}>
-                     <div className="alert absolute top-0 left-0 box-border h-full w-full p-12 text-center before:inline-block before:h-full before:align-middle before:content-['']">
-                        <div className="alert relative my-0 mx-auto inline-block w-full cursor-auto text-left align-middle">
+                     <div className="alert absolute left-0 top-0 box-border h-full w-full p-12 text-center before:inline-block before:h-full before:align-middle before:content-['']">
+                        <div className="alert relative mx-auto my-0 inline-block w-full cursor-auto text-left align-middle">
                            <div
                               onClick={e => e.stopPropagation()}
                               className={classNames(`
@@ -111,7 +111,7 @@ export const Portal: FC<PortalProps> = ({
                               {(title || info === '' || info) && (
                                  <div>
                                     {(title || info === '') && (
-                                       <div className="flex items-center space-x-4 pr-14 pb-2">
+                                       <div className="flex items-center space-x-4 pb-2 pr-14">
                                           <svg
                                              onClick={onClick}
                                              className={`h-8 w-8 dark:fill-neutral8 ${
@@ -121,7 +121,7 @@ export const Portal: FC<PortalProps> = ({
                                              } transition-all duration-300`}>
                                              <use xlinkHref="#icon-arrow-left" />
                                           </svg>
-                                          <div className="font-dm text-3.5xl font-bold !leading-tight tracking-custom1">
+                                          <div className="font-dm text-3.5xl !leading-tight tracking-custom1">
                                              {title}
                                           </div>
                                        </div>
@@ -135,7 +135,7 @@ export const Portal: FC<PortalProps> = ({
                               )}
                               {children}
                               <div
-                                 className="group absolute top-0 right-8 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-neutral6 leading-none opacity-100 transition-all duration-300 dark:border-neutral3 dark:hover:border-neutral8"
+                                 className="group absolute right-8 top-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-neutral6 leading-none opacity-100 transition-all duration-300 dark:border-neutral3 dark:hover:border-neutral8"
                                  onClick={close}>
                                  <IcClose className="fill-neutral2 transition duration-300 ease-in-out group-hover:scale-110 dark:fill-neutral8" />
                               </div>

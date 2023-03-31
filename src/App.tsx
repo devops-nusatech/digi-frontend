@@ -10,6 +10,7 @@ import { useSetMobileDevice } from './hooks';
 import * as mobileTranslations from './mobile/translations';
 import { selectCurrentLanguage, selectMobileDeviceState } from './modules';
 import { languageMap } from './translations';
+import { Loader } from 'components';
 
 const gaKey = gaTrackerKey();
 const browserHistory = createBrowserHistory();
@@ -75,17 +76,20 @@ const RenderDeviceContainers = () => {
 
 export default () => {
    useSetMobileDevice();
-   const lang = useSelector(selectCurrentLanguage);
+   const lang =
+      useSelector(selectCurrentLanguage) === null
+         ? 'en'
+         : useSelector(selectCurrentLanguage);
    const isMobileDevice = useSelector(selectMobileDeviceState);
 
    return (
       <IntlProvider
-         locale={lang}
+         locale={lang || 'en'}
          messages={getTranslations(lang, isMobileDevice)}
          key={lang}>
          <Router history={browserHistory}>
             <ErrorBoundary>
-               <React.Suspense fallback={null}>
+               <React.Suspense fallback={<Loader />}>
                   <RenderDeviceContainers />
                </React.Suspense>
             </ErrorBoundary>

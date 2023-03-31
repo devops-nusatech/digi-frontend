@@ -44,7 +44,7 @@ export const Hero = () => {
    return (
       <Section className="overflow-hidden pt-8 lg:pt-20 lg2:pt-40">
          <Container className="relative">
-            <div className="mb-4 grid grid-cols-2 md:mb-20 lg2:mb-[143px]">
+            <div className="mb-4 grid grid-cols-2 md:mb-20 lg2:mb-36">
                <div className="col-span-2 select-none md:col-span-1">
                   <Heading1
                      text={
@@ -73,7 +73,7 @@ export const Hero = () => {
                   </div>
                </div>
                <div className="col-span-2 md:col-span-1">
-                  <div className="pointer-events-none absolute lg2:-top-[305px] lg2:-right-[110px]">
+                  <div className="pointer-events-none absolute lg2:-right-[110px] lg2:-top-[305px]">
                      <img
                         className="hidden md:block md:w-[500px] lg:w-[700px] xl:w-auto"
                         srcSet={`${illusCard2} 2x`}

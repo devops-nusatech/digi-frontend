@@ -1,7 +1,7 @@
 import React, { HTMLProps } from 'react';
 import cn from 'classnames';
 
-export type PageLinkProps = HTMLProps<HTMLAnchorElement> & { active?: boolean };
+export type PageLinkProps = HTMLProps<HTMLLIElement> & { active?: boolean };
 
 export const PageLink = ({
    className,
@@ -11,7 +11,7 @@ export const PageLink = ({
    ...rest
 }: PageLinkProps) => {
    const customClassName = cn(
-      'relative inline-flex cursor-pointer border border-neutral6 dark:border-neutral3 bg-neutral8 dark:bg-neutral1 text-primary1 text-base font-medium py-2.5 px-3.75 transition-colors duration-300 first:rounded-l-xl last:rounded-r-xl [&:not(:first-child)]:-mr-px [&.active]:z-2 [&.active]:text-neutral8 [&.active]:border-primary1 [&.active]:bg-primary1 [&.disabled]:text-neutral4 [&.disabled]:bg-neutral7 dark:[&.disabled]:bg-neutral3 [&.disabled]:pointer-events-none hover:bg-primary1 focus:text-primary4 focus:bg-primary4 focus:z-3',
+      'grid min-h-10 min-w-10 cursor-pointer place-items-center rounded-lg p-1 transition-all duration-300 hover:bg-neutral7 dark:bg-neutral1 dark:hover:bg-neutral2 [&.active]:bg-neutral6 [&.active]:font-medium dark:[&.active]:bg-neutral3 [&.disabled]:cursor-not-allowed dark:[&.disabled]:bg-neutral2',
       className,
       {
          active,
@@ -20,15 +20,15 @@ export const PageLink = ({
    );
 
    if (disabled) {
-      return <span className={customClassName}>{children}</span>;
+      return <li className={customClassName}>{children}</li>;
    }
 
    return (
-      <a
+      <li
          className={customClassName}
          aria-current={active ? 'page' : undefined}
          {...rest}>
          {children}
-      </a>
+      </li>
    );
 };

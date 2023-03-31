@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import * as QRCodeGenerator from 'qrcode.react';
+import QRCodeGenerator from 'qrcode.react';
 import { InputGroup, Portal } from 'components';
 
 interface ModalDepositProps {
@@ -64,7 +64,6 @@ export const ModalDeposit: FC<ModalDepositProps> = ({
             <div className="rounded-lg border-2 border-dashed border-primary1 p-4">
                <QRCodeGenerator
                   value={address || ''}
-                  size={128}
                   renderAs="svg"
                />
             </div>

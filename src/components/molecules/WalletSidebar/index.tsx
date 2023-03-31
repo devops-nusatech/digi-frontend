@@ -49,9 +49,9 @@ export const WalletSidebar = () => {
                      openDropdown
                         ? 'lg-max:shadow-dropdown-primary after:lg-max:-translate-y-1/2 after:lg-max:rotate-180'
                         : 'lg-max:shadow-input dark:lg-max:shadow-border-dark'
-                  } after:lg-max:icon-arrow hidden after:lg-max:absolute after:lg-max:top-1/2 after:lg-max:right-4 after:lg-max:h-6 after:lg-max:w-6 after:lg-max:-translate-y-1/2 after:lg-max:cursor-pointer after:lg-max:transition-transform after:lg-max:duration-200 after:lg-max:content-['']`}>
+                  } after:lg-max:icon-arrow hidden after:lg-max:absolute after:lg-max:right-4 after:lg-max:top-1/2 after:lg-max:h-6 after:lg-max:w-6 after:lg-max:-translate-y-1/2 after:lg-max:cursor-pointer after:lg-max:transition-transform after:lg-max:duration-200 after:lg-max:content-['']`}>
                   <div
-                     className={`mr-4.5 ml-6.5 h-3 w-3 shrink-0 rounded ${renderIconActive()}`}
+                     className={`ml-6.5 mr-4.5 h-3 w-3 shrink-0 rounded ${renderIconActive()}`}
                   />
                   {renderNameDisplayed()}
                </div>
@@ -67,13 +67,13 @@ export const WalletSidebar = () => {
                         pathname === '/wallets'
                            ? 'lg-max:bg-neutral6 lg-max:dark:bg-neutral3'
                            : ''
-                     } flex h-12 items-center font-dm font-bold leading-custom3 transition-colors duration-300 ${
+                     } flex h-12 items-center font-dm leading-custom3 transition-colors duration-300 ${
                         pathname === '/wallets/overview' ||
                         pathname === '/wallets'
                            ? ''
                            : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
                      }`}>
-                     <div className="mt-0 mr-4.5 mb-0 ml-6.5 h-3 w-3 shrink-0 rounded bg-neutral2" />
+                     <div className="mb-0 ml-6.5 mr-4.5 mt-0 h-3 w-3 shrink-0 rounded bg-neutral2" />
                      Overview
                   </Link>
                   <Link
@@ -82,12 +82,12 @@ export const WalletSidebar = () => {
                         pathname === '/trades'
                            ? 'lg-max:bg-neutral6 lg-max:dark:bg-neutral3'
                            : ''
-                     } flex h-12 items-center font-dm font-bold leading-custom3 transition-colors duration-300 ${
+                     } flex h-12 items-center font-dm leading-custom3 transition-colors duration-300 ${
                         pathname.includes('/trades')
                            ? ''
                            : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
                      }`}>
-                     <div className="mt-0 mr-4.5 mb-0 ml-6.5 h-3 w-3 shrink-0 rounded bg-primary3" />
+                     <div className="mb-0 ml-6.5 mr-4.5 mt-0 h-3 w-3 shrink-0 rounded bg-primary3" />
                      Trade History
                   </Link>
                   <Link
@@ -96,12 +96,12 @@ export const WalletSidebar = () => {
                         pathname === '/orders'
                            ? 'lg-max:bg-neutral6 lg-max:dark:bg-neutral3'
                            : ''
-                     } flex h-12 items-center font-dm font-bold leading-custom3 transition-colors duration-300 ${
+                     } flex h-12 items-center font-dm leading-custom3 transition-colors duration-300 ${
                         pathname.includes('/orders')
                            ? ''
                            : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'
                      }`}>
-                     <div className="mt-0 mr-4.5 mb-0 ml-6.5 h-3 w-3 shrink-0 rounded bg-secondary1" />
+                     <div className="mb-0 ml-6.5 mr-4.5 mt-0 h-3 w-3 shrink-0 rounded bg-secondary1" />
                      Order History
                   </Link>
                   <Link
@@ -117,12 +117,12 @@ export const WalletSidebar = () => {
                      } font-bold transition-colors duration-300`}
                      // className={`relative mb-[2.563rem] flex items-center h-12 font-dm leading-custom3 ${pathname.includes('/fiat-and-spot') ? '' : 'text-neutral4 hover:text-neutral2 dark:hover:text-neutral8'} font-bold transition-colors duration-300 after:content-[''] after:absolute after:top-[calc(100%+1.25rem)] after:inset-x-0 after:h-[1px] after:bg-neutral6 after:dark:bg-neutral2`}
                   >
-                     <div className="mt-0 mr-4.5 mb-0 ml-6.5 h-3 w-3 shrink-0 rounded bg-secondary3" />
+                     <div className="mb-0 ml-6.5 mr-4.5 mt-0 h-3 w-3 shrink-0 rounded bg-secondary3" />
                      Finance History
                   </Link>
                </div>
             </div>
-            <div className="p-4 lg:mt-6 lg:mb-3 lg:space-y-3 lg-max:-order-1 lg-max:flex lg-max:space-x-3 lg-max:p-0">
+            <div className="p-4 lg:mb-3 lg:mt-6 lg:space-y-3 lg-max:-order-1 lg-max:flex lg-max:space-x-3 lg-max:p-0">
                <Button
                   size="normal"
                   text="Deposit"
@@ -147,7 +147,7 @@ export const WalletSidebar = () => {
             close={toggle}
             show={isShow}
             title="Transfer">
-            <div className="flex justify-between rounded bg-neutral7 py-5 px-6 dark:bg-neutral3">
+            <div className="flex justify-between rounded bg-neutral7 px-6 py-5 dark:bg-neutral3">
                <div className="font-medium text-neutral3 dark:text-neutral6">
                   Available <br /> balance
                </div>

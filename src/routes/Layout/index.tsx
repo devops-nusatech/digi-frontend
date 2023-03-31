@@ -66,7 +66,6 @@ import {
    Deposit,
    FAQ,
    Beneficiaries,
-   WithdrawalStep,
    WalletFinance,
    Exchange,
    WalletOrder,
@@ -418,12 +417,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                         isLogged={isLoggedIn}
                         path="/wallets/withdraw"
                         component={Withdrawal}
-                     />
-                     <PrivateRoute
-                        loading={userLoading}
-                        isLogged={isLoggedIn}
-                        path="/wallets/withdrawal"
-                        component={WithdrawalStep}
                      />
                      <PrivateRoute
                         loading={userLoading}

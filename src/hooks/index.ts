@@ -42,3 +42,5 @@ export * from './useDebounced';
 export * from './useCounter';
 export * from './redux';
 export * from './useSound';
+export * from './useTable';
+export * from './useSortable';

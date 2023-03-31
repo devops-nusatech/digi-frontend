@@ -10,21 +10,19 @@ import { RouterProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
-import {
-   walletsFetch,
-   selectWallets,
-   walletsAddressFetch,
-   selectGenerateAddressLoading,
-   alertPush,
-   selectUserInfo,
-   selectWalletsLoading,
-   MemberLevels,
-   selectMemberLevels,
-} from 'modules';
-import type { RootState, User, Wallet } from 'modules';
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
-import { copyToClipboard, renderCurrencyIcon } from 'helpers';
+import {
+   selectWallets,
+   selectWalletsLoading,
+   selectUserInfo,
+   selectMemberLevels,
+   selectGenerateAddressLoading,
+   walletsFetch,
+   walletsAddressFetch,
+} from 'modules';
+import type { RootState, User, Wallet, MemberLevels } from 'modules';
+import { renderCurrencyIcon } from 'helpers';
 import {
    Button,
    Decimal,
@@ -44,6 +42,7 @@ import {
    Image,
    Scan,
    Col2,
+   AdibDropdown,
 } from 'components';
 import { DEFAULT_WALLET } from '../../constants';
 
@@ -71,7 +70,6 @@ type OwnProps = {
 interface DispatchProps {
    fetchWallets: typeof walletsFetch;
    generateAdress: typeof walletsAddressFetch;
-   fetchSuccess: typeof alertPush;
 }
 
 type DepositProps = ReduxProps &
@@ -90,7 +88,6 @@ const DepositFC = memo(
       location,
       fetchWallets,
       generateAdress,
-      fetchSuccess,
       history: { push },
       intl,
    }: DepositProps) => {
@@ -109,7 +106,7 @@ const DepositFC = memo(
          ) {
             push('/wallets');
          }
-      }, []);
+      }, [memberLevel, push, user]);
       useEffect(() => {
          if (!wallets.length) {
             fetchWallets();
@@ -122,28 +119,43 @@ const DepositFC = memo(
       });
       const { currency, currentNetwork } = state;
 
-      const handleChangeCurrency = (currency: string) =>
-         setState({
-            ...state,
-            currency,
-            currentNetwork: 0,
-         });
-      const handleChangeCurrentNetwork = (currentNetwork: number) =>
-         setState({
-            ...state,
-            currentNetwork,
-         });
+      const handleChangeCurrency = useCallback(
+         (currency: string) =>
+            setState({
+               ...state,
+               currency,
+               currentNetwork: 0,
+            }),
+         [state]
+      );
+      const handleChangeCurrentNetwork = useCallback(
+         (currentNetwork: number) =>
+            setState({
+               ...state,
+               currentNetwork,
+            }),
+         [state]
+      );
 
-      const filteredWallet =
-         (wallets &&
-            wallets.filter(wallet => wallet?.currency === currency)[0]) ||
-         DEFAULT_WALLET;
-      const network = filteredWallet?.networks[currentNetwork];
-      const depositAddress =
-         filteredWallet?.deposit_addresses &&
-         filteredWallet?.deposit_addresses?.find(
-            e => e?.blockchain_key === network?.blockchain_key
-         );
+      const filteredWallet = useMemo(
+         () =>
+            (wallets &&
+               wallets.filter(wallet => wallet?.currency === currency)[0]) ||
+            DEFAULT_WALLET,
+         [currency, wallets]
+      );
+      const network = useMemo(
+         () => filteredWallet?.networks[currentNetwork],
+         [currentNetwork, filteredWallet?.networks]
+      );
+      const depositAddress = useMemo(
+         () =>
+            filteredWallet?.deposit_addresses &&
+            filteredWallet?.deposit_addresses?.find(
+               e => e?.blockchain_key === network?.blockchain_key
+            ),
+         [filteredWallet?.deposit_addresses, network?.blockchain_key]
+      );
 
       let loadingFetchGenerate = false;
 
@@ -165,14 +177,6 @@ const DepositFC = memo(
          loadingFetchGenerate,
       ]);
 
-      const handleCopy = useCallback(
-         (url: string, type: string) => {
-            copyToClipboard(url);
-            fetchSuccess({ message: [`${type} Copied`], type: 'success' });
-         },
-         [fetchSuccess]
-      );
-
       const isDisabled = useMemo(() => {
          const depositEnabled = network?.deposit_enabled;
          return (
@@ -181,7 +185,7 @@ const DepositFC = memo(
             !depositEnabled ||
             loadingFetchGenerate
          );
-      }, [filteredWallet, loadingFetchGenerate, currentNetwork]);
+      }, [network?.deposit_enabled, filteredWallet, loadingFetchGenerate]);
 
       const isRipple = useMemo(() => currency === 'xrp', [currency]);
       const isStellar = useMemo(() => currency === 'xlm', [currency]);
@@ -234,7 +238,7 @@ const DepositFC = memo(
                </Scan>
             </>
          ),
-         [depositAddress, handleCopy]
+         [depositAddress?.address, isRipple, isStellar]
       );
 
       const renderAddressSkeleton = useMemo(
@@ -401,6 +405,8 @@ const DepositFC = memo(
          [translate, filteredWallet]
       );
 
+      const [coba, setCoba] = useState('');
+
       return (
          <LayoutProfile
             title="Deposit"
@@ -409,23 +415,28 @@ const DepositFC = memo(
                href: '/wallets',
                active: 'Deposit',
             }}>
-            <div className="flex w-full gap-10 lg-max:flex-wrap">
-               <div className="w-full lg:w-3/5 lg2:w-2/3">
+            <div className="flex w-full gap-10 lg-max:flex-wrap-reverse">
+               <div className="w-full shrink-0 grow-0 lg:w-3/5 lg:basis-3/5 lg2:w-2/3 lg2:basis-2/3">
                   <div className="space-y-8 rounded-2xl bg-neutral8 p-10 shadow-card dark:bg-shade1">
-                     <div className="grid grid-cols-1 gap-4">
+                     <div className="grid grid-cols-2 gap-4">
                         <ComboboxCurrency
                            onChange={handleChangeCurrency}
                            displayValue="name"
                            defaultValue={location.state?.currency}
                            withBalance={false}
                         />
+                        <AdibDropdown
+                           label={`Select network ${coba.toUpperCase()}`}
+                           onChange={setCoba}
+                           data={['One', 'Two', 'Three', 'Four']}
+                        />
                         {/* <AdibDropdown
-                        label="Select network"
-                        onChange={e => console.log('e :>> ', filteredWallet.networks.map((p, i) => p.protocol.toUpperCase() === e?.toUpperCase()))}
-                        data={
-                           filteredWallet.networks.map(({ protocol }) => protocol)
-                        }
-                     /> */}
+                           label={`Select network ${coba.toUpperCase()}`}
+                           onChange={setCoba}
+                           data={filteredWallet.networks.map(
+                              ({ protocol }) => protocol
+                           )}
+                        /> */}
                      </div>
                      <div className="space-y-2.5">
                         <Label
@@ -499,7 +510,7 @@ const DepositFC = memo(
                      )}
                   </div>
                </div>
-               <div className="w-full lg:w-2/5 lg2:w-1/3">
+               <div className="w-full shrink-0 grow-0 lg:w-2/5 lg:basis-2/5 lg2:w-1/3 lg2:basis-1/3">
                   <div className="rounded-2xl bg-neutral8 p-10 shadow-card dark:bg-shade1">
                      <div className="space-y-3">
                         <TextBase
@@ -548,7 +559,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
 > = dispatch => ({
    fetchWallets: () => dispatch(walletsFetch()),
    generateAdress: payload => dispatch(walletsAddressFetch(payload)),
-   fetchSuccess: payload => dispatch(alertPush(payload)),
 });
 
 export const Deposit = compose(

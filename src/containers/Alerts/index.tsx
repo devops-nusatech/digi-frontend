@@ -10,7 +10,6 @@ import {
    selectAlertState,
    selectCurrentColorTheme,
 } from 'modules';
-// import toast, { Toaster } from 'react-hot-toast';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 

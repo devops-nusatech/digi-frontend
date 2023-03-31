@@ -128,7 +128,7 @@ const TwoFAFC = ({
          }}>
          <ProfileSidebar />
          <div className="grow rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 lg:p-10">
-            <div className="mb-4 font-dm text-4.5xl font-bold leading-1.2 tracking-custom1">
+            <div className="mb-4 font-dm text-4.5xl leading-1.2 tracking-custom1">
                2FA
                <span className={otp ? 'text-primary5' : 'text-primary4'}>
                   {' '}
@@ -179,7 +179,7 @@ const TwoFAFC = ({
                </div>
                {!otp && (
                   <div className="flex rounded-2xl bg-neutral7 dark:bg-neutral2">
-                     <div className="mx-auto mt-16 max-w-64 rounded-t-5xl bg-neutral8 py-8 px-12 dark:bg-neutral3">
+                     <div className="mx-auto mt-16 max-w-64 rounded-t-5xl bg-neutral8 px-12 py-8 dark:bg-neutral3">
                         <div className="rounded-lg border-2 border-dashed border-primary1 p-4">
                            {!otp && renderTwoFactorAuthQR(barcode)}
                         </div>
