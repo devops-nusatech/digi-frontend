@@ -5,10 +5,10 @@ import {
    // TradingOrderNew,
    TradingOrderLast,
 } from 'components';
-import { User } from 'modules';
+import { GroupMember, User } from 'modules';
 
 type TradingOrderCenterProps = {
-   // groupMember: GroupMember;
+   groupMember: GroupMember;
    user: User;
 };
 
