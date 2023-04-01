@@ -8,7 +8,6 @@ import {
 } from 'components';
 import { selectUserInfo } from 'modules';
 import { useDocumentTitle, useModal, useReduxSelector } from 'hooks';
-import { IcBronze, IcDiamond, IcGold, IcPlatinum, IcSilver } from 'assets';
 import { toast } from 'react-toastify';
 import { copyToClipboard } from 'helpers';
 
@@ -40,15 +39,15 @@ export const Tier = withRouter(({ history }) => {
    const renderIconMember = useMemo(() => {
       switch (tier) {
          case 'silver':
-            return <IcSilver />;
+            return './images/tier/silver.svg';
          case 'gold':
-            return <IcGold />;
+            return './images/tier/gold.svg';
          case 'platinum':
-            return <IcPlatinum />;
+            return './images/tier/platinum.svg';
          case 'diamond':
-            return <IcDiamond />;
+            return './images/tier/diamond.svg';
          case 'bronze':
-            return <IcBronze />;
+            return './images/tier/bronze.svg';
 
          default:
             return null;
@@ -74,7 +73,10 @@ export const Tier = withRouter(({ history }) => {
                         {username ?? profiles?.shift()?.first_name ?? ''}
                      </div>
                      <div className="flex items-center space-x-3">
-                        {renderIconMember}
+                        <img
+                           src={renderIconMember!}
+                           alt="Tier"
+                        />
                         <div className="font-medium capitalize text-member-bronze">
                            {tier} Member
                         </div>
