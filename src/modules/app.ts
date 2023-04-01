@@ -12,6 +12,7 @@ import { changeLanguageReducer } from './public/i18n';
 import { klineReducer } from './public/kline';
 import { marketsReducer } from './public/markets';
 import { memberLevelsReducer } from './public/memberLevels';
+import { membershipsReducer } from './public/memberships';
 import { newsReducer } from './public/news';
 import { news2Reducer } from './public/news2';
 import { depthReducer, incrementDepthReducer, orderBookReducer } from './public/orderBook';
@@ -60,6 +61,7 @@ export const publicReducer = combineReducers({
    kline: klineReducer,
    markets: marketsReducer,
    memberLevels: memberLevelsReducer,
+   memberships: membershipsReducer,
    news: newsReducer,
    news2: news2Reducer,
    orderBook: orderBookReducer,

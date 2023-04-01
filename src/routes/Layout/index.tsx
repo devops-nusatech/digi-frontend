@@ -71,6 +71,8 @@ import {
    WalletOrder,
    Geetest,
    Notifications,
+   // Membership,
+   // JoinAffiliate,
 } from 'screens';
 import { ApiDocs } from 'screens/ApiDocs';
 import PrivateRoute from '../PrivateRoute';
@@ -326,6 +328,14 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   path="/geetest"
                   component={Geetest}
                />
+               {/* <Route
+                  path="/membership"
+                  component={Membership}
+               /> */}
+               {/* <Route
+                  path="/join-affiliate"
+                  component={JoinAffiliate}
+               /> */}
                {showLanding() && (
                   <Route
                      exact

@@ -53,18 +53,30 @@ const ifUserIsLoggedIn = () => {
 };
 
 
-export const defaultUser = {
-   username: '',
+export const defaultUser: User = {
    email: '',
+   uid: '',
+   role: '',
    level: 0,
    otp: false,
-   role: '',
    state: '',
-   uid: '',
-   profiles: [],
-   referal_uid: '',
+   referral_id: [],
+   referral_uid: '',
+   data: '',
+   tier: '',
+   alltime_trx: '',
+   p2p_tier: {
+      id: 0,
+      name: '',
+      maker_fee: '',
+      taker_fee: '',
+      max_transaction: '',
+   },
+   username: '',
    labels: [],
-   phone: [],
+   phones: [],
+   profiles: [],
+   data_storages: [],
    created_at: '',
    updated_at: '',
 };

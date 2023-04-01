@@ -1,6 +1,7 @@
+import { Membership } from 'modules';
 import { Label } from '../kyc';
 
-export interface Profile {
+interface Profile {
    first_name: string;
    last_name: string;
    dob: string;
@@ -14,48 +15,47 @@ export interface Profile {
    metadata?: string;
 }
 
-export interface Phone {
+interface Phone {
    country: string;
    number: string;
    validated_at: string | null;
 }
 
-export type User = {
-   username?: string;
+type P2PTier = {
+   id: number;
+   name: string;
+   maker_fee: string;
+   taker_fee: string;
+   max_transaction: string;
+};
+
+type ReferralID = {
+   uid: string;
+   username: string;
    email: string;
    level: number;
-   otp: boolean;
-   role: string;
-   state: string;
+   tier: string;
+   p2p_tier: string;
+};
+
+export type User = {
+   email: string;
    uid: string;
-   profiles: Profile[];
-   csrf_token?: string;
-   data?: string;
-   referal_uid: string | null;
+   role: string;
+   level: number;
+   otp: boolean;
+   state: string;
+   referral_id: ReferralID[];
+   referral_uid: string;
+   data: string;
+   tier: Membership['tier'];
+   alltime_trx: string;
+   p2p_tier: P2PTier;
+   username: string;
    labels: Label[];
-   phone: Phone[];
-   group?: string;
+   phones: Phone[];
+   profiles: Profile[];
+   data_storages: any[];
    created_at: string;
    updated_at: string;
-}
-
-// export interface User {
-//     uid: string;
-//     username?: string;
-//     email: string;
-//     level: number;
-//     otp: boolean;
-//     state: string;
-//     referal_uid: string | null;
-//     //  referral_uid: string | null;
-//     csrf_token?: string;
-//     role: string;
-//     data?: string;
-//     profiles: Profile[];
-//     labels: Label[];
-//     phone: Phone[];
-//    //  phone: Phone[];
-//     data_storages?: any[];
-//     created_at: string;
-//     updated_at: string;
-// }
+};
