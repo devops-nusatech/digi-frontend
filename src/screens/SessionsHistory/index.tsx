@@ -192,7 +192,9 @@ const SessionsHistoryFC = ({
                                  },
                                  index
                               ) => (
-                                 <tr className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
+                                 <tr
+                                    key={index}
+                                    className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
                                     <td className="p-4 pl-0">
                                        <div className="whitespace-nowrap font-medium">
                                           {localeDate(created_at, 'shortDate')

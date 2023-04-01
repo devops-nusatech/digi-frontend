@@ -9,7 +9,7 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
       viewBox="0 0 339 168"
       fill="none"
       {...props}>
-      <g clip-path="url(#clip0_377_13772)">
+      <g clipPath="url(#clip0_377_13772)">
          <rect
             x="0.5"
             width="338"
@@ -89,12 +89,12 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             <path
                d="M18.4998 21.7493L24.0381 23.5781L30.5301 34.3164L18.4998 21.7493Z"
                fill="black"
-               fill-opacity="0.1"
+               fillOpacity="0.1"
             />
             <path
                d="M42.4669 21.7493L36.8363 23.5781L30.53 34.3164L42.4669 21.7493Z"
                fill="black"
-               fill-opacity="0.1"
+               fillOpacity="0.1"
             />
             <g style={{ mixBlendMode: 'overlay' }}>
                <path
@@ -157,7 +157,7 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
                   height="24"
                   transform="rotate(-90 18.4998 37)"
                   fill="url(#pattern0)"
-                  fill-opacity="0.6"
+                  fillOpacity="0.6"
                />
             </g>
          </g>
@@ -172,7 +172,7 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
                width="51"
                height="51"
                fill="url(#pattern1)"
-               shape-rendering="crispEdges"
+               shapeRendering="crispEdges"
             />
          </g>
       </g>
@@ -184,9 +184,9 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             width="12.7983"
             height="14.7219"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB">
+            colorInterpolationFilters="sRGB">
             <feFlood
-               flood-opacity="0"
+               floodOpacity="0"
                result="BackgroundImageFix"
             />
             <feBlend
@@ -236,9 +236,9 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             width="55"
             height="55"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB">
+            colorInterpolationFilters="sRGB">
             <feFlood
-               flood-opacity="0"
+               floodOpacity="0"
                result="BackgroundImageFix"
             />
             <feColorMatrix
@@ -289,10 +289,10 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="182.5"
             y2="193"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#484848" />
+            <stop stopColor="#484848" />
             <stop
                offset="1"
-               stop-color="#1E1E1E"
+               stopColor="#1E1E1E"
             />
          </linearGradient>
          <linearGradient
@@ -302,11 +302,11 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="155.242"
             y2="181.667"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#313131" />
+            <stop stopColor="#313131" />
             <stop
                offset="1"
-               stop-color="#313131"
-               stop-opacity="0"
+               stopColor="#313131"
+               stopOpacity="0"
             />
          </linearGradient>
          <linearGradient
@@ -316,11 +316,11 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="113.279"
             y2="98.8754"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#1B1B1B" />
+            <stop stopColor="#1B1B1B" />
             <stop
                offset="1"
-               stop-color="#313131"
-               stop-opacity="0"
+               stopColor="#313131"
+               stopOpacity="0"
             />
          </linearGradient>
          <linearGradient
@@ -330,10 +330,10 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="94.4857"
             y2="104.704"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#D6D4D1" />
+            <stop stopColor="#D6D4D1" />
             <stop
                offset="1"
-               stop-color="#BEB8B0"
+               stopColor="#BEB8B0"
             />
          </linearGradient>
          <linearGradient
@@ -343,10 +343,10 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="122.403"
             y2="132.912"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#D6D4D1" />
+            <stop stopColor="#D6D4D1" />
             <stop
                offset="1"
-               stop-color="#BEB8B0"
+               stopColor="#BEB8B0"
             />
          </linearGradient>
          <linearGradient
@@ -356,10 +356,10 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="136.341"
             y2="144.996"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#D6D4D1" />
+            <stop stopColor="#D6D4D1" />
             <stop
                offset="1"
-               stop-color="#BEB8B0"
+               stopColor="#BEB8B0"
             />
          </linearGradient>
          <linearGradient
@@ -369,10 +369,10 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="92.6315"
             y2="32.8503"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#D6D4D1" />
+            <stop stopColor="#D6D4D1" />
             <stop
                offset="1"
-               stop-color="#BEB8B0"
+               stopColor="#BEB8B0"
             />
          </linearGradient>
          <linearGradient
@@ -382,14 +382,14 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="30.5052"
             y2="33.2409"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#FFEF64" />
+            <stop stopColor="#FFEF64" />
             <stop
                offset="0.5"
-               stop-color="#FFA215"
+               stopColor="#FFA215"
             />
             <stop
                offset="1"
-               stop-color="#FFE456"
+               stopColor="#FFE456"
             />
          </linearGradient>
          <linearGradient
@@ -399,14 +399,14 @@ export const TierMembershipSVG4 = (props: React.SVGProps<SVGSVGElement>) => (
             x2="30.4985"
             y2="34.3163"
             gradientUnits="userSpaceOnUse">
-            <stop stop-color="#FFEF64" />
+            <stop stopColor="#FFEF64" />
             <stop
                offset="0.5"
-               stop-color="#FFA215"
+               stopColor="#FFA215"
             />
             <stop
                offset="1"
-               stop-color="#FFE456"
+               stopColor="#FFE456"
             />
          </linearGradient>
          <clipPath id="clip0_377_13772">

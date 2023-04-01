@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { memo, useRef } from 'react';
 import { useMarket } from 'hooks';
 import { Nav, TableMarketTrades } from 'components';
@@ -117,7 +118,7 @@ export const TradingMarketList = memo(
             <div className="h-full space-y-1">
                <div className="relative h-1/2 rounded bg-neutral8 p-4 dark:bg-shade2">
                   <div
-                     className="absolute top-4.5 right-1.5"
+                     className="absolute right-1.5 top-4.5"
                      onClick={handleNextBid}>
                      <svg className="h-6 w-6 cursor-pointer fill-neutral4 transition-all duration-300">
                         <use xlinkHref="#icon-arrow-right" />
@@ -346,6 +347,7 @@ export const TradingMarketList = memo(
       );
    }
 );
+// eslint-disable-next-line no-lone-blocks
 {
    /* <div className="overflow-x-auto block max-h-830 overflow-y-auto hide-scroll">
             <table className="w-full table-auto">

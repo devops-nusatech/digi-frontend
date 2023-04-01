@@ -155,7 +155,11 @@ const TableMarketTradesFC = ({
                </Tooltip>
             ))
          ) : (
-            <div className="">Kosong</div>
+            <tr>
+               <td colSpan={3}>
+                  <div className="p-5">Data not found</div>
+               </td>
+            </tr>
          ),
       [recentTrades]
    );

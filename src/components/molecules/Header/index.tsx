@@ -329,7 +329,7 @@ export const Header = withRouter(({ history }) => {
       <>
          <header
             className={classNames(
-               `relative z-10 select-none bg-neutral8 pt-8 pb-6 shadow-none dark:bg-neutral1 md:py-5 ${
+               `relative z-10 select-none bg-neutral8 pb-6 pt-8 shadow-none dark:bg-neutral1 md:py-5 ${
                   shouldRenderHeaderFull || shouldNoRenderHeaderFull
                      ? 'md:shadow-header'
                      : ''

@@ -3,16 +3,15 @@ import React, {
    useState,
    FunctionComponent,
    useLayoutEffect,
+   useMemo,
+   useCallback,
 } from 'react';
 import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
-// import { ChevronRightIcon } from '@heroicons/react/solid';
 
 import {
    alertPush,
-   GroupMember,
    Market,
-   MemberLevels,
    orderExecuteFetch,
    RootState,
    selectAmount,
@@ -22,15 +21,11 @@ import {
    selectDepthAsks,
    selectDepthBids,
    selectMarketTickers,
-   selectMemberLevels,
    selectOrderExecuteLoading,
-   selectTradingFees,
-   selectUserInfo,
    selectUserLoggedIn,
    selectWallets,
    setAmount,
    setCurrentPrice,
-   TradingFee,
    User,
    Wallet,
    walletsFetch,
@@ -38,9 +33,6 @@ import {
 import { OrderType, OrderSide } from 'modules/types';
 import {
    Decimal,
-   // SliderPercent,
-   // InputOrder,
-   // Button,
    formatWithSeparators,
    TradingOrderAsk,
    TradingOrderBid,
@@ -50,7 +42,6 @@ import {
 } from 'components';
 import { FilterPrice } from 'filters';
 import { IntlProps } from 'index';
-import { selectGroupMember } from 'modules/user/groupMember/selectors';
 
 export interface IOrderProps {
    price: string;
@@ -59,7 +50,6 @@ export interface IOrderProps {
 }
 
 interface ReduxProps {
-   user: User;
    currentMarket: Market | undefined;
    currentMarketFilters: FilterPrice;
    executeLoading: boolean;
@@ -73,9 +63,6 @@ interface ReduxProps {
    wallets: Wallet[];
    currentPrice: string;
    amountVolume: string;
-   groupMember: GroupMember;
-   tradingFees: TradingFee[];
-   memberLevel: MemberLevels;
 }
 
 interface DispatchProps {
@@ -91,7 +78,11 @@ interface OwnProps {
    currentPrice: string;
 }
 
-type Props = ReduxProps & DispatchProps & OwnProps & IntlProps;
+type UserProps = {
+   user: User;
+};
+
+type Props = ReduxProps & DispatchProps & OwnProps & UserProps & IntlProps;
 
 const TradingOrderLastFunc = (props: Props) => {
    const {
@@ -111,29 +102,63 @@ const TradingOrderLastFunc = (props: Props) => {
       setCurrentAmount,
       bids,
       asks,
-      tradingFees,
-      groupMember,
-      memberLevel,
    } = props;
 
-   const name: string = String(currentMarket?.name);
-   const base_unit: string = String(currentMarket?.base_unit);
-   const quote_unit: string = String(currentMarket?.quote_unit);
-   const price_precision: number = Number(currentMarket?.price_precision);
-   const amount_precision: number = Number(currentMarket?.amount_precision);
-   const min_amount: number = Number(currentMarket?.min_amount);
-   const min_price: string = String(currentMarket?.min_price);
-   const max_price: number = Number(currentMarket?.max_price);
-   const lastPrice: string = marketTickers[String(currentMarket?.id)]?.last;
-   const from: string = String(name.toUpperCase().split('/').pop());
-   const to: string = base_unit.toUpperCase();
-   const marketId: string = String(currentMarket?.id);
-   const taker =
-      Number(tradingFees.find(e => e.group === groupMember.group)?.taker) * 100;
-   const maker =
-      Number(tradingFees.find(e => e.group === groupMember.group)?.maker) * 100;
+   const name = useMemo(
+      () => currentMarket?.name! || '',
+      [currentMarket?.name]
+   );
+   const base_unit = useMemo(
+      () => currentMarket?.base_unit!,
+      [currentMarket?.base_unit]
+   );
+   const quote_unit = useMemo(
+      () => currentMarket?.quote_unit!,
+      [currentMarket?.quote_unit]
+   );
+   const price_precision = useMemo(
+      () => currentMarket?.price_precision!,
+      [currentMarket?.price_precision]
+   );
+   const amount_precision = useMemo(
+      () => currentMarket?.amount_precision!,
+      [currentMarket?.amount_precision]
+   );
+   const min_amount = useMemo(
+      () => Number(currentMarket?.min_amount!),
+      [currentMarket?.min_amount]
+   );
+   const min_price = useMemo(
+      () => currentMarket?.min_price!,
+      [currentMarket?.min_price]
+   );
+   const max_price = useMemo(
+      () => Number(currentMarket?.max_price),
+      [currentMarket?.max_price]
+   );
+   const lastPrice = useMemo(
+      () => marketTickers[currentMarket?.id!]?.last,
+      [currentMarket?.id, marketTickers]
+   );
+   const from = useMemo(
+      () => String(name?.toUpperCase()?.split('/')?.pop()) || '',
+      [name]
+   );
+   const to = useMemo(() => base_unit?.toUpperCase() || '', [base_unit]);
+   const marketId = useMemo(
+      () => currentMarket?.id! || '',
+      [currentMarket?.id]
+   );
+   const taker = useMemo(
+      () => +user.p2p_tier.taker_fee * 100,
+      [user.p2p_tier.taker_fee]
+   );
+   const maker = useMemo(
+      () => +user.p2p_tier.maker_fee * 100,
+      [user.p2p_tier.maker_fee]
+   );
 
-   const [orderPrice, setOrderPrice] = useState<string>('');
+   const [orderPrice, setOrderPrice] = useState('');
    const [orderType, setOrderType] = useState<OrderType>('limit');
    const [currentTab, setCurrentTab] = useState(0);
 
@@ -150,7 +175,7 @@ const TradingOrderLastFunc = (props: Props) => {
       if (+currentPrice && currentPrice !== orderPrice) {
          setOrderPrice(currentPrice);
       }
-   }, [+currentPrice]);
+   }, [currentPrice]);
    useLayoutEffect(() => {
       return () => {
          handleListenState();
@@ -160,10 +185,13 @@ const TradingOrderLastFunc = (props: Props) => {
    const translate = (id: string, value?: any) =>
       formatMessage({ id }, { ...value });
 
-   const getWallet = (currency: string, wallets: Wallet[]) => {
-      const currencyLower = currency.toLowerCase();
-      return wallets.find(w => w.currency === currencyLower) as Wallet;
-   };
+   const getWallet = useCallback(
+      (currency: string, wallets: Wallet[]) => {
+         const currencyLower = currency?.toLowerCase();
+         return wallets.find(w => w.currency === currencyLower) as Wallet;
+      },
+      [marketId]
+   );
 
    const walletBase = getWallet(base_unit, wallets);
    const walletQuote = getWallet(quote_unit, wallets);
@@ -501,10 +529,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      orderPrice={orderPrice}
                      orderType={orderType}
                      handleOrder={handleOrder}
-                     disabled={
-                        executeLoading ||
-                        user?.level < memberLevel?.trading?.minimum_level
-                     }
+                     disabled={executeLoading || user?.level < 2}
                      minAmount={min_amount}
                      minPrice={min_price}
                      maxPrice={max_price}
@@ -527,10 +552,7 @@ const TradingOrderLastFunc = (props: Props) => {
                      orderPrice={orderPrice}
                      orderType={orderType}
                      handleOrder={handleOrder}
-                     disabled={
-                        executeLoading ||
-                        user?.level < memberLevel?.trading?.minimum_level
-                     }
+                     disabled={executeLoading || user?.level < 2}
                      minAmount={min_amount}
                      minPrice={min_price}
                      maxPrice={max_price}
@@ -558,7 +580,6 @@ const TradingOrderLastFunc = (props: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-   user: selectUserInfo(state),
    isLoggedIn: selectUserLoggedIn(state),
    bids: selectDepthBids(state),
    asks: selectDepthAsks(state),
@@ -569,9 +590,6 @@ const mapStateToProps = (state: RootState) => ({
    wallets: selectWallets(state),
    currentPrice: selectCurrentPrice(state),
    amountVolume: selectAmount(state),
-   tradingFees: selectTradingFees(state),
-   groupMember: selectGroupMember(state),
-   memberLevel: selectMemberLevels(state),
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<
@@ -590,4 +608,4 @@ export const TradingOrderLast = injectIntl(
       mapStateToProps,
       mapDispatchToProps
    )(TradingOrderLastFunc as FunctionComponent)
-) as FunctionComponent;
+) as FunctionComponent<UserProps>;
