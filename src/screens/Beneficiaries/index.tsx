@@ -620,7 +620,9 @@ const BeneficiariesFC = ({
                         size="normal"
                         width="noFull"
                         disabled={
-                           memberLevels?.withdraw.minimum_level !== user.level
+                           memberLevels?.withdraw.minimum_level !==
+                              user.level ||
+                           user?.myTier?.benefit?.withdraw_access === false
                         }
                         onClick={handleShowModalCreateBeneficiary}
                      />

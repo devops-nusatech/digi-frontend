@@ -9,7 +9,7 @@ import { classNames } from 'helpers';
 import { Rounded, Size, Variant, Width, Color, ButtonType } from '../types';
 
 const classes = {
-   base: 'group inline-flex justify-center items-center leading-none cursor-pointer whitespace-nowrap transition ease-in-out duration-300',
+   base: 'group inline-flex justify-center items-center leading-none whitespace-nowrap transition ease-in-out duration-300',
    fontDM: 'font-dm',
    disabled: 'opacity-40 cursor-not-allowed hover:shadow-none',
    size: {
@@ -121,9 +121,9 @@ export const Button = forwardRef<Ref, ButtonProps>(
 
       const handleOnClick = useCallback(
          (e: any) => {
-            onClick && onClick(e);
+            !disabled && onClick && onClick(e);
          },
-         [onClick]
+         [disabled, onClick]
       );
       return (
          <button

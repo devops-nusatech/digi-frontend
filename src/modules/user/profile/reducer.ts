@@ -1,5 +1,7 @@
 import { CommonError } from '../../types';
 import { ProfileAction } from './actions';
+import { DEFAULT_MY_TIER } from '../../../constants';
+
 import {
    PROFILE_CHANGE_PASSWORD_DATA,
    PROFILE_CHANGE_PASSWORD_ERROR,
@@ -53,7 +55,6 @@ const ifUserIsLoggedIn = () => {
 };
 
 export const defaultUser: User = {
-   username: '',
    email: '',
    uid: '',
    role: '',
@@ -72,12 +73,14 @@ export const defaultUser: User = {
       taker_fee: '',
       max_transaction: '',
    },
+   username: '',
    labels: [],
    phones: [],
    profiles: [],
    data_storages: [],
    created_at: '',
    updated_at: '',
+   myTier: DEFAULT_MY_TIER,
 };
 
 export const initialStateProfile: ProfileState = {

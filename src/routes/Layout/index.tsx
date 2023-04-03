@@ -196,7 +196,7 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                `/trading/${
                   currentMarket
                      ? currentMarket?.id
-                     : markets
+                     : markets.length > 0
                      ? markets[0]?.id
                      : DEFAULT_MARKET.id
                }`

@@ -1,4 +1,4 @@
-import type { Market, Ticker, Wallet } from 'modules';
+import type { Market, Ticker, Wallet, Membership } from 'modules';
 
 export const PG_TITLE_PREFIX = 'Digiassetindo';
 
@@ -87,6 +87,29 @@ export const DEFAULT_WALLET: Wallet = {
       },
    ],
    account_type: '',
+};
+
+export const DEFAULT_MY_TIER: Membership = {
+   id: 0,
+   tier: '',
+   unique: 'false',
+   requirement: {
+      kyc: 0,
+      reff: 0,
+      trx_vol: '',
+   },
+   benefit: {
+      claim: '',
+      direct_reff: '',
+      sub_reff: '',
+      withdraw_limit_24: '',
+      withdraw_limit_1month: '',
+      maker_fee: '',
+      taker_fee: '',
+      trade_access: '',
+      withdraw_access: '',
+      p2p_access: '',
+   },
 };
 
 export const DEFAULT_CCY_PRECISION = 4;

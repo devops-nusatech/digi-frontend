@@ -14,12 +14,10 @@ export function* userSaga() {
    try {
       const user: User = yield call(API.get(userOptions), '/resource/users/me');
       const memberships: Membership[] = yield select(getMembership);
-      if (!user?.myTier) {
-         const myTier = memberships.find(
-            e => e.tier.toLowerCase() === user.tier.toLowerCase()
-         )!;
-         yield put(userData({ user: { ...user, myTier } }));
-      }
+      const myTier = memberships.find(
+         e => e.tier.toLowerCase() === user.tier.toLowerCase()
+      )!;
+      yield put(userData({ user: { ...user, myTier } }));
    } catch (error) {
       yield put(
          sendError({
