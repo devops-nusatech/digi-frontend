@@ -197,45 +197,9 @@ const JoinAffiliateFC = () => {
                titles={['Introductions', 'Enter social media']}
                currentStep={currentStep}
             />
-            <div className="mr-8 w-full shrink-0 space-y-6 lg:w-56 lg2:mr-12 lg2:w-72 1xl:mr-20 md-max:mb-6 lg-max:mb-8 lg-max:hidden">
-               <div
-                  className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold leading-custom3 transition-all duration-300 after:absolute after:left-5.75 after:top-full after:h-6 after:border-l-2 after:border-dashed after:border-neutral5 after:content-[''] ${
-                     currentStep === 0 && 'text-neutral4'
-                  } ${
-                     currentStep === 1 &&
-                     'bg-neutral8 shadow-step dark:bg-neutral2 dark:after:border-neutral4'
-                  }`}>
-                  <div
-                     className={`relative flex h-8 w-8 items-center justify-center rounded-full border-2 ${
-                        currentStep === 0 || currentStep === 1
-                           ? 'border-primary5 dark:border-chart1'
-                           : 'border-neutral6 dark:border-neutral4'
-                     } ${
-                        currentStep === 1 &&
-                        'bidding__number bidding__number_dark'
-                     } transition-all duration-300 after:absolute after:left-0 after:top-0 after:h-full after:w-full after:rounded-full after:transition-opacity after:duration-200 after:content-['']`}>
-                     1
-                  </div>
-                  <div>What is affliate program</div>
-               </div>
-               <div
-                  className={`relative flex h-12 items-center space-x-4 rounded-3xl px-2 font-dm font-bold ${
-                     currentStep !== 1 && 'text-neutral4'
-                  } leading-custom3 transition-all duration-300`}>
-                  <div
-                     className={`relative flex h-8 w-8 items-center justify-center rounded-full border-2 ${
-                        currentStep === 1
-                           ? 'border-primary5 dark:border-chart1'
-                           : 'border-neutral6 dark:border-neutral4'
-                     } transition-all duration-300`}>
-                     2
-                  </div>
-                  <div>Social media profile</div>
-               </div>
-            </div>
             <div
                ref={mainRef}
-               className="grow rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 md:py-10 lg:p-10"
+               className="w-auto rounded-none bg-neutral8 shadow-none dark:bg-shade1 md:rounded-2xl md:p-10 md:px-8 md:py-10 md:shadow-card2 lg:w-736 lg:p-8 lg2:p-10 lg-max:!ml-0 lg2-max:ml-16 lg2-max:grow"
                style={{ animationDuration: '100ms' }}>
                {step}
             </div>

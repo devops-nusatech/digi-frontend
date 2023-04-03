@@ -24,7 +24,7 @@ export const StepLine: FC<StepLineProps> = ({
    return (
       <div
          className={classNames(
-            `${
+            `lg-max:hidden ${
                isVertical
                   ? 'mr-auto w-54 shrink-0 space-y-6'
                   : 'flex flex-wrap space-x-6'
