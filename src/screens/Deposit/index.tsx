@@ -96,13 +96,14 @@ const DepositFC = memo(
             push('/email-verification', { email: user.email });
          }
          if (
-            user &&
-            user.level <
-               Number(
-                  memberLevel &&
-                     memberLevel?.deposit &&
-                     memberLevel?.deposit?.minimum_level
-               )
+            (user &&
+               user.level <
+                  Number(
+                     memberLevel &&
+                        memberLevel?.deposit &&
+                        memberLevel?.deposit?.minimum_level
+                  )) ||
+            user?.myTier?.benefit?.withdraw_access === false
          ) {
             push('/wallets');
          }

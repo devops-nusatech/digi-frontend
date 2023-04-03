@@ -366,7 +366,7 @@ export const Header = withRouter(({ history }) => {
                            to={`/trading/${
                               currentMarket
                                  ? currentMarket?.id
-                                 : markets
+                                 : markets.length > 0
                                  ? markets?.shift()?.id
                                  : DEFAULT_MARKET.id
                            }`}

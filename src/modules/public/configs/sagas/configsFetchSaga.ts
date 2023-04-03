@@ -23,10 +23,10 @@ export function* configsFetchSaga() {
          API.get(configsOptions),
          '/public/config'
       );
+      yield put(membershipsData(tier_fees));
       yield put(currenciesData(currencies));
       yield put(marketsData(markets));
       yield put(setCurrentMarketIfUnset(markets[0]));
-      yield put(membershipsData(tier_fees));
       yield put(withdrawLimitsData(withdraw_limits));
       yield put(tradingFeesData(trading_fees));
       yield put(blockchainsData(blockchains));

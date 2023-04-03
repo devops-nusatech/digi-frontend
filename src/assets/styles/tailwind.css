@@ -638,11 +638,15 @@ input[type="password"]:not(:placeholder-shown) {
    .react-datepicker__triangle::before,
 .react-datepicker-popper[data-placement^="bottom"]
    .react-datepicker__triangle::after {
-   @apply border-b-neutral8 dark:border-b-neutral1;
+   @apply border-b-neutral8;
 }
-.react-datepicker-popper[data-placement^="bottom"]
-   .react-datepicker__triangle::before {
-   @apply border-b-neutral6 dark:border-b-neutral3;
+[data-mode="dark"]
+   .react-datepicker-popper[data-placement^="bottom"]
+   .react-datepicker__triangle::before,
+[data-mode="dark"]
+   .react-datepicker-popper[data-placement^="bottom"]
+   .react-datepicker__triangle::after {
+   @apply border-b-neutral1;
 }
 
 .react-datepicker__header:not(.react-datepicker__header--has-time-select) {

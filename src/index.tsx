@@ -6,11 +6,10 @@ import { WrappedComponentProps } from 'react-intl';
 import { Provider } from 'react-redux';
 import { sentryEnabled } from './api/config';
 
-import './assets/styles/root.css';
-// import './assets/styles/tailwind.css';
-import './assets/styles/output.min.css';
-
 import App from './App';
+
+import './assets/styles/root.css';
+import './assets/styles/output.min.css';
 
 import { rootSaga } from './modules';
 import { rangerSagas } from './modules/public/ranger';

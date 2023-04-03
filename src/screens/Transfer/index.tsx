@@ -154,6 +154,7 @@ export const TransferFC = ({
                   memberLevel?.withdraw &&
                   memberLevel?.withdraw?.minimum_level
             ) ||
+         user?.myTier?.benefit?.withdraw_access === false ||
          !user.otp
       ) {
          push('/wallets', { isOpenPortal: true });

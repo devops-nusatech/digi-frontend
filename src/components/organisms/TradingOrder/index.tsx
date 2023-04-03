@@ -155,12 +155,12 @@ const TradingOrderChild = ({
       [currentMarket?.id]
    );
    const taker = useMemo(
-      () => +user.p2p_tier.taker_fee * 100,
-      [user.p2p_tier.taker_fee]
+      () => (user ? +user?.p2p_tier?.taker_fee * 100 : 0),
+      [user]
    );
    const maker = useMemo(
-      () => +user.p2p_tier.maker_fee * 100,
-      [user.p2p_tier.maker_fee]
+      () => (user ? +user?.p2p_tier?.maker_fee * 100 : 0),
+      [user]
    );
 
    const [orderPrice, setOrderPrice] = useState('');

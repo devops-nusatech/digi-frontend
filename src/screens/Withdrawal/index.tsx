@@ -273,7 +273,8 @@ const WithdrawalFC = memo(
                      memberLevels?.withdraw &&
                      memberLevels?.withdraw?.minimum_level
                ) ||
-            !user.otp
+            !user.otp ||
+            user?.myTier?.benefit?.withdraw_access === false
          ) {
             history.push('/wallets', { isOpenPortal: true });
          }
