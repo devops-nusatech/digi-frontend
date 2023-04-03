@@ -12,12 +12,14 @@ export function* memberGroupSaga(action: GroupMemberFetch) {
       const memberGroup = yield call(API.get(membersMe), '/account/members/me');
       yield put(groupData(memberGroup));
    } catch (error) {
-      yield put(sendError({
-         error,
-         processingType: 'alert',
-         extraOptions: {
-            actionError: groupError,
-         },
-      }));
+      yield put(
+         sendError({
+            error,
+            processingType: 'alert',
+            extraOptions: {
+               actionError: groupError,
+            },
+         })
+      );
    }
 }

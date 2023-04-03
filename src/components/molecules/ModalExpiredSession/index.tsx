@@ -22,7 +22,12 @@ export const ModalExpiredSession: FC<ModalExpiredSession> = ({
          close={close}>
          <div className="mt-10 space-y-8">
             <div className="text-center font-dm text-5xl font-bold leading-custom1 tracking-custom">
-               Hufh! ⏰
+               Hufh!{' '}
+               <span
+                  role="img"
+                  aria-label="Success">
+                  ⏰
+               </span>
             </div>
             <div className="mx-auto max-w-71.25 text-center text-base font-medium leading-normal">
                {title}

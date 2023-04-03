@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
    Button,
    InputOrder,
@@ -7,17 +7,20 @@ import {
    InputCurrency,
    IOrderProps,
    Dialog,
+   Text2xl,
+   FlexCenter,
 } from 'components';
-import { IcWallet } from 'assets';
 import { OrderType } from 'modules/types';
 import {
    cleanPositiveFloatInput,
    getTotalPrice,
    precisionRegExp,
 } from 'helpers';
+import { IsDisplay } from 'types';
 
 type Ref = null | any;
-interface TradingOrderBidProps {
+interface TradingOrderBidProps extends IsDisplay {
+   setShowOrder: (e: '' | 'buy' | 'sell') => void;
    to: string;
    from: string;
    availableQuote: number;
@@ -41,7 +44,7 @@ interface TradingOrderBidProps {
    maker: number;
 }
 
-export const TradingOrderBid: FC<TradingOrderBidProps> = ({
+export const TradingOrderBid = ({
    to,
    from,
    availableQuote,
@@ -63,7 +66,9 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
    executeLoading,
    maker,
    taker,
-}) => {
+   display,
+   setShowOrder,
+}: TradingOrderBidProps) => {
    const [listenPrice, setListenPrice] = useState<string>('');
    const [orderVolume, setOrderVolume] = useState<string>('');
    const [orderTotal, setOrderTotal] = useState<string>('');
@@ -271,46 +276,38 @@ export const TradingOrderBid: FC<TradingOrderBidProps> = ({
 
    return (
       <>
-         <div className="mx-4 my-0 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
-            <div className="mb-4 flex items-center justify-between">
-               <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
-                  Buy {to}
+         <div
+            className={`mx-4 w-c-1/2-8 shrink-0 grow-0 basis-c-1/2-8 lg:!block lg-max:m-0 ${
+               display
+                  ? 'lg-max:visible lg-max:h-full lg-max:opacity-100'
+                  : 'lg-max:invisible lg-max:h-0 lg-max:opacity-0'
+            } lg-max:w-full lg-max:transition-all lg-max:duration-500 lg-max:ease-in`}>
+            <div className="hidden lg-max:mb-4 lg-max:flex lg-max:items-center">
+               <div className="mr-auto text-base font-medium leading-normal text-neutral4">
+                  Place order
                </div>
-               <div className="flex items-center space-x-1">
-                  <IcWallet className="h-4 w-4 fill-neutral2 transition-colors duration-300 dark:fill-neutral4" />
-                  <div className="text-xs font-semibold leading-custom1">
+               <svg
+                  className="h-6 w-6 cursor-pointer fill-neutral4"
+                  onClick={() => setShowOrder('')}>
+                  <use xlinkHref="#icon-close-circle" />
+               </svg>
+            </div>
+            <div className="mb-4 flex items-center justify-between">
+               <Text2xl
+                  text={`Buy ${to}`}
+                  className="leading-custom2"
+               />
+               <FlexCenter className="text-xs font-semibold">
+                  <svg className="mr-1 h-4 w-4 fill-neutral4">
+                     <use xlinkHref="#icon-wallet" />
+                  </svg>
+                  <span>
                      {Decimal.format(availableQuote, pricePrecision, ',')}{' '}
                      {from}
-                  </div>
-               </div>
+                  </span>
+               </FlexCenter>
             </div>
-            {/* <pre>
-            <code>
-               <div className="flex flex-col space-y-3">
-                  <div className="flex space-x-2">
-                     <div className="">orderPrice : </div>
-                     <div className="font-urw-din-500 tracking-widest">{orderPrice} {typeof orderPrice}</div>
-                  </div>
-                  <div className="flex space-x-2">
-                     <div className="">listenPrice : </div>
-                     <div className="font-urw-din-500 tracking-widest">{listenPrice} {typeof listenPrice}</div>
-                  </div>
-                  <div className="flex space-x-2">
-                     <div className="">orderTotal : </div>
-                     <div className="font-urw-din-500 tracking-widest">{orderTotal} {typeof orderTotal}</div>
-                  </div>
-                  <div className="flex space-x-2">
-                     <div className="">priceMarket : </div>
-                     <div className="font-urw-din-500 tracking-widest">{priceMarket} {typeof priceMarket}</div>
-                  </div>
-                  <div className="flex space-x-2">
-                     <div className="">orderVolume : </div>
-                     <div className="font-urw-din-500 tracking-widest">{orderVolume} {typeof orderVolume}</div>
-                  </div>
-               </div>
-            </code>
-         </pre> */}
-            <form className="flex flex-col space-y-3">
+            <form className="space-y-3">
                <InputCurrency
                   titleLeft={translate(
                      'page.body.trade.header.newOrder.content.price'

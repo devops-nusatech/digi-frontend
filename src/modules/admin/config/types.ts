@@ -3,4 +3,4 @@ export type ConfigUpdateDataType = {
    component: string;
    key: string;
    value: string;
-}
+};

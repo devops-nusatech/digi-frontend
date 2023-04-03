@@ -32,7 +32,7 @@ import {
 } from 'components';
 import { IcEmty, IcShorting } from 'assets';
 import { arrayFilter, localeDate, renderCurrencyIcon } from 'helpers';
-import { useMarket, useModal } from 'hooks';
+import { useMarket, useToggle } from 'hooks';
 
 interface TableOrderProps {
    core: 'open' | 'close';
@@ -92,7 +92,7 @@ const TableOrder = ({
    openOrderCancelById,
    intl,
 }: Props) => {
-   const { isShow, toggle } = useModal();
+   const [toggle, setToggle] = useToggle(false);
    const marketsData = useMarket().markets;
    const [detailId, setDetailId] = useState<any>();
    useEffect(() => {
@@ -149,7 +149,7 @@ const TableOrder = ({
 
    const handleConfirm = (item: OrderCommon) => {
       setDetailId(item);
-      toggle();
+      setToggle();
    };
 
    const renderOrders = (item: OrderCommon) => {
@@ -312,7 +312,7 @@ const TableOrder = ({
                advanceFilter && { market, type, ord_type, order_by }),
          });
       }, 1000);
-      toggle();
+      setToggle();
    };
 
    const onClickPrevPage = () => {
@@ -481,8 +481,8 @@ const TableOrder = ({
          {renderPaginate()}
          <Portal
             title="Cancel order"
-            show={isShow}
-            close={toggle}>
+            show={toggle}
+            close={setToggle}>
             <div className="space-y-2">
                <div className="text-center font-medium leading-normal">
                   {detailId?.side}

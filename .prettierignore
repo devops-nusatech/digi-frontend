@@ -3,4 +3,3 @@ build
 public
 webpack
 src/charting_library/**/*
-src/modules

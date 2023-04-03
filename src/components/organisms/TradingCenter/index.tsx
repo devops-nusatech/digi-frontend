@@ -1,17 +1,42 @@
 import React from 'react';
+import { TradingChart, TradingOrder } from 'components';
+import { User } from 'modules';
 import {
-   TradingChart,
-   // TradingOrder,
-   // TradingOrderNew,
-   TradingOrderLast,
-} from 'components';
+   CurrentMarket,
+   IsDisplay,
+   PrivateTrades,
+   PublicTrades,
+   SetCurrentPrice,
+   Translate,
+} from 'types';
 
-export const TradingCenter = () => {
+interface TradingCenterProps
+   extends Translate,
+      CurrentMarket,
+      IsDisplay,
+      PublicTrades,
+      PrivateTrades,
+      SetCurrentPrice {
+   user: User;
+}
+
+export const TradingCenter = ({
+   user,
+   translate,
+   currentMarket,
+   display,
+}: TradingCenterProps) => {
    return (
       <>
-         <div className="m-0 w-full shrink-0 grow-0 basis-c-full-101 lg:ml-1 lg:block lg:w-c-full-65 lg2:mr-1 lg2:w-c-full-101 lg-max:!float-none lg2-max:float-right">
-            <TradingChart />
-            <TradingOrderLast />
+         <div className="mx-1 w-c-full-65 shrink-0 grow-0 basis-c-full-65 lg:!block lg2:w-c-full-101 lg2:basis-c-full-101 lg-max:float-none lg-max:m-0 lg-max:w-full lg2-max:float-right lg2-max:mr-0">
+            <TradingChart
+               display={display}
+               currentMarket={currentMarket}
+            />
+            <TradingOrder
+               translate={translate}
+               user={user}
+            />
          </div>
       </>
    );

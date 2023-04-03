@@ -16,7 +16,7 @@ const PrivateRoute: React.FC<RouteProps> = ({
    if (!isLogged) {
       return (
          <Route {...rest}>
-            <Redirect to={'/login'} />
+            <Redirect to="/login" />
          </Route>
       );
    }

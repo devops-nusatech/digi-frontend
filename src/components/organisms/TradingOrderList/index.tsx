@@ -1,29 +1,34 @@
-import * as React from 'react';
+import React from 'react';
 import { injectIntl } from 'react-intl';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
+import { IntlProps } from 'index';
 import { Decimal, Skeleton } from 'components';
 import {
    Market,
    PublicTrade,
    RootState,
    selectCurrentColorTheme,
-   selectCurrentMarket,
    selectCurrentPrice,
    selectDepthAsks,
    selectDepthBids,
    selectDepthLoading,
-   selectLastRecentTrade,
-   selectMarketTickers,
    selectMobileDeviceState,
    selectOpenOrdersList,
    selectRecentTrades,
    setAmount,
    setCurrentPrice,
    Ticker,
+   OrderCommon,
 } from 'modules';
-import { OrderCommon } from 'modules/types';
 import { accumulateVolume, calcMaxVolume } from 'helpers';
-import { IntlProps } from '../../../';
+import {
+   CurrentMarket,
+   IsDisplay,
+   MarketTicker,
+   SetCurrentAmount,
+   SetCurrentPrice,
+   Translate,
+} from 'types';
 
 type TCurrentTab = 'all' | 'asks' | 'bids';
 
@@ -31,9 +36,7 @@ interface ReduxProps {
    asks: string[][];
    bids: string[][];
    colorTheme: string;
-   currentMarket?: Market;
    currentPrice?: number;
-   lastRecentTrade?: PublicTrade;
    openOrdersList: OrderCommon[];
    orderBookLoading: boolean;
    isMobileDevice?: boolean;
@@ -52,10 +55,14 @@ interface State {
    amountVolume: string;
 }
 
-interface OwnProps {
-   marketTickers: {
-      [key: string]: Ticker;
-   };
+interface OwnProps
+   extends CurrentMarket,
+      Translate,
+      IsDisplay,
+      MarketTicker,
+      SetCurrentPrice,
+      SetCurrentAmount {
+   lastRecentTrade: PublicTrade;
 }
 
 type Props = ReduxProps & DispatchProps & OwnProps & IntlProps;
@@ -67,6 +74,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
       this.state = {
          tabActive: 'all',
          selectedRowKey: props.selectedKey,
+         // eslint-disable-next-line react/no-unused-state
          amountVolume: '',
       };
    }
@@ -116,7 +124,8 @@ class TradingOrderListContainer extends React.Component<Props, State> {
    }
 
    public render() {
-      const { asks, bids, orderBookLoading, currentMarket } = this.props;
+      const { asks, bids, orderBookLoading, currentMarket, display } =
+         this.props;
       const { tabActive } = this.state;
 
       const priceFixed = currentMarket ? currentMarket.price_precision : 0;
@@ -132,10 +141,13 @@ class TradingOrderListContainer extends React.Component<Props, State> {
       );
 
       return (
-         <div className="hidden w-full shrink-0 lg:block lg:w-64 lg-max:!float-none lg-max:!mb-0 lg2-max:float-left lg2-max:mb-1">
+         <div
+            className={`w-64 lg:!block lg2:shrink-0 lg-max:float-none lg-max:mb-0 ${
+               display ? '' : 'lg-max:hidden'
+            }  lg-max:w-full lg2-max:float-left lg2-max:mb-1`}>
             <div className="rounded bg-neutral8 dark:bg-shade2">
                {/* {this.state.selectedRowKey} */}
-               <div className="flex items-center px-4 pt-4 pb-3">
+               <div className="flex items-center px-4 pb-3 pt-4">
                   <div className="mr-auto flex items-center space-x-3">
                      <button
                         onClick={() => this.handleSetCurrentTab('all')}
@@ -180,7 +192,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                      <option value="50">50</option>
                   </select> */}
                </div>
-               <div className="mb-1 flex space-x-1 py-1 px-4 text-xs font-semibold leading-custom1 text-neutral4">
+               <div className="mb-1 flex space-x-1 px-4 py-1 text-xs font-semibold leading-custom1 text-neutral4">
                   <div className="">{this.renderHeaders()[0]}</div>
                   <div className="text-right">{this.renderHeaders()[1]}</div>
                   <div className="text-right">{this.renderHeaders()[2]}</div>
@@ -225,7 +237,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                                     onClick={() =>
                                        this.handleOnSelectAsks(String(index))
                                     }
-                                    className="relative flex cursor-alias items-center justify-between space-x-1 py-2 px-4 !font-urw-din-500 text-xs leading-custom1">
+                                    className="relative flex cursor-alias items-center justify-between space-x-1 px-4 py-2 !font-urw-din-500 text-xs leading-custom1">
                                     <div className="z-2 w-[35%] font-semibold tracking-wider text-primary4">
                                        <Decimal
                                           fixed={priceFixed}
@@ -267,7 +279,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                      </div>
                   )}
                   <div className="h-12 border-y border-neutral6 dark:border-neutral2">
-                     <div className="flex items-center justify-between space-x-2 py-3 px-4 text-base">
+                     <div className="flex items-center justify-between space-x-2 px-4 py-3 text-base">
                         {this.lastPrice()}
                      </div>
                   </div>
@@ -305,7 +317,7 @@ class TradingOrderListContainer extends React.Component<Props, State> {
                                     this.handleOnSelectBids(String(index))
                                  }
                                  key={index}
-                                 className="relative flex cursor-alias items-center justify-between space-x-1 py-2 px-4 !font-urw-din-500 text-xs leading-custom1">
+                                 className="relative flex cursor-alias items-center justify-between space-x-1 px-4 py-2 !font-urw-din-500 text-xs leading-custom1">
                                  <div className="z-2 w-[35%] font-semibold tracking-wider text-primary5">
                                     <Decimal
                                        fixed={priceFixed}
@@ -548,15 +560,12 @@ class TradingOrderListContainer extends React.Component<Props, State> {
    };
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState): ReduxProps => ({
    bids: selectDepthBids(state),
    asks: selectDepthAsks(state),
    colorTheme: selectCurrentColorTheme(state),
    orderBookLoading: selectDepthLoading(state),
-   currentMarket: selectCurrentMarket(state),
    currentPrice: selectCurrentPrice(state),
-   lastRecentTrade: selectLastRecentTrade(state),
-   marketTickers: selectMarketTickers(state),
    openOrdersList: selectOpenOrdersList(state),
    isMobileDevice: selectMobileDeviceState(state),
    recentTrades: selectRecentTrades(state),

@@ -14,7 +14,7 @@ type CoreEndpoint = {
    withdraws: string;
    trades: string;
    transfers: string;
-}
+};
 
 export function* historySaga(action: HistoryFetch) {
    try {
@@ -27,7 +27,10 @@ export function* historySaga(action: HistoryFetch) {
          transfers: '/account/internal_transfers',
       };
       const params = getHistorySagaParam(action.payload);
-      const data = yield call(API.get(config), `${coreEndpoint[core]}?${params}`);
+      const data = yield call(
+         API.get(config),
+         `${coreEndpoint[core]}?${params}`
+      );
 
       let nextPageExists = false;
 
@@ -38,7 +41,10 @@ export function* historySaga(action: HistoryFetch) {
             limit: 1,
          };
          const testParams = getHistorySagaParam(testActionPayload);
-         const checkData = yield call(API.get(config), `${coreEndpoint[core]}?${testParams}`);
+         const checkData = yield call(
+            API.get(config),
+            `${coreEndpoint[core]}?${testParams}`
+         );
 
          if (checkData.length === 1) {
             nextPageExists = true;
@@ -52,12 +58,14 @@ export function* historySaga(action: HistoryFetch) {
 
       yield put(successHistory({ list: updatedData, page, nextPageExists }));
    } catch (error) {
-      yield put(sendError({
-         error,
-         processingType: 'alert',
-         extraOptions: {
-            actionError: failHistory,
-         },
-      }));
+      yield put(
+         sendError({
+            error,
+            processingType: 'alert',
+            extraOptions: {
+               actionError: failHistory,
+            },
+         })
+      );
    }
 }

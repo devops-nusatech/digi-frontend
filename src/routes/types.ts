@@ -29,6 +29,7 @@ export interface ReduxProps {
    colorTheme: string;
    configsLoading: boolean;
    currentMarket?: Market;
+   markets: Market[];
    customization?: CustomizationDataInterface;
    isLoggedIn: boolean;
    isMobileDevice: boolean;

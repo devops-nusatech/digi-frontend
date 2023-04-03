@@ -1,5 +1,6 @@
 import { CommonState } from '../../types';
 import { Transaction } from '../transactions';
+
 export interface PublicTrade {
    id: number;
    price: string;
@@ -74,7 +75,6 @@ export interface Deposit {
    tid: string;
 }
 
-
 export interface InternalTransfer {
    currency: string;
    id: number;
@@ -89,5 +89,10 @@ export interface InternalTransfer {
    updated_at: Date;
 }
 
-export type WalletHistoryElement = Withdraw | Deposit | PrivateTrade | InternalTransfer | Transaction;
+export type WalletHistoryElement =
+   | Withdraw
+   | Deposit
+   | PrivateTrade
+   | InternalTransfer
+   | Transaction;
 export type WalletHistoryList = WalletHistoryElement[];

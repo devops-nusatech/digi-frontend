@@ -143,7 +143,9 @@ export type ProfileAction =
    | ChangeUserData
    | ChangeUserDataError;
 
-export const changePasswordFetch = (payload: ChangePasswordFetch['payload']): ChangePasswordFetch => ({
+export const changePasswordFetch = (
+   payload: ChangePasswordFetch['payload']
+): ChangePasswordFetch => ({
    type: PROFILE_CHANGE_PASSWORD_FETCH,
    payload,
 });
@@ -152,12 +154,16 @@ export const changePasswordData = (): ChangePasswordData => ({
    type: PROFILE_CHANGE_PASSWORD_DATA,
 });
 
-export const changePasswordError = (error: CommonError): ChangePasswordError => ({
+export const changePasswordError = (
+   error: CommonError
+): ChangePasswordError => ({
    type: PROFILE_CHANGE_PASSWORD_ERROR,
    error,
 });
 
-export const toggle2faFetch = (payload: Toggle2FAFetch['payload']): Toggle2FAFetch => ({
+export const toggle2faFetch = (
+   payload: Toggle2FAFetch['payload']
+): Toggle2FAFetch => ({
    type: PROFILE_TOGGLE_2FA_FETCH,
    payload,
 });
@@ -175,7 +181,9 @@ export const generate2faQRFetch = (): Generate2faQRFetch => ({
    type: PROFILE_GENERATE_2FA_QRCODE_FETCH,
 });
 
-export const generate2faQRData = (payload: Generate2faQRData['payload']): Generate2faQRData => ({
+export const generate2faQRData = (
+   payload: Generate2faQRData['payload']
+): Generate2faQRData => ({
    type: PROFILE_GENERATE_2FA_QRCODE_DATA,
    payload,
 });
@@ -203,7 +211,9 @@ export const userReset = (): UserReset => ({
    type: PROFILE_RESET_USER,
 });
 
-export const changeUserLevel = (payload: ChangeUserLevel['payload']): ChangeUserLevel => ({
+export const changeUserLevel = (
+   payload: ChangeUserLevel['payload']
+): ChangeUserLevel => ({
    type: PROFILE_CHANGE_USER_LEVEL,
    payload,
 });
@@ -212,17 +222,23 @@ export const toggleUser2fa = (): ToggleUser2fa => ({
    type: PROFILE_TOGGLE_USER_2FA,
 });
 
-export const changeUserDataFetch = (payload: ChangeUserDataFetch['payload']): ChangeUserDataFetch => ({
+export const changeUserDataFetch = (
+   payload: ChangeUserDataFetch['payload']
+): ChangeUserDataFetch => ({
    type: PROFILE_CHANGE_USER_FETCH,
    payload,
 });
 
-export const changeUserData = (payload: ChangeUserData['payload']): ChangeUserData => ({
+export const changeUserData = (
+   payload: ChangeUserData['payload']
+): ChangeUserData => ({
    type: PROFILE_CHANGE_USER_DATA,
    payload,
 });
 
-export const changeUserDataError = (error: CommonError): ChangeUserDataError => ({
+export const changeUserDataError = (
+   error: CommonError
+): ChangeUserDataError => ({
    type: PROFILE_CHANGE_USER_ERROR,
    error,
 });

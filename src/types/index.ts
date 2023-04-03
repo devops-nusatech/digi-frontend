@@ -1,7 +1,8 @@
 import { Market, PrivateTrade, PublicTrade, Ticker } from 'modules';
+import { PrimitiveType } from 'intl-messageformat';
 
 export interface Translate {
-   translate: (id: string) => string;
+   translate: (id: string, values?: Record<string, PrimitiveType>) => string;
 }
 
 export type PublicTrades = {
@@ -34,6 +35,9 @@ export interface OnClick {
 }
 export interface SetCurrentPrice {
    setCurrenPrice: (price: number) => void;
+}
+export interface SetCurrentAmount {
+   setCurrentAmount: (price: string) => void;
 }
 
 export type Direction = 'ascending' | 'descending' | '';

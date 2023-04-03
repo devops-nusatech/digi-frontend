@@ -63,6 +63,7 @@ export const applogicUrl = () => Cryptobase.config.api.applogicUrl;
 export const rangerUrl = () => Cryptobase.config.api.rangerUrl;
 export const finexUrl = () => Cryptobase.config.api.finexUrl || tradeUrl();
 export const p2pUrl = () => Cryptobase.config.api.p2pUrl;
+export const membershipUrl = () => Cryptobase.config.api.membershipUrl;
 export const newsUrl = () => Cryptobase.config.api.newsUrl;
 export const withCredentials = () =>
    convertToBoolean(Cryptobase.config.withCredentials);

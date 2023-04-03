@@ -97,6 +97,7 @@ module.exports = {
       'react/no-deprecated': 'off',
       'react/sort-comp': 'off',
       'react/no-unused-prop-types': 'off',
+      'react/no-unescaped-entities': 'off',
       'class-methods-use-this': 'off',
       'react/no-access-state-in-setstate': 'off',
       'react/no-unstable-nested-components': 'off',

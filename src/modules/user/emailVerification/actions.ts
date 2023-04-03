@@ -1,39 +1,50 @@
 import { CommonError } from '../../types';
 import { GeetestCaptchaResponse, GeetestCaptchaV4Response } from '../auth';
-import { EMAIL_VERIFICATION_DATA, EMAIL_VERIFICATION_ERROR, EMAIL_VERIFICATION_FETCH } from './constants';
+import {
+   EMAIL_VERIFICATION_DATA,
+   EMAIL_VERIFICATION_ERROR,
+   EMAIL_VERIFICATION_FETCH,
+} from './constants';
 
 export interface EmailVerificationData {
-    type: typeof EMAIL_VERIFICATION_DATA;
+   type: typeof EMAIL_VERIFICATION_DATA;
 }
 
 export interface EmailVerificationError {
-    type: typeof EMAIL_VERIFICATION_ERROR;
-    error: CommonError;
+   type: typeof EMAIL_VERIFICATION_ERROR;
+   error: CommonError;
 }
 
 export interface EmailVerificationFetch {
-    type: typeof EMAIL_VERIFICATION_FETCH;
-    payload: {
+   type: typeof EMAIL_VERIFICATION_FETCH;
+   payload: {
       email: string;
-      captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
-    };
+      captcha_response?:
+         | string
+         | GeetestCaptchaResponse
+         | GeetestCaptchaV4Response;
+   };
 }
 
 export type EmailVerificationAction =
-    EmailVerificationData
-    | EmailVerificationError
-    | EmailVerificationFetch;
+   | EmailVerificationData
+   | EmailVerificationError
+   | EmailVerificationFetch;
 
-export const emailVerificationFetch = (payload: EmailVerificationFetch['payload']): EmailVerificationFetch => ({
-    type: EMAIL_VERIFICATION_FETCH,
-    payload,
+export const emailVerificationFetch = (
+   payload: EmailVerificationFetch['payload']
+): EmailVerificationFetch => ({
+   type: EMAIL_VERIFICATION_FETCH,
+   payload,
 });
 
 export const emailVerificationData = (): EmailVerificationData => ({
-    type: EMAIL_VERIFICATION_DATA,
+   type: EMAIL_VERIFICATION_DATA,
 });
 
-export const emailVerificationError = (error: CommonError): EmailVerificationError => ({
-    type: EMAIL_VERIFICATION_ERROR,
-    error,
+export const emailVerificationError = (
+   error: CommonError
+): EmailVerificationError => ({
+   type: EMAIL_VERIFICATION_ERROR,
+   error,
 });

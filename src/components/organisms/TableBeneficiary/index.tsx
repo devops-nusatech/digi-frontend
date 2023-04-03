@@ -2,7 +2,7 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 import { IcEmty, IcShorting } from 'assets';
 import { Button, InputGroup, InputOtp, Portal, Skeleton } from 'components';
 import { arrayFilter, truncateMiddle } from 'helpers';
-import { useBeneficiariesFetch, useMemberLevelFetch } from 'hooks';
+import { useBeneficiariesFetch } from 'hooks';
 import {
    CommonError,
    RootState,
@@ -62,7 +62,6 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
    const [searchBeneciciary, setSearchBeneciciary] = useState('');
 
    useBeneficiariesFetch();
-   useMemberLevelFetch();
 
    const beneficiaries = useSelector(selectBeneficiaries);
    const beneficiariesLoading = useSelector(selectBeneficiariesFetchLoading);

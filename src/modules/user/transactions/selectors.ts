@@ -8,5 +8,6 @@ export const selectTransactions = (state: RootState): Transaction[] =>
 export const selectTransactionsloading = (state: RootState): boolean =>
    state.user.transactions.loading;
 
-export const selectTransactionsError = (state: RootState): CommonError | undefined =>
-   state.user.transactions.error;
+export const selectTransactionsError = (
+   state: RootState
+): CommonError | undefined => state.user.transactions.error;

@@ -26,6 +26,7 @@ import {
    walletsReset,
    groupFetch,
    memberLevelsFetch,
+   selectMarkets,
 } from 'modules';
 import {
    CustomizationDataInterface,
@@ -71,13 +72,15 @@ import {
    WalletOrder,
    Geetest,
    Notifications,
-   // Membership,
-   // JoinAffiliate,
+   Membership,
+   JoinAffiliate,
+   Tier,
 } from 'screens';
 import { ApiDocs } from 'screens/ApiDocs';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
 import { DispatchProps, LayoutProps, LayoutState, ReduxProps } from '../types';
+import { DEFAULT_MARKET } from '../../constants';
 
 const STORE_KEY = 'lastAction';
 
@@ -176,14 +179,28 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
    }
 
    public componentDidUpdate(prevProps: LayoutProps) {
-      const { customization, isLoggedIn, rangerState, userLoading } =
-         this.props;
+      const {
+         customization,
+         isLoggedIn,
+         rangerState,
+         userLoading,
+         currentMarket,
+         markets,
+      } = this.props;
 
       if (!isLoggedIn && prevProps.isLoggedIn && !userLoading) {
          this.props.walletsReset();
 
          if (!this.props.location.pathname.includes('/trading')) {
-            this.props.history.push('/trading/');
+            this.props.history.push(
+               `/trading/${
+                  currentMarket
+                     ? currentMarket?.id
+                     : markets
+                     ? markets[0]?.id
+                     : DEFAULT_MARKET.id
+               }`
+            );
          }
       }
 
@@ -219,6 +236,8 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
          userLoading,
          configsLoading,
          platformAccessStatus,
+         currentMarket,
+         markets,
       } = this.props;
       const { isShownExpSessionModal } = this.state;
       toggleColorTheme(colorTheme);
@@ -328,14 +347,14 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   path="/geetest"
                   component={Geetest}
                />
-               {/* <Route
+               <Route
                   path="/membership"
                   component={Membership}
-               /> */}
-               {/* <Route
+               />
+               <Route
                   path="/join-affiliate"
                   component={JoinAffiliate}
-               /> */}
+               />
                {showLanding() && (
                   <Route
                      exact
@@ -343,6 +362,12 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                      component={Home}
                   />
                )}
+               <PrivateRoute
+                  loading={userLoading}
+                  isLogged={isLoggedIn}
+                  path="/tier"
+                  component={Tier}
+               />
                <PrivateRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
@@ -491,7 +516,15 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   component={Activity}
                />
                <Route path="**">
-                  <Redirect to="/trading/" />
+                  <Redirect
+                     to={`/trading/${
+                        currentMarket
+                           ? currentMarket?.id
+                           : markets
+                           ? markets[0]?.id
+                           : DEFAULT_MARKET.id
+                     }`}
+                  />
                </Route>
             </Switch>
             {isLoggedIn && <WalletsFetch />}
@@ -600,6 +633,7 @@ const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
    rangerState: selectRanger(state),
    user: selectUserInfo(state),
    userLoading: selectUserFetching(state),
+   markets: selectMarkets(state),
 });
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({

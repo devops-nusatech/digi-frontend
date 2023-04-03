@@ -23,7 +23,7 @@ import {
    InputOtp,
    Skeleton,
 } from 'components';
-import { useModal, useForm } from 'hooks';
+import { useToggle, useForm } from 'hooks';
 import { toast } from 'react-toastify';
 import { injectIntl } from 'react-intl';
 import { IntlProps } from 'index';
@@ -54,11 +54,11 @@ import {
    selectBeneficiariesActivateLoading,
    selectBeneficiariesActivateSuccess,
    selectBeneficiariesResendPinLoading,
+   selectUserLoggedIn,
 } from 'modules';
+import { validate, getCurrencies } from 'multicoin-address-validator';
 import { DEFAULT_WALLET } from '../../constants';
 // import { validateBeneficiaryAddress } from 'helpers/validateBeneficiaryAddress';
-
-import { validate, getCurrencies } from 'multicoin-address-validator';
 
 type ModalType = 'fiat' | 'coin' | '';
 
@@ -83,6 +83,7 @@ const people = [
 ];
 
 type ReduxProps = {
+   isLoggedIn: boolean;
    wallets: Wallet[];
    beneficiariesLoading: boolean;
    beneficiary: Beneficiary;
@@ -120,6 +121,7 @@ const BeneficiariesFC = ({
    beneficiariesActivateSuccess,
    beneficiariesResendLoading,
    memberLevels,
+   isLoggedIn,
    user,
    fecthWallets,
    createBeneficiary,
@@ -136,10 +138,10 @@ const BeneficiariesFC = ({
       filteredWalletCoin[0] ||
       DEFAULT_WALLET;
 
-   const { isShow, toggle } = useModal();
+   const [toggle, setToggle] = useToggle(false);
+   const [toggle2, setToggle2] = useToggle(false);
    // const [openCreate, setOpenCreate] = useState(false);
    // const [openActivate, setOpenActivate] = useState(false);
-   const [isShow2, setIsShow2] = useState(false);
    const [modalType] = useState<ModalType>('coin');
 
    const [coinAddressValid, setCoinAddressValid] = useState(false);
@@ -200,12 +202,11 @@ const BeneficiariesFC = ({
    }, []);
 
    useEffect(() => {
-      if (!wallets.length) {
+      if (isLoggedIn && !wallets.length) {
          fecthWallets();
       }
-   }, [wallets]);
+   }, [fecthWallets, isLoggedIn, wallets]);
 
-   const toggle2 = () => setIsShow2(!isShow2);
    // const handleShowCreate = () => setOpenCreate(true);
    // const handleShowActivate = () => setOpenActivate(true);
    // const handleCloseCreate = () => setOpenCreate(false);
@@ -213,14 +214,14 @@ const BeneficiariesFC = ({
 
    // const handleShowModalCreateBeneficiary = (type: ModalType) => {
    //    setModalType(type);
-   //    toggle2();
+   //    setToggle2();
    // }
 
    const handleShowModalCreateBeneficiary = () => {
       setAsset(filteredWalletCoin);
       setSelectedAsset(defaultWallet);
       setSelectedNetwork(defaultWallet.networks[0]);
-      toggle();
+      setToggle();
    };
 
    const resetField = () => {
@@ -263,7 +264,7 @@ const BeneficiariesFC = ({
          );
          if (availableNetwork) {
             const valid = validate(value, currency, networkType);
-            setCoinAddressValid(valid ? false : true);
+            setCoinAddressValid(!valid);
          }
       },
       [selectedNetwork]
@@ -454,7 +455,7 @@ const BeneficiariesFC = ({
                />
                <Listbox
                   label="Bank"
-                  objectKey={'name'}
+                  objectKey="name"
                   list={selected}
                   lists={people}
                   onChange={setSelected}
@@ -497,7 +498,7 @@ const BeneficiariesFC = ({
                } (require)`}
             />
          )}
-         <div className="rounded bg-neutral7 py-5 px-6 text-center dark:bg-neutral3">
+         <div className="rounded bg-neutral7 px-6 py-5 text-center dark:bg-neutral3">
             <div className="text-base font-medium leading-normal">
                Attention
             </div>
@@ -567,16 +568,16 @@ const BeneficiariesFC = ({
 
    useEffect(() => {
       if (beneficiariesCreateSuccess) {
-         if (isShow) {
-            toggle();
-            toggle2();
+         if (toggle) {
+            setToggle();
+            setToggle2();
             resetField();
             console.log('Created Successfully');
          }
       }
       if (beneficiariesActivateSuccess) {
-         if (isShow2) {
-            toggle2();
+         if (toggle2) {
+            setToggle2();
             resetField();
             setPin('');
             console.log('Activate Successfully');
@@ -631,8 +632,8 @@ const BeneficiariesFC = ({
 
          {/* Modal Select Type Asset */}
          {/* <Portal
-            show={isShow}
-            close={toggle}
+            show={toggle}
+            close={setToggle}
          >
             {renderSelectTypeBeneficiaryModal()}
          </Portal> */}
@@ -640,21 +641,21 @@ const BeneficiariesFC = ({
 
          {/* Modal Create Beneficiary */}
          <Portal
-            show={isShow}
-            close={toggle}
+            show={toggle}
+            close={setToggle}
             zIndexBackdrop={1045}
             zIndexContent={1046}
             title={`${modalType === 'coin' ? 'Coin' : 'Fiat'} Beneficiary`}
-            onClick={toggle}>
+            onClick={setToggle}>
             {renderCreateBeneficiaryModal()}
          </Portal>
          {/* End Modal Create Beneficiary */}
 
          {/* Modal Confirm Beneficiary */}
          <Portal
-            show={isShow2}
-            close={toggle2}
-            onClick={toggle2}>
+            show={toggle2}
+            close={setToggle2}
+            onClick={setToggle2}>
             <div className="space-y-8 pt-10">
                <div className="space-y-3">
                   <div className="text-center font-dm text-2xl leading-9 tracking-custom">
@@ -710,6 +711,7 @@ const BeneficiariesFC = ({
 };
 
 const mapStateToProps = (state: RootState): ReduxProps => ({
+   isLoggedIn: selectUserLoggedIn(state),
    wallets: selectWallets(state),
    beneficiariesLoading: selectBeneficiariesFetchLoading(state),
    beneficiary: selectBeneficiariesCreate(state),

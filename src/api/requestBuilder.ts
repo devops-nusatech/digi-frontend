@@ -12,6 +12,7 @@ import {
    withCredentials,
    newsUrl,
    p2pUrl,
+   membershipUrl,
 } from './config';
 
 export type HTTPMethod = 'get' | 'post' | 'delete' | 'put' | 'patch';
@@ -22,7 +23,15 @@ export interface JsonBody {
 }
 
 export interface RequestOptions {
-   apiVersion: 'applogic' | 'peatio' | 'barong' | 'finex' | 'p2p' | 'news';
+   apiVersion:
+      | 'applogic'
+      | 'peatio'
+      | 'barong'
+      | 'finex'
+      | 'sonic'
+      | 'p2p'
+      | 'news'
+      | 'membership';
    withHeaders?: boolean;
    headers?: Object;
 }
@@ -46,6 +55,7 @@ const getAPI = () => ({
    finex: finexUrl(),
    p2p: p2pUrl(),
    news: newsUrl(),
+   membership: membershipUrl(),
 });
 
 const buildRequest = (request: Request, configData: RequestOptions) => {

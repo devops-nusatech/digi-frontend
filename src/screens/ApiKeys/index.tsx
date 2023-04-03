@@ -31,8 +31,6 @@ import {
    RootState,
    selectUserInfo,
    User,
-} from 'modules';
-import {
    selectApiKeys,
    selectApiKeysDataLoaded,
    selectApiKeysFirstElemIndex,
@@ -170,7 +168,7 @@ const ApiKeysFC = ({
       apiKey.state = apiKey.state === 'active' ? 'disabled' : 'active';
       const payload: ApiKeyUpdateFetch['payload'] = {
          totp_code: otpCode,
-         apiKey: apiKey,
+         apiKey,
       };
       updateApiKey(payload);
       setOtpCode('');
@@ -395,7 +393,7 @@ const ApiKeysFC = ({
                            onClick={handleAddCreateKey}
                         />
                      </div>
-                     <div className="mt-6 mb-8 text-xs leading-custom4 text-neutral4">
+                     <div className="mb-8 mt-6 text-xs leading-custom4 text-neutral4">
                         Digiassets APIs are a way for traders to access their
                         exchange account programmatically so they can trade
                         without logging into the exchange. With APIs, traders
@@ -433,12 +431,8 @@ const ApiKeysFC = ({
                                           'page.body.profile.apiKeys.table.header.updated'
                                        )}
                                     </th>
-                                    <th className="p-4 text-xs font-semibold leading-custom4 dark:text-neutral5">
-                                       {''}
-                                    </th>
-                                    <th className="p-4 pr-0 text-xs font-semibold leading-custom4 dark:text-neutral5">
-                                       {''}
-                                    </th>
+                                    <th className="p-4 text-xs font-semibold leading-custom4 dark:text-neutral5" />
+                                    <th className="p-4 pr-0 text-xs font-semibold leading-custom4 dark:text-neutral5" />
                                  </tr>
                               </thead>
                               <tbody>
@@ -548,7 +542,7 @@ const ApiKeysFC = ({
                                                          apiKey
                                                       )
                                                    }
-                                                   className={`h-6 w-6 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8`}>
+                                                   className="h-6 w-6 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8">
                                                    <use xlinkHref="#icon-close-circle" />
                                                 </svg>
                                              </td>

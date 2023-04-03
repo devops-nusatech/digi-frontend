@@ -22,7 +22,7 @@ export const LayoutProfile: FC<LayoutProfileProps> = ({
    children,
 }) => (
    <div>
-      <div className="border-b border-shade4 py-10 dark:border-neutral2 md-max:pt-4 md-max:pb-8">
+      <div className="border-b border-shade4 py-10 dark:border-neutral2 md-max:pb-8 md-max:pt-4">
          <div className="mx-auto block w-full max-w-7xl flex-wrap items-center px-8 md:flex md:px-10 lg2:px-20">
             <div
                className={`${

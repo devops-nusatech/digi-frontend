@@ -1,8 +1,5 @@
-import React, { FunctionComponent, useState } from 'react';
-import { compose } from 'redux';
-import { injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
-import { IntlProps } from 'index';
+import React, { useCallback, useState } from 'react';
+import { illusMarket, illusMarket2 } from 'assets';
 import {
    Button,
    Nav,
@@ -15,16 +12,20 @@ import {
    TextBase,
    Heading2,
    TableMarkets,
+   Heading1,
+   FlexCenter,
+   TextXs,
+   Text2xl,
 } from 'components';
-import { illusMarket, illusMarket2 } from 'assets';
-import { useMarket, useNewsFetch, useScrollUp } from 'hooks';
 import { localeDate, renderCurrencyIcon } from 'helpers';
+import { useMarket, useNewsFetch, useScrollUp } from 'hooks';
+import { useIntl } from 'react-intl';
 
-const rows = 3;
-type Props = IntlProps;
+const newsRow = 3;
 
-const MarketFC = ({ intl }: Props) => {
+export const Market = () => {
    useScrollUp();
+   const { formatMessage } = useIntl();
    const {
       isLoading,
       markets,
@@ -36,34 +37,42 @@ const MarketFC = ({ intl }: Props) => {
       handleToSetFavorites,
    } = useMarket();
    const { newsLoadig, news } = useNewsFetch(25, 'news');
-   const [more, setMore] = useState(rows);
+   const [more, setMore] = useState(newsRow);
 
-   const translate = (id: string) => intl.formatMessage({ id });
+   const translate = useCallback(
+      (id: string) => formatMessage({ id }),
+      [formatMessage]
+   );
 
    return (
       <>
-         <Section className="min-h-auto bg-secondary5 pt-16 dark:bg-shade1 md:min-h-[692px] md:pb-28 md:pt-[156px]">
+         <Section
+            withMb={false}
+            className="min-h-auto bg-secondary5 pt-16 dark:bg-shade1 md:min-h-692 md:pt-38 md-max:pb-28">
             <Container>
-               <div className="relative z-3 mb-[143px] max-w-[545px]">
-                  <div className="mb-4 font-dm text-4.5xl leading-12 tracking-custom md:mb-8 md:text-64">
-                     Today’s Cryptocurrency prices
-                  </div>
-                  <div className="text-base leading-custom2 tracking-custom1 text-neutral3 dark:text-neutral5 md:text-2xl">
+               <div className="relative z-3 mb-2 max-w-545 md:mb-[143px]">
+                  <Heading1 text="Today’s Cryptocurrency prices" />
+                  <div className="pt-3 text-base leading-custom2 tracking-custom1 text-neutral3 dark:text-neutral5 md:text-2xl">
                      The global crypto market cap is
-                     <strong className="font-semibold">$1.86T</strong>
+                     <strong className="font-semibold"> $1.86T</strong>
                   </div>
                </div>
                <div className="pointer-events-none static right-[calc(50%-820px)] top-0 -ml-7.5 -mr-17 mb-6 w-auto md:absolute md:m-0 md:w-[780px] lg2:right-[calc(50%-760px)]">
-                  <img
+                  <Image
                      className="w-full"
                      srcSet={`${illusMarket2} 2x`}
                      src={illusMarket}
-                     alt="Card"
+                     alt="Market"
+                     title="Market"
+                     width={400}
+                     height={400}
                   />
                </div>
             </Container>
          </Section>
-         <Section className="-mt-[137px] mb-[72px]">
+         <Section
+            withMb={false}
+            className="-mt-[137px] mb-[72px]">
             <Container>
                <div className="-mx-4 mb-8 rounded-3xl border border-neutral7 bg-neutral8 shadow-card2 dark:border-neutral2 dark:bg-shade1 md:m-0">
                   <div className="hide-scroll flex space-x-4.5 overflow-x-scroll">
@@ -91,33 +100,30 @@ const MarketFC = ({ intl }: Props) => {
                      ) : markets?.length ? (
                         markets?.slice(0, 3)?.map(market => {
                            const klinesData = market?.kline!;
-                           let labels: number[];
-                           let data: number[];
-                           labels = klinesData.map(e => e[0]);
-                           data = klinesData.map(e => e[2]);
+                           const labels = klinesData.map(e => e[0]);
+                           const data = klinesData.map(e => e[2]);
                            return (
                               <div
                                  key={market?.id}
-                                 className="group flex w-1/3 p-6"
+                                 className="group flex w-1/3 cursor-pointer p-6"
                                  onClick={() =>
                                     handleRedirectToTrading(market?.id)
                                  }>
-                                 <div className="mr-4 w-10 shrink-0">
-                                    <Image
-                                       src={renderCurrencyIcon(
-                                          market.base_unit
-                                       )}
-                                       alt={market.name}
-                                       title={market.name}
-                                       width={40}
-                                       height={40}
-                                    />
-                                 </div>
+                                 <Image
+                                    classNameParent="mr-4 w-10 shrink-0"
+                                    src={renderCurrencyIcon(market.base_unit)}
+                                    alt={market.name}
+                                    title={market.name}
+                                    className="w-full"
+                                    width={40}
+                                    height={40}
+                                 />
                                  <div className="space-y-1">
-                                    <div className="flex items-center space-x-3">
-                                       <div className="text-xs font-semibold leading-custom4 text-neutral4">
-                                          {market?.name}
-                                       </div>
+                                    <FlexCenter className="space-x-3">
+                                       <TextXs
+                                          font="semibold"
+                                          text={market?.name}
+                                       />
                                        <Badge
                                           variant={
                                              market?.price_change_percent?.includes(
@@ -129,10 +135,11 @@ const MarketFC = ({ intl }: Props) => {
                                           text={market?.price_change_percent}
                                           rounded="3xl"
                                        />
-                                    </div>
-                                    <div className="text-2xl font-semibold leading-custom2 tracking-custom1 transition-colors duration-300 group-hover:text-primary1">
-                                       {market?.last}
-                                    </div>
+                                    </FlexCenter>
+                                    <Text2xl
+                                       text={market?.last}
+                                       className="leading-custom2 transition-colors duration-300 group-hover:text-primary1"
+                                    />
                                     <div>{market?.volume}</div>
                                  </div>
                                  <div className="ml-4 hidden w-25 lg2:block">
@@ -303,9 +310,10 @@ const MarketFC = ({ intl }: Props) => {
                                     : 'orange'
                               }
                            />
-                           <div className="mb-8 text-2xl font-semibold leading-custom2 tracking-custom1 transition-all duration-300 group-hover:text-primary1 md:mb-12">
-                              {e.title}
-                           </div>
+                           <Text2xl
+                              text={e.title}
+                              className="mb-8 transition-all duration-300 group-hover:text-primary1 md:mb-12"
+                           />
                            <div className="mt-auto flex w-full flex-wrap justify-between font-medium text-neutral4">
                               <div className="mr-4 flex items-center space-x-3">
                                  <div className="h-6 w-6 shrink-0 overflow-hidden rounded-full bg-primary5" />
@@ -334,7 +342,7 @@ const MarketFC = ({ intl }: Props) => {
                      icLeft={
                         <div className="dark:animate-loader-white ml-[5px] mr-4 h-[1em] w-[1em] scale-[0.8] animate-loader rounded-full -indent-[9999em] text-[4px]" />
                      }
-                     onClick={() => setMore(more + rows)}
+                     onClick={() => setMore(more + newsRow)}
                      width="noFull"
                   />
                </div>
@@ -343,9 +351,3 @@ const MarketFC = ({ intl }: Props) => {
       </>
    );
 };
-
-export const Market = compose(
-   injectIntl,
-   injectIntl,
-   connect(null, null)
-)(MarketFC) as FunctionComponent;

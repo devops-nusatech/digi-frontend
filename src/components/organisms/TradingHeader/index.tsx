@@ -1,15 +1,17 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { Decimal, Info, Skeleton, Text2xl, TextXs } from 'components';
-import { Market, Ticker } from 'modules';
+import {
+   Decimal,
+   FlexCenter,
+   Info,
+   SVG,
+   Skeleton,
+   Text2xl,
+   TextXs,
+} from 'components';
+import { CurrentMarket, MarketTicker, Translate } from 'types';
 import { DEFAULT_TICKER } from '../../../constants';
 
-interface TradingHeaderProps {
-   currentMarket?: Market;
-   marketTickers: {
-      [key: string]: Ticker;
-   };
-   translate(id: string): string;
-}
+interface TradingHeaderProps extends CurrentMarket, MarketTicker, Translate {}
 
 export const TradingHeader = memo(
    ({ currentMarket, marketTickers, translate }: TradingHeaderProps) => {
@@ -20,7 +22,7 @@ export const TradingHeader = memo(
          [currentMarket, marketTickers]
       );
       const isPositive = useMemo(
-         () => currentMarket && /\+/.test(ticker?.price_change_percent!),
+         () => currentMarket && /\+/.test(ticker?.price_change_percent),
          [currentMarket, ticker?.price_change_percent]
       );
       const bidUnit = useMemo(
@@ -43,14 +45,15 @@ export const TradingHeader = memo(
       const renderStatictics = useCallback(
          (icon: string, title: string, value: string) => (
             <div className="w-1/2 shrink-0 grow-0 basis-1/2 pr-6 md:w-auto md:grow md:basis-auto lg:grow-0 lg2:w-40 lg2:basis-40 md-max:mt-3 [&:not(:last-child)]:mr-6 [&:not(:last-child)]:border-r [&:not(:last-child)]:border-neutral6 [&:not(:last-child)]:dark:border-neutral3">
-               <div className="mb-1 flex items-center gap-1">
-                  <svg className="h-4 w-4 fill-neutral4">
-                     <use xlinkHref={`#icon-${icon}`} />
-                  </svg>
+               <FlexCenter className="mb-1 gap-1">
+                  <SVG
+                     className="h-4 w-4 fill-neutral4"
+                     xlinkHref={icon}
+                  />
                   <TextXs
                      text={translate(`page.body.trade.toolBar.${title}`)}
                   />
-               </div>
+               </FlexCenter>
                <div className="font-medium text-neutral1 dark:text-neutral8">
                   {value}
                </div>

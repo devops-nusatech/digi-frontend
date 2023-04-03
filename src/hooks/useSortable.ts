@@ -2,7 +2,13 @@ import { useCallback, useMemo, useState } from 'react';
 import { Direction } from 'types';
 
 type Config = {
+   /**
+    * key column name
+    */
    key: string;
+   /**
+    * @default ''
+    */
    direction: Direction;
 };
 

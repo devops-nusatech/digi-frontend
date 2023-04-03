@@ -11,15 +11,21 @@ const detailUserOptions = (csrfToken?: string): RequestOptions => ({
 
 export function* detailUserSaga(action: DetailUserCreate) {
    try {
-      const detailUser = yield call(API.post(detailUserOptions(getCsrfToken())), '/public/uid', action.payload);
+      const detailUser = yield call(
+         API.post(detailUserOptions(getCsrfToken())),
+         '/public/uid',
+         action.payload
+      );
       yield put(detailUserData(detailUser));
    } catch (error) {
-      yield put(sendError({
-         error,
-         processingType: 'alert',
-         extraOptions: {
-            actionError: detailUserError
-         }
-      }))
+      yield put(
+         sendError({
+            error,
+            processingType: 'alert',
+            extraOptions: {
+               actionError: detailUserError,
+            },
+         })
+      );
    }
 }

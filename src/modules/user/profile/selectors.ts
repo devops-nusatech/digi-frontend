@@ -4,8 +4,9 @@ import { User } from './types';
 export const selectChangePasswordLoading = (state: RootState) =>
    state.user.profile.passwordChange.loading;
 
-export const selectChangePasswordSuccess = (state: RootState): boolean | undefined =>
-   state.user.profile.passwordChange.success;
+export const selectChangePasswordSuccess = (
+   state: RootState
+): boolean | undefined => state.user.profile.passwordChange.success;
 
 export const selectTwoFactorAuthQR = (state: RootState): string =>
    state.user.profile.twoFactorAuth.url;
@@ -13,13 +14,18 @@ export const selectTwoFactorAuthQR = (state: RootState): string =>
 export const selectTwoFactorAuthBarcode = (state: RootState): string =>
    state.user.profile.twoFactorAuth.barcode;
 
-export const selectTwoFactorAuthSuccess = (state: RootState): boolean | undefined =>
-   state.user.profile.twoFactorAuth.success;
+export const selectTwoFactorAuthSuccess = (
+   state: RootState
+): boolean | undefined => state.user.profile.twoFactorAuth.success;
 
 export const selectUserLoggedIn = (state: RootState): boolean => {
-   const { user: { profile } } = state;
+   const {
+      user: { profile },
+   } = state;
 
-   return !profile.userData.isFetching && profile.userData.user.state === 'active';
+   return (
+      !profile.userData.isFetching && profile.userData.user.state === 'active'
+   );
 };
 
 export const selectUserInfo = (state: RootState): User =>

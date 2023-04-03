@@ -38,7 +38,6 @@ import {
    selectBeneficiariesFetchLoading,
    selectWallets,
    walletsFetch,
-   memberLevelsFetch,
    selectCurrentColorTheme,
    MemberLevels,
    selectMemberLevels,
@@ -78,7 +77,7 @@ import {
 import { IcEmty, IcShorting } from 'assets';
 import { SearchIcon } from '@heroicons/react/outline';
 import { IntlProps } from 'index';
-import { useForm, useModal } from 'hooks';
+import { useForm, useToggle } from 'hooks';
 import { toast } from 'react-toastify';
 import { getCurrencies, validate } from 'multicoin-address-validator';
 import { defaultBeneficiary } from 'screens/WalletDetails/types';
@@ -125,7 +124,6 @@ type OwnProps = {
 
 interface DispatchProps {
    fecthWallets: typeof walletsFetch;
-   fetchMemberLevel: typeof memberLevelsFetch;
    fetchBeneficiaries: typeof beneficiariesFetch;
    createBeneficiary: typeof beneficiariesCreate;
    updateBeneficiary: typeof beneficiariesDataUpdate;
@@ -172,7 +170,6 @@ const WithdrawalFC = memo(
       withdrawSuccess,
       location,
       fecthWallets,
-      fetchMemberLevel,
       fetchBeneficiaries,
       createBeneficiary,
       updateBeneficiary,
@@ -185,11 +182,15 @@ const WithdrawalFC = memo(
       history,
       intl,
    }: WithdrawalProps) => {
-      let userWallets = wallets.length
-         ? wallets.filter(wallet => wallet.networks.length)
-         : [];
+      let userWallets = useMemo(
+         () =>
+            wallets.length
+               ? wallets.filter(wallet => wallet.networks.length)
+               : [],
+         [wallets]
+      );
 
-      const { isShow, toggle } = useModal();
+      const [toggle, setToggle] = useToggle(false);
       const [stepActive, setStepActive] = useState(1);
       const [walletActive, setWalletActive] = useState<Wallet['currency']>('');
       const [networkActive, setNetworkActive] = useState('');
@@ -258,7 +259,6 @@ const WithdrawalFC = memo(
                stepActive === 1 ? '' : userWallets[0]?.name.toUpperCase()
             }`
          );
-         fetchMemberLevel();
          if (location.state?.wallet) {
             setStepActive(2);
             setSelectedNetwork(location.state?.wallet.networks[0]);
@@ -353,12 +353,20 @@ const WithdrawalFC = memo(
          }
       }, [withdrawSuccess]);
 
-      const fetchBeneficiary = () =>
-         fetchBeneficiaries({
-            currency_id: userWallets[0]?.currency
-               ? userWallets[0]?.currency
-               : location.state?.wallet.currency,
-         });
+      const fetchBeneficiary = useCallback(() => {
+         if (user.myTier?.benefit.withdraw_access === true) {
+            fetchBeneficiaries({
+               currency_id: userWallets[0]?.currency
+                  ? userWallets[0]?.currency
+                  : location.state?.wallet.currency,
+            });
+         }
+      }, [
+         fetchBeneficiaries,
+         location.state?.wallet.currency,
+         user.myTier?.benefit.withdraw_access,
+         userWallets,
+      ]);
 
       const handleConfirmActivate = () =>
          activateBeneficiary({ id: id || beneficiary.id, pin });
@@ -369,7 +377,7 @@ const WithdrawalFC = memo(
          const payload: WalletsWithdrawCcyFetch['payload'] = {
             beneficiary_id: String(beneficiaries.find(e => e.id === id)?.id),
             amount,
-            currency: userWallets[0].currency,
+            currency: userWallets[0]?.currency,
             otp,
          };
          console.log('payload :>> ', payload);
@@ -414,12 +422,25 @@ const WithdrawalFC = memo(
          setId(id);
       };
 
-      const withdrawLimited = withdrawLimits.find(
-         e => e.group === groupMember?.group
-      )
-         ? withdrawLimits.find(e => e.group === groupMember?.group)
-         : withdrawLimits[0];
-      const network = userWallets[0]?.networks.find(
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const defaultWithdrawLimited: WithdrawLimits = {
+         id: 0,
+         group: '',
+         kyc_level: '',
+         limit_24_hour: '',
+         limit_1_month: '',
+      };
+
+      const withdrawLimited =
+         useMemo(
+            () =>
+               withdrawLimits?.find(e => e.group === groupMember?.group)
+                  ? withdrawLimits?.find(e => e.group === groupMember?.group)
+                  : withdrawLimits?.shift() || defaultWithdrawLimited,
+            [defaultWithdrawLimited, groupMember?.group, withdrawLimits]
+         ) || defaultWithdrawLimited;
+
+      const network = userWallets[0]?.networks?.find(
          e =>
             e.blockchain_key ===
             filteredBeneficiary?.find(e => e.id === id)?.blockchain_key
@@ -1428,8 +1449,8 @@ const WithdrawalFC = memo(
                </div>
             </LayoutProfile>
             <ModalRequired
-               show={isShow}
-               close={toggle}
+               show={toggle}
+               close={setToggle}
                push={history.push}
             />
             <Dialog
@@ -1555,7 +1576,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    {}
 > = dispatch => ({
    fecthWallets: () => dispatch(walletsFetch()),
-   fetchMemberLevel: () => dispatch(memberLevelsFetch()),
    fetchBeneficiaries: params => dispatch(beneficiariesFetch(params)),
    createBeneficiary: payload => dispatch(beneficiariesCreate(payload)),
    updateBeneficiary: payload => dispatch(beneficiariesDataUpdate(payload)),

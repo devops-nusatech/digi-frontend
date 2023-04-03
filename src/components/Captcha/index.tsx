@@ -9,7 +9,7 @@ import {
 import { GeetestCaptchaV3 } from 'components';
 import { captchaId, captchaType } from 'api';
 
-export const CaptchaComponent = props => {
+const CaptchaComponent = props => {
    const dispatch = useDispatch();
 
    let reCaptchaRef;

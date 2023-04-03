@@ -1,6 +1,6 @@
-import type { Ticker, Wallet } from 'modules';
+import type { Market, Ticker, Wallet } from 'modules';
 
-export const PG_TITLE_PREFIX = 'Cryptobase';
+export const PG_TITLE_PREFIX = 'Digiassetindo';
 
 export const pgRoutes = (
    isLoggedIn: boolean,
@@ -46,6 +46,22 @@ export const pgRoutes = (
    return isLoggedIn ? routes : routesUnloggedIn;
 };
 
+export const DEFAULT_MARKET: Market = {
+   id: '',
+   symbol: '',
+   name: '',
+   fullname: '',
+   logo_url: '',
+   type: '',
+   base_unit: '',
+   quote_unit: '',
+   min_price: '',
+   max_price: '',
+   min_amount: '',
+   amount_precision: 0,
+   price_precision: 0,
+   total_precision: 0,
+};
 export const DEFAULT_TICKER: Ticker = {
    amount: '0',
    avg_price: '0',

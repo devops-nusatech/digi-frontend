@@ -1,4 +1,4 @@
-@import 'https://unpkg.com/open-props/easings.min.css';
+@import "https://unpkg.com/open-props/easings.min.css";
 .sun-and-moon > :is(.moon, .sun, .sun-beams) {
    transform-origin: center center;
 }
@@ -22,20 +22,20 @@
    transition: var(--transition);
 }
 
-[data-mode='dark'] .sun-and-moon > .sun {
+[data-mode="dark"] .sun-and-moon > .sun {
    transform: scale(1.75);
 }
 
-[data-mode='dark'] .sun-and-moon > .sun-beams {
+[data-mode="dark"] .sun-and-moon > .sun-beams {
    opacity: 0;
 }
 
-[data-mode='dark'] .sun-and-moon > .moon > circle {
+[data-mode="dark"] .sun-and-moon > .moon > circle {
    transform: translate(-7px);
 }
 
 @supports (cx: 1) {
-   [data-mode='dark'] .sun-and-moon > .moon > circle {
+   [data-mode="dark"] .sun-and-moon > .moon > circle {
       transform: translate(0);
       cx: 17;
    }
@@ -61,18 +61,18 @@
       }
    }
 
-   [data-mode='dark'] .sun-and-moon > .sun {
+   [data-mode="dark"] .sun-and-moon > .sun {
       transform: scale(1.75);
       transition-timing-function: var(--ease-3);
       transition-duration: 0.25s;
    }
 
-   [data-mode='dark'] .sun-and-moon > .sun-beams {
+   [data-mode="dark"] .sun-and-moon > .sun-beams {
       transform: rotate(-25deg);
       transition-duration: 0.15s;
    }
 
-   [data-mode='dark'] .sun-and-moon > .moon > circle {
+   [data-mode="dark"] .sun-and-moon > .moon > circle {
       transition-delay: 0.25s;
       transition-duration: 0.5s;
    }
@@ -94,7 +94,7 @@
    stroke-linecap: round;
 }
 
-[data-mode='dark'] .theme-toggle {
+[data-mode="dark"] .theme-toggle {
    --icon-fill-hover: hsl(240, 20%, 99%);
 }
 

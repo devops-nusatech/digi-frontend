@@ -38,7 +38,7 @@ export interface GeetestCaptchaV4Response {
 export interface EntropyPasswordFetch {
    type: typeof AUTH_ENTROPY_PASSWORD_FETCH;
    payload: {
-      password: string,
+      password: string;
    };
 }
 
@@ -60,7 +60,10 @@ export interface LoginFetch {
       password: string;
       data?: string;
       otp_code?: string;
-      captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+      captcha_response?:
+         | string
+         | GeetestCaptchaResponse
+         | GeetestCaptchaV4Response;
    };
 }
 
@@ -87,7 +90,10 @@ export interface registerFetch {
       email: string;
       password: string;
       data: string;
-      captcha_response?: string | GeetestCaptchaResponse | GeetestCaptchaV4Response;
+      captcha_response?:
+         | string
+         | GeetestCaptchaResponse
+         | GeetestCaptchaV4Response;
       refid?: string;
    };
 }
@@ -161,17 +167,23 @@ export type AuthAction =
    | EntropyPasswordError
    | AuthLoginRequire2FAReset;
 
-export const entropyPasswordFetch = (payload: EntropyPasswordFetch['payload']): EntropyPasswordFetch => ({
+export const entropyPasswordFetch = (
+   payload: EntropyPasswordFetch['payload']
+): EntropyPasswordFetch => ({
    type: AUTH_ENTROPY_PASSWORD_FETCH,
    payload,
 });
 
-export const entropyPasswordData = (payload: EntropyPasswordData['payload']): EntropyPasswordData => ({
+export const entropyPasswordData = (
+   payload: EntropyPasswordData['payload']
+): EntropyPasswordData => ({
    type: AUTH_ENTROPY_PASSWORD_DATA,
    payload,
 });
 
-export const entropyPasswordError = (error: CommonError): EntropyPasswordError => ({
+export const entropyPasswordError = (
+   error: CommonError
+): EntropyPasswordError => ({
    type: AUTH_ENTROPY_PASSWORD_ERROR,
    error,
 });
@@ -190,7 +202,9 @@ export const loginError = (error: CommonError): LoginError => ({
    error,
 });
 
-export const loginRequire2FA = (payload: LoginRequire2FA['payload']): LoginRequire2FA => ({
+export const loginRequire2FA = (
+   payload: LoginRequire2FA['payload']
+): LoginRequire2FA => ({
    type: AUTH_LOGIN_REQUIRE_2FA,
    payload,
 });
@@ -209,12 +223,16 @@ export const registerError = (error: CommonError): registerError => ({
    error,
 });
 
-export const registerRequireVerification = (payload: registerRequireVerification['payload']): registerRequireVerification => ({
+export const registerRequireVerification = (
+   payload: registerRequireVerification['payload']
+): registerRequireVerification => ({
    type: AUTH_REGISTER_REQUIRE_VERIFICATION,
    payload,
 });
 
-export const verificationFetch = (payload: VerificationFetch['payload']): VerificationFetch => ({
+export const verificationFetch = (
+   payload: VerificationFetch['payload']
+): VerificationFetch => ({
    type: AUTH_VERIFICATION_FETCH,
    payload,
 });

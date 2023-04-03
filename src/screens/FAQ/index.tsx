@@ -15,6 +15,7 @@ import {
    Section,
    Skeleton,
    TextBase,
+   Image,
 } from 'components';
 import { useNewsFetch, useScrollUp } from 'hooks';
 import { illusContact, illusContact2 } from 'assets';
@@ -169,12 +170,19 @@ export const FAQ = () => {
                   </form> */}
                </div>
                <div className="pointer-events-none static right-c-1/2-670 top-3 w-full pl-4 md:absolute md:right-c-1/2-700 md:w-700 md:pl-0 lg2:right-c-1/2-730 lg2:w-785">
-                  <img
-                     srcSet={`${illusContact2} 2x`}
+                  <Image
                      src={illusContact}
-                     alt="Contac"
-                     title="Contact"
+                     srcSet={`${illusContact2} 2x`}
+                     alt="FAQ"
+                     title="FAQ"
                   />
+                  {/* <Image
+                     src="./images/gif/faq.gif"
+                     alt="FAQ"
+                     title="FAQ"
+                     width={400}
+                     height={400}
+                  /> */}
                </div>
             </Container>
          </Section>

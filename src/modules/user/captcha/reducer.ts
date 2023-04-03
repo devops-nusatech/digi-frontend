@@ -31,7 +31,10 @@ const initialState: GeetestCaptchaState = {
    shouldGeetestReset: false,
 };
 
-export const getGeetestCaptchaReducer = (state = initialState, action: GeetestCaptchaAction) => {
+export const getGeetestCaptchaReducer = (
+   state = initialState,
+   action: GeetestCaptchaAction
+) => {
    switch (action.type) {
       case GET_GEETEST_CAPTCHA_DATA:
          return {

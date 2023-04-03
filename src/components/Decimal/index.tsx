@@ -44,7 +44,6 @@ const handleRemoveExponent = (value: DecimalProps['children']) => {
          result += '0';
       }
 
-      // eslint-disable-next-line
       return result + str.replace(/^\-/, '');
    }
 
@@ -161,23 +160,17 @@ export class Decimal extends React.Component<DecimalProps> {
             thousSep,
             floatSep
          );
-      } else {
-         return (
-            <>
-               <span>
-                  {Decimal.getNumberBeforeDot(
-                     children,
-                     fixed,
-                     thousSep,
-                     floatSep
-                  )}
-               </span>
-               <span className="cr-decimal__opacity">
-                  {Decimal.getNumberAfterDot(children, fixed)}
-               </span>
-            </>
-         );
       }
+      return (
+         <>
+            <span>
+               {Decimal.getNumberBeforeDot(children, fixed, thousSep, floatSep)}
+            </span>
+            <span className="decimal__opacity">
+               {Decimal.getNumberAfterDot(children, fixed)}
+            </span>
+         </>
+      );
    }
 
    private highlightNumbers = (
@@ -199,7 +192,7 @@ export class Decimal extends React.Component<DecimalProps> {
 
       return (
          <>
-            <span className="cr-decimal__opacity">{val}</span>
+            <span className="decimal__opacity">{val}</span>
             <span>{highlighted}</span>
          </>
       );

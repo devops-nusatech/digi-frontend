@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
    Button,
    InputOrder,
@@ -7,19 +7,22 @@ import {
    InputCurrency,
    IOrderProps,
    Dialog,
+   Text2xl,
+   FlexCenter,
    // InputAmount,
 } from 'components';
-import { IcWallet } from 'assets';
 import { OrderType } from 'modules/types';
 import {
    cleanPositiveFloatInput,
    getTotalPrice,
    precisionRegExp,
 } from 'helpers';
+import { IsDisplay } from 'types';
 
 type Ref = null | any;
 
-interface TradingOrderAsksProps {
+interface TradingOrderAsksProps extends IsDisplay {
+   setShowOrder: (e: '' | 'buy' | 'sell') => void;
    to: string;
    from: string;
    availableBase: number;
@@ -42,7 +45,7 @@ interface TradingOrderAsksProps {
    maker: number;
 }
 
-export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
+export const TradingOrderAsk = ({
    to,
    from,
    availableBase,
@@ -63,7 +66,9 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
    executeLoading,
    taker,
    maker,
-}) => {
+   display,
+   setShowOrder,
+}: TradingOrderAsksProps) => {
    const [listenPrice, setListenPrice] = useState<string>(orderPrice);
    const [orderVolume, setOrderVolume] = useState<string>(amountVolume);
    const [orderTotal, setOrderTotal] = useState<string>('');
@@ -258,19 +263,37 @@ export const TradingOrderAsk: FC<TradingOrderAsksProps> = ({
 
    return (
       <>
-         <div className="mx-4 my-0 flex w-[calc(50%-32px)] shrink-0 grow-0 lg:block">
-            <div className="mb-4 flex items-center justify-between">
-               <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
-                  Sell {to}
+         <div
+            className={`mx-4 w-c-1/2-8 shrink-0 grow-0 basis-c-1/2-8 lg:!block lg-max:m-0 ${
+               display
+                  ? 'lg-max:visible lg-max:h-full lg-max:opacity-100'
+                  : 'lg-max:invisible lg-max:h-0 lg-max:opacity-0'
+            } lg-max:w-full lg-max:transition-all lg-max:duration-500 lg-max:ease-in`}>
+            <div className="hidden lg-max:mb-4 lg-max:flex lg-max:items-center">
+               <div className="mr-auto text-base font-medium leading-normal text-neutral4">
+                  Place order
                </div>
-               <div className="flex items-center space-x-1">
-                  <IcWallet className="h-4 w-4 fill-neutral2 transition-colors duration-300 dark:fill-neutral4" />
-                  <div className="text-xs font-semibold leading-custom1">
-                     {Decimal.format(availableBase, amountPrecision, ',')} {to}
-                  </div>
-               </div>
+               <svg
+                  className="h-6 w-6 cursor-pointer fill-neutral4"
+                  onClick={() => setShowOrder('')}>
+                  <use xlinkHref="#icon-close-circle" />
+               </svg>
             </div>
-            <form className="flex flex-col space-y-3">
+            <div className="mb-4 flex items-center justify-between">
+               <Text2xl
+                  text={`Sell ${to}`}
+                  className="leading-custom2"
+               />
+               <FlexCenter className="text-xs font-semibold">
+                  <svg className="mr-1 h-4 w-4 fill-neutral4">
+                     <use xlinkHref="#icon-wallet" />
+                  </svg>
+                  <span>
+                     {Decimal.format(availableBase, amountPrecision, ',')} {to}
+                  </span>
+               </FlexCenter>
+            </div>
+            <form className="space-y-3">
                <InputCurrency
                   titleLeft={translate(
                      'page.body.trade.header.newOrder.content.price'

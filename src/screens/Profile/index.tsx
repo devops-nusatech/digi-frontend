@@ -1,97 +1,64 @@
-import React, { FunctionComponent, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { useCallback, useMemo } from 'react';
 import {
    Button,
+   FlexCenter,
    LayoutProfile,
    ModalRequired,
    ProfileSidebar,
+   Text2xl,
 } from 'components';
-import { injectIntl } from 'react-intl';
-// import { RouterProps } from 'react-router';
-import { compose } from 'redux';
-import { copyToClipboard, setDocumentTitle } from 'helpers';
-import {
-   alertPush,
-   changePasswordError,
-   changePasswordFetch,
-   entropyPasswordFetch,
-   RootState,
-   selectChangePasswordSuccess,
-   selectCurrentPasswordEntropy,
-   selectUserInfo,
-   toggle2faFetch,
-   User,
-} from 'modules';
-import { IntlProps } from 'index';
-import { connect, MapDispatchToPropsFunction } from 'react-redux';
-import { useModal } from 'hooks';
+import { copyToClipboard } from 'helpers';
+import { useDocumentTitle, useToggle, useReduxSelector } from 'hooks';
+import { toast } from 'react-toastify';
+import { selectUserInfo } from 'modules';
 
-interface ReduxProps {
-   user: User;
-   passwordChangeSuccess?: boolean;
-   currentPasswordEntropy: number;
-}
+export const Profile = () => {
+   useDocumentTitle('Profile');
+   const { uid, username, profiles, tier, email, level } =
+      useReduxSelector(selectUserInfo);
+   const [toggle, setToggle] = useToggle(false);
 
-interface RouterProps {
-   history: History;
-}
-
-interface OnChangeEvent {
-   target: {
-      value: string;
-   };
-}
-
-interface DispatchProps {
-   changePassword: typeof changePasswordFetch;
-   clearPasswordChangeError: () => void;
-   toggle2fa: typeof toggle2faFetch;
-   fetchCurrentPasswordEntropy: typeof entropyPasswordFetch;
-   fetchSuccess: typeof alertPush;
-}
-
-interface ProfileProps {
-   showModal: boolean;
-}
-
-interface State {
-   showChangeModal: boolean;
-   showModal: boolean;
-   code2FA: string;
-   code2FAFocus: boolean;
-}
-
-type Props = ReduxProps &
-   DispatchProps &
-   RouterProps &
-   ProfileProps &
-   IntlProps &
-   OnChangeEvent;
-
-const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
-   const { profiles } = user;
-   const { isShow, toggle } = useModal();
-   useEffect(() => {
-      setDocumentTitle('Profile');
-   }, []);
-   const level = user.level;
-   const referralLink = `${window.document.location.origin}/register?refid=${user.uid}`;
-
-   const handleCopy = (url: string, type: string) => {
-      copyToClipboard(url);
-      fetchSuccess({ message: [`${type} Copied`], type: 'success' });
-   };
-
-   const renderIconCheck = () => (
-      <svg className="h-6 w-6 fill-primary1 transition-colors duration-300">
-         <use xlinkHref="#icon-check" />
-      </svg>
+   const referralLink = useMemo(
+      () => `${window.document.location.origin}/register?refid=${uid}`,
+      [uid]
    );
+
+   const handleCopy = useCallback((url: string, type: string) => {
+      copyToClipboard(url);
+      toast.success(`${type} Copied`);
+   }, []);
+
+   const renderIconCheck = useMemo(
+      () => (
+         <svg className="h-6 w-6 fill-primary1 transition-colors duration-300">
+            <use xlinkHref="#icon-check" />
+         </svg>
+      ),
+      []
+   );
+
+   const renderIconMember = useMemo(() => {
+      switch (tier) {
+         case 'silver':
+            return './images/tier/silver.svg';
+         case 'gold':
+            return './images/tier/gold.svg';
+         case 'platinum':
+            return './images/tier/platinum.svg';
+         case 'diamond':
+            return './images/tier/diamond.svg';
+         case 'bronze':
+            return './images/tier/bronze.svg';
+
+         default:
+            return null;
+      }
+   }, [tier]);
 
    return (
       <>
          <LayoutProfile
-            title="Withdraw"
+            title="Profile"
             withBreadcrumbs={{
                display: 'Home',
                href: '/',
@@ -103,13 +70,20 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                style={{ animationDuration: '100ms' }}>
                <div className="mb-5 flex justify-between">
                   <div className="space-y-3">
-                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
-                        {user.username ?? profiles[0]?.first_name ?? ''}
-                     </div>
-                     <div className="font-medium text-neutral4">
-                        {user.email}
-                     </div>
-                     <div className="flex items-center space-x-3">
+                     <Text2xl
+                        text={username ?? profiles?.shift()?.first_name ?? ''}
+                     />
+                     <FlexCenter>
+                        <img
+                           src={renderIconMember!}
+                           alt="Tier"
+                        />
+                        <div className="font-medium capitalize text-member-bronze">
+                           {tier} Member
+                        </div>
+                     </FlexCenter>
+                     <div className="font-medium text-neutral4">{email}</div>
+                     <FlexCenter className="space-x-3">
                         <div className="select-none font-medium text-neutral4">
                            {referralLink}
                         </div>
@@ -121,17 +95,17 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                               <use xlinkHref="#icon-copy" />
                            </svg>
                         </button>
-                     </div>
+                     </FlexCenter>
                   </div>
                   <Button
-                     text={`Level ${user.level} verified`}
+                     text={`Level ${level} verified`}
                      size="small"
                      variant="outline"
                      width="noFull"
                      color={
-                        user.level === 1
+                        level === 1
                            ? 'orange'
-                           : user.level === 2
+                           : level === 2
                            ? 'yellow'
                            : 'primary'
                      }
@@ -139,9 +113,7 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                   />
                </div>
                <div className="space-y-10">
-                  <div className="text-2xl font-medium leading-custom2 tracking-custom1">
-                     Features
-                  </div>
+                  <Text2xl text="Features" />
                   <div className="space-y-6">
                      <div
                         className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
@@ -150,24 +122,24 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                         <div>level 1</div>
                         <div>{level >= 1 ? 'Verified' : 'Unverified'}</div>
                      </div>
-                     <div className="flex items-center justify-between">
+                     <FlexCenter className="justify-between">
                         <div>Deposit assets</div>
-                        {renderIconCheck()}
-                     </div>
-                     <div className="flex items-center justify-between">
+                        {renderIconCheck}
+                     </FlexCenter>
+                     <FlexCenter className="justify-between">
                         <div>Withdraw assets</div>
-                        {renderIconCheck()}
-                     </div>
-                     <div className="flex items-center justify-between">
+                        {renderIconCheck}
+                     </FlexCenter>
+                     <FlexCenter className="justify-between">
                         <div>Transactions</div>
-                        {renderIconCheck()}
-                     </div>
-                     <div className="flex items-center justify-between">
+                        {renderIconCheck}
+                     </FlexCenter>
+                     <FlexCenter className="justify-between">
                         <div>USDT withdrawals</div>
                         <div className="text-right text-neutral4">
                            5,000 USDT /Day
                         </div>
-                     </div>
+                     </FlexCenter>
                   </div>
                   <div className="space-y-6">
                      <div
@@ -177,16 +149,16 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                         <div>level 2</div>
                         <div>{level >= 2 ? 'Verified' : 'Unverified'}</div>
                      </div>
-                     <div className="flex items-center justify-between">
+                     <FlexCenter className="justify-between">
                         <div>Internal transfer</div>
-                        {renderIconCheck()}
-                     </div>
-                     <div className="flex items-center justify-between">
+                        {renderIconCheck}
+                     </FlexCenter>
+                     <FlexCenter className="justify-between">
                         <div>USDT withdrawals</div>
                         <div className="text-right text-neutral4">
                            10,000 USDT /Day
                         </div>
-                     </div>
+                     </FlexCenter>
                   </div>
                   <div className="space-y-6">
                      <div
@@ -196,16 +168,16 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                         <div>level 3</div>
                         <div>{level >= 3 ? 'Verified' : 'Unverified'}</div>
                      </div>
-                     <div className="flex items-center justify-between">
+                     <FlexCenter className="justify-between">
                         <div>IDR Transaction</div>
-                        {renderIconCheck()}
-                     </div>
-                     <div className="flex items-center justify-between">
+                        {renderIconCheck}
+                     </FlexCenter>
+                     <FlexCenter className="justify-between">
                         <div>USDT withdrawals</div>
                         <div className="text-right text-neutral4">
                            50,000 USDT /Day
                         </div>
-                     </div>
+                     </FlexCenter>
                   </div>
                </div>
                {level < 3 && (
@@ -213,44 +185,16 @@ const ProfileFC = ({ user, fetchSuccess }: Props, { code2FA }: State) => {
                      <Button
                         text="Verify your identity"
                         width="noFull"
-                        onClick={toggle}
+                        onClick={setToggle}
                      />
                   </div>
                )}
             </div>
          </LayoutProfile>
          <ModalRequired
-            show={isShow}
-            close={toggle}
+            show={toggle}
+            close={setToggle}
          />
       </>
    );
 };
-
-const mapStateToProps = (state: RootState): ReduxProps => ({
-   user: selectUserInfo(state),
-   passwordChangeSuccess: selectChangePasswordSuccess(state),
-   currentPasswordEntropy: selectCurrentPasswordEntropy(state),
-});
-
-const mapDispatchToProps: MapDispatchToPropsFunction<
-   DispatchProps,
-   {}
-> = dispatch => ({
-   changePassword: ({ old_password, new_password, confirm_password }) =>
-      dispatch(
-         changePasswordFetch({ old_password, new_password, confirm_password })
-      ),
-   toggle2fa: ({ code, enable }) => dispatch(toggle2faFetch({ code, enable })),
-   fetchCurrentPasswordEntropy: payload =>
-      dispatch(entropyPasswordFetch(payload)),
-   fetchSuccess: payload => dispatch(alertPush(payload)),
-   clearPasswordChangeError: () =>
-      dispatch(changePasswordError({ code: 0, message: [] })),
-});
-
-export const Profile = compose(
-   injectIntl,
-   withRouter,
-   connect(mapStateToProps, mapDispatchToProps)
-)(ProfileFC) as FunctionComponent;

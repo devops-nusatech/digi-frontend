@@ -24,8 +24,8 @@ type Benefit = {
    withdraw_limit_1month: string;
    maker_fee: string;
    taker_fee: string;
-   trade_access: string;
-   withdraw_access: string;
+   trade_access: string | boolean;
+   withdraw_access: string | boolean;
    p2p_access: string;
 };
 

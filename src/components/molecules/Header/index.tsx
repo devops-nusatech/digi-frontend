@@ -4,7 +4,12 @@ import { useDispatch } from 'react-redux';
 import { useIntl } from 'react-intl';
 import { platformCurrency } from 'api';
 import { icLogoDark, icLogoLight } from 'assets';
-import { useOnHoverOutside, useReduxSelector, useScrollUp } from 'hooks';
+import {
+   useMarket,
+   useOnHoverOutside,
+   useReduxSelector,
+   useScrollUp,
+} from 'hooks';
 import {
    Button,
    FlexCenter,
@@ -33,6 +38,7 @@ import {
    selectUserLoggedIn,
 } from 'modules';
 import { classNames } from 'helpers';
+import { DEFAULT_MARKET } from '../../../constants';
 
 const noHeaderRoutes = [
    '/confirm',
@@ -64,6 +70,7 @@ const headerFull = [
 
 export const Header = withRouter(({ history }) => {
    useScrollUp();
+   const { markets } = useMarket();
    const { formatMessage } = useIntl();
    const dispatch = useDispatch();
 
@@ -329,7 +336,7 @@ export const Header = withRouter(({ history }) => {
       <>
          <header
             className={classNames(
-               `relative z-10 select-none bg-neutral8 pt-8 pb-6 shadow-none dark:bg-neutral1 md:py-5 ${
+               `relative z-10 select-none bg-neutral8 pb-6 pt-8 shadow-none dark:bg-neutral1 md:py-5 ${
                   shouldRenderHeaderFull || shouldNoRenderHeaderFull
                      ? 'md:shadow-header'
                      : ''
@@ -356,7 +363,13 @@ export const Header = withRouter(({ history }) => {
                      <div className="hidden items-center space-x-0 whitespace-nowrap font-dm text-neutral4 md:flex md:space-x-2 lg:space-x-5 lg2:space-x-8">
                         <Navlink
                            text="Exchange"
-                           to={`/trading/${currentMarket?.id}`}
+                           to={`/trading/${
+                              currentMarket
+                                 ? currentMarket?.id
+                                 : markets
+                                 ? markets?.shift()?.id
+                                 : DEFAULT_MARKET.id
+                           }`}
                            pathActive="/trading"
                         />
                         <div

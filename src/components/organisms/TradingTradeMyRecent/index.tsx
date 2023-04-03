@@ -4,7 +4,6 @@ import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { compose } from 'redux';
 import { IntlProps } from 'index';
 import {
-   fetchHistory,
    Market,
    PrivateTrade,
    RootState,
@@ -27,41 +26,11 @@ interface ReduxProps {
 }
 
 interface DispatchProps {
-   fetchHistory: typeof fetchHistory;
    setCurrentPrice: typeof setCurrentPrice;
 }
 
 type Props = ReduxProps & DispatchProps & IntlProps;
-
-const timeFrom = String(Math.floor((Date.now() - 1000 * 60 * 60 * 24) / 1000));
-
 class TradingTradeMyRecentContainer extends React.Component<Props> {
-   public componentDidMount() {
-      const { currentMarket } = this.props;
-      if (currentMarket) {
-         this.props.fetchHistory({
-            core: 'trades',
-            page: 0,
-            time_from: timeFrom,
-            market: currentMarket.id,
-         } as any);
-      }
-   }
-
-   public componentWillReceiveProps(next: Props) {
-      if (
-         next.currentMarket &&
-         this.props.currentMarket !== next.currentMarket
-      ) {
-         this.props.fetchHistory({
-            core: 'trades',
-            page: 0,
-            time_from: timeFrom,
-            market: next.currentMarket.id,
-         });
-      }
-   }
-
    public shouldComponentUpdate(nextProps: Props) {
       return JSON.stringify(nextProps.list) !== JSON.stringify(this.props.list);
    }
@@ -208,7 +177,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    DispatchProps,
    {}
 > = dispatch => ({
-   fetchHistory: params => dispatch(fetchHistory(params)),
    setCurrentPrice: payload => dispatch(setCurrentPrice(payload)),
 });
 

@@ -18,7 +18,12 @@ import {
 
 export interface ApiKeyStateModal {
    active: boolean;
-   action?: 'getKeys' | 'createKey' | 'createSuccess' | 'updateKey' | 'deleteKey';
+   action?:
+      | 'getKeys'
+      | 'createKey'
+      | 'createSuccess'
+      | 'updateKey'
+      | 'deleteKey';
    apiKey?: ApiKeyDataInterface;
 }
 
@@ -43,7 +48,10 @@ export const initialApiKeysState: ApiKeysState = {
    loading: false,
 };
 
-export const apiKeysReducer = (state = initialApiKeysState, action: ApiKeysAction): ApiKeysState => {
+export const apiKeysReducer = (
+   state = initialApiKeysState,
+   action: ApiKeysAction
+): ApiKeysState => {
    switch (action.type) {
       case API_KEYS_FETCH:
          return {
@@ -78,7 +86,9 @@ export const apiKeysReducer = (state = initialApiKeysState, action: ApiKeysActio
             error: undefined,
          };
       case API_KEY_UPDATE:
-         const apiKeyIndex = state.apiKeys.findIndex(e => e.kid === action.payload.kid);
+         const apiKeyIndex = state.apiKeys.findIndex(
+            e => e.kid === action.payload.kid
+         );
          const apiKeys = update(state.apiKeys, {
             [apiKeyIndex]: {
                state: { $set: action.payload.state },
@@ -99,7 +109,9 @@ export const apiKeysReducer = (state = initialApiKeysState, action: ApiKeysActio
       case API_KEY_DELETE:
          return {
             ...state,
-            apiKeys: state.apiKeys.filter(apiKey => apiKey.kid !== action.payload.kid),
+            apiKeys: state.apiKeys.filter(
+               apiKey => apiKey.kid !== action.payload.kid
+            ),
          };
       case API_KEYS_2FA_MODAL:
          return {

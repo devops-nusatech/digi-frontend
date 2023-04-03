@@ -10,8 +10,6 @@ export const useOnHoverOutside = (
          handler(e);
       };
       document.addEventListener('mouseover', listener);
-      return () => {
-         document.removeEventListener('mouseout', listener);
-      };
+      return () => document.removeEventListener('mouseout', listener);
    }, [ref, handler]);
 };

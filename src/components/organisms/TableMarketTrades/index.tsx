@@ -5,14 +5,13 @@ import {
    Market,
    PublicTrade,
    RootState,
-   recentTradesFetch,
    selectCurrentMarket,
    selectCurrentPrice,
    selectRecentTradesLoading,
    selectRecentTradesOfCurrentMarket,
    setCurrentPrice,
 } from 'modules';
-import React, { FunctionComponent, useEffect, useMemo } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -24,7 +23,6 @@ interface ReduxProps {
 }
 
 interface DispatchProps {
-   tradesFetch: typeof recentTradesFetch;
    setCurrentPrice: typeof setCurrentPrice;
 }
 
@@ -35,13 +33,8 @@ const TableMarketTradesFC = ({
    recentTradesLoading,
    currentMarket,
    currentPrice,
-   tradesFetch,
    setCurrentPrice,
 }: Props) => {
-   useEffect(() => {
-      tradesFetch(currentMarket);
-   }, [currentMarket]);
-
    const renderBody = useMemo(
       () =>
          recentTradesLoading ? (
@@ -155,7 +148,11 @@ const TableMarketTradesFC = ({
                </Tooltip>
             ))
          ) : (
-            <div className="">Kosong</div>
+            <tr>
+               <td colSpan={3}>
+                  <div className="p-5">Data not found</div>
+               </td>
+            </tr>
          ),
       [recentTrades]
    );
@@ -193,7 +190,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    DispatchProps,
    {}
 > = dispatch => ({
-   tradesFetch: market => dispatch(recentTradesFetch(market)),
    setCurrentPrice: payload => dispatch(setCurrentPrice(payload)),
 });
 

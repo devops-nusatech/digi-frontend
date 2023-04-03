@@ -2,9 +2,9 @@ import { CommonError } from '../../types';
 import {
    TRANSACTIONS_FETCH,
    TRANSACTIONS_DATA,
-   TRANSACTIONS_ERROR
+   TRANSACTIONS_ERROR,
 } from './constants';
-import { Transaction } from './types'
+import { Transaction } from './types';
 
 export interface TransactionsFetch {
    type: typeof TRANSACTIONS_FETCH;
@@ -21,7 +21,7 @@ export interface TransactionsError {
 }
 
 export type TransactionAction =
-   TransactionsFetch
+   | TransactionsFetch
    | TransactionData
    | TransactionsError;
 
@@ -29,9 +29,11 @@ export const transactionsFetch = (): TransactionsFetch => ({
    type: TRANSACTIONS_FETCH,
 });
 
-export const transactionsData = (payload: TransactionData['payload']): TransactionData => ({
+export const transactionsData = (
+   payload: TransactionData['payload']
+): TransactionData => ({
    type: TRANSACTIONS_DATA,
-   payload
+   payload,
 });
 
 export const transactionsError = (error: CommonError): TransactionsError => ({

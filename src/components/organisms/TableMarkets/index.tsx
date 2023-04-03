@@ -235,7 +235,7 @@ export const TableMarkets = memo(function TableMarkets({
                            <td className="p-4 text-right align-middle font-medium group-hover:bg-neutral7 dark:group-hover:bg-neutral2">
                               <div
                                  className={
-                                    market?.price_change_percent?.includes('+')
+                                    /\+/.test(market?.price_change_percent)
                                        ? 'text-primary5 dark:text-chart1'
                                        : 'text-primary4'
                                  }>

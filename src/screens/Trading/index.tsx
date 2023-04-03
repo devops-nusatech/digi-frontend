@@ -1,73 +1,100 @@
-import React, { FC, FunctionComponent, useEffect, useState } from 'react';
-import {
-   connect,
-   MapDispatchToPropsFunction,
-   MapStateToProps,
-} from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { withRouter } from 'react-router';
+import { useDispatch } from 'react-redux';
 import {
    TradingHeader,
    TradingOrderList,
    TradingCenter,
-   // TradingTrade,
    TradingMarketList,
    Nav,
 } from 'components';
+import { useReduxSelector, useTranslate } from 'hooks';
 import {
+   fetchHistory,
    Market,
-   RootState,
+   PrivateTrade,
+   recentTradesFetch,
    selectCurrentColorTheme,
    selectCurrentMarket,
+   selectCurrentPrice,
+   selectHistory,
+   selectLastRecentTrade,
    selectMarkets,
    selectMarketTickers,
+   selectRecentTrades,
+   selectUserInfo,
    selectUserLoggedIn,
+   setAmount,
    setCurrentMarket,
-   Ticker,
+   setCurrentPrice,
 } from 'modules';
-import { compose } from 'redux';
-import { injectIntl } from 'react-intl';
-import { RouterProps, withRouter } from 'react-router';
-import { IntlProps } from 'index';
 
-type ReduxProps = {
-   isLoggedIn: boolean;
-   currentMarket?: Market;
-   markets: Market[];
-   marketTickers: {
-      [key: string]: Ticker;
-   };
-   theme: string;
-};
+const navs = ['Chart', 'Order Books', 'Trades'];
+const time_from = String(Math.floor((Date.now() - 1000 * 60 * 60 * 24) / 1000));
 
-interface DispatchProps {
-   setCurrentMarket: typeof setCurrentMarket;
-}
+export const Trading = withRouter(({ history }) => {
+   const dispatch = useDispatch();
+   const isLoggedIn = useReduxSelector(selectUserLoggedIn);
+   const user = useReduxSelector(selectUserInfo);
+   const currentMarket = useReduxSelector(selectCurrentMarket)!;
+   const currentPrice = useReduxSelector(selectCurrentPrice)!;
+   const markets = useReduxSelector(selectMarkets);
+   const marketTickers = useReduxSelector(selectMarketTickers);
+   const theme = useReduxSelector(selectCurrentColorTheme);
+   const lastRecentTrade = useReduxSelector(selectLastRecentTrade)!;
+   const marketTrades = useReduxSelector(selectRecentTrades);
+   const myTrades = useReduxSelector(selectHistory) as PrivateTrade[];
 
-interface OwnProps {
-   location: {
-      state: {
-         pathname: string;
-      };
-   };
-}
-
-type TradingProps = RouterProps &
-   IntlProps &
-   ReduxProps &
-   DispatchProps &
-   OwnProps;
-
-const TradingFC: FC<TradingProps> = ({
-   isLoggedIn,
-   currentMarket,
-   setCurrentMarket,
-   markets,
-   marketTickers,
-   intl,
-   theme,
-   location,
-}) => {
    const [tab, setTab] = useState(0);
-   const translate = (id: string) => intl.formatMessage({ id });
+   const translate = useTranslate();
+
+   const handleSetCurrentMarket = useCallback(
+      (id: string) => {
+         dispatch(
+            setCurrentMarket(
+               !id || id === 'undefined'
+                  ? markets && markets[0]
+                  : markets.find(e => e.id === id)!
+            )
+         );
+      },
+      [dispatch, markets]
+   );
+
+   const handleSetCurrentPrice = useCallback(
+      (price?: number) => {
+         dispatch(setCurrentPrice(price));
+      },
+      [dispatch]
+   );
+
+   const handleSetCurrentAmount = useCallback(
+      (amount: string) => {
+         dispatch(setAmount(amount));
+      },
+      [dispatch]
+   );
+
+   const tradesFetch = useCallback(
+      (currentMarket: Market) => {
+         dispatch(recentTradesFetch(currentMarket));
+      },
+      [dispatch]
+   );
+
+   const myTradesFetch = useCallback(
+      (currentMarket: string) => {
+         dispatch(
+            fetchHistory({
+               core: 'trades',
+               page: 0,
+               time_from,
+               market: currentMarket,
+            })
+         );
+      },
+      [dispatch]
+   );
 
    useEffect(() => {
       document.body.classList.remove('bg-neutral8');
@@ -79,21 +106,33 @@ const TradingFC: FC<TradingProps> = ({
    }, []);
 
    useEffect(() => {
+      console.log('currentPrice :>> ', currentPrice);
+   }, [currentPrice]);
+
+   useEffect(() => {
       if (!currentMarket) {
-         setCurrentMarket(
-            location.state && location.state?.pathname
-               ? markets.find(
-                    e => e.id === location.state?.pathname.split('/').pop()
-                 )!
-               : markets[0]
-         );
+         const pathname = history.location.pathname.split('/').pop()!;
+         handleSetCurrentMarket(pathname);
       }
+      if (currentMarket) {
+         tradesFetch(currentMarket);
+         if (isLoggedIn) {
+            myTradesFetch(currentMarket.id);
+         }
+      }
+      return () => {
+         handleSetCurrentPrice(undefined);
+         handleSetCurrentAmount('');
+      };
    }, [
       currentMarket,
-      location.state,
-      location.state?.pathname,
-      markets,
-      setCurrentMarket,
+      handleSetCurrentAmount,
+      handleSetCurrentMarket,
+      handleSetCurrentPrice,
+      history.location.pathname,
+      myTradesFetch,
+      isLoggedIn,
+      tradesFetch,
    ]);
 
    return (
@@ -103,53 +142,41 @@ const TradingFC: FC<TradingProps> = ({
             marketTickers={marketTickers}
             translate={translate}
          />
-         <div className="my-4 flex justify-between space-x-0 md:justify-start md:space-x-2 lg:mb-0 lg:hidden lg:space-x-0">
-            <Nav
-               title="Chart"
-               theme={theme === 'dark' ? 'black' : 'grey'}
-               isActive={tab === 0}
-               onClick={() => setTab(0)}
-            />
-            <Nav
-               title="Order Books"
-               theme={theme === 'dark' ? 'black' : 'grey'}
-               isActive={tab === 1}
-               onClick={() => setTab(1)}
-            />
-            <Nav
-               title="Trades"
-               theme={theme === 'dark' ? 'black' : 'grey'}
-               isActive={tab === 2}
-               onClick={() => setTab(2)}
-            />
+         <div className="hidden space-x-0 md:space-x-2 lg:space-x-0 md-max:justify-between lg-max:my-4 lg-max:flex">
+            {navs.map((e, i) => (
+               <Nav
+                  key={i}
+                  title={e}
+                  theme={theme === 'dark' ? 'black' : 'grey'}
+                  isActive={tab === i}
+                  onClick={() => setTab(i)}
+               />
+            ))}
          </div>
          <div className="mt-1 block lg2:flex">
-            <TradingOrderList />
-            <TradingCenter />
-            <TradingMarketList translate={translate} />
+            <TradingOrderList
+               currentMarket={currentMarket}
+               marketTickers={marketTickers}
+               lastRecentTrade={lastRecentTrade}
+               setCurrenPrice={handleSetCurrentPrice}
+               setCurrentAmount={handleSetCurrentAmount}
+               translate={translate}
+               display={tab === 1}
+            />
+            <TradingCenter
+               user={user}
+               translate={translate}
+               marketTrades={marketTrades}
+               myTrades={myTrades}
+               currentMarket={currentMarket}
+               setCurrenPrice={handleSetCurrentPrice}
+               display={tab === 0}
+            />
+            <TradingMarketList
+               translate={translate}
+               display={tab === 2}
+            />
          </div>
-         {/* <TradingTrade isLoggedIn={isLoggedIn} /> */}
       </div>
    );
-};
-
-const mapStateToProps: MapStateToProps<ReduxProps, {}, RootState> = state => ({
-   isLoggedIn: selectUserLoggedIn(state),
-   currentMarket: selectCurrentMarket(state),
-   markets: selectMarkets(state),
-   marketTickers: selectMarketTickers(state),
-   theme: selectCurrentColorTheme(state),
 });
-
-const mapDispatchToProps: MapDispatchToPropsFunction<
-   DispatchProps,
-   {}
-> = dispatch => ({
-   setCurrentMarket: payload => dispatch(setCurrentMarket(payload)),
-});
-
-export const Trading = compose(
-   injectIntl,
-   withRouter,
-   connect(mapStateToProps, mapDispatchToProps)
-)(TradingFC) as FunctionComponent;

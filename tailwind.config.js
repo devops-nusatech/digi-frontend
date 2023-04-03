@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+   jit: true,
    content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
    presets: [],
    darkMode: ['class', '[data-mode="dark"]'],
@@ -60,6 +61,8 @@ module.exports = {
          'secondary5': '#DECBE9',
 
          'chart1': '#00C076',
+
+         'member-bronze': '#FFA215',
 
          'inherit': colors.inherit,
          'current': colors.current,
@@ -205,8 +208,10 @@ module.exports = {
          '101': '32.5rem',
          '640': '40rem',
          '500': '31.25rem',
+         '545': '34.0625rem',
          '546': '34.125rem',
          '600': '600px',
+         '692': '43.25rem',
          '700': '43.75rem',
          '736': '46rem',
          '740': '46.25rem',
@@ -390,6 +395,8 @@ module.exports = {
          'step': '0px 4px 16px -8px rgb(15 15 15 / 10%)',
          'sidebar-dropdown': '0px 40px 32px -24px rgb(15 15 15 / 12%)',
          'dropdown-primary': 'inset 0 0 0 2px #0A937F',
+         'thin': '0px 2px 4px rgba(0, 0, 0, 0.1)',
+         'order': '0px -16px 64px rgb(15 15 15 / 10%)',
       },
       boxShadowColor: ({ theme }) => theme('colors'),
       caretColor: ({ theme }) => theme('colors'),
@@ -1252,6 +1259,7 @@ module.exports = {
          2: '2',
          3: '3',
          5: '5',
+         6: '6',
          10: '10',
          20: '20',
          30: '30',

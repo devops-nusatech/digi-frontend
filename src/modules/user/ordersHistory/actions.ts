@@ -1,4 +1,11 @@
-import { CommonError, OrderBy, OrderCommon, OrderEvent, OrderSide, OrderType } from '../../types';
+import {
+   CommonError,
+   OrderBy,
+   OrderCommon,
+   OrderEvent,
+   OrderSide,
+   OrderType,
+} from '../../types';
 import {
    ORDERS_CANCEL_ALL_DATA,
    ORDERS_CANCEL_ALL_ERROR,
@@ -13,7 +20,6 @@ import {
    ORDERS_HISTORY_RESET,
    ORDERS_TEST_HISTORY_STATE,
 } from './constants';
-
 
 interface UserOrdersHistoryFetchPayload {
    pageIndex: number;
@@ -97,7 +103,7 @@ export interface OrdersHistoryReset {
 }
 
 export type OrdersHistoryAction =
-   UserOrdersHistoryFetch
+   | UserOrdersHistoryFetch
    | UserOrdersHistoryData
    | UserOrdersHistoryRangerData
    | UserOrdersHistoryError
@@ -110,28 +116,37 @@ export type OrdersHistoryAction =
    | OrdersHistoryCancelError
    | OrdersHistoryReset;
 
-
-export const userOrdersHistoryFetch = (payload: UserOrdersHistoryFetchPayload): UserOrdersHistoryFetch => ({
+export const userOrdersHistoryFetch = (
+   payload: UserOrdersHistoryFetchPayload
+): UserOrdersHistoryFetch => ({
    type: ORDERS_HISTORY_FETCH,
    payload,
 });
 
-export const userOrdersHistoryData = (payload: UserOrdersHistoryDataPayload): UserOrdersHistoryData => ({
+export const userOrdersHistoryData = (
+   payload: UserOrdersHistoryDataPayload
+): UserOrdersHistoryData => ({
    type: ORDERS_HISTORY_DATA,
    payload,
 });
 
-export const userOrdersHistoryRangerData = (payload: OrderEvent): UserOrdersHistoryRangerData => ({
+export const userOrdersHistoryRangerData = (
+   payload: OrderEvent
+): UserOrdersHistoryRangerData => ({
    type: ORDERS_HISTORY_RANGER_DATA,
    payload,
 });
 
-export const userOrdersHistoryError = (error: CommonError): UserOrdersHistoryError => ({
+export const userOrdersHistoryError = (
+   error: CommonError
+): UserOrdersHistoryError => ({
    type: ORDERS_HISTORY_ERROR,
    error,
 });
 
-export const ordersCancelAllFetch = (payload?: OrdersCancelAllFetch['payload']): OrdersCancelAllFetch => ({
+export const ordersCancelAllFetch = (
+   payload?: OrdersCancelAllFetch['payload']
+): OrdersCancelAllFetch => ({
    type: ORDERS_CANCEL_ALL_FETCH,
    payload,
 });
@@ -140,22 +155,30 @@ export const ordersCancelAllData = (): OrdersCancelAllData => ({
    type: ORDERS_CANCEL_ALL_DATA,
 });
 
-export const ordersCancelAllError = (error: CommonError): OrdersCancelAllError => ({
+export const ordersCancelAllError = (
+   error: CommonError
+): OrdersCancelAllError => ({
    type: ORDERS_CANCEL_ALL_ERROR,
    error,
 });
 
-export const ordersHistoryCancelFetch = (payload: OrdersHistoryCancelFetch['payload']): OrdersHistoryCancelFetch => ({
+export const ordersHistoryCancelFetch = (
+   payload: OrdersHistoryCancelFetch['payload']
+): OrdersHistoryCancelFetch => ({
    type: ORDERS_HISTORY_CANCEL_FETCH,
    payload,
 });
 
-export const ordersHistoryCancelData = (payload: OrdersHistoryCancelData['payload']): OrdersHistoryCancelData => ({
+export const ordersHistoryCancelData = (
+   payload: OrdersHistoryCancelData['payload']
+): OrdersHistoryCancelData => ({
    type: ORDERS_HISTORY_CANCEL_DATA,
    payload,
 });
 
-export const ordersHistoryCancelError = (error: CommonError): OrdersHistoryCancelError => ({
+export const ordersHistoryCancelError = (
+   error: CommonError
+): OrdersHistoryCancelError => ({
    type: ORDERS_HISTORY_CANCEL_ERROR,
    error,
 });

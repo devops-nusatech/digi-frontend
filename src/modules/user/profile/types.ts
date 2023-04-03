@@ -58,4 +58,5 @@ export type User = {
    data_storages: any[];
    created_at: string;
    updated_at: string;
+   myTier?: Membership;
 };

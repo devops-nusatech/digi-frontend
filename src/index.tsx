@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { sentryEnabled } from './api/config';
 
 import './assets/styles/root.css';
-import './assets/styles/tailwind.css';
+// import './assets/styles/tailwind.css';
 import './assets/styles/output.min.css';
 
 import App from './App';

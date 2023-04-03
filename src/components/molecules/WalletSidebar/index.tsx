@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Button, InputGroup, Portal } from 'components';
 import { IcShorting } from 'assets';
-import { useModal } from 'hooks';
+import { useToggle } from 'hooks';
 
 export const WalletSidebar = () => {
    const { pathname } = useLocation();
-   const { isShow, toggle } = useModal();
    const { push } = useHistory();
+   const [toggle, setToggle] = useToggle(false);
    const [showWithdraw, setShowWithdraw] = useState<boolean>(false);
-   const handleShowWithdraw = () => setShowWithdraw(!showWithdraw);
    const [openDropdown, setOpenDropdown] = useState(false);
+   const handleShowWithdraw = () => setShowWithdraw(!showWithdraw);
 
    const handleDropdown = () => setOpenDropdown(!openDropdown);
 
@@ -144,8 +144,8 @@ export const WalletSidebar = () => {
             </div>
          </aside>
          <Portal
-            close={toggle}
-            show={isShow}
+            close={setToggle}
+            show={toggle}
             title="Transfer">
             <div className="flex justify-between rounded bg-neutral7 px-6 py-5 dark:bg-neutral3">
                <div className="font-medium text-neutral3 dark:text-neutral6">

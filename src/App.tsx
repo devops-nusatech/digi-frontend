@@ -1,16 +1,15 @@
 import { createBrowserHistory } from 'history';
-import * as React from 'react';
+import React, { lazy } from 'react';
 import * as ReactGA from 'react-ga';
-import { IntlProvider } from 'react-intl';
-import { useSelector } from 'react-redux';
 import { Router } from 'react-router';
-import { gaTrackerKey } from './api';
-import { ErrorBoundary } from './containers';
-import { useSetMobileDevice } from './hooks';
-import * as mobileTranslations from './mobile/translations';
-import { selectCurrentLanguage, selectMobileDeviceState } from './modules';
-import { languageMap } from './translations';
+import { IntlProvider } from 'react-intl';
+import { gaTrackerKey } from 'api';
 import { Loader } from 'components';
+import { ErrorBoundary } from 'containers';
+import { useReduxSelector, useSetMobileDevice } from 'hooks';
+import { selectCurrentLanguage, selectMobileDeviceState } from 'modules';
+import { languageMap } from 'translations';
+import * as mobileTranslations from './mobile/translations';
 
 const gaKey = gaTrackerKey();
 const browserHistory = createBrowserHistory();
@@ -23,20 +22,20 @@ if (gaKey) {
    });
 }
 
-const AlertsContainer = React.lazy(() =>
+const AlertsContainer = lazy(() =>
    import('./containers/Alerts').then(({ Alerts }) => ({ default: Alerts }))
 );
-const HeaderContainer = React.lazy(() =>
+const HeaderContainer = lazy(() =>
    import('./components/molecules/Header').then(({ Header }) => ({
       default: Header,
    }))
 );
-const FooterContainer = React.lazy(() =>
+const FooterContainer = lazy(() =>
    import('./components/molecules/Footer').then(({ Footer }) => ({
       default: Footer,
    }))
 );
-const LayoutContainer = React.lazy(() =>
+const LayoutContainer = lazy(() =>
    import('./routes').then(({ Layout }) => ({ default: Layout }))
 );
 
@@ -51,7 +50,7 @@ const getTranslations = (lang: string, isMobileDevice: boolean) => {
 };
 
 const RenderDeviceContainers = () => {
-   const isMobileDevice = useSelector(selectMobileDeviceState);
+   const isMobileDevice = useReduxSelector(selectMobileDeviceState);
 
    if (isMobileDevice) {
       return (
@@ -68,8 +67,8 @@ const RenderDeviceContainers = () => {
          <main className="flex grow flex-col">
             <LayoutContainer />
          </main>
-         <FooterContainer />
          <AlertsContainer />
+         <FooterContainer />
       </>
    );
 };
@@ -77,16 +76,16 @@ const RenderDeviceContainers = () => {
 export default () => {
    useSetMobileDevice();
    const lang =
-      useSelector(selectCurrentLanguage) === null
+      useReduxSelector(selectCurrentLanguage) === null
          ? 'en'
-         : useSelector(selectCurrentLanguage);
-   const isMobileDevice = useSelector(selectMobileDeviceState);
+         : useReduxSelector(selectCurrentLanguage);
+   const isMobileDevice = useReduxSelector(selectMobileDeviceState);
 
    return (
       <IntlProvider
          locale={lang || 'en'}
-         messages={getTranslations(lang, isMobileDevice)}
-         key={lang}>
+         messages={getTranslations(lang || 'en', isMobileDevice)}
+         key={lang || 'en'}>
          <Router history={browserHistory}>
             <ErrorBoundary>
                <React.Suspense fallback={<Loader />}>

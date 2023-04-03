@@ -1,5 +1,4 @@
 import { IllusChart } from './IllusChart';
-import { IllusWorld } from './IllusWorld';
 import illusCard from './cards.png';
 import illusCard2 from './cards@2x.png';
 import illusCard11 from './card-pic-1.png';
@@ -113,6 +112,5 @@ export {
    illusNews11,
    illusNews12,
    illusLogin,
-   IllusWorld,
    IllusChart,
 };

@@ -7,7 +7,8 @@ import {
    setBlocklistStatus,
    sendError,
    blockchainsData,
-   membershipsData
+   membershipsData,
+   setCurrentMarketIfUnset
 } from 'modules';
 import { API, RequestOptions } from 'api';
 import { configsData, configsError } from '../actions';
@@ -24,10 +25,11 @@ export function* configsFetchSaga() {
       );
       yield put(currenciesData(currencies));
       yield put(marketsData(markets));
+      yield put(setCurrentMarketIfUnset(markets[0]));
+      yield put(membershipsData(tier_fees));
       yield put(withdrawLimitsData(withdraw_limits));
       yield put(tradingFeesData(trading_fees));
       yield put(blockchainsData(blockchains));
-      yield put(membershipsData(tier_fees));
       yield put(configsData());
       yield put(setBlocklistStatus({ status: 'allowed' }));
    } catch (error) {

@@ -1,20 +1,20 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { ReactElement, memo, useState } from 'react';
 import { MarketDepthsComponent, TradingChart as Chart } from 'containers';
 import { icLogoLight } from 'assets';
 import { Nav } from 'components';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-   klineFetch,
-   klineUpdatePeriod,
-   klineUpdateTimeRange,
-   selectCurrentMarket,
-} from 'modules';
+import { useDispatch } from 'react-redux';
+import { klineFetch, klineUpdatePeriod, klineUpdateTimeRange } from 'modules';
+import { CurrentMarket, IsDisplay } from 'types';
 
 type ChartPeriode = '1M' | '5M' | '15M' | '30M';
 type Resolution = 1 | 5 | 15 | 30;
 
-export const TradingChart: FC = (): ReactElement => {
-   const currentMarket = useSelector(selectCurrentMarket);
+interface TradingChartProps extends CurrentMarket, IsDisplay {}
+
+export const TradingChart = memo(function TradingChart({
+   currentMarket,
+   display,
+}: TradingChartProps): ReactElement {
    const [currentTabIndex, setCurrentTabIndex] = useState<number>(0);
    const [chartPeriode, setChartPeriode] = useState<ChartPeriode>('15M');
 
@@ -54,7 +54,10 @@ export const TradingChart: FC = (): ReactElement => {
    };
 
    return (
-      <div className="relative z-3 rounded shadow-card2 lg:block">
+      <div
+         className={`relative z-2 rounded shadow-card2 lg:!block ${
+            display ? '' : 'lg-max:hidden'
+         }`}>
          <div className="flex items-center justify-between rounded border-b border-neutral6 bg-neutral8 p-4 dark:border-0 dark:bg-shade2">
             {currentTabIndex !== 0 ? (
                <div className="font-dm text-base font-bold text-neutral3 dark:text-neutral8">
@@ -136,4 +139,4 @@ export const TradingChart: FC = (): ReactElement => {
          </div>
       </div>
    );
-};
+});

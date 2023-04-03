@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { airdropsReducer } from './public/airdrops';
 import { alertReducer } from './public/alert';
 import { blockchainsReducer } from './public/blockchains';
 import { blocklistAccessReducer } from './public/blocklistAccess';
@@ -15,7 +16,11 @@ import { memberLevelsReducer } from './public/memberLevels';
 import { membershipsReducer } from './public/memberships';
 import { newsReducer } from './public/news';
 import { news2Reducer } from './public/news2';
-import { depthReducer, incrementDepthReducer, orderBookReducer } from './public/orderBook';
+import {
+   depthReducer,
+   incrementDepthReducer,
+   orderBookReducer,
+} from './public/orderBook';
 import { rangerReducer } from './public/ranger/reducer';
 import { recentTradesReducer } from './public/recentTrades';
 import { tradingFeesReducer } from './public/tradingFees';
@@ -41,6 +46,7 @@ import { ordersReducer } from './user/orders';
 import { ordersHistoryReducer } from './user/ordersHistory';
 import { passwordReducer } from './user/password';
 import { profileReducer } from './user/profile';
+import { tierReducer } from './user/tier';
 import { transactionsReducer } from './user/transactions';
 import { transferReducer } from './user/transfers';
 import { userActivityReducer } from './user/userActivity';
@@ -48,6 +54,7 @@ import { walletsReducer } from './user/wallets';
 import { withdrawLimitReducer } from './user/withdrawLimit';
 
 export const publicReducer = combineReducers({
+   airdrops: airdropsReducer,
    alerts: alertReducer,
    blockchains: blockchainsReducer,
    blocklistAccess: blocklistAccessReducer,
@@ -91,6 +98,7 @@ export const userReducer = combineReducers({
    ordersHistory: ordersHistoryReducer,
    password: passwordReducer,
    profile: profileReducer,
+   tier: tierReducer,
    groupMember: groupMemberReducer,
    transactions: transactionsReducer,
    transfer: transferReducer,
