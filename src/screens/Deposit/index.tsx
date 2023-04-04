@@ -26,7 +26,7 @@ import { renderCurrencyIcon } from 'helpers';
 import {
    Button,
    Decimal,
-   LayoutProfile,
+   PageTitle,
    Skeleton,
    InputGroup,
    QRCode,
@@ -409,7 +409,7 @@ const DepositFC = memo(
       const [coba, setCoba] = useState('');
 
       return (
-         <LayoutProfile
+         <PageTitle
             title="Deposit"
             withBreadcrumbs={{
                display: 'Wallets',
@@ -542,7 +542,7 @@ const DepositFC = memo(
                   </div>
                </div>
             </div>
-         </LayoutProfile>
+         </PageTitle>
       );
    }
 );

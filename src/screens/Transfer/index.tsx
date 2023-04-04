@@ -25,7 +25,7 @@ import {
    Image,
    InputGroup,
    Label,
-   LayoutProfile,
+   PageTitle,
    Portal,
    RowDetail,
    TextBase,
@@ -340,7 +340,7 @@ export const TransferFC = ({
 
    return (
       <>
-         <LayoutProfile
+         <PageTitle
             title="Transfer"
             withBreadcrumbs={{
                display: 'Wallets',
@@ -558,7 +558,7 @@ export const TransferFC = ({
                   </div>
                </div>
             </div>
-         </LayoutProfile>
+         </PageTitle>
          <Portal
             show={isOpenConfirm}
             close={handleShowConfirm}

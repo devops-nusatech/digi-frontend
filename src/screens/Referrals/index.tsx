@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
-import { InputGroup, LayoutProfile, ProfileSidebar } from 'components';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { InputGroup, LayoutProfile } from 'components';
 import { copyToClipboard } from 'helpers';
 import { toast } from 'react-toastify';
 import { useDocumentTitle, useReduxSelector } from 'hooks';
@@ -8,6 +8,7 @@ import { useIntl } from 'react-intl';
 
 export const Referrals = () => {
    useDocumentTitle('Referrals');
+   const mainRef = useRef<HTMLDivElement>(null);
    const { formatMessage } = useIntl();
    const { uid, referral_id } = useReduxSelector(selectUserInfo);
 
@@ -43,14 +44,14 @@ export const Referrals = () => {
 
    return (
       <LayoutProfile
+         mainRef={mainRef}
          title="Refferals"
          withBreadcrumbs={{
             display: 'Home',
             href: '/',
             active: 'Referrals',
          }}>
-         <ProfileSidebar />
-         <div className="grow space-y-12 rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 md:py-10 lg:p-10">
+         <div className="space-y-12">
             <div className="space-y-3">
                <div className="flex justify-between">
                   <div>

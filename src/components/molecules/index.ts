@@ -26,6 +26,8 @@ export * from './ModalTransferConfirm';
 export * from './ModalTransferSuccess';
 export * from './ModalExpiredSession';
 export * from './LayoutWallet';
+export * from './PageTitle';
+export * from './LayoutStep';
 export * from './LayoutProfile';
 export * from './ComboboxCurrency';
 export * from './ComboboxMarket';

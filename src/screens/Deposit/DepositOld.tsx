@@ -30,7 +30,7 @@ import { arrayFilter, copyToClipboard, renderCurrencyIcon } from 'helpers';
 import {
    Button,
    Decimal,
-   LayoutProfile,
+   PageTitle,
    Skeleton,
    InputGroup,
    QRCode,
@@ -259,7 +259,7 @@ const DepositFC = memo(
       );
 
       return (
-         <LayoutProfile
+         <PageTitle
             title="Deposit"
             withBreadcrumbs={{
                display: 'Wallets',
@@ -319,7 +319,7 @@ const DepositFC = memo(
                               <Combobox.Options className="absolute z-[9] mt-0.5 max-h-[252px] w-full overflow-auto rounded-xl border-2 border-neutral6 bg-neutral8 shadow-dropdown-2 outline-none dark:border-neutral3 dark:bg-neutral1 dark:shadow-dropdown-3">
                                  {filteredWallets.length === 0 &&
                                  searchCurrency !== '' ? (
-                                    <div className="relative cursor-default select-none py-2 px-4 text-neutral4">
+                                    <div className="relative cursor-default select-none px-4 py-2 text-neutral4">
                                        Nothing found...
                                     </div>
                                  ) : (
@@ -512,7 +512,7 @@ const DepositFC = memo(
                   </div>
                </div>
                <div className="w-1/3">
-                  <div className="rounded-2xl bg-neutral8 py-10 px-6 shadow-card dark:bg-shade1">
+                  <div className="rounded-2xl bg-neutral8 px-6 py-10 shadow-card dark:bg-shade1">
                      <div className="space-y-3">
                         <Label
                            label={translate('deposit.content.right.title')}
@@ -579,7 +579,7 @@ const DepositFC = memo(
                   </div>
                </div>
             </div>
-         </LayoutProfile>
+         </PageTitle>
       );
    }
 );

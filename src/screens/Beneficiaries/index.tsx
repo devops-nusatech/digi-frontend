@@ -4,6 +4,7 @@ import React, {
    useCallback,
    useEffect,
    useMemo,
+   useRef,
    useState,
 } from 'react';
 import { RouterProps, withRouter } from 'react-router';
@@ -15,7 +16,6 @@ import {
    InputGroup,
    LayoutProfile,
    Portal,
-   ProfileSidebar,
    TableBeneficiary,
    Listbox,
    Decimal,
@@ -132,6 +132,8 @@ const BeneficiariesFC = ({
    history,
    intl,
 }: BeneficiariesProps) => {
+   const mainRef = useRef<HTMLDivElement>(null);
+
    const filteredWalletCoin = wallets.filter(wallet => wallet.type === 'coin');
    const defaultWallet: Wallet =
       wallets.find(wallet => wallet.currency === 'usdt') ||
@@ -600,35 +602,30 @@ const BeneficiariesFC = ({
    return (
       <>
          <LayoutProfile
+            mainRef={mainRef}
             title="Beneficiaries"
             withBreadcrumbs={{
                display: 'Home',
                href: '/',
                active: 'Beneficiaries',
             }}>
-            <ProfileSidebar />
-            <div
-               className="grow rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 md:py-10 lg:p-10"
-               style={{ animationDuration: '100ms' }}>
-               <div className="space-y-12">
-                  <div className="flex items-center justify-between">
-                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
-                        List of beneficiaries
-                     </div>
-                     <Button
-                        text="Create beneficiary"
-                        size="normal"
-                        width="noFull"
-                        disabled={
-                           memberLevels?.withdraw.minimum_level !==
-                              user.level ||
-                           user?.myTier?.benefit?.withdraw_access === false
-                        }
-                        onClick={handleShowModalCreateBeneficiary}
-                     />
+            <div className="space-y-12">
+               <div className="flex items-center justify-between">
+                  <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
+                     List of beneficiaries
                   </div>
-                  {renderTableBeneficiaries()}
+                  <Button
+                     text="Create beneficiary"
+                     size="normal"
+                     width="noFull"
+                     disabled={
+                        memberLevels?.withdraw.minimum_level !== user.level ||
+                        user?.myTier?.benefit?.withdraw_access === false
+                     }
+                     onClick={handleShowModalCreateBeneficiary}
+                  />
                </div>
+               {renderTableBeneficiaries()}
             </div>
          </LayoutProfile>
 
