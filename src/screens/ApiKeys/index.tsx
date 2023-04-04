@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FunctionComponent } from 'react';
+import React, { useEffect, useState, FunctionComponent, useRef } from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import { connect, MapDispatchToPropsFunction } from 'react-redux';
 import { compose } from 'redux';
@@ -10,7 +10,6 @@ import {
    LayoutProfile,
    Pagination,
    Portal,
-   ProfileSidebar,
    Skeleton,
    Switch,
 } from 'components';
@@ -85,7 +84,8 @@ const ApiKeysFC = ({
    updateApiKey,
 }: Props) => {
    const history = useHistory();
-   const [otpCode, setOtpCode] = useState<string>('');
+   const [otpCode, setOtpCode] = useState('');
+   const mainRef = useRef<HTMLDivElement>(null);
    useEffect(() => {
       setDocumentTitle('My API Keys');
       apiKeysFetch({ pageIndex: 0, limit: 2 });
@@ -366,237 +366,233 @@ const ApiKeysFC = ({
    return (
       <>
          <LayoutProfile
+            mainRef={mainRef}
             title="API keys"
             withBreadcrumbs={{
                display: 'Home',
                href: '/',
                active: 'API keys',
             }}>
-            <ProfileSidebar />
-            <div className="grow rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 lg:px-10 lg:py-10">
-               {otp ? (
-                  <div>
-                     <div className="flex items-center justify-between">
-                        <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
-                           My API keys
-                        </div>
-                        <Button
-                           text="Generate new API key"
-                           size="normal"
-                           width="noFull"
-                           variant="outline"
-                           icLeft={
-                              <svg className="mr-3 h-4 w-4 fill-neutral4 transition-all duration-300 group-hover:fill-neutral8">
-                                 <use xlinkHref="#icon-plus" />
-                              </svg>
-                           }
-                           onClick={handleAddCreateKey}
-                        />
+            {otp ? (
+               <div>
+                  <div className="flex items-center justify-between">
+                     <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
+                        My API keys
                      </div>
-                     <div className="mb-8 mt-6 text-xs leading-custom4 text-neutral4">
-                        Digiassets APIs are a way for traders to access their
-                        exchange account programmatically so they can trade
-                        without logging into the exchange. With APIs, traders
-                        can use 3rd party services to execute trades, manage
-                        their portfolio, collect data on their account, and
-                        implement complex strategies.
-                     </div>
-                     <div className="space-y-8">
-                        <div className="overflow-x-auto">
-                           <table className="w-full table-auto">
-                              <thead>
-                                 <tr className="border-b border-neutral7 dark:border-neutral2">
-                                    <th className="p-4 pl-0 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
-                                       {translate(
-                                          'page.body.profile.apiKeys.table.header.kid'
-                                       )}
-                                    </th>
-                                    <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
-                                       {translate(
-                                          'page.body.profile.apiKeys.table.header.algorithm'
-                                       )}
-                                    </th>
-                                    <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
-                                       {translate(
-                                          'page.body.profile.apiKeys.table.header.state'
-                                       )}
-                                    </th>
-                                    <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
-                                       {translate(
-                                          'page.body.profile.apiKeys.table.header.created'
-                                       )}
-                                    </th>
-                                    <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
-                                       {translate(
-                                          'page.body.profile.apiKeys.table.header.updated'
-                                       )}
-                                    </th>
-                                    <th className="p-4 text-xs font-semibold leading-custom4 dark:text-neutral5" />
-                                    <th className="p-4 pr-0 text-xs font-semibold leading-custom4 dark:text-neutral5" />
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 {!!!dataLoaded ? (
-                                    <>
-                                       <tr>
-                                          <td
-                                             colSpan={7}
-                                             className="px-4 py-3 last:pb-0">
-                                             <Skeleton
-                                                height={20}
-                                                isWithFull
-                                                rounded="md"
-                                             />
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td
-                                             colSpan={7}
-                                             className="px-4 py-3 last:pb-0">
-                                             <Skeleton
-                                                height={20}
-                                                isWithFull
-                                                rounded="md"
-                                             />
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td
-                                             colSpan={7}
-                                             className="px-4 py-3 last:pb-0">
-                                             <Skeleton
-                                                height={20}
-                                                isWithFull
-                                                rounded="md"
-                                             />
-                                          </td>
-                                       </tr>
-                                    </>
-                                 ) : apiKeys.length ? (
-                                    apiKeys.map(apiKey => {
-                                       const {
-                                          kid,
-                                          algorithm,
-                                          state,
-                                          created_at,
-                                          updated_at,
-                                       } = apiKey;
-                                       return (
-                                          <tr
-                                             key={kid}
-                                             className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
-                                             <td className="p-4 pl-0">
-                                                <div className="font-medium">
-                                                   {kid}
-                                                </div>
-                                             </td>
-                                             <td className="p-4">
-                                                <div className="font-medium">
-                                                   {algorithm}
-                                                </div>
-                                             </td>
-                                             <td className="p-4">
-                                                <div
-                                                   className={`font-medium ${
-                                                      state === 'active'
-                                                         ? 'text-primary5'
-                                                         : state === 'disabled'
-                                                         ? 'text-primary4'
-                                                         : 'text-primary1'
-                                                   }`}>
-                                                   {state}
-                                                </div>
-                                             </td>
-                                             <td className="p-4">
-                                                <div className="font-medium">
-                                                   {localeDate(
-                                                      created_at,
-                                                      'shortDate'
-                                                   )
-                                                      .split(' ')
-                                                      .shift()}
-                                                </div>
-                                             </td>
-                                             <td className="p-4">
-                                                <div className="font-medium">
-                                                   {localeDate(
-                                                      updated_at,
-                                                      'shortDate'
-                                                   )
-                                                      .split(' ')
-                                                      .shift()}
-                                                </div>
-                                             </td>
-                                             <td className="p-4 align-middle">
-                                                <Switch
-                                                   onClick={() =>
-                                                      handleUpdateAPIKey(apiKey)
-                                                   }
-                                                   checked={state === 'active'}
-                                                />
-                                             </td>
-                                             <td className="p-4 pr-0">
-                                                <svg
-                                                   onClick={() =>
-                                                      handleDestroyAPIKey(
-                                                         apiKey
-                                                      )
-                                                   }
-                                                   className="h-6 w-6 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8">
-                                                   <use xlinkHref="#icon-close-circle" />
-                                                </svg>
-                                             </td>
-                                          </tr>
-                                       );
-                                    })
-                                 ) : (
+                     <Button
+                        text="Generate new API key"
+                        size="normal"
+                        width="noFull"
+                        variant="outline"
+                        icLeft={
+                           <svg className="mr-3 h-4 w-4 fill-neutral4 transition-all duration-300 group-hover:fill-neutral8">
+                              <use xlinkHref="#icon-plus" />
+                           </svg>
+                        }
+                        onClick={handleAddCreateKey}
+                     />
+                  </div>
+                  <div className="mb-8 mt-6 text-xs leading-custom4 text-neutral4">
+                     Digiassets APIs are a way for traders to access their
+                     exchange account programmatically so they can trade without
+                     logging into the exchange. With APIs, traders can use 3rd
+                     party services to execute trades, manage their portfolio,
+                     collect data on their account, and implement complex
+                     strategies.
+                  </div>
+                  <div className="space-y-8">
+                     <div className="overflow-x-auto">
+                        <table className="w-full table-auto">
+                           <thead>
+                              <tr className="border-b border-neutral7 dark:border-neutral2">
+                                 <th className="p-4 pl-0 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                    {translate(
+                                       'page.body.profile.apiKeys.table.header.kid'
+                                    )}
+                                 </th>
+                                 <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                    {translate(
+                                       'page.body.profile.apiKeys.table.header.algorithm'
+                                    )}
+                                 </th>
+                                 <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                    {translate(
+                                       'page.body.profile.apiKeys.table.header.state'
+                                    )}
+                                 </th>
+                                 <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                    {translate(
+                                       'page.body.profile.apiKeys.table.header.created'
+                                    )}
+                                 </th>
+                                 <th className="p-4 text-left text-xs font-semibold leading-custom4 dark:text-neutral5">
+                                    {translate(
+                                       'page.body.profile.apiKeys.table.header.updated'
+                                    )}
+                                 </th>
+                                 <th className="p-4 text-xs font-semibold leading-custom4 dark:text-neutral5" />
+                                 <th className="p-4 pr-0 text-xs font-semibold leading-custom4 dark:text-neutral5" />
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {!!!dataLoaded ? (
+                                 <>
                                     <tr>
-                                       <td colSpan={7}>
-                                          <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                                             <IcEmty />
-                                             <div className="text-xs font-semibold text-neutral4">
-                                                {translate('noResultFound')}
-                                             </div>
-                                          </div>
+                                       <td
+                                          colSpan={7}
+                                          className="px-4 py-3 last:pb-0">
+                                          <Skeleton
+                                             height={20}
+                                             isWithFull
+                                             rounded="md"
+                                          />
                                        </td>
                                     </tr>
-                                 )}
-                              </tbody>
-                           </table>
-                        </div>
-                        <Pagination
-                           firstElemIndex={firstElemIndex}
-                           lastElemIndex={lastElemIndex}
-                           page={pageIndex}
-                           nextPageExists={nextPageExists}
-                           onClickPrevPage={onClickPrevPage}
-                           onClickNextPage={onClickNextPage}
-                        />
+                                    <tr>
+                                       <td
+                                          colSpan={7}
+                                          className="px-4 py-3 last:pb-0">
+                                          <Skeleton
+                                             height={20}
+                                             isWithFull
+                                             rounded="md"
+                                          />
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td
+                                          colSpan={7}
+                                          className="px-4 py-3 last:pb-0">
+                                          <Skeleton
+                                             height={20}
+                                             isWithFull
+                                             rounded="md"
+                                          />
+                                       </td>
+                                    </tr>
+                                 </>
+                              ) : apiKeys.length ? (
+                                 apiKeys.map(apiKey => {
+                                    const {
+                                       kid,
+                                       algorithm,
+                                       state,
+                                       created_at,
+                                       updated_at,
+                                    } = apiKey;
+                                    return (
+                                       <tr
+                                          key={kid}
+                                          className="[&:not(:last-child)]:border-b [&:not(:last-child)]:border-neutral6 dark:[&:not(:last-child)]:border-neutral3">
+                                          <td className="p-4 pl-0">
+                                             <div className="font-medium">
+                                                {kid}
+                                             </div>
+                                          </td>
+                                          <td className="p-4">
+                                             <div className="font-medium">
+                                                {algorithm}
+                                             </div>
+                                          </td>
+                                          <td className="p-4">
+                                             <div
+                                                className={`font-medium ${
+                                                   state === 'active'
+                                                      ? 'text-primary5'
+                                                      : state === 'disabled'
+                                                      ? 'text-primary4'
+                                                      : 'text-primary1'
+                                                }`}>
+                                                {state}
+                                             </div>
+                                          </td>
+                                          <td className="p-4">
+                                             <div className="font-medium">
+                                                {localeDate(
+                                                   created_at,
+                                                   'shortDate'
+                                                )
+                                                   .split(' ')
+                                                   .shift()}
+                                             </div>
+                                          </td>
+                                          <td className="p-4">
+                                             <div className="font-medium">
+                                                {localeDate(
+                                                   updated_at,
+                                                   'shortDate'
+                                                )
+                                                   .split(' ')
+                                                   .shift()}
+                                             </div>
+                                          </td>
+                                          <td className="p-4 align-middle">
+                                             <Switch
+                                                onClick={() =>
+                                                   handleUpdateAPIKey(apiKey)
+                                                }
+                                                checked={state === 'active'}
+                                             />
+                                          </td>
+                                          <td className="p-4 pr-0">
+                                             <svg
+                                                onClick={() =>
+                                                   handleDestroyAPIKey(apiKey)
+                                                }
+                                                className="h-6 w-6 cursor-pointer fill-neutral4 transition-all duration-300 hover:fill-neutral2 dark:hover:fill-neutral8">
+                                                <use xlinkHref="#icon-close-circle" />
+                                             </svg>
+                                          </td>
+                                       </tr>
+                                    );
+                                 })
+                              ) : (
+                                 <tr>
+                                    <td colSpan={7}>
+                                       <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
+                                          <IcEmty />
+                                          <div className="text-xs font-semibold text-neutral4">
+                                             {translate('noResultFound')}
+                                          </div>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              )}
+                           </tbody>
+                        </table>
                      </div>
-                  </div>
-               ) : (
-                  <div className="space-y-8">
-                     <img
-                        srcSet={`${imgLock2} 2x`}
-                        src={imgLock}
-                        alt="Images lock api keys"
-                        title="Images lock api keys"
-                        className="mx-auto"
+                     <Pagination
+                        firstElemIndex={firstElemIndex}
+                        lastElemIndex={lastElemIndex}
+                        page={pageIndex}
+                        nextPageExists={nextPageExists}
+                        onClickPrevPage={onClickPrevPage}
+                        onClickNextPage={onClickNextPage}
                      />
-                     <div className="text-center font-medium leading-custom4 text-neutral4">
-                        Before you can access the api keys feature, you must
-                        enable 2FA
-                     </div>
-                     <div className="text-center">
-                        <Button
-                           text="Enable 2FA"
-                           onClick={() => history.push('/2fa')}
-                           width="noFull"
-                        />
-                     </div>
                   </div>
-               )}
-            </div>
+               </div>
+            ) : (
+               <div className="space-y-8">
+                  <img
+                     srcSet={`${imgLock2} 2x`}
+                     src={imgLock}
+                     alt="Images lock api keys"
+                     title="Images lock api keys"
+                     className="mx-auto"
+                  />
+                  <div className="text-center font-medium leading-custom4 text-neutral4">
+                     Before you can access the api keys feature, you must enable
+                     2FA
+                  </div>
+                  <div className="text-center">
+                     <Button
+                        text="Enable 2FA"
+                        onClick={() => history.push('/2fa')}
+                        width="noFull"
+                     />
+                  </div>
+               </div>
+            )}
          </LayoutProfile>
          <Portal
             show={modal.active}

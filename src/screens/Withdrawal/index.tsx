@@ -17,7 +17,7 @@ import {
    Decimal,
    Dialog,
    InputGroup,
-   LayoutProfile,
+   PageTitle,
    ModalRequired,
    Nav,
    Portal,
@@ -1385,7 +1385,7 @@ const WithdrawalFC = memo(
 
       return (
          <>
-            <LayoutProfile
+            <PageTitle
                title="Withdraw"
                withBreadcrumbs={{
                   display: 'Wallets',
@@ -1448,7 +1448,7 @@ const WithdrawalFC = memo(
                   style={{ animationDuration: '100ms' }}>
                   {render()}
                </div>
-            </LayoutProfile>
+            </PageTitle>
             <ModalRequired
                show={toggle}
                close={setToggle}

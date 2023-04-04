@@ -1,11 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { withRouter } from 'react-router';
-import {
-   Button,
-   LayoutProfile,
-   ModalRequired,
-   ProfileSidebar,
-} from 'components';
+import { Button, LayoutProfile, ModalRequired } from 'components';
 import { selectUserInfo } from 'modules';
 import { useDocumentTitle, useToggle, useReduxSelector } from 'hooks';
 import { toast } from 'react-toastify';
@@ -13,6 +8,7 @@ import { copyToClipboard } from 'helpers';
 
 export const Tier = withRouter(({ history }) => {
    useDocumentTitle('Memberships');
+   const mainRef = useRef<HTMLDivElement>(null);
    const { uid, username, profiles, tier, email, level } =
       useReduxSelector(selectUserInfo);
    const [toggle, setToggle] = useToggle(false);
@@ -57,16 +53,14 @@ export const Tier = withRouter(({ history }) => {
    return (
       <>
          <LayoutProfile
+            mainRef={mainRef}
             title="Memberships"
             withBreadcrumbs={{
                display: 'Home',
                href: '/',
                active: 'Profile',
             }}>
-            <ProfileSidebar />
-            <div
-               className="grow space-y-12 rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 md:py-10 lg:p-10"
-               style={{ animationDuration: '100ms' }}>
+            <div className="space-y-12">
                <div className="mb-5 flex justify-between">
                   <div className="space-y-3">
                      <div className="text-2xl font-semibold leading-custom2 tracking-custom1">

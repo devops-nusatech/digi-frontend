@@ -1,10 +1,9 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import {
    Button,
    FlexCenter,
    LayoutProfile,
    ModalRequired,
-   ProfileSidebar,
    Text2xl,
 } from 'components';
 import { copyToClipboard } from 'helpers';
@@ -14,6 +13,7 @@ import { selectUserInfo } from 'modules';
 
 export const Profile = () => {
    useDocumentTitle('Profile');
+   const mainRef = useRef<HTMLDivElement>(null);
    const { uid, username, profiles, tier, email, level } =
       useReduxSelector(selectUserInfo);
    const [toggle, setToggle] = useToggle(false);
@@ -58,138 +58,130 @@ export const Profile = () => {
    return (
       <>
          <LayoutProfile
+            mainRef={mainRef}
             title="Profile"
             withBreadcrumbs={{
                display: 'Home',
                href: '/',
                active: 'Profile',
             }}>
-            <ProfileSidebar />
-            <div
-               className="grow space-y-12 rounded-2xl bg-neutral8 p-4 shadow-card2 dark:bg-shade1 md:px-8 md:py-10 lg:p-10"
-               style={{ animationDuration: '100ms' }}>
-               <div className="mb-5 flex justify-between">
-                  <div className="space-y-3">
-                     <Text2xl
-                        text={username ?? profiles?.shift()?.first_name ?? ''}
+            <div className="mb-5 flex justify-between">
+               <div className="space-y-3">
+                  <Text2xl
+                     text={username ?? profiles?.shift()?.first_name ?? ''}
+                  />
+                  <FlexCenter>
+                     <img
+                        src={renderIconMember!}
+                        alt="Tier"
                      />
-                     <FlexCenter>
-                        <img
-                           src={renderIconMember!}
-                           alt="Tier"
-                        />
-                        <div className="font-medium capitalize text-member-bronze">
-                           {tier} Member
-                        </div>
-                     </FlexCenter>
-                     <div className="font-medium text-neutral4">{email}</div>
-                     <FlexCenter className="space-x-3">
-                        <div className="select-none font-medium text-neutral4">
-                           {referralLink}
-                        </div>
-                        <button
-                           className="group cursor-copy"
-                           onClick={() => handleCopy(referralLink, 'Refferal')}
-                           title="Copy referral">
-                           <svg className="h-6 w-6 fill-neutral4 transition-transform duration-200 group-hover:scale-110 group-hover:fill-neutral3 dark:group-hover:fill-neutral5">
-                              <use xlinkHref="#icon-copy" />
-                           </svg>
-                        </button>
-                     </FlexCenter>
+                     <div className="font-medium capitalize text-member-bronze">
+                        {tier} Member
+                     </div>
+                  </FlexCenter>
+                  <div className="font-medium text-neutral4">{email}</div>
+                  <FlexCenter className="space-x-3">
+                     <div className="select-none font-medium text-neutral4">
+                        {referralLink}
+                     </div>
+                     <button
+                        className="group cursor-copy"
+                        onClick={() => handleCopy(referralLink, 'Refferal')}
+                        title="Copy referral">
+                        <svg className="h-6 w-6 fill-neutral4 transition-transform duration-200 group-hover:scale-110 group-hover:fill-neutral3 dark:group-hover:fill-neutral5">
+                           <use xlinkHref="#icon-copy" />
+                        </svg>
+                     </button>
+                  </FlexCenter>
+               </div>
+               <Button
+                  text={`Level ${level} verified`}
+                  size="small"
+                  variant="outline"
+                  width="noFull"
+                  color={
+                     level === 1 ? 'orange' : level === 2 ? 'yellow' : 'primary'
+                  }
+                  className="pointer-events-none select-none"
+               />
+            </div>
+            <div className="space-y-10">
+               <Text2xl text="Features" />
+               <div className="space-y-6">
+                  <div
+                     className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
+                        level >= 1 ? 'text-primary1' : 'text-primary4'
+                     } text-xs font-bold uppercase leading-none`}>
+                     <div>level 1</div>
+                     <div>{level >= 1 ? 'Verified' : 'Unverified'}</div>
                   </div>
+                  <FlexCenter className="justify-between">
+                     <div>Deposit assets</div>
+                     {renderIconCheck}
+                  </FlexCenter>
+                  <FlexCenter className="justify-between">
+                     <div>Withdraw assets</div>
+                     {renderIconCheck}
+                  </FlexCenter>
+                  <FlexCenter className="justify-between">
+                     <div>Transactions</div>
+                     {renderIconCheck}
+                  </FlexCenter>
+                  <FlexCenter className="justify-between">
+                     <div>USDT withdrawals</div>
+                     <div className="text-right text-neutral4">
+                        5,000 USDT /Day
+                     </div>
+                  </FlexCenter>
+               </div>
+               <div className="space-y-6">
+                  <div
+                     className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
+                        level >= 2 ? 'text-primary1' : 'text-primary4'
+                     } text-xs font-bold uppercase leading-none`}>
+                     <div>level 2</div>
+                     <div>{level >= 2 ? 'Verified' : 'Unverified'}</div>
+                  </div>
+                  <FlexCenter className="justify-between">
+                     <div>Internal transfer</div>
+                     {renderIconCheck}
+                  </FlexCenter>
+                  <FlexCenter className="justify-between">
+                     <div>USDT withdrawals</div>
+                     <div className="text-right text-neutral4">
+                        10,000 USDT /Day
+                     </div>
+                  </FlexCenter>
+               </div>
+               <div className="space-y-6">
+                  <div
+                     className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
+                        level >= 3 ? 'text-primary1' : 'text-primary4'
+                     } text-xs font-bold uppercase leading-none`}>
+                     <div>level 3</div>
+                     <div>{level >= 3 ? 'Verified' : 'Unverified'}</div>
+                  </div>
+                  <FlexCenter className="justify-between">
+                     <div>IDR Transaction</div>
+                     {renderIconCheck}
+                  </FlexCenter>
+                  <FlexCenter className="justify-between">
+                     <div>USDT withdrawals</div>
+                     <div className="text-right text-neutral4">
+                        50,000 USDT /Day
+                     </div>
+                  </FlexCenter>
+               </div>
+            </div>
+            {level < 3 && (
+               <div className="mt-10 text-right">
                   <Button
-                     text={`Level ${level} verified`}
-                     size="small"
-                     variant="outline"
+                     text="Verify your identity"
                      width="noFull"
-                     color={
-                        level === 1
-                           ? 'orange'
-                           : level === 2
-                           ? 'yellow'
-                           : 'primary'
-                     }
-                     className="pointer-events-none select-none"
+                     onClick={setToggle}
                   />
                </div>
-               <div className="space-y-10">
-                  <Text2xl text="Features" />
-                  <div className="space-y-6">
-                     <div
-                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
-                           level >= 1 ? 'text-primary1' : 'text-primary4'
-                        } text-xs font-bold uppercase leading-none`}>
-                        <div>level 1</div>
-                        <div>{level >= 1 ? 'Verified' : 'Unverified'}</div>
-                     </div>
-                     <FlexCenter className="justify-between">
-                        <div>Deposit assets</div>
-                        {renderIconCheck}
-                     </FlexCenter>
-                     <FlexCenter className="justify-between">
-                        <div>Withdraw assets</div>
-                        {renderIconCheck}
-                     </FlexCenter>
-                     <FlexCenter className="justify-between">
-                        <div>Transactions</div>
-                        {renderIconCheck}
-                     </FlexCenter>
-                     <FlexCenter className="justify-between">
-                        <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">
-                           5,000 USDT /Day
-                        </div>
-                     </FlexCenter>
-                  </div>
-                  <div className="space-y-6">
-                     <div
-                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
-                           level >= 2 ? 'text-primary1' : 'text-primary4'
-                        } text-xs font-bold uppercase leading-none`}>
-                        <div>level 2</div>
-                        <div>{level >= 2 ? 'Verified' : 'Unverified'}</div>
-                     </div>
-                     <FlexCenter className="justify-between">
-                        <div>Internal transfer</div>
-                        {renderIconCheck}
-                     </FlexCenter>
-                     <FlexCenter className="justify-between">
-                        <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">
-                           10,000 USDT /Day
-                        </div>
-                     </FlexCenter>
-                  </div>
-                  <div className="space-y-6">
-                     <div
-                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
-                           level >= 3 ? 'text-primary1' : 'text-primary4'
-                        } text-xs font-bold uppercase leading-none`}>
-                        <div>level 3</div>
-                        <div>{level >= 3 ? 'Verified' : 'Unverified'}</div>
-                     </div>
-                     <FlexCenter className="justify-between">
-                        <div>IDR Transaction</div>
-                        {renderIconCheck}
-                     </FlexCenter>
-                     <FlexCenter className="justify-between">
-                        <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">
-                           50,000 USDT /Day
-                        </div>
-                     </FlexCenter>
-                  </div>
-               </div>
-               {level < 3 && (
-                  <div className="mt-10 text-right">
-                     <Button
-                        text="Verify your identity"
-                        width="noFull"
-                        onClick={setToggle}
-                     />
-                  </div>
-               )}
-            </div>
+            )}
          </LayoutProfile>
          <ModalRequired
             show={toggle}

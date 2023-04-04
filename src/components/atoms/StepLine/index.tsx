@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { classNames } from 'helpers';
 import { TClassName } from '../types';
 
-type StepLineProps = TClassName & {
+export type StepLineProps = TClassName & {
    titles: string[];
    currentStep: number;
    /**
@@ -15,20 +15,20 @@ type StepLineProps = TClassName & {
 /**
  * @example const [currentStep, setCurrentStep] = useState(0);
  */
-export const StepLine: FC<StepLineProps> = ({
+export const StepLine = ({
    currentStep,
    titles,
    isVertical,
    className,
-}) => {
+}: StepLineProps) => {
    return (
       <div
          className={classNames(
-            `lg-max:hidden ${
+            `${
                isVertical
                   ? 'mr-auto w-54 shrink-0 space-y-6'
                   : 'flex flex-wrap space-x-6'
-            }`
+            } lg-max:hidden`
          )}>
          {titles.map((title, index) => (
             <div
