@@ -2,7 +2,6 @@
 export type Membership = {
    id: number;
    tier: Tier;
-   unique: string | boolean;
    requirement: Requirement;
    benefit: Benefit;
 };

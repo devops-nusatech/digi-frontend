@@ -35,7 +35,7 @@ export const GeetestCaptchaV3 = ({ buttonRef, onSuccess }: GeetestProps) => {
                offline: false,
                new_captcha: false,
                product: 'bind',
-               lang,
+               lang: lang !== 'null' ? lang : 'en',
                https: true,
                hideClose: true,
             },

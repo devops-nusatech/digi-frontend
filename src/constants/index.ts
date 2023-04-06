@@ -92,7 +92,6 @@ export const DEFAULT_WALLET: Wallet = {
 export const DEFAULT_MY_TIER: Membership = {
    id: 0,
    tier: '',
-   unique: 'false',
    requirement: {
       kyc: 0,
       reff: 0,

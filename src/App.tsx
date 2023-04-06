@@ -91,7 +91,7 @@ export default () => {
    const memberships = useReduxSelector(selectMemberships);
 
    const currentLang = useMemo(
-      () => (lang === null || !lang ? 'en' : lang),
+      () => (lang === 'null' || !lang ? 'en' : lang),
       [lang]
    );
    const myTier = useMemo(
