@@ -1,36 +1,43 @@
-import { useEffect } from 'react';
+import { RefObject, useEffect } from 'react';
 
-let listenerCallbacks = new WeakMap();
+const listenerCallbacks = new WeakMap();
 
-const handleIntersections = (entries: any[]) => {
+let observer: IntersectionObserver;
+
+const handleIntersections = (entries: IntersectionObserverEntry[]) => {
    entries.forEach(entry => {
-      if (!listenerCallbacks.has(entry.target)) return;
+      if (listenerCallbacks.has(entry.target)) {
+         const callback = listenerCallbacks.get(entry.target);
 
-      let callback = listenerCallbacks.get(entry.target);
-
-      if (!entry.isIntersecting) return;
-
-      observer.unobserve(entry.target);
-      listenerCallbacks.delete(entry.target);
-      callback();
+         if (entry.isIntersecting || entry.intersectionRatio > 0) {
+            observer.unobserve(entry.target);
+            listenerCallbacks.delete(entry.target);
+            callback();
+         }
+      }
    });
 };
 
-let observer = new IntersectionObserver(handleIntersections, {
-   rootMargin: '0px',
-   threshold: 0.15,
-});
+const getIntersectionObserver = () => {
+   if (observer === undefined) {
+      observer = new IntersectionObserver(handleIntersections, {
+         rootMargin: '100px',
+         threshold: 0.15,
+      });
+   }
+   return observer;
+};
 
-export const useIntersection = (ref, callback: () => void) => {
+export const useIntersection = (ref: RefObject<any>, callback: () => void) => {
    useEffect(() => {
-      if (ref.current) {
-         listenerCallbacks.set(ref.current, callback);
-         observer.observe(ref.current);
-      }
+      const target = ref.current;
+      const observer = getIntersectionObserver();
+      listenerCallbacks.set(target, callback);
+      observer.observe(target);
 
       return () => {
-         listenerCallbacks.delete(ref.current);
-         observer.unobserve(ref.current);
+         listenerCallbacks.delete(target);
+         observer.unobserve(target);
       };
    }, [ref, callback]);
 };

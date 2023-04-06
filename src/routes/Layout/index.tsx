@@ -365,18 +365,6 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                <PrivateRoute
                   loading={userLoading}
                   isLogged={isLoggedIn}
-                  path="/tier"
-                  component={Tier}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
-                  path="/docs"
-                  component={ApiDocs}
-               />
-               <PrivateRoute
-                  loading={userLoading}
-                  isLogged={isLoggedIn}
                   path="/orders"
                   component={WalletOrder}
                />
@@ -427,6 +415,18 @@ class LayoutComponent extends React.Component<LayoutProps, LayoutState> {
                   isLogged={isLoggedIn}
                   path="/change-password"
                   component={ChangePassword}
+               />
+               <PrivateRoute
+                  loading={userLoading}
+                  isLogged={isLoggedIn}
+                  path="/tier"
+                  component={Tier}
+               />
+               <PrivateRoute
+                  loading={userLoading}
+                  isLogged={isLoggedIn}
+                  path="/docs"
+                  component={ApiDocs}
                />
                <PrivateRoute
                   loading={userLoading}

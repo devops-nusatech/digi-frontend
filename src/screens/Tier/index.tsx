@@ -1,14 +1,30 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { withRouter } from 'react-router';
-import { Button, LayoutProfile, ModalRequired } from 'components';
-import { selectUserInfo } from 'modules';
+import {
+   Button,
+   FlexCenter,
+   LayoutProfile,
+   ModalRequired,
+   Text2xl,
+   TierCard,
+} from 'components';
+import {
+   selectMemberships,
+   selectTierClaimLoading,
+   selectUserInfo,
+   tierClaimFetch,
+} from 'modules';
 import { useDocumentTitle, useToggle, useReduxSelector } from 'hooks';
 import { toast } from 'react-toastify';
 import { copyToClipboard } from 'helpers';
+import { useDispatch } from 'react-redux';
 
 export const Tier = withRouter(({ history }) => {
    useDocumentTitle('Memberships');
    const mainRef = useRef<HTMLDivElement>(null);
+   const dispatch = useDispatch();
+   const memberships = useReduxSelector(selectMemberships);
+   const tierClaimLoading = useReduxSelector(selectTierClaimLoading);
    const { uid, username, profiles, tier, email, level } =
       useReduxSelector(selectUserInfo);
    const [toggle, setToggle] = useToggle(false);
@@ -66,7 +82,7 @@ export const Tier = withRouter(({ history }) => {
                      <div className="text-2xl font-semibold leading-custom2 tracking-custom1">
                         {username ?? profiles?.shift()?.first_name ?? ''}
                      </div>
-                     <div className="flex items-center space-x-3">
+                     <FlexCenter className="space-x-3">
                         <img
                            src={renderIconMember!}
                            alt="Tier"
@@ -74,9 +90,9 @@ export const Tier = withRouter(({ history }) => {
                         <div className="font-medium capitalize text-member-bronze">
                            {tier} Member
                         </div>
-                     </div>
+                     </FlexCenter>
                      <div className="font-medium text-neutral4">{email}</div>
-                     <div className="flex items-center space-x-3">
+                     <FlexCenter className="space-x-3">
                         <div className="select-none font-medium text-neutral4">
                            {referralLink}
                         </div>
@@ -88,7 +104,7 @@ export const Tier = withRouter(({ history }) => {
                               <use xlinkHref="#icon-copy" />
                            </svg>
                         </button>
-                     </div>
+                     </FlexCenter>
                   </div>
                   <Button
                      text={`Level ${level} verified`}
@@ -106,81 +122,44 @@ export const Tier = withRouter(({ history }) => {
                   />
                </div>
                <div className="space-y-10">
-                  <div className="text-2xl font-medium leading-custom2 tracking-custom1">
-                     Tier membership list
-                  </div>
+                  <Text2xl text="Tier membership list" />
+                  <TierCard
+                     tier={tier}
+                     memberships={memberships}
+                  />
+               </div>
+               <div className="space-y-10">
+                  <Text2xl text="Benefits" />
                   <div className="space-y-6">
-                     <div
-                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
-                           level >= 1 ? 'text-primary1' : 'text-primary4'
-                        } text-xs font-bold uppercase leading-none`}>
-                        <div>level 1</div>
+                     <div className="flex justify-between border-b border-neutral6 pb-6 text-xs font-bold uppercase leading-none text-neutral4 dark:border-neutral3">
+                        <div>Bronze</div>
                         <div>{level >= 1 ? 'Verified' : 'Unverified'}</div>
                      </div>
-                     <div className="flex items-center justify-between">
-                        <div>Deposit assets</div>
+                     <FlexCenter className="justify-between font-medium">
+                        <div>Refferal commision on direct</div>
                         {renderIconCheck}
-                     </div>
-                     <div className="flex items-center justify-between">
-                        <div>Withdraw assets</div>
+                     </FlexCenter>
+                     <FlexCenter className="justify-between font-medium">
+                        <div>Refferal commision sub direct</div>
                         {renderIconCheck}
-                     </div>
-                     <div className="flex items-center justify-between">
-                        <div>Transactions</div>
-                        {renderIconCheck}
-                     </div>
-                     <div className="flex items-center justify-between">
-                        <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">
-                           5,000 USDT /Day
-                        </div>
-                     </div>
-                  </div>
-                  <div className="space-y-6">
-                     <div
-                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
-                           level >= 2 ? 'text-primary1' : 'text-primary4'
-                        } text-xs font-bold uppercase leading-none`}>
-                        <div>level 2</div>
-                        <div>{level >= 2 ? 'Verified' : 'Unverified'}</div>
-                     </div>
-                     <div className="flex items-center justify-between">
-                        <div>Internal transfer</div>
-                        {renderIconCheck}
-                     </div>
-                     <div className="flex items-center justify-between">
-                        <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">
-                           10,000 USDT /Day
-                        </div>
-                     </div>
-                  </div>
-                  <div className="space-y-6">
-                     <div
-                        className={`flex justify-between border-b border-neutral6 pb-6 dark:border-neutral3 ${
-                           level >= 3 ? 'text-primary1' : 'text-primary4'
-                        } text-xs font-bold uppercase leading-none`}>
-                        <div>level 3</div>
-                        <div>{level >= 3 ? 'Verified' : 'Unverified'}</div>
-                     </div>
-                     <div className="flex items-center justify-between">
-                        <div>IDR Transaction</div>
-                        {renderIconCheck}
-                     </div>
-                     <div className="flex items-center justify-between">
-                        <div>USDT withdrawals</div>
-                        <div className="text-right text-neutral4">
-                           50,000 USDT /Day
-                        </div>
-                     </div>
+                     </FlexCenter>
+                     <FlexCenter className="justify-between font-medium">
+                        <div>Withdrawal limit</div>
+                        <div className="text-neutral4">5,000 USDT /Day</div>
+                     </FlexCenter>
                   </div>
                </div>
+               <Button
+                  text="Claim"
+                  withLoading={tierClaimLoading}
+                  onClick={() => dispatch(tierClaimFetch())}
+               />
                {tier !== 'influencer' && (
                   <div className="mt-10 text-right">
                      <Button
                         text="Verify your identity"
                         width="noFull"
-                        onClick={() => history.push('/memberships')}
+                        onClick={() => history.push('/membership')}
                      />
                   </div>
                )}

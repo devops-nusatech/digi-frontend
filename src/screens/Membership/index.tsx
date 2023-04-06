@@ -43,8 +43,6 @@ const MembershipFC = () => {
 
    const requirement = membership && membership?.requirement;
 
-   console.log('membership :>> ', membership);
-
    return (
       <>
          <Hero

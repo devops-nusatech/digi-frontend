@@ -1,27 +1,10 @@
 import { CommonError } from '../../types';
 import {
-   TIER_FETCH,
-   TIER_DATA,
-   TIER_ERROR,
    TIER_CLAIM_FETCH,
    TIER_CLAIM_DATA,
    TIER_CLAIM_ERROR,
 } from './constants';
-import { Tier } from './types';
-
-export interface TierFetch {
-   type: typeof TIER_FETCH;
-}
-
-export interface TierData {
-   type: typeof TIER_DATA;
-   payload: Tier;
-}
-
-export interface TierError {
-   type: typeof TIER_ERROR;
-   error: CommonError;
-}
+import { TierClaim } from './types';
 
 export interface TierClaimFetch {
    type: typeof TIER_CLAIM_FETCH;
@@ -29,9 +12,7 @@ export interface TierClaimFetch {
 
 export interface TierClaimData {
    type: typeof TIER_CLAIM_DATA;
-   payload: {
-      tier: number;
-   };
+   payload: TierClaim;
 }
 
 export interface TierClaimError {
@@ -39,27 +20,7 @@ export interface TierClaimError {
    error: CommonError;
 }
 
-export type TierAction =
-   | TierFetch
-   | TierData
-   | TierError
-   | TierClaimFetch
-   | TierClaimData
-   | TierClaimError;
-
-export const tierFetch = (): TierFetch => ({
-   type: TIER_FETCH,
-});
-
-export const tierData = (payload: TierData['payload']): TierData => ({
-   type: TIER_DATA,
-   payload,
-});
-
-export const tierError = (error: CommonError): TierError => ({
-   type: TIER_ERROR,
-   error,
-});
+export type TierAction = TierClaimFetch | TierClaimData | TierClaimError;
 
 export const tierClaimFetch = (): TierClaimFetch => ({
    type: TIER_CLAIM_FETCH,

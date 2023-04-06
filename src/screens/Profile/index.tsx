@@ -115,19 +115,19 @@ export const Profile = () => {
                      <div>level 1</div>
                      <div>{level >= 1 ? 'Verified' : 'Unverified'}</div>
                   </div>
-                  <FlexCenter className="justify-between">
+                  <FlexCenter className="justify-between font-medium">
                      <div>Deposit assets</div>
                      {renderIconCheck}
                   </FlexCenter>
-                  <FlexCenter className="justify-between">
+                  <FlexCenter className="justify-between font-medium">
                      <div>Withdraw assets</div>
                      {renderIconCheck}
                   </FlexCenter>
-                  <FlexCenter className="justify-between">
+                  <FlexCenter className="justify-between font-medium">
                      <div>Transactions</div>
                      {renderIconCheck}
                   </FlexCenter>
-                  <FlexCenter className="justify-between">
+                  <FlexCenter className="justify-between font-medium">
                      <div>USDT withdrawals</div>
                      <div className="text-right text-neutral4">
                         5,000 USDT /Day
@@ -142,11 +142,11 @@ export const Profile = () => {
                      <div>level 2</div>
                      <div>{level >= 2 ? 'Verified' : 'Unverified'}</div>
                   </div>
-                  <FlexCenter className="justify-between">
+                  <FlexCenter className="justify-between font-medium">
                      <div>Internal transfer</div>
                      {renderIconCheck}
                   </FlexCenter>
-                  <FlexCenter className="justify-between">
+                  <FlexCenter className="justify-between font-medium">
                      <div>USDT withdrawals</div>
                      <div className="text-right text-neutral4">
                         10,000 USDT /Day
@@ -161,11 +161,11 @@ export const Profile = () => {
                      <div>level 3</div>
                      <div>{level >= 3 ? 'Verified' : 'Unverified'}</div>
                   </div>
-                  <FlexCenter className="justify-between">
+                  <FlexCenter className="justify-between font-medium">
                      <div>IDR Transaction</div>
                      {renderIconCheck}
                   </FlexCenter>
-                  <FlexCenter className="justify-between">
+                  <FlexCenter className="justify-between font-medium">
                      <div>USDT withdrawals</div>
                      <div className="text-right text-neutral4">
                         50,000 USDT /Day

@@ -25,16 +25,11 @@ env.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-index.css
+# index.css
 
 # environment config
 public/config/
 
 # 4 / 2 / 2023
 webpack
-
-<<<<<<< HEAD
-/src/output.min.css
-=======
-/src/index.css
->>>>>>> 86b38a0e2d6b6b43aa1a6fa250f1370a802787c9
+src/assets/styles/output.min.css

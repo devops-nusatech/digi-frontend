@@ -1,11 +1,8 @@
-import { RootState } from '../..';
-import { TierState } from './reducer';
-import { Tier } from './types';
+import { RootState } from 'modules';
+import { TierClaim } from './types';
 
-const selectTierState = (state: RootState): TierState => state.user.tier;
+export const selectTierClaimLoading = (state: RootState) =>
+   state.user.tier.loading!;
 
-export const selectTier = (state: RootState): Tier =>
-   selectTierState(state).list;
-
-export const selectTierLoading = (state: RootState): boolean | undefined =>
-   selectTierState(state).loading;
+export const selectTierClaim = (state: RootState): TierClaim =>
+   state.user.tier.list!;

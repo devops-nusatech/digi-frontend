@@ -1,12 +1,11 @@
-import React, { FunctionComponent, useEffect, useMemo, useRef } from 'react';
-import { withRouter } from 'react-router';
-import { compose } from 'redux';
-import { injectIntl } from 'react-intl';
-import { Button, InputGroup, LayoutStep, Portal } from 'components';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { Button, InputGroup, LayoutStep, ModalSuccess } from 'components';
 import { getRefObject, scrollTo } from 'helpers';
 import { useToggle, useScrollUp, useStep } from 'hooks';
 
-const JoinAffiliateFC = () => {
+const titles = ['Introductions', 'Enter social media'];
+
+export const JoinAffiliate = () => {
    useScrollUp();
    const [toggle, setToggle] = useToggle(false);
    const mainRef = useRef<HTMLDivElement>(null);
@@ -156,24 +155,18 @@ const JoinAffiliateFC = () => {
 
    const renderModalSuccess = useMemo(
       () => (
-         <Portal
-            show={toggle}
-            close={setToggle}>
-            <div className="mt-10 space-y-8">
-               <div className="text-center font-dm text-5xl font-bold leading-custom1 tracking-custom">
-                  Yay! 🎉
-               </div>
-               <div className="text-center leading-normal text-neutral4">
-                  Your Affiliate request was successful, the request will be
-                  processed in approximately 2 x 24 hours. Or you can Contact
-                  Support for further questions
-               </div>
-               <Button
-                  text="Continue"
-                  onClick={setToggle}
-               />
-            </div>
-         </Portal>
+         <ModalSuccess
+            toggle={toggle}
+            setToggle={setToggle}
+            title={
+               <>
+                  followed{' '}
+                  <span className="text-primary1">Affliate Program</span> from
+                  Digiasset
+               </>
+            }
+            subTitle="Your Affiliate request was successful, the request will be processed in approximately 2 x 24 hours. Or you can Contact Support for further questions."
+         />
       ),
       [setToggle, toggle]
    );
@@ -193,7 +186,7 @@ const JoinAffiliateFC = () => {
                href: '/membership',
                active: 'Join affiliate',
             }}
-            titles={['Introductions', 'Enter social media']}
+            titles={titles}
             currentStep={currentStep}
             mainRef={mainRef}>
             {step}
@@ -202,8 +195,3 @@ const JoinAffiliateFC = () => {
       </>
    );
 };
-
-export const JoinAffiliate = compose(
-   injectIntl,
-   withRouter
-)(JoinAffiliateFC) as FunctionComponent;
