@@ -5,7 +5,7 @@ export * from './Download';
 export * from './Step';
 export * from './Trading';
 export * from './TradingHeader';
-export * from './TradingOrderList';
+export * from './TradingOrderBook';
 export * from './TradingOrderAsk';
 export * from './TradingOrderBid';
 export * from './TradingOrderBackToLogin';

@@ -38,7 +38,7 @@ import {
    selectUserLoggedIn,
 } from 'modules';
 import { classNames } from 'helpers';
-import { DEFAULT_MARKET } from '../../../constants';
+import { DEFAULT_MARKET } from '../../constants';
 
 const noHeaderRoutes = [
    '/confirm',

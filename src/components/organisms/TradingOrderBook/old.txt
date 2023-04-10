@@ -579,7 +579,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
    setAmount: amount => dispatch(setAmount(amount)),
 });
 
-export const TradingOrderList = React.memo(
+export const TradingOrderBook = React.memo(
    injectIntl(
       connect(mapStateToProps, mapDispatchToProps)(TradingOrderListContainer)
    ) as any

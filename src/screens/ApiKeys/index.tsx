@@ -40,7 +40,7 @@ import {
    selectApiKeysPageIndex,
 } from 'modules';
 import { IntlProps } from 'index';
-import { IcEmty, imgLock, imgLock2 } from 'assets';
+import { IcEmpty, imgLock, imgLock2 } from 'assets';
 
 interface ReduxProps {
    apiKeys: ApiKeyDataInterface[];
@@ -550,7 +550,7 @@ const ApiKeysFC = ({
                                  <tr>
                                     <td colSpan={7}>
                                        <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                                          <IcEmty />
+                                          <IcEmpty />
                                           <div className="text-xs font-semibold text-neutral4">
                                              {translate('noResultFound')}
                                           </div>

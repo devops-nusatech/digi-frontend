@@ -1,6 +1,4 @@
 export * from './Tables';
-export * from './Header';
-export * from './Footer';
 export * from './MyTab';
 export * from './FormLogin';
 export * from './FormRegister';

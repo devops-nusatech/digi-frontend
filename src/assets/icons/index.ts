@@ -76,4 +76,4 @@ export * from './IcClose';
 export * from './IcMasterCard';
 export * from './IcVisa';
 export * from './LogoAlt';
-export * from './IcEmty';
+export * from './IcEmpty';

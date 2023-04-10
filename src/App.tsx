@@ -34,12 +34,12 @@ const AlertsContainer = lazy(() =>
    import('./containers/Alerts').then(({ Alerts }) => ({ default: Alerts }))
 );
 const HeaderContainer = lazy(() =>
-   import('./components/molecules/Header').then(({ Header }) => ({
+   import('./containers/Header').then(({ Header }) => ({
       default: Header,
    }))
 );
 const FooterContainer = lazy(() =>
-   import('./components/molecules/Footer').then(({ Footer }) => ({
+   import('./containers/Footer').then(({ Footer }) => ({
       default: Footer,
    }))
 );
@@ -107,6 +107,12 @@ export default () => {
          dispatch(userData({ user: { ...user, myTier } }));
       }
    }, [dispatch, isLoggedIn, memberships, myTier, user]);
+
+   useEffect(() => {
+      if (memberships.length) {
+         console.log('memberships :>> ', memberships);
+      }
+   }, [memberships]);
 
    return (
       <IntlProvider

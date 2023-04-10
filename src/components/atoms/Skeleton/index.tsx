@@ -1,5 +1,5 @@
 import { classNames } from 'helpers';
-import React, { forwardRef } from 'react';
+import React, { HTMLAttributes, forwardRef } from 'react';
 import { Rounded } from '../types';
 
 const classes = () => ({
@@ -22,14 +22,14 @@ const classes = () => ({
    isHeightFull: 'h-full',
 });
 
-type SkeletonProps = {
+interface SkeletonProps extends HTMLAttributes<HTMLButtonElement> {
    width?: number | string;
    height?: number | string;
    rounded?: Rounded;
    isWithFull?: boolean;
    isHeightFull?: boolean;
    className?: string;
-};
+}
 
 export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
    ({ width, height, rounded, isWithFull, isHeightFull, className }, ref) => {

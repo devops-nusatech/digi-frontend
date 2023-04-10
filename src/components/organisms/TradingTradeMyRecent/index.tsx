@@ -16,7 +16,7 @@ import {
 } from 'modules';
 import { localeDate } from 'helpers';
 import { Decimal } from 'components/Decimal';
-import { IcEmty } from 'assets';
+import { IcEmpty } from 'assets';
 
 interface ReduxProps {
    list: WalletHistoryList;
@@ -152,7 +152,7 @@ class TradingTradeMyRecentContainer extends React.Component<Props> {
                         <div className="table-cell">&nbsp;</div>
                         <div className="table-cell">&nbsp;</div>
                         <div className="flex min-h-56 flex-col items-center justify-center space-y-3">
-                           <IcEmty />
+                           <IcEmpty />
                            <div className="text-xs font-semibold text-neutral4">
                               Today not found
                            </div>

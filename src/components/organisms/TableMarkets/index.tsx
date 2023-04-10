@@ -7,7 +7,7 @@ import React, {
    useMemo,
    useState,
 } from 'react';
-import { IcEmty } from 'assets';
+import { IcEmpty } from 'assets';
 import {
    AdibDropdown,
    Button,
@@ -283,7 +283,7 @@ export const TableMarkets = memo(function TableMarkets({
                   <tr>
                      <td colSpan={8}>
                         <div className="flex min-h-c-screen-462 flex-col items-center justify-center space-y-3">
-                           <IcEmty />
+                           <IcEmpty />
                            <TextXs
                               text={translate('noResultFound')}
                               font="semibold"

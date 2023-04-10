@@ -216,6 +216,7 @@ module.exports = {
          '736': '46rem',
          '740': '46.25rem',
          '785': '49.0625rem',
+         '793': '49.5625rem',
          '830': '51.875rem',
          '913': '913px',
          '908': '56.75rem',
@@ -536,6 +537,7 @@ module.exports = {
       fontFamily: {
          'dm': ['"DM sans"', 'sans-serif'],
          'pop': ['Poppins', 'sans-serif'],
+         'roboto-flex': ['"Roboto Flex"', 'sans-serif'],
          'crypto': 'crypto',
          'urw-din-400': ['urw-din-400', 'sans-serif'],
          'urw-din-500': ['urw-din-500', 'sans-serif'],

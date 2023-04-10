@@ -256,6 +256,15 @@ class RegisterClass extends Component<Props> {
    private handleChangeConfirmPassword = (value: string) => {
       this.setState({
          confirmPassword: value,
+         confirmationError: !value.length
+            ? `${this.translate(
+                 'page.header.register.password'
+              )} ${this.translate('mustBeFilled')}`
+            : value.length && value !== this.state.password
+            ? this.translate(
+                 'page.header.register.confirmPassword.message.error'
+              )
+            : '',
       });
    };
 

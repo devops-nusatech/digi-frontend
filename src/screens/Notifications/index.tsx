@@ -3,7 +3,7 @@ import { Button, Checkbox, Skeleton, TutorialAlt } from 'components';
 import axios from 'axios';
 import { Notification } from './types';
 import { localeDate, truncateEnd } from 'helpers';
-import { IcEmty } from 'assets';
+import { IcEmpty } from 'assets';
 
 type State = {
    isSecurity: boolean;
@@ -337,7 +337,7 @@ export const Notifications = () => {
                                                 )}
                                              </div>
                                              {e.read && markAllAsRead && (
-                                                <div className="mt-1.25 ml-4 block h-3 w-3 shrink-0 rounded-full bg-primary5" />
+                                                <div className="ml-4 mt-1.25 block h-3 w-3 shrink-0 rounded-full bg-primary5" />
                                              )}
                                           </div>
                                           <div className="text-xs leading-custom4 text-neutral4">
@@ -349,7 +349,7 @@ export const Notifications = () => {
                            ) : (
                               <div className="flex h-96 items-center justify-center">
                                  <div className="flex flex-col items-center justify-center space-y-3">
-                                    <IcEmty />
+                                    <IcEmpty />
                                     <div className="text-xs font-semibold text-neutral4">
                                        No result found
                                     </div>

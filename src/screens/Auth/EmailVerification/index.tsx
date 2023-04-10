@@ -111,9 +111,9 @@ const EmailVerificationComponent: FC<Props> = ({
    }, []);
 
    useEffect(() => {
-      const { email, password } = state;
+      const { email } = state;
       if (emailVerified === true) {
-         push('/login', { email, password });
+         push('/login', { email, password: state.password || '' });
       }
    }, [emailVerified]);
 

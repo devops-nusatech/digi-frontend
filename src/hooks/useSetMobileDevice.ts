@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMobileDeviceState, setMobileDevice } from '../modules';
 
@@ -6,7 +6,7 @@ export const useSetMobileDevice = () => {
    const isMobileDevice = useSelector(selectMobileDeviceState);
    const dispatch = useDispatch();
 
-   React.useEffect(() => {
+   useEffect(() => {
       const handleResize = () => {
          const isMobileDeviceCurrent =
             window.innerWidth < 768 || window.innerHeight < 500;
@@ -21,4 +21,6 @@ export const useSetMobileDevice = () => {
 
       return () => window.removeEventListener('resize', handleResize);
    }, [dispatch, isMobileDevice]);
+
+   return { isMobileDevice };
 };

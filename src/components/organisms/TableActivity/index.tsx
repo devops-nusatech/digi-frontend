@@ -31,7 +31,7 @@ import {
    WalletHistoryList,
    Withdraw,
 } from 'modules';
-import { IcEmty, IcShorting } from 'assets';
+import { IcEmpty, IcShorting } from 'assets';
 import { useMarket } from 'hooks';
 
 interface TableActivityProps {
@@ -1203,7 +1203,7 @@ export const TableActivity = memo(
                         <tr>
                            <td colSpan={10}>
                               <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                                 <IcEmty />
+                                 <IcEmpty />
                                  <div className="text-xs font-semibold text-neutral4">
                                     {intl('noResultFound')}
                                  </div>
@@ -1215,7 +1215,7 @@ export const TableActivity = memo(
                      <tr>
                         <td colSpan={10}>
                            <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                              <IcEmty />
+                              <IcEmpty />
                               <div className="text-xs font-semibold text-neutral4">
                                  {intl('noResultFound')}
                               </div>

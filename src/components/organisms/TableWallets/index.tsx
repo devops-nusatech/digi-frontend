@@ -1,5 +1,5 @@
 import React from 'react';
-import { IcEmty } from 'assets';
+import { IcEmpty } from 'assets';
 import { Wallet } from 'modules';
 import { Decimal, Image } from 'components';
 import { renderCurrencyIcon } from 'helpers';
@@ -171,7 +171,7 @@ export const TableWallets = ({
                   <tr>
                      <td colSpan={4}>
                         <div className="flex min-h-c-screen-462 flex-col items-center justify-center space-y-3">
-                           <IcEmty />
+                           <IcEmpty />
                            <div className="text-xs font-semibold text-neutral4">
                               {translate('noResultFound')}
                            </div>

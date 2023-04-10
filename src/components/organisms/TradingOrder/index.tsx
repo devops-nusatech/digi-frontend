@@ -394,46 +394,48 @@ const TradingOrderChild = ({
 
    return (
       <ContainerOrder>
-         {isLoggedIn && (
-            <FlexCenter className="justify-center gap-4 lg-max:hidden">
-               {navs.map((e, i) => (
-                  <Nav
-                     key={i}
-                     title={e}
-                     theme="grey"
-                     isActive={currentTab === i}
-                     onClick={() => setCurrentTab(i)}
-                  />
-               ))}
-            </FlexCenter>
-         )}
-         <FlexCenter className="justify-between lg-max:!mt-0">
-            <div className="flex gap-4">
-               {orderTypeinitial.map(e => (
-                  <Nav
-                     key={e}
-                     title={e.charAt(0).toUpperCase() + e.slice(1)}
-                     theme="grey"
-                     isActive={e === orderType}
-                     onClick={() => handleSetOrderType(e)}
-                  />
-               ))}
-            </div>
-            <FlexCenter className="gap-3 text-xs font-medium text-neutral4">
-               <div>
-                  Maker:{' '}
-                  <span className="font-bold text-primary4">
-                     {makerFee || 0}%
-                  </span>
+         <div className="space-y-4">
+            {isLoggedIn && (
+               <FlexCenter className="justify-center gap-4 lg-max:hidden">
+                  {navs.map((e, i) => (
+                     <Nav
+                        key={i}
+                        title={e}
+                        theme="grey"
+                        isActive={currentTab === i}
+                        onClick={() => setCurrentTab(i)}
+                     />
+                  ))}
+               </FlexCenter>
+            )}
+            <FlexCenter className="justify-between lg-max:!mt-0">
+               <div className="flex gap-4">
+                  {orderTypeinitial.map(e => (
+                     <Nav
+                        key={e}
+                        title={e.charAt(0).toUpperCase() + e.slice(1)}
+                        theme="grey"
+                        isActive={e === orderType}
+                        onClick={() => handleSetOrderType(e)}
+                     />
+                  ))}
                </div>
-               <div>
-                  Taker:{' '}
-                  <span className="font-bold text-primary4">
-                     {takerFee || 0}%
-                  </span>
-               </div>
+               <FlexCenter className="gap-3 text-xs font-medium text-neutral4">
+                  <div>
+                     Maker:{' '}
+                     <span className="font-bold text-primary4">
+                        {makerFee || 0}%
+                     </span>
+                  </div>
+                  <div>
+                     Taker:{' '}
+                     <span className="font-bold text-primary4">
+                        {takerFee || 0}%
+                     </span>
+                  </div>
+               </FlexCenter>
             </FlexCenter>
-         </FlexCenter>
+         </div>
          {showOrder}
          <div>
             <div className="block">

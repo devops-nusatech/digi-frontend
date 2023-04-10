@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Poppins:wght@100;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Poppins:wght@100;400;500;600;700&family=Roboto+Flex:wght@400;500;600&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -168,6 +168,17 @@
          no-repeat 50% 50%/16px auto;
    }
    /* End Step */
+
+   /* For Webkit-based browsers (Chrome, Safari and Opera) */
+   .scrollbar-hide::-webkit-scrollbar {
+      @apply hidden;
+   }
+
+   /* For IE, Edge and Firefox */
+   .scrollbar-hide {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+   }
 }
 
 @layer base {
@@ -185,9 +196,7 @@
    }
    td,
    th {
-      text-align: left;
-      padding-left: 0px;
-      padding-right: 0px;
+      @apply px-0 text-left;
    }
    div,
    input,

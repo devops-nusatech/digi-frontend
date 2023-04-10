@@ -13,7 +13,7 @@ import {
    FlexCenter,
 } from 'components';
 import { Push, Translate } from 'types';
-import { IcEmty } from 'assets';
+import { IcEmpty } from 'assets';
 
 interface TableMarketProps extends Push, Translate {}
 
@@ -184,7 +184,7 @@ export const TableMarket = memo(({ push, translate }: TableMarketProps) => {
                         <tr>
                            <td colSpan={6}>
                               <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                                 <IcEmty />
+                                 <IcEmpty />
                                  <div className="text-xs font-semibold text-neutral4">
                                     {translate('noResultFound')}
                                  </div>

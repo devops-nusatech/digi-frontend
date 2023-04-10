@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { IcEmty, IcShorting } from 'assets';
+import { IcEmpty, IcShorting } from 'assets';
 import { Button, InputGroup, InputOtp, Portal, Skeleton } from 'components';
 import { arrayFilter, truncateMiddle } from 'helpers';
 import { useBeneficiariesFetch } from 'hooks';
@@ -316,7 +316,7 @@ const TableBeneficiaryFC: FC<TableBeneficiaryProps> = ({
                   <tr>
                      <td colSpan={5}>
                         <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                           <IcEmty />
+                           <IcEmpty />
                            <div className="text-xs font-semibold text-neutral4">
                               <FormattedMessage id="noResultFound" />
                            </div>

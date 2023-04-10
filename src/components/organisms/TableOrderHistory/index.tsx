@@ -30,7 +30,7 @@ import {
    Skeleton,
    Image,
 } from 'components';
-import { IcEmty, IcShorting } from 'assets';
+import { IcEmpty, IcShorting } from 'assets';
 import { arrayFilter, localeDate, renderCurrencyIcon } from 'helpers';
 import { useMarket, useToggle } from 'hooks';
 
@@ -468,7 +468,7 @@ const TableOrder = ({
                   <tr>
                      <td colSpan={10}>
                         <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                           <IcEmty />
+                           <IcEmpty />
                            <div className="text-xs font-semibold text-neutral4">
                               {translate('noResultFound')}
                            </div>

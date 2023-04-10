@@ -74,7 +74,7 @@ import {
    setDocumentTitle,
    truncateMiddle,
 } from 'helpers';
-import { IcEmty, IcShorting } from 'assets';
+import { IcEmpty, IcShorting } from 'assets';
 import { SearchIcon } from '@heroicons/react/outline';
 import { IntlProps } from 'index';
 import { useForm, useToggle } from 'hooks';
@@ -639,13 +639,7 @@ const WithdrawalFC = memo(
                            <tr>
                               <td colSpan={3}>
                                  <div className="flex min-h-96 flex-col items-center justify-center space-y-3 transition-transform duration-1000">
-                                    <IcEmty
-                                       className={
-                                          theme === 'dark'
-                                             ? 'brightness-75'
-                                             : ''
-                                       }
-                                    />
+                                    <IcEmpty />
                                     <div className="text-xs font-semibold text-neutral4">
                                        {translate('noResultFound')}
                                     </div>
@@ -868,7 +862,7 @@ const WithdrawalFC = memo(
                            <tr>
                               <td colSpan={5}>
                                  <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                                    <IcEmty />
+                                    <IcEmpty />
                                     <div className="text-xs font-semibold text-neutral4">
                                        {translate('noResultFound')}
                                     </div>

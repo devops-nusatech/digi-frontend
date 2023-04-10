@@ -3,12 +3,12 @@ import { withRouter } from 'react-router';
 import { useDispatch } from 'react-redux';
 import {
    TradingHeader,
-   TradingOrderList,
+   TradingOrderBook,
    TradingCenter,
    TradingMarketList,
    Nav,
 } from 'components';
-import { useReduxSelector, useTranslate } from 'hooks';
+import { useReduxSelector, useScrollUp, useTranslate } from 'hooks';
 import {
    fetchHistory,
    Market,
@@ -33,6 +33,7 @@ const navs = ['Chart', 'Order Books', 'Trades'];
 const time_from = String(Math.floor((Date.now() - 1000 * 60 * 60 * 24) / 1000));
 
 export const Trading = withRouter(({ history }) => {
+   useScrollUp();
    const dispatch = useDispatch();
    const isLoggedIn = useReduxSelector(selectUserLoggedIn);
    const user = useReduxSelector(selectUserInfo);
@@ -142,7 +143,7 @@ export const Trading = withRouter(({ history }) => {
             marketTickers={marketTickers}
             translate={translate}
          />
-         <div className="hidden space-x-0 md:space-x-2 lg:space-x-0 md-max:justify-between lg-max:my-4 lg-max:flex">
+         <div className="flex md:space-x-2 lg:hidden lg:space-x-0 md-max:justify-between lg-max:my-4">
             {navs.map((e, i) => (
                <Nav
                   key={i}
@@ -154,7 +155,7 @@ export const Trading = withRouter(({ history }) => {
             ))}
          </div>
          <div className="mt-1 block lg2:flex">
-            <TradingOrderList
+            <TradingOrderBook
                currentMarket={currentMarket}
                marketTickers={marketTickers}
                lastRecentTrade={lastRecentTrade}

@@ -280,7 +280,8 @@ export const FormRegister = memo(
                   value={confirmPassword}
                   onChange={handleChangeConfirmPassword}
                   onFocus={handleFocusConfirmPassword}
-                  info={confirmPasswordError && confirmPasswordError}
+                  info={confirmPasswordError}
+                  withError={!!confirmPasswordError}
                   withIconPassword
                />
                <div

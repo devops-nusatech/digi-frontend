@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { MembershipCard, TextXs } from 'components';
 import {
-   IcEmty,
+   IcEmpty,
    TierMembershipSVG,
    TierMembershipSVG2,
    TierMembershipSVG3,
@@ -65,7 +65,7 @@ export const MembershipList = ({ onClick }: MembershipListProps) => {
             ))
          ) : (
             <div className="flex min-h-96 w-full flex-col items-center justify-center space-y-3">
-               <IcEmty />
+               <IcEmpty />
                <TextXs
                   text="Memberships null"
                   font="semibold"

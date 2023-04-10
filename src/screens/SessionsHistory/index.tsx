@@ -19,7 +19,7 @@ import {
    selectUserActivityPageCount,
    UserActivityDataInterface,
 } from 'modules';
-import { IcEmty } from 'assets';
+import { IcEmpty } from 'assets';
 
 // import { useTable } from 'react-table';
 
@@ -233,7 +233,7 @@ const SessionsHistoryFC = ({
                         <tr>
                            <td colSpan={5}>
                               <div className="flex min-h-96 flex-col items-center justify-center space-y-3">
-                                 <IcEmty />
+                                 <IcEmpty />
                                  <div className="text-xs font-semibold text-neutral4">
                                     {translate('noResultFound')}
                                  </div>
