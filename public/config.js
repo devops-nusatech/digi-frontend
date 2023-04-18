@@ -3,7 +3,7 @@
    const { search, origin, pathname, replace } = location;
 
    // const hostUrl = hostname === 'localhost' ? 'http://localhost:9002' : origin;
-   const hostUrl = 'https://api.heavenexchange.io';
+   const hostUrl = 'https://www.digiassetindo.com';
    const fetchConfig = new XMLHttpRequest();
    fetchConfig.open('GET', `${hostUrl}/api/v2/sonic/public/config`, false);
    fetchConfig.send(null);
